@@ -1,0 +1,8 @@
+* [el](./courses/courses_el.md)
+* [en](./courses/courses_en.md)
+* [fr](./courses/courses_fr.md)
+* [de](./courses/courses_de.md)
+* [es](./courses/courses_es.md)
+* [it](./courses/courses_it.md)
+* [ja](./courses/courses_ja.md)
+* [pt](./courses/courses_pt.md)
