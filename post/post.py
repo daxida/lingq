@@ -1,186 +1,208 @@
-import sys, time
+import time
 import os
-from os import path
-import json
-# import roman
 from natsort import os_sorted
 import requests
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 from dotenv import dotenv_values
+from typing import List
 
 # post_text seems to work but it has been a long time since I tried post_text_and_audio.
 # The same goes for patch_text, although now that the limit is 6k words it should be fine.
 
 # The preprocessed split text.txt files should be in texts_folder
-# and the same goes for the .mp3 in audios_folder
+# and the same goes for the .mp3 in AUDIOS_FOLDER
 # This assumes that they are paired in a way that zipping them makes sense.
 
 # Change these:
-texts_folder  = "split"
-# If you want to post only text, set audios_folder to None
-audios_folder = None
-# 1-idxed, 1 is the first lesson
-from_lesson = 1
-to_lesson   = 2
+TEXTS_FOLDER = "split"
+# If you want to post only text, set AUDIOS_FOLDER to None
+AUDIOS_FOLDER = None
+# 1-idxed, 1 is the first lesson.
+# Just write an arbitrarily high number in TO_LESSON to post everything.
+FR_LESSON = 1
+TO_LESSON = 99
 
 # Time in seconds to wait between requests
-sleep = 2 
+SLEEP_SECONDS = 2
 
-# pk = "1070313" # Quick imports
-language_code = 'el'
-pk = "1070313" 
+LANGUAGE_CODE = "ja"
+COURSE_ID = "537808"
 
 ############################################################
 
-# Assumes that .env is on the root
+# Assumes that .env is on the root and than this script is run inside post/ folder
 PATH = os.getcwd()
 parent_dir = os.path.dirname(PATH)
-env_path = os.path.join(parent_dir, '.env')
-config = dotenv_values(env_path)
+env_path = os.path.join(parent_dir, ".env")
+KEY = dotenv_values(env_path)["APIKEY"]
 
-KEY = config["APIKEY"]
+LINGQ_API_URL_V3 = f"https://www.lingq.com/api/v3/{LANGUAGE_CODE}/"
+IMPORT_URL = f"{LINGQ_API_URL_V3}lessons/import/"
 
-postAddress = "https://www.lingq.com/api/v3/el/lessons/import/"
 
-def readGreekNumerals(folder):
-    order = ["Α'", "Β'", "Γ'", "Δ'", "Ε'", "ΣΤ'", "Ζ'", "Η'", "Θ'", "Ι'", "ΙΑ'", "ΙΒ'", "ΙΓ'", "ΙΔ'", "ΙΕ'", "ΙΣΤ'", "ΙΖ'"]
-    files = [f for f in os.listdir(folder) if path.isfile(path.join(folder, f)) and not f.startswith(".")]
+def get_greek_sorting_fn():
+    # This requires fine tuning depending of the entries' name format:
+    # I was working with:
     # Ι'. Η μάχη -> 10
-    return sorted(files, key=lambda x: order.index(x.split('.')[0]))
-    
+    NUMERALS = "Α Β Γ Δ Ε ΣΤ Ζ Η Θ Ι ΙΑ ΙΒ ΙΓ ΙΔ ΙΕ ΙΣΤ ΙΖ".split()
+    ORDER = [f"{num}'" for num in NUMERALS]
 
-def readRomanNumerals(folder):
-    files = [f for f in os.listdir(folder) if path.isfile(path.join(folder, f)) and not f.startswith(".")]
+    def sorting_fn(x):
+        return ORDER.index(x.split(".")[0])
+
+    return sorting_fn
+
+
+def get_roman_sorting_fn():
+    # This requires fine tuning depending of the entries' name format:
+    # I was working with:
     # Chapitre X.mp3 -> X
-    return sorted(files, key=lambda x:roman.fromRoman((x.split()[1]).split(".")[0]))
+    import roman
+
+    def sorting_fn(x):
+        return roman.fromRoman((x.split()[1]).split(".")[0])
+
+    return sorting_fn
 
 
-def read(folder):
-    '''Returns a human sorted list of non-hidden directories'''
-    return [f for f in os_sorted(os.listdir(folder)) if path.isfile(path.join(folder, f)) and not f.startswith(".")]
+def read_sorted_folders(folder: str, mode: str) -> List:
+    if mode == "human":
+        sorting_fn = os_sorted
+    elif mode == "greek":
+        sorting_fn = get_greek_sorting_fn()
+    elif mode == "roman":
+        sorting_fn = get_roman_sorting_fn()
+    else:
+        print("Unsupported mode in read_folder")
+        exit(1)
+
+    return [
+        f
+        for f in sorting_fn(os.listdir(folder))
+        if os.path.isfile(os.path.join(folder, f)) and not f.startswith(".")
+    ]
 
 
-def post_text(texts_folder, from_lesson, to_lesson, sleep):
-    texts  = read(texts_folder)
+def post_text():
+    texts = read_sorted_folders(TEXTS_FOLDER, mode="human")
 
-    for text_filename in texts[from_lesson-1:to_lesson]:
-        title = text_filename.replace('.txt', '')
+    for text_filename in texts[FR_LESSON - 1 : TO_LESSON]:
+        title = text_filename.replace(".txt", "")
 
-        file_path = os.path.join(texts_folder, text_filename)
-        with open(file_path, 'r', encoding='utf-8') as file:
+        file_path = os.path.join(TEXTS_FOLDER, text_filename)
+        with open(file_path, "r", encoding="utf-8") as file:
             text = file.read()
 
-
-        m = MultipartEncoder([
-            ('title', title),
-            ('text', text),
-            ('collection', pk),
-            ('save', "true")]   
+        m = MultipartEncoder(
+            [
+                ("title", title),
+                ("text", text),
+                ("collection", COURSE_ID),
+                ("save", "true"),
+            ]
         )
 
-        headers = {
-            'Authorization': f"Token {KEY}",
-            'Content-Type': m.content_type
-        }
+        headers = {"Authorization": f"Token {KEY}", "Content-Type": m.content_type}
 
-        response = requests.post(
-            url=postAddress, 
-            data=m, 
-            headers=headers
-        )
-        
-        print(f"  Posted text for lesson {title}")
-        
-        # DEBUG
+        response = requests.post(url=IMPORT_URL, data=m, headers=headers)
+
         if response.status_code != 201:
+            print("Error:")
             print(f"Response code: {response.status_code}")
             print(f"Response text: {response.text}")
+            return
 
-        time.sleep(sleep)
+        print(f"  Posted text for lesson {title}")
+
+        time.sleep(SLEEP_SECONDS)
 
 
-def post_text_and_audio(texts_folder, audios_folder, from_lesson, to_lesson, sleep):
-    # texts  = readRomanNumerals(texts_folder)
-    # audios = readRomanNumerals(audios_folder)
-    texts  = readGreekNumerals(texts_folder)
-    audios = read(audios_folder)
+def post_text_and_audio():
+    texts = read_sorted_folders(TEXTS_FOLDER, mode="human")
+    audios = read_sorted_folders(AUDIOS_FOLDER, mode="human")
+    pairs = list(zip(texts, audios))
 
-    for text_filename, audio_filename in list(zip(texts, audios))[from_lesson-1:to_lesson]:
-        title = text_filename.replace('.txt', '')
-        text  = open(path.join(texts_folder, text_filename), 'r').read()
-        audio = open(path.join(audios_folder, audio_filename), 'rb')
-        
-        m = MultipartEncoder([
-                    ('title', title),
-                    ('text', text),
-                    ('collection', pk),
-                    ('audio', (audio_filename, audio, 'audio/mpeg')),
-                    ('save', "true")]   
-                )
+    for text_filename, audio_filename in pairs[FR_LESSON - 1 : TO_LESSON]:
+        title = text_filename.replace(".txt", "")
+        text = open(os.path.join(TEXTS_FOLDER, text_filename), "r").read()
+        audio = open(os.path.join(AUDIOS_FOLDER, audio_filename), "rb")
 
-        h = {'Authorization': 'Token ' + KEY,
-            'Content-Type': m.content_type}
-        
-        r = requests.post(postAddress, data=m, headers=h)
-        
+        m = MultipartEncoder(
+            [
+                ("title", title),
+                ("text", text),
+                ("collection", COURSE_ID),
+                ("audio", (audio_filename, audio, "audio/mpeg")),
+                ("save", "true"),
+            ]
+        )
+
+        h = {"Authorization": "Token " + KEY, "Content-Type": m.content_type}
+
+        response = requests.post(IMPORT_URL, data=m, headers=h)
+
+        if response.status_code != 201:
+            print("Error:")
+            print(f"Response code: {response.status_code}")
+            print(f"Response text: {response.text}")
+            return
+
         print(f"Title: {title} - Audio: {audio_filename}")
         print(f"Posted text and audio for lesson {title}")
 
-        time.sleep(sleep)
+        time.sleep(SLEEP_SECONDS)
 
 
 def patch_text(collection, texts_folder, from_lesson, to_lesson, sleep):
-    '''Patches them with text over the 2k words limit'''
+    """
+    OUTDATED - plus now LingQ allows for +2k words limit
 
-    print(f"Patching text!")
+    Patches them with text over the 2k words limit
+    """
 
-    texts = read(texts_folder)
+    print("Patching text!")
 
-    for text_filename, lesson in list(zip(texts, collection['lessons']))[from_lesson-1:to_lesson]:
-        lesson = requests.get(lesson['url'], headers=header).json()
+    texts = read_sorted_folders(texts_folder, mode="human")
+    pairs = list(zip(texts, collection["lessons"]))
+
+    for text_filename, lesson in pairs[from_lesson - 1 : to_lesson]:
+        lesson = requests.get(lesson["url"], headers=header).json()  # header?
         lesson_id = lesson["id"]
 
-        text = open(path.join(texts_folder, text_filename), 'r').read()
+        text = open(os.path.join(texts_folder, text_filename), "r").read()
 
-        postAddress = f"https://www.lingq.com/api/v3/{language_code}/lessons/{lesson_id}/resplit/"
+        postAddress = f"{LINGQ_API_URL_V3}lessons/{lesson_id}/resplit/"
 
-        m = MultipartEncoder([('text', text)])
+        m = MultipartEncoder([("text", text)])
 
-        h = {
-          'Authorization': 'Token ' + key,
-          'Content-Type': m.content_type
-        }
+        h = {"Authorization": "Token " + KEY, "Content-Type": m.content_type}
 
         r = requests.post(postAddress, headers=h, data=m)
 
         if r.status_code == 400:
             print(r.text)
             exit()
-        
+
         print(f"Patched text for: {lesson['title']}")
 
         time.sleep(sleep)
 
 
-def post(texts_folder, audios_folder, from_lesson, to_lesson, sleep):
-    if not texts_folder:
-        return print("No texts folder declared, exiting!")
-    
-    edit_address = f"https://www.lingq.com/en/learn/{language_code}/web/editor/courses/{pk}"
-    print(f"Starting upload at {edit_address}")
-
-    if audios_folder:
-        print(f"Posting text and audio for lessons {from_lesson} to {to_lesson}...")
-        post_text_and_audio(texts_folder, audios_folder, from_lesson, to_lesson, sleep=sleep)
-    else:
-        print(f"Posting text for lessons {from_lesson} to {to_lesson}...")
-        post_text(texts_folder, from_lesson, to_lesson, sleep=sleep)
-
-
 def main():
-    post(texts_folder, audios_folder, from_lesson, to_lesson, sleep=sleep)
+    if not TEXTS_FOLDER:
+        print("No texts folder declared, exiting!")
+        return 
+
+    url = f"https://www.lingq.com/en/learn/{LANGUAGE_CODE}/web/editor/courses/{COURSE_ID}"
+    print(f"Starting upload at {url}")
+
+    if AUDIOS_FOLDER:
+        print(f"Posting text and audio for lessons {FR_LESSON} to {TO_LESSON}...")
+        post_text_and_audio()
+    else:
+        print(f"Posting text for lessons {FR_LESSON} to {TO_LESSON}...")
+        post_text()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
-    
