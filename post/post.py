@@ -137,9 +137,9 @@ def post_text_and_audio():
             ]
         )
 
-        h = {"Authorization": "Token " + KEY, "Content-Type": m.content_type}
+        headers = {"Authorization": f"Token {KEY}", "Content-Type": m.content_type}
 
-        response = requests.post(IMPORT_URL, data=m, headers=h)
+        response = requests.post(IMPORT_URL, data=m, headers=headers)
 
         if response.status_code != 201:
             print("Error:")
@@ -147,7 +147,8 @@ def post_text_and_audio():
             print(f"Response text: {response.text}")
             return
 
-        print(f"Title: {title} - Audio: {audio_filename}")
+        print(f"Title: {title}")
+        print(f"Audio: {audio_filename}")
         print(f"Posted text and audio for lesson {title}")
 
         time.sleep(SLEEP_SECONDS)
