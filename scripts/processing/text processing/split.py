@@ -1,103 +1,107 @@
 import os
-import re
-from typing import List
+from typing import List, Dict
+
+OUT_FOLDER = "split"
+IN_FILE = "norwegian_wood.txt"
+
+# Headings folder. The expected format is a list of chapter (=headings) separators, f.e:
+# Chapter 1
+# Chapter 2
+# etc
+HEADINGS_FOLDER = "headings.txt"
 
 
-def createFolderIfNotExist(folder_name: str):
-    if not os.path.exists(folder_name):
-        os.mkdir(folder_name)
-
-
-def clearFolder(folder_name: str):
-    path = f'{folder_name}/'
-    print(f"Deleting old files at this path: {path}")
-    for file_name in os.listdir(path):
-        file = path + file_name
-        if os.path.isfile(file):
-            # print('Deleting file:', file)
-            os.remove(file)
-
-
-def separateByHeading(text, heading_list: List[str]):
-    ''' Returns a dictionary where:
-            - A key is the name of a chapter (=heading)
-            - The value of the key is a list of strings each 
-              representing a line of the chapter
-    '''
-    separated_data = dict()
-    _buffer = list()
+def split_by_headings(lines: List[str], headings: List[str]) -> Dict:
+    """
+    Returns a dictionary where:
+    - A key is the name of a chapter (=heading)
+    - A value is a list of strings each representing a line of the chapter
+    """
+    split_data = dict()
+    buf = list()
     heading = None
-    lines = text.readlines()
     amt_lines = len(lines)
 
     for idx, line in enumerate(lines):
-        if line.strip() in heading_list:
-            if _buffer and heading:
-                separated_data[heading] = _buffer
+        if line.strip() in headings:
+            if heading and buf:
+                split_data[heading] = buf
             heading = line.strip()
-            _buffer = []
+            buf = []
         else:
-            _buffer.append(line)
+            buf.append(line)
 
         # Dump buffer at the end of input.
-        if idx + 1 == amt_lines:
-            if _buffer:
-                separated_data[heading] = _buffer
+        if idx + 1 == amt_lines and buf:
+            split_data[heading] = buf
 
-    return separated_data
+    return split_data
 
 
-def write(separated_data: dict, heading_list: List[str]):
-    ''' In case of not found chapters, it writes a ?? file for easier fixing'''
-    for idx_p, heading in enumerate(heading_list, 1):
-        if heading in separated_data.keys():
-            text = separated_data[heading]
-            with open(f'split/{idx_p:02d}. {heading}.txt', 'w') as c:
-                for line in separated_data[heading]:
-                    c.write(line)
+def write(split_data: Dict, headings: List[str]) -> None:
+    """In case of not found chapters, it writes a ?? file for easier fixing"""
+    for idx_p, heading in enumerate(headings, 1):
+        prefix = f"{OUT_FOLDER}/{idx_p:02d}. "
+
+        if heading in split_data.keys():
+            with open(f"{prefix}{heading}.txt", "w") as f:
+                for line in split_data[heading]:
+                    f.write(line)
         else:
-            with open(f'split/{idx_p:02d}. ??????????????.txt', 'w') as c:
-                c.write("NONE")
+            with open(f"{prefix}?????????.txt", "w") as f:
+                f.write("NONE")
 
 
-def testTitles(separated_data: dict, heading_list: List[str]):
-    ''' Tests that every chapter in the heading list is correctly found '''
-    print(f'{len(separated_data)} chapters were found:')
+def test_titles(split_data: Dict, headings: List[str]) -> int:
+    """Tests that every chapter in the heading list is correctly found"""
+    print(f"{len(split_data)} chapters were found:")
 
-    for idx, heading in enumerate(heading_list, 1):
-        if heading in separated_data.keys():
-            print(f"\t{idx:02d}. {heading}")
+    for idx, heading in enumerate(headings, 1):
+        prefix = f"\t{idx:02d}. "
+
+        if heading in split_data:
+            print(f"{prefix}{heading}")
         else:
-            print(f"\t{idx:02d}. NOT FOUND")
+            print(f"{prefix}NOT FOUND")
 
-    if len(separated_data) == len(heading_list):
-        print(f"Found every chapter!")
+    if len(split_data) == len(headings):
+        print("Found every chapter!")
+        return 0
     else:
-        print(f"The following chapters couldn't be found:")
-        for idx, heading in enumerate(heading_list, 1):
-            if heading not in separated_data.keys():
+        print("The following chapters couldn't be found:")
+        for idx, heading in enumerate(headings, 1):
+            if heading not in split_data:
                 print(f"\t{idx:02d}. {heading}")
+        return 1
 
 
 def main():
-    # Creates some folders to output the splitted chapters.
-    folder_name = 'split'
-    createFolderIfNotExist(folder_name)
-    clearFolder(folder_name)
+    # Create OUT_FOLDER if it doesn't exist.
+    if not os.path.exists(OUT_FOLDER):
+        os.mkdir(OUT_FOLDER)
 
-    # The list with the headings (=chapter names) of the next.
-    heading_list = open("headings.txt", 'r').read().split("\n")
+    # Delete the contents of OUT_FOLDER if any.
+    print(f"Deleting old files (if any) at this path: {OUT_FOLDER}")
+    for file_name in os.listdir(OUT_FOLDER):
+        file = f"{OUT_FOLDER}/{file_name}"
+        if os.path.isfile(file):
+            os.remove(file)
 
-    # The current file with the text that we want to split.
-    filename = 'harry.txt'
-    text = open(filename, 'r')
-    separated_data = separateByHeading(text, heading_list)
+    # Read the text from the given input folders.
+    with open(HEADINGS_FOLDER, "r") as f:
+        # Ensure no trailing empty heading
+        headings = [heading.strip() for heading in f.readlines()]
+    with open(IN_FILE, "r") as f:
+        lines = f.readlines()
 
-    # Tests that we correctly splitted the text.
-    testTitles(separated_data, heading_list)
+    split_data = split_by_headings(lines, headings)
 
-    write(separated_data, heading_list)
+    error_code = test_titles(split_data, headings)
+    if error_code != 0:
+        return
+
+    write(split_data, headings)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
