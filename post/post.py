@@ -192,7 +192,7 @@ def patch_text(collection, texts_folder, from_lesson, to_lesson, sleep):
 def main():
     if not TEXTS_FOLDER:
         print("No texts folder declared, exiting!")
-        return 
+        return
 
     url = f"https://www.lingq.com/en/learn/{LANGUAGE_CODE}/web/editor/courses/{COURSE_ID}"
     print(f"Starting upload at {url}")

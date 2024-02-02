@@ -10,8 +10,8 @@ def fix_vertical_characters(text: str) -> str:
     text = text.replace("︵", "(")
 
     # These do not display properly in LingQ
-    text = text.replace("﹁", "「") # open
-    text = text.replace("﹂", "」") # close
+    text = text.replace("﹁", "「")  # open
+    text = text.replace("﹂", "」")  # close
     text = text.replace("﹃", "『")
     text = text.replace("﹄", "』")
 
@@ -19,8 +19,8 @@ def fix_vertical_characters(text: str) -> str:
 
 
 def write(filename: str, text: str):
-    with open(f'fix_{filename}', 'w') as out:
-        for line in text.split('\n'):
+    with open(f"fix_{filename}", "w") as out:
+        for line in text.split("\n"):
             out.write(f"{line}\n")
 
 
@@ -32,5 +32,5 @@ def main():
     write(filename, text)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

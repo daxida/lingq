@@ -1,5 +1,7 @@
 # https://gist.github.com/Ashwinning/a9677b5b3afa426667d979b36c019b04
 
+# fmt: off
+
 import os
 from os import path
 import sys
@@ -90,5 +92,3 @@ for i in range(0, len(tracklist)):
 
     command = GenerateSplitCommand(str(startTime), str(endTime), name)
     output = subprocess.check_call(command)
-
-

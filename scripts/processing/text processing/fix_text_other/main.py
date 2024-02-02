@@ -28,6 +28,7 @@ def fix_latin_capitals(text: str) -> str:
     # AMBIGUOUS ONES:
     # AΆBEÉHIÍKMNOÓPTXY
 
+    # fmt: off
     latin_to_greek = {
         "A": "Α", "Á": "Ά",
         "B": "Β",
@@ -43,9 +44,9 @@ def fix_latin_capitals(text: str) -> str:
         "X": "Χ",
         "Y": "Υ",
     }
+    # fmt: on
 
-    text = re.sub(r"[AÁBEÉHIÍKMNOÓPTXY](?=[Ά-Ͽ]+)",
-                  lambda m: latin_to_greek[m.group(0)], text)
+    text = re.sub(r"[AÁBEÉHIÍKMNOÓPTXY](?=[Ά-Ͽ]+)", lambda m: latin_to_greek[m.group(0)], text)
 
     return text
 
@@ -62,7 +63,7 @@ def specific_deletions(text: str) -> str:
     # Specific deletions (regex)
     text = re.sub(r"\|", " ", text)
     text = re.sub(r"'(?=Ό)", "", text)
-    text = re.sub(r"'(?=Έ)", "", text)  
+    text = re.sub(r"'(?=Έ)", "", text)
 
     return text
 
@@ -82,7 +83,8 @@ def specific_capitalizations(text: str) -> str:
     # Specific capitalizations
     to_capitalize = [
         # names
-        "ελλάδα", "Ελλάδα",
+        "ελλάδα",
+        "Ελλάδα",
     ]
     for string in to_capitalize:
         # We don't want to sub subwords: Κληρονόμου -> ΚληΡονόμου
@@ -100,7 +102,7 @@ def specific_fixes(text: str) -> str:
 
 
 def fix_textstring(text: str) -> str:
-    ''' Apply the fixes to the whole string of text '''
+    """Apply the fixes to the whole string of text"""
 
     # Fix page numbers
     text = re.sub(r"\d+\n", "", text)
@@ -121,10 +123,10 @@ def fix_textstring(text: str) -> str:
     text = re.sub(r"([Ά-Ͽ]+)\-([Ά-Ͽ]+)", r"\1\2", text)
 
     # Adds spaces after ponctuation if missing
-    text = re.sub(r',(?=[^ ])',  ', ', text)
+    text = re.sub(r",(?=[^ ])", ", ", text)
     # We have to be careful of not changing ... -> . . .
-    text = re.sub(r'\.(?=[^ ."])', '. ', text)
-    text = re.sub(r';(?=[^ "])',  '; ', text)
+    text = re.sub(r'\.(?=[^ ."])', ". ", text)
+    text = re.sub(r';(?=[^ "])', "; ", text)
     # text = re.sub(r'»(?=[^ ])',  '» ', text)
 
     # Fix capital letters in the middle of a sentence.
@@ -135,13 +137,13 @@ def fix_textstring(text: str) -> str:
 
 
 def fix_textlines(line: str) -> str:
-    ''' Apply the fixes line by line '''
+    """Apply the fixes line by line"""
 
     # Removes starting spaces if any.
-    line = re.sub(r'^ *', '', line)
+    line = re.sub(r"^ *", "", line)
 
     # Fix capital letters at the beggining of a sentence.
-    line = re.sub(r'^(\"?.)', upper, line)
+    line = re.sub(r"^(\"?.)", upper, line)
 
     # THIS FOR ONLY GREEK
     # line = re.sub(r'^"?([Α-Ωα-ωίϊΐόάέύϋΰήώ])', upper, line)
@@ -151,8 +153,8 @@ def fix_textlines(line: str) -> str:
 
 
 def write(filename: str, text: str):
-    with open(f'fix_{filename}', 'w') as out:
-        for line in text.split('\n'):
+    with open(f"fix_{filename}", "w") as out:
+        for line in text.split("\n"):
             out.write(f"{line}\n")
 
 
@@ -178,5 +180,5 @@ def main():
     write(filename, text)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

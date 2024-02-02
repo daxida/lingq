@@ -3,10 +3,10 @@ import re
 
 def createHeadings(text_path):
     headings = []
-    with open(text_path, 'r') as t:
+    with open(text_path, "r") as t:
         for line in t.readlines():
-            # REPLACE here with the suitable heading pattern 
-            heading = re.findall(r'[XVI]+ .*[a-zA-Z]\n', line)
+            # REPLACE here with the suitable heading pattern
+            heading = re.findall(r"[XVI]+ .*[a-zA-Z]\n", line)
             if heading:
                 headings.append(heading[0].strip())
 
@@ -19,5 +19,5 @@ def main():
     createHeadings(text_path)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

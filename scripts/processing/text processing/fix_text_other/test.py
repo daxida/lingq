@@ -8,7 +8,6 @@ ABSOLUTE = "/Users/rafa/Desktop/fix_text/tests/"
 
 paths = [
     ("problematic_chars_test", "problematic_chars_expected"),
-
 ]
 
 
@@ -39,7 +38,7 @@ def remove_ponctuation(line):
 
 
 def test_builder(self, idx):
-    ''' Compares sentence by sentence for easier visualization '''
+    """Compares sentence by sentence for easier visualization"""
     for source, expected in tests_pairs[idx]:
         lines = zip(source.split("."), expected.split("."))
         for source_line, expected_line in lines:
@@ -51,14 +50,13 @@ def test_builder(self, idx):
 
 
 class TestPoly(unittest.TestCase):
-
     maxDiff = None
     amount_tests = len(tests_pairs)
 
     # This makes so each pair counts as a separate test
     for n in range(amount_tests):
-        locals()[f'test_{n}'] = partialmethod(test_builder, idx=n)
+        locals()[f"test_{n}"] = partialmethod(test_builder, idx=n)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
