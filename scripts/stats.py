@@ -1,9 +1,10 @@
-import os
-import requests
-import json
-import sys
-import pandas as pd
 import datetime
+import json
+import os
+import sys
+
+import pandas as pd
+import requests
 from dotenv import dotenv_values
 
 # Assumes that .env is on the root

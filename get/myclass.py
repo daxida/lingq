@@ -28,8 +28,8 @@ class Lesson:
         self.title      = lesson['collectionTitle']
         self.course_url = f"https://www.lingq.com/en/learn/{self.language_code}/web/library/course/{lesson['collectionId']}"
         self.level      = TOEUROPEAN.get(lesson['level'], lesson['level'])
-        self.hasAudio   = lesson['audio'] != None
-        self.isShared   = lesson['sharedDate'] != None
+        self.hasAudio   = lesson['audio'] is not None
+        self.isShared   = lesson['sharedDate'] is not None
         self.updated    = lesson['pubDate']
         # fmt: on
 
@@ -51,16 +51,16 @@ class Collection:
         self.course_url = f"https://www.lingq.com/en/learn/{self.language_code}/web/library/course/{collection['pk']}"
         self.level      = TOEUROPEAN.get(collection['level'], collection['level'])
 
-        self.hasAudio   = collection['lessons'][0]['audio'] != None
-        self.isShared   = collection['lessons'][0]['sharedDate'] != None
+        self.hasAudio   = collection['lessons'][0]['audio'] is not None
+        self.isShared   = collection['lessons'][0]['sharedDate'] is not None
         self.updated    = collection['lessons'][0]['pubDate']
         # fmt: on
 
         for lesson in collection["lessons"]:
             # The collection has audio if at least one lesson has audio:
-            self.hasAudio = self.hasAudio or (lesson["audio"] != None)
+            self.hasAudio = self.hasAudio or (lesson["audio"] is not None)
             # The collection is shared if at least one lesson is shared:
-            self.isShared = self.isShared or (lesson["sharedDate"] != None)
+            self.isShared = self.isShared or (lesson["sharedDate"] is not None)
             # The collection update is the latest update:
             if dt.strptime(self.updated, "%Y-%m-%d") < dt.strptime(lesson["pubDate"], "%Y-%m-%d"):
                 self.update = lesson["pubDate"]

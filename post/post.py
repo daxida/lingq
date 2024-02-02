@@ -1,10 +1,11 @@
-import time
 import os
-from natsort import os_sorted
-import requests
-from requests_toolbelt.multipart.encoder import MultipartEncoder
-from dotenv import dotenv_values
+import time
 from typing import List
+
+import requests
+from dotenv import dotenv_values
+from natsort import os_sorted
+from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 # post_text seems to work but it has been a long time since I tried post_text_and_audio.
 # The same goes for patch_text, although now that the limit is 6k words it should be fine.

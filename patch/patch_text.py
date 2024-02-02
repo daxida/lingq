@@ -1,9 +1,11 @@
-import sys, time
-import os
-from os import path
 import json
-from natsort import os_sorted
+import os
+import sys
+import time
+from os import path
+
 import requests
+from natsort import os_sorted
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 # TODO: implement the changes from the updated "post.py" script

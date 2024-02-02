@@ -1,10 +1,11 @@
-import sys, time
-import os
-from os import path
 import json
-from natsort import os_sorted
-import requests
+import os
+import sys
+import time
+from os import path
 
+import requests
+from natsort import os_sorted
 
 key = open(os.path.join("/Users/rafa/Desktop/lingq", "APIkey.txt")).read()
 header = {"Authorization": "Token " + key}

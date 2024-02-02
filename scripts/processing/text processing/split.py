@@ -1,5 +1,5 @@
 import os
-from typing import List, Dict
+from typing import Dict, List
 
 OUT_FOLDER = "split"
 IN_FILE = "norwegian_wood.txt"

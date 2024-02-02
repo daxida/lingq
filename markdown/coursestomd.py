@@ -1,11 +1,11 @@
-import os
-import requests
 import json
+import os
 import sys
 from datetime import datetime
-from myclass import Collection
-from dotenv import dotenv_values
 
+import requests
+from dotenv import dotenv_values
+from myclass import Collection
 
 # If True, creates a markdown for every language where we have known words.
 # Otherwise set it to false and fill language_codes with the desired languages.

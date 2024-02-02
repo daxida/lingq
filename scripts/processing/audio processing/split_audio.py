@@ -3,9 +3,9 @@
 # fmt: off
 
 import os
-from os import path
-import sys
 import subprocess
+import sys
+from os import path
 
 inputfile = sys.argv[1]
 codec = '-acodec'

@@ -1,9 +1,10 @@
-import sys
-import os
-import requests
 import json
-from myclass import Collection
+import os
+import sys
+
+import requests
 from dotenv import dotenv_values
+from myclass import Collection
 
 # Given a language code print the fetched collections (courses) as "Collection" objects
 # This script is just to explore the API

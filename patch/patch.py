@@ -1,11 +1,13 @@
-import sys, time
-import os
-from os import path
 import json
-from natsort import os_sorted
+import os
+import sys
+import time
+from os import path
+
 import requests
-from requests_toolbelt.multipart.encoder import MultipartEncoder
 from dotenv import dotenv_values
+from natsort import os_sorted
+from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 # Change these two. Pk is the id of the collection
 # pk = "1070313" # Quick imports

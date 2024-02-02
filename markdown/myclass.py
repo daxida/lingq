@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime as dt
 
-
 # fmt: off
 TOEUROPEAN = {
     'Advanced 2'     : 'C2',
@@ -29,8 +28,8 @@ class Lesson:
         self.title      = lesson['collectionTitle']
         self.course_url = f"https://www.lingq.com/en/learn/{self.language_code}/web/library/course/{lesson['collectionId']}"
         self.level      = TOEUROPEAN.get(lesson['level'], lesson['level'])
-        self.hasAudio   = lesson['audio'] != None
-        self.isShared   = lesson['sharedDate'] != None
+        self.hasAudio   = lesson['audio'] is not None
+        self.isShared   = lesson['sharedDate'] is not None
         self.update     = lesson['pubDate']
         # fmt: on
 
@@ -57,14 +56,14 @@ class Collection:
         self.title        = collection['title']
         self.course_url   = f"https://www.lingq.com/en/learn/{self.language_code}/web/library/course/{self._id}"
         self.level        = TOEUROPEAN.get(collection['level'], collection['level']) or '-'
-        self.hasAudio     = lessons[0]['audio'] != None
+        self.hasAudio     = lessons[0]['audio'] is not None
         self.last_update  = lessons[0]['pubDate']
         self.first_update = lessons[0]['pubDate']
         # fmt: on
 
         for lesson in lessons:
             # The collection has audio if at least one lesson has audio:
-            self.hasAudio = self.hasAudio or (lesson["audio"] != None)
+            self.hasAudio = self.hasAudio or (lesson["audio"] is not None)
 
             # Track the first and last updates:
             cur_update = dt.strptime(lesson["pubDate"], "%Y-%m-%d")

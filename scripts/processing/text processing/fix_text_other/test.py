@@ -1,8 +1,8 @@
-import unittest
 import re
-from main import fix
+import unittest
 from functools import partialmethod
 
+from main import fix
 
 ABSOLUTE = "/Users/rafa/Desktop/fix_text/tests/"
 
