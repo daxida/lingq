@@ -36,16 +36,22 @@ class Lesson:
 
 @dataclass
 class Collection:
-    title: str = None
+    # fmt: off
+    title:         str = None
     language_code: str = None
-    course_url: str = None
-    level: str = None
-    hasAudio: bool = False
-    isShared: bool = False
-    updated: str = None
-    viewsCount: int = 0
+    course_url:    str = None
+    level:         str = None
+    hasAudio:      bool = False
+    isShared:      bool = False
+    updated:       str = None
+    viewsCount:    int = 0
+    # fmt: on
 
-    def addData(self, collection):
+    def add_data(self, collection):
+        if not collection["lessons"]:
+            print(f"No lessons found: skipping add_data.")
+            return
+
         # fmt: off
         self.title      = collection['title']
         self.course_url = f"https://www.lingq.com/en/learn/{self.language_code}/web/library/course/{collection['pk']}"

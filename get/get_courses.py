@@ -5,6 +5,7 @@ import sys
 import requests
 from dotenv import dotenv_values
 from myclass import Collection
+from typing import Dict, List
 
 # Given a language code print the fetched collections (courses) as "Collection" objects
 # This script is just to explore the API
@@ -20,30 +21,43 @@ config = dotenv_values(env_path)
 KEY = config["APIKEY"]
 headers = {"Authorization": f"Token {KEY}"}
 
+LANGUAGE_CODE = "fr"
+
 # V3 or V2 it doesn't change for requesting my collections
 API_URL_V3 = "https://www.lingq.com/api/v2/"
-language_code = "fr"
-editor_url = f"https://www.lingq.com/en/learn/{language_code}/web/editor/courses/"
+EDITOR_URL = f"https://www.lingq.com/en/learn/{LANGUAGE_CODE}/web/editor/courses/"
 
 
 def E(myjson):
     json.dump(myjson, sys.stdout, ensure_ascii=False, indent=2)
 
 
+def get_all_courses() -> List[Dict]:
+    url = f"{API_URL_V3}{LANGUAGE_CODE}/collections/my/"
+    response = requests.get(url=url, headers=headers)
+    my_collections = response.json()
+
+    return my_collections["results"]
+
+
 def main():
-    url = f"{API_URL_V3}{language_code}/collections/my/"
-    my_collections = requests.get(url=url, headers=headers).json()
+    courses = get_all_courses()
 
-    for col in my_collections["results"]:
-        _id = col["id"]
-        url = f"{API_URL_V3}{language_code}/collections/{_id}"
-        col = requests.get(url=url, headers=headers).json()
+    print(f"Found {len(courses)} courses in language: {LANGUAGE_CODE}")
 
-        if len(col["lessons"]) == 0:
-            raise RuntimeError(f"The collection at {editor_url}{_id} has no lessons, (delete it?)")
+    for col in courses:
+        col_title = col["title"]
+        col_id = col["id"]
+        url = f"{API_URL_V3}{LANGUAGE_CODE}/collections/{col_id}"
+        response = requests.get(url=url, headers=headers)
+        col = response.json()
+
+        if not col["lessons"]:
+            msg = f"The collection {col_title} at {EDITOR_URL}{col_id} has no lessons, (delete it?)"
+            print(msg)
 
         collection = Collection()
-        collection.language_code = language_code
+        collection.language_code = LANGUAGE_CODE
         collection.addData(col)
 
         print(collection)
