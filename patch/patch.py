@@ -1,18 +1,23 @@
 import json
 import os
-import sys
 import time
 from os import path
 
 import requests
 from dotenv import dotenv_values
 from natsort import os_sorted
-from requests_toolbelt.multipart.encoder import MultipartEncoder
+# from requests_toolbelt.multipart.encoder import MultipartEncoder
+
+# This deals with overwriting of existing lessons / collections.
+# The main usecase is to add audio to an already uploaded book where some
+# editing has already be done, and we wouldn't want to upload the text again.
+
+# The blank audios were found here: https://github.com/anars/blank-audio
 
 # Change these two. Pk is the id of the collection
 # pk = "1070313" # Quick imports
-language_code = "el"
-pk = "1289772"
+LANGUAGE_CODE = "ja"
+COURSE_ID = "537808"
 
 # Assumes that .env is on the root
 PATH = os.getcwd()
@@ -21,16 +26,17 @@ env_path = os.path.join(parent_dir, ".env")
 config = dotenv_values(env_path)
 
 KEY = config["APIKEY"]
-headers = {"Authorization": f"Token {KEY}"}
+HEADERS = {"Authorization": f"Token {KEY}"}
 
-# V3 or V2 doesn't change for this script
 API_URL_V2 = "https://www.lingq.com/api/v2/"
+API_URL_V3 = "https://www.lingq.com/api/v3/"
 
 
 def E(myjson):
-    json.dump(myjson, sys.stdout, ensure_ascii=False, indent=2)
+    json.dump(myjson, ensure_ascii=False, indent=2)
 
 
+# TODO: implement the changes from the updated "post.py" script
 def read(folder):
     """Returns a human sorted list of non-hidden directories"""
     return [
@@ -40,82 +46,112 @@ def read(folder):
     ]
 
 
-def patchBlankAudio(collection, from_lesson, to_lesson, sleep=0):
-    for lesson in collection["lessons"][from_lesson - 1 : to_lesson]:
-        lesson = requests.get(lesson["url"], headers=headers).json()
+def double_check():
+    if input(f"Proceed? [y/n] ") != "y":
+        print("Exiting")
+        exit(1)
+
+
+# collection is a json-like dict
+def iter_lessons_from_collection(collection, fr_lesson: int, to_lesson: int):
+    for lesson in collection["lessons"][fr_lesson - 1 : to_lesson]:
+        response = requests.get(lesson["url"], headers=HEADERS)
+
+        if response.status_code != 200:
+            print(f"Error in iter_lesson for lesson: {lesson['title']}")
+            print(f"Response code: {response.status_code}")
+            print(f"Response text: {response.text}")
+            break
+
+        lesson_json = response.json()
+        yield lesson_json
+
+
+def patch_blank_audio(collection, from_lesson, to_lesson, sleep=0):
+    print(f"Patching blank audio for course: {COURSE_ID}, in language: {LANGUAGE_CODE}")
+    double_check()
+
+    lesson_iter = iter_lessons_from_collection(collection, from_lesson, to_lesson)
+    lessons = list(lesson_iter)
+    max_iterations = len(lessons)
+    blank_audio_path = "15-seconds-of-silence.mp3"
+
+    for idx, lesson in enumerate(lessons, 1):
+        patch_audio(blank_audio_path, lesson, idx, max_iterations, sleep)
+
+    print("patch_blank_audio finished!")
+
+
+def patch_bulk_audios(collection, audios, from_lesson, to_lesson, sleep=0):
+    lesson_iter = iter_lessons_from_collection(collection, from_lesson, to_lesson)
+    lessons = list(lesson_iter)
+    max_iterations = len(lessons)
+
+    # Confirm the patching
+    for idx, (audio_path, lesson) in enumerate(zip(audios, lessons), 1):
+        print(f"{audio_path} -> {lesson['title']}")
+    double_check()
+
+    for idx, (audio_path, lesson) in enumerate(zip(audios, lessons), 1):
+        audio_path = path.join("audios", audio_path)
+        patch_audio(audio_path, lesson, idx, max_iterations, sleep)
+
+    print("patch_bulk_audios finished!")
+
+
+def patch_audio(audio_path, lesson, idx, max_iterations, sleep):
+    url = f"{API_URL_V3}{LANGUAGE_CODE}/lessons/{lesson['id']}/"
+    files = {"audio": open(audio_path, "rb")}
+    response = requests.patch(url=url, headers=HEADERS, files=files)
+
+    if response.status_code != 200:
+        print(f"Error in patch blank audio for lesson: {lesson['title']}")
+        print(f"Response code: {response.status_code}")
+        print(f"Response text: {response.text}")
+        return
+
+    print(f"[{idx}/{max_iterations}] Patched audio for: {lesson['title']}")
+
+    time.sleep(sleep)
+
+
+def resplit_japanese(collection, from_lesson, to_lesson, sleep=0):
+    """Re-split an existing lesson in japanese with ichimoe"""
+
+    assert LANGUAGE_CODE == "ja"
+    print(f"Resplitting audio for course: {COURSE_ID}, in language: {LANGUAGE_CODE}")
+    double_check()
+
+    for lesson in iter_lessons_from_collection(collection, from_lesson, to_lesson):
         lesson_id = lesson["id"]
 
-        postAddress = f"https://www.lingq.com/api/v3/{language_code}/lessons/{lesson_id}/"
+        url = f"{API_URL_V3}{LANGUAGE_CODE}/lessons/{lesson_id}/resplit/"
+        data = {"method": "ichimoe"}
 
-        audio = open(os.path.join("/Users/rafa/Desktop/lingq/", "15-seconds-of-silence.mp3"), "rb")
-        files = {"audio": audio}
+        response = requests.post(url=url, headers=HEADERS, data=data)
 
-        r = requests.patch(postAddress, headers=headers, files=files)
+        if response.status_code != 200:
+            print(f"Error in patch blank audio for lesson: {lesson['title']}")
+            print(f"Response code: {response.status_code}")
+            print(f"Response text: {response.text}")
+            return
 
-        if r.status_code == 400:
-            print(r.text)
-            exit()
-
-        print(f"Patched audio for: {lesson['title']}")
-
-        time.sleep(sleep)
-
-
-def patchBulkAudios(collection, audios, from_lesson, to_lesson, sleep=0):
-    for audio_path, lesson in list(zip(audios, collection["lessons"]))[from_lesson - 1 : to_lesson]:
-        lesson = requests.get(lesson["url"], headers=header).json()
-        lesson_id = lesson["id"]
-
-        postAddress = f"https://www.lingq.com/api/v3/{language_code}/lessons/{lesson_id}/"
-
-        audio = open(path.join("audios", audio_path), "rb")
-        files = {"audio": audio}
-
-        r = requests.patch(postAddress, headers=headers, files=files)
-
-        if r.status_code == 400:
-            print(r.text)
-            exit()
-
-        print(f"Patched audio for: {lesson['title']}")
-
-        time.sleep(sleep)
-
-
-def patchText(collection, from_lesson, to_lesson, sleep=0):
-    for lesson in collection["lessons"][from_lesson - 1 : to_lesson]:
-        lesson = requests.get(lesson["url"], headers=header).json()  # header ?
-        lesson_id = lesson["id"]
-
-        text_path = "/Users/rafa/Desktop/lingq/post/split"
-        text = open(os.path.join(text_path, "Β'. Οι κατσίκες.txt"), "r")
-
-        postAddress = f"https://www.lingq.com/api/v3/{language_code}/lessons/{lesson_id}/resplit/"
-
-        m = MultipartEncoder([("text", text.read())])
-
-        h = {"Authorization": "Token " + KEY, "Content-Type": m.content_type}
-
-        r = requests.post(postAddress, headers=h, data=m)
-
-        if r.status_code == 400:
-            print(r.text)
-            exit()
-
-        print(f"Patched text for: {lesson['title']}")
+        print(f"Resplit text for: {lesson['title']}")
 
         time.sleep(sleep)
 
 
 def main():
-    # audios_folder = "audios"
-    # audios = read(audios_folder)
+    audios_folder = "audios"
+    audios = read(audios_folder)
 
-    url = f"{API_URL_V2}{language_code}/collections/{pk}"
-    collection = requests.get(url=url, headers=headers).json()
+    url = f"{API_URL_V2}{LANGUAGE_CODE}/collections/{COURSE_ID}"
+    response = requests.get(url=url, headers=HEADERS)
+    collection = response.json()
 
-    # patchBlankAudio(collection, 1, 1)
-    # patchText(collection, 3, 3, 1)
+    patch_blank_audio(collection, 1, 3)
+    # patch_bulk_audios(collection, audios, 1, 2)
+    # resplit_japanese(collection, 1, 2)
 
 
 if __name__ == "__main__":
