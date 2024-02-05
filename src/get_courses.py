@@ -4,7 +4,7 @@ import sys
 
 import requests
 from dotenv import dotenv_values
-from myclass import Collection
+from utils import Collection
 from typing import Dict, List
 
 # Given a language code print the fetched collections (courses) as "Collection" objects

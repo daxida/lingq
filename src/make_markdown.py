@@ -4,7 +4,7 @@ from datetime import datetime
 
 import requests
 from dotenv import dotenv_values
-from myclass import Collection
+from utils import Collection
 
 # If True, creates a markdown for every language where we have known words.
 # Otherwise set it to false and fill language_codes with the desired languages.
@@ -12,10 +12,10 @@ DOWNLOAD_ALL = True
 LANGUAGE_CODES = ["fr"]
 
 # If True, it will only make a markdown of shared collections (ignore private)
-SHARED_ONLY = True
+SHARED_ONLY = False
 
 # The folder name where we save the markdowns
-OUT_FOLDER = "all"
+OUT_FOLDER = f"{'shared' if SHARED_ONLY else 'all'}_markdown"
 
 ############################################################################
 
@@ -138,14 +138,6 @@ def sort_collections(collections) -> None:
 
 
 def main(language_codes):
-    if not os.path.exists(OUT_FOLDER):
-        os.mkdir(OUT_FOLDER)
-
-    courses_path = os.path.join(OUT_FOLDER, "courses")
-    if not os.path.exists(courses_path):
-        os.mkdir(courses_path)
-
-    # Manage languages to download
     if DOWNLOAD_ALL:
         language_codes = get_my_language_codes()
 
@@ -154,6 +146,13 @@ def main(language_codes):
         f"with shared_only = {SHARED_ONLY}",
     )
     double_check()
+
+    if not os.path.exists(OUT_FOLDER):
+        os.mkdir(OUT_FOLDER)
+
+    courses_path = os.path.join(OUT_FOLDER, "courses")
+    if not os.path.exists(courses_path):
+        os.mkdir(courses_path)
 
     create_README(language_codes)
 
