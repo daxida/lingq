@@ -2,7 +2,7 @@ import json
 import os
 
 import requests
-from dotenv import dotenv_values
+from utils import Config
 from typing import Dict, List
 
 # Downloads audio / text from a Collection given the language code and the pk.
@@ -15,26 +15,14 @@ from typing import Dict, List
 LANGUAGE_CODE = "ja"
 COURSE_ID = "537808"
 
-# Assumes that .env is on the root
-PATH = os.getcwd()
-parent_dir = os.path.dirname(PATH)
-env_path = os.path.join(parent_dir, ".env")
-config = dotenv_values(env_path)
-
-KEY = config["APIKEY"]
-HEADERS = {"Authorization": f"Token {KEY}"}
-
 DOWNLOAD_FOLDER = "downloads"
-
-# V3 or V2 doesn't change for this script
-API_URL_V2 = "https://www.lingq.com/api/v2/"
 
 
 def E(myjson):
     json.dump(myjson, ensure_ascii=False, indent=2)
 
 
-def clear_folders():
+def clear_folders() -> None:
     for folder_name in ["texts", "audios"]:
         folder_path = os.path.join(DOWNLOAD_FOLDER, folder_name)
         for file_name in os.listdir(folder_path):
@@ -45,26 +33,31 @@ def clear_folders():
         print("Folder cleared:", folder_path)
 
 
-def create_folders():
+def create_folders(collection_title: str) -> None:
     if not os.path.exists(DOWNLOAD_FOLDER):
         os.mkdir(DOWNLOAD_FOLDER)
         print("Download folder created:", DOWNLOAD_FOLDER)
 
+    collection_path = os.path.join(DOWNLOAD_FOLDER, collection_title)
+    if not os.path.exists(collection_path):
+        os.mkdir(collection_path)
+        print("Download folder created:", collection_path)
+
     for folder_name in ["texts", "audios"]:
-        folder_path = os.path.join(DOWNLOAD_FOLDER, folder_name)
+        folder_path = os.path.join(DOWNLOAD_FOLDER, collection_title, folder_name)
         if not os.path.exists(folder_path):
             os.mkdir(folder_path)
             print("Folder created:", folder_path)
 
 
-def get_lessons(collection: Dict) -> List:
+def get_lessons(config: Config, collection: Dict) -> List:
     lessons = list()
 
     for idx, lesson in enumerate(collection["lessons"], 1):
         title = lesson["title"]
         # title = f"{idx}.{lesson['title']}" # add indices
 
-        lesson_response = requests.get(lesson["url"], headers=HEADERS)
+        lesson_response = requests.get(lesson["url"], headers=config.headers)
         lesson_json = lesson_response.json()
 
         text = []
@@ -85,9 +78,9 @@ def get_lessons(collection: Dict) -> List:
     return lessons
 
 
-def write_lessons(lessons) -> None:
-    texts_folder = os.path.join(DOWNLOAD_FOLDER, "texts")
-    audios_folder = os.path.join(DOWNLOAD_FOLDER, "audios")
+def write_lessons(collection_title: str, lessons) -> None:
+    texts_folder = os.path.join(DOWNLOAD_FOLDER, collection_title, "texts")
+    audios_folder = os.path.join(DOWNLOAD_FOLDER, collection_title, "audios")
 
     for idx, (title, text, audio) in enumerate(lessons, 1):
         if audio:
@@ -103,17 +96,21 @@ def write_lessons(lessons) -> None:
 
 
 def main():
-    create_folders()
-    # Uncomment to clear downloads folder before downloading
-    # clear_folders()
+    config = Config()
 
-    url = f"{API_URL_V2}{LANGUAGE_CODE}/collections/{COURSE_ID}"
-    response = requests.get(url=url, headers=HEADERS)
+    url = f"{Config.API_URL_V2}{LANGUAGE_CODE}/collections/{COURSE_ID}"
+    response = requests.get(url=url, headers=config.headers)
     collection = response.json()
 
     print(f"Downloading https://www.lingq.com/learn/{LANGUAGE_CODE}/web/library/course/{COURSE_ID}")
-    lessons = get_lessons(collection)
-    write_lessons(lessons)
+    lessons = get_lessons(config, collection)
+
+    collection_title = collection["title"]
+    create_folders(collection_title)
+    # Uncomment to clear downloads folder before downloading
+    # clear_folders()
+
+    write_lessons(collection_title, lessons)
     print("Finished download")
 
 

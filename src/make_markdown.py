@@ -3,8 +3,7 @@ import os
 from datetime import datetime
 
 import requests
-from dotenv import dotenv_values
-from utils import Collection
+from utils import Config, Collection
 
 # If True, creates a markdown for every language where we have known words.
 # Otherwise set it to false and fill language_codes with the desired languages.
@@ -16,20 +15,6 @@ SHARED_ONLY = False
 
 # The folder name where we save the markdowns
 OUT_FOLDER = f"{'shared' if SHARED_ONLY else 'all'}_markdown"
-
-############################################################################
-
-# Assumes that .env is on the root
-parent_dir = os.path.dirname(os.getcwd())
-env_path = os.path.join(parent_dir, ".env")
-config = dotenv_values(env_path)
-
-KEY = config["APIKEY"]
-headers = {"Authorization": f"Token {KEY}"}
-
-API_URL_V2 = "https://www.lingq.com/api/v2/"
-API_URL_V3 = "https://www.lingq.com/api/v3/"
-API_URL = "https://www.lingq.com/api/v2/"
 
 GREEN = "\033[32m"
 YELLOW = "\033[33m"
@@ -45,14 +30,14 @@ def E(myjson):
 
 
 def double_check():
-    if input(f"Proceed? [y/n] ") != "y":
+    if input("Proceed? [y/n] ") != "y":
         print("Exiting")
         exit(1)
 
 
-def get_my_language_codes():
+def get_my_language_codes(config: Config):
     """Returns a list of language codes where I have known words"""
-    response = requests.get(url=f"{API_URL_V2}languages", headers=headers)
+    response = requests.get(url=f"{Config.API_URL_V2}languages", headers=config.headers)
     languages = response.json()
     codes = [lan["code"] for lan in languages if lan["knownWords"] > 0]
 
@@ -73,14 +58,14 @@ def create_README(language_codes):
             f.write(f"* [{language_code}](./courses/courses_{language_code}.md)\n")
 
 
-def create_markdown(collection_list, language_code):
+def write_markdown(collection_list, language_code):
     out_path = f"{OUT_FOLDER}/courses/courses_{language_code}.md"
     with open(out_path, "w", encoding="utf-8") as md:
         # Headings
         fixing_date_width = "&nbsp;" * 6  # Ugly but works
         # fmt: off
         md.write(f"|Status| |Title|Views|Lessons|Created{fixing_date_width}|Updated{fixing_date_width}|\n")
-        md.write(f"|------|-|-----|-----|-------|--------------|--------------|\n")
+        md.write("|------|-|-----|-----|-------|--------------|--------------|\n")
         # fmt: on
 
         for c in collection_list:
@@ -91,7 +76,7 @@ def create_markdown(collection_list, language_code):
             # fmt: on
 
 
-def get_shared_collections(language_code):
+def get_shared_collections(config: Config, language_code: str):
     """
     A collection is just a course in the web lingo.
     Given a language code, returns a list of Collection objects.
@@ -99,16 +84,17 @@ def get_shared_collections(language_code):
     """
 
     # API_URL_V3 or API_URL_V2 yield the same here
-    url = f"{API_URL_V3}{language_code}/collections/my/"
-    my_collections = requests.get(url=url, headers=headers).json()
+    url = f"{Config.API_URL_V3}{language_code}/collections/my/"
+    my_collections = requests.get(url=url, headers=config.headers).json()
     collection_list = []
     n_collections = int(my_collections["count"])
 
     for idx, my_collection in enumerate(my_collections["results"], 1):
         _id = my_collection["id"]
 
-        collection_url_v2 = f"{API_URL_V2}{language_code}/collections/{_id}/"
-        collection_v2 = requests.get(url=collection_url_v2, headers=headers).json()
+        collection_url_v2 = f"{Config.API_URL_V2}{language_code}/collections/{_id}/"
+        response = requests.get(url=collection_url_v2, headers=config.headers)
+        collection_v2 = response.json()
         # E(collection_v2)
 
         col = Collection()
@@ -138,8 +124,10 @@ def sort_collections(collections) -> None:
 
 
 def main(language_codes):
+    config = Config()
+
     if DOWNLOAD_ALL:
-        language_codes = get_my_language_codes()
+        language_codes = get_my_language_codes(config)
 
     print(
         f"Making markdown for languages = {', '.join(language_codes)}",
@@ -160,14 +148,14 @@ def main(language_codes):
     for idx, language_code in enumerate(language_codes, 1):
         print(f"Starting download for {language_code} ({idx} of {n_languages})")
 
-        collection_list = get_shared_collections(language_code)
+        collection_list = get_shared_collections(config, language_code)
 
         if not collection_list:
             print(f"Didn't find any courses for language: {language_code}")
             continue
 
         sort_collections(collection_list)
-        create_markdown(collection_list, language_code)
+        write_markdown(collection_list, language_code)
         print(f"Created markdown for {language_code}!")
 
 

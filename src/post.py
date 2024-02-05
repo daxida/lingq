@@ -3,7 +3,7 @@ import time
 from typing import List
 
 import requests
-from dotenv import dotenv_values
+from utils import Config
 from natsort import os_sorted
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
@@ -28,17 +28,6 @@ SLEEP_SECONDS = 2
 
 LANGUAGE_CODE = "ja"
 COURSE_ID = "537808"
-
-############################################################
-
-# Assumes that .env is on the root and than this script is run inside post/ folder
-PATH = os.getcwd()
-parent_dir = os.path.dirname(PATH)
-env_path = os.path.join(parent_dir, ".env")
-KEY = dotenv_values(env_path)["APIKEY"]
-
-LINGQ_API_URL_V3 = f"https://www.lingq.com/api/v3/{LANGUAGE_CODE}/"
-IMPORT_URL = f"{LINGQ_API_URL_V3}lessons/import/"
 
 
 def get_greek_sorting_fn():
@@ -84,7 +73,7 @@ def read_sorted_folders(folder: str, mode: str) -> List:
     ]
 
 
-def post_text():
+def post_text(config: Config):
     texts = read_sorted_folders(TEXTS_FOLDER, mode="human")
 
     for text_filename in texts[FR_LESSON - 1 : TO_LESSON]:
@@ -103,9 +92,11 @@ def post_text():
             ]
         )
 
-        headers = {"Authorization": f"Token {KEY}", "Content-Type": m.content_type}
+        headers = {**config.headers}
+        headers["Content-Type"] = m.content_type
 
-        response = requests.post(url=IMPORT_URL, data=m, headers=headers)
+        url = f"{Config.API_URL_V3}{LANGUAGE_CODE}/lessons/import/"
+        response = requests.post(url=url, data=m, headers=headers)
 
         if response.status_code != 201:
             print("Error:")
@@ -118,7 +109,7 @@ def post_text():
         time.sleep(SLEEP_SECONDS)
 
 
-def post_text_and_audio():
+def post_text_and_audio(config: Config):
     texts = read_sorted_folders(TEXTS_FOLDER, mode="human")
     audios = read_sorted_folders(AUDIOS_FOLDER, mode="human")
     pairs = list(zip(texts, audios))
@@ -138,9 +129,11 @@ def post_text_and_audio():
             ]
         )
 
-        headers = {"Authorization": f"Token {KEY}", "Content-Type": m.content_type}
+        headers = {**config.headers}
+        headers["Content-Type"] = m.content_type
 
-        response = requests.post(IMPORT_URL, data=m, headers=headers)
+        url = f"{Config.API_URL_V3}{LANGUAGE_CODE}/lessons/import/"
+        response = requests.post(url=url, data=m, headers=headers)
 
         if response.status_code != 201:
             print("Error:")
@@ -155,42 +148,9 @@ def post_text_and_audio():
         time.sleep(SLEEP_SECONDS)
 
 
-def patch_text(collection, texts_folder, from_lesson, to_lesson, sleep):
-    """
-    OUTDATED - plus now LingQ allows for +2k words limit
-
-    Patches them with text over the 2k words limit
-    """
-
-    print("Patching text!")
-
-    texts = read_sorted_folders(texts_folder, mode="human")
-    pairs = list(zip(texts, collection["lessons"]))
-
-    for text_filename, lesson in pairs[from_lesson - 1 : to_lesson]:
-        lesson = requests.get(lesson["url"], headers=header).json()  # header?
-        lesson_id = lesson["id"]
-
-        text = open(os.path.join(texts_folder, text_filename), "r").read()
-
-        postAddress = f"{LINGQ_API_URL_V3}lessons/{lesson_id}/resplit/"
-
-        m = MultipartEncoder([("text", text)])
-
-        h = {"Authorization": "Token " + KEY, "Content-Type": m.content_type}
-
-        r = requests.post(postAddress, headers=h, data=m)
-
-        if r.status_code == 400:
-            print(r.text)
-            exit()
-
-        print(f"Patched text for: {lesson['title']}")
-
-        time.sleep(sleep)
-
-
 def main():
+    config = Config()
+
     if not TEXTS_FOLDER:
         print("No texts folder declared, exiting!")
         return
@@ -200,10 +160,10 @@ def main():
 
     if AUDIOS_FOLDER:
         print(f"Posting text and audio for lessons {FR_LESSON} to {TO_LESSON}...")
-        post_text_and_audio()
+        post_text_and_audio(config)
     else:
         print(f"Posting text for lessons {FR_LESSON} to {TO_LESSON}...")
-        post_text()
+        post_text(config)
 
 
 if __name__ == "__main__":

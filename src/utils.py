@@ -1,3 +1,5 @@
+import os
+from dotenv import dotenv_values
 from dataclasses import dataclass
 from datetime import datetime as dt
 
@@ -11,6 +13,20 @@ TOEUROPEAN = {
     'Beginner 1'     : 'A1'
 }
 # fmt: on
+
+
+class Config:
+    API_URL_V2 = "https://www.lingq.com/api/v2/"
+    API_URL_V3 = "https://www.lingq.com/api/v3/"
+
+    def __init__(self):
+        # Assumes the scripts are run in the src folder
+        parent_dir = os.path.dirname(os.getcwd())
+        env_path = os.path.join(parent_dir, ".env")
+        config = dotenv_values(env_path)
+
+        self.key = config["APIKEY"]
+        self.headers = {"Authorization": f"Token {self.key}"}
 
 
 # NOTE: not used
