@@ -92,16 +92,8 @@ def post_text(config: Config):
             ]
         )
 
-        headers = {**config.headers}
-        headers["Content-Type"] = m.content_type
-
-        url = f"{Config.API_URL_V3}{LANGUAGE_CODE}/lessons/import/"
-        response = requests.post(url=url, data=m, headers=headers)
-
+        response = post_to_lingq(config, m)
         if response.status_code != 201:
-            print("Error:")
-            print(f"Response code: {response.status_code}")
-            print(f"Response text: {response.text}")
             return
 
         print(f"  Posted text for lesson {title}")
@@ -129,16 +121,8 @@ def post_text_and_audio(config: Config):
             ]
         )
 
-        headers = {**config.headers}
-        headers["Content-Type"] = m.content_type
-
-        url = f"{Config.API_URL_V3}{LANGUAGE_CODE}/lessons/import/"
-        response = requests.post(url=url, data=m, headers=headers)
-
+        response = post_to_lingq(config, m)
         if response.status_code != 201:
-            print("Error:")
-            print(f"Response code: {response.status_code}")
-            print(f"Response text: {response.text}")
             return
 
         print(f"Title: {title}")
@@ -146,6 +130,21 @@ def post_text_and_audio(config: Config):
         print(f"Posted text and audio for lesson {title}")
 
         time.sleep(SLEEP_SECONDS)
+
+
+def post_to_lingq(config: Config, m) -> int:
+    headers = {**config.headers}
+    headers["Content-Type"] = m.content_type
+
+    url = f"{Config.API_URL_V3}{LANGUAGE_CODE}/lessons/import/"
+    response = requests.post(url=url, data=m, headers=headers)
+
+    if response.status_code != 201:
+        print("Error:")
+        print(f"Response code: {response.status_code}")
+        print(f"Response text: {response.text}")
+
+    return response
 
 
 def main():
