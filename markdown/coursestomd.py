@@ -1,6 +1,5 @@
 import json
 import os
-import sys
 from datetime import datetime
 
 import requests
@@ -9,14 +8,14 @@ from myclass import Collection
 
 # If True, creates a markdown for every language where we have known words.
 # Otherwise set it to false and fill language_codes with the desired languages.
-download_all = True
-language_codes = ["de"]
+DOWNLOAD_ALL = True
+LANGUAGE_CODES = ["fr"]
 
 # If True, it will only make a markdown of shared collections (ignore private)
-shared_only = False
+SHARED_ONLY = True
 
 # The folder name where we save the markdowns
-out_folder = "all"
+OUT_FOLDER = "all"
 
 ############################################################################
 
@@ -32,14 +31,29 @@ API_URL_V2 = "https://www.lingq.com/api/v2/"
 API_URL_V3 = "https://www.lingq.com/api/v3/"
 API_URL = "https://www.lingq.com/api/v2/"
 
+GREEN = "\033[32m"
+YELLOW = "\033[33m"
+CYAN = "\033[33m"
+MAGENTA = "\033[35m"
+RESET = "\033[0m"
+
 
 def E(myjson):
+    import sys
+
     json.dump(myjson, sys.stdout, ensure_ascii=False, indent=2)
+
+
+def double_check():
+    if input(f"Proceed? [y/n] ") != "y":
+        print("Exiting")
+        exit(1)
 
 
 def get_my_language_codes():
     """Returns a list of language codes where I have known words"""
-    languages = requests.get(url=f"{API_URL_V2}languages", headers=headers).json()
+    response = requests.get(url=f"{API_URL_V2}languages", headers=headers)
+    languages = response.json()
     codes = [lan["code"] for lan in languages if lan["knownWords"] > 0]
 
     return codes
@@ -54,13 +68,13 @@ def create_README(language_codes):
         etc.
     """
 
-    c = open(f"{out_folder}/README.md", "w", encoding="utf-8")
-    for language_code in language_codes:
-        c.write(f"* [{language_code}](./courses/courses_{language_code}.md)\n")
+    with open(f"{OUT_FOLDER}/README.md", "w", encoding="utf-8") as f:
+        for language_code in language_codes:
+            f.write(f"* [{language_code}](./courses/courses_{language_code}.md)\n")
 
 
 def create_markdown(collection_list, language_code):
-    out_path = f"{out_folder}/courses/courses_{language_code}.md"
+    out_path = f"{OUT_FOLDER}/courses/courses_{language_code}.md"
     with open(out_path, "w", encoding="utf-8") as md:
         # Headings
         fixing_date_width = "&nbsp;" * 6  # Ugly but works
@@ -71,8 +85,9 @@ def create_markdown(collection_list, language_code):
 
         for c in collection_list:
             c.viewsCount = "-" if not c.viewsCount else c.viewsCount
+            is_shared = "shared" if c.is_shared else "private"
             # fmt: off
-            md.write(f"|{c.status}|{c.level}|[{c.title}]({c.course_url})|{c.viewsCount}|{c.amount_lessons}|{c.first_update}|{c.last_update}\n")
+            md.write(f"|{is_shared}|{c.level}|[{c.title}]({c.course_url})|{c.viewsCount}|{c.amount_lessons}|{c.first_update}|{c.last_update}\n")
             # fmt: on
 
 
@@ -87,18 +102,10 @@ def get_shared_collections(language_code):
     url = f"{API_URL_V3}{language_code}/collections/my/"
     my_collections = requests.get(url=url, headers=headers).json()
     collection_list = []
-    amount_collections = int(my_collections["count"])
+    n_collections = int(my_collections["count"])
 
-    for idx in range(amount_collections):
-        # This dictionary is obsolete but it contains the url of the next request
-        my_collection = my_collections["results"][idx]
-
-        # WE HAVE TO WORK WITH V2 OF THE API SINCE V3 DOESN'T SUPPORT LESSONS
-        # ALTHOUGH WE USE THE STATUS FEATURE FROM V3 SINCE IT DOESN'T EXIST IN V2
+    for idx, my_collection in enumerate(my_collections["results"], 1):
         _id = my_collection["id"]
-        collection_url_v3 = f"{API_URL_V3}{language_code}/collections/{_id}/"
-        collection_v3 = requests.get(url=collection_url_v3, headers=headers).json()
-        # E(collection_v3)
 
         collection_url_v2 = f"{API_URL_V2}{language_code}/collections/{_id}/"
         collection_v2 = requests.get(url=collection_url_v2, headers=headers).json()
@@ -106,51 +113,64 @@ def get_shared_collections(language_code):
 
         col = Collection()
         col.language_code = language_code
-        col.status = collection_v3["status"]
-        col.addData(collection_v2)
+        col.add_data(collection_v2)
 
-        # Ignore private collection if the shared_only flag is true
-        if shared_only and col.status != "shared":
-            print(f"  Skipped {col.title} ({idx+1} of {amount_collections})")
+        # To not mess with the sorting later on. This only happens in very weird cases.
+        if col.last_update is None:
+            print(f"[{idx}/{n_collections}] {YELLOW}SKIP{RESET} {col.title} (last_update=None)")
             continue
 
-        print(f"  Added {col.title} ({idx+1} of {amount_collections})")
+        # Ignore private collection if the shared_only flag is true
+        if SHARED_ONLY and not col.is_shared:
+            print(f"[{idx}/{n_collections}] {YELLOW}SKIP{RESET} {col.title} (NOT SHARED)")
+            continue
+
+        print(f"[{idx}/{n_collections}] {GREEN}OK{RESET} {col.title}")
 
         collection_list.append(col)
 
     return collection_list
 
 
-def main(language_codes):
-    # Create the necessary folders
-    if not os.path.exists(out_folder):
-        os.mkdir(out_folder)
+def sort_collections(collections) -> None:
+    # Sorts by descending date
+    collections.sort(key=lambda x: datetime.strptime(x.last_update, "%Y-%m-%d"), reverse=True)
 
-    courses_path = os.path.join(out_folder, "courses")
+
+def main(language_codes):
+    if not os.path.exists(OUT_FOLDER):
+        os.mkdir(OUT_FOLDER)
+
+    courses_path = os.path.join(OUT_FOLDER, "courses")
     if not os.path.exists(courses_path):
         os.mkdir(courses_path)
 
     # Manage languages to download
-    if download_all:
+    if DOWNLOAD_ALL:
         language_codes = get_my_language_codes()
+
+    print(
+        f"Making markdown for languages = {', '.join(language_codes)}",
+        f"with shared_only = {SHARED_ONLY}",
+    )
+    double_check()
 
     create_README(language_codes)
 
-    amount_languages = len(language_codes)
-    for idx, language_code in enumerate(language_codes):
-        print(f"Starting download for {language_code} ({idx+1} of {amount_languages})")
+    n_languages = len(language_codes)
+    for idx, language_code in enumerate(language_codes, 1):
+        print(f"Starting download for {language_code} ({idx} of {n_languages})")
 
         collection_list = get_shared_collections(language_code)
 
-        # Sorts by descending date
-        collection_list.sort(
-            key=lambda x: datetime.strptime(x.last_update, "%Y-%m-%d"), reverse=True
-        )
+        if not collection_list:
+            print(f"Didn't find any courses for language: {language_code}")
+            continue
 
-        if collection_list:
-            create_markdown(collection_list, language_code)
-            print(f"Created markdown for {language_code}!")
+        sort_collections(collection_list)
+        create_markdown(collection_list, language_code)
+        print(f"Created markdown for {language_code}!")
 
 
 if __name__ == "__main__":
-    main(language_codes)
+    main(LANGUAGE_CODES)

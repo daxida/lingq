@@ -13,6 +13,7 @@ TOEUROPEAN = {
 # fmt: on
 
 
+# NOTE: not used
 @dataclass
 class Lesson:
     title: str = None
@@ -36,34 +37,50 @@ class Lesson:
 
 @dataclass
 class Collection:
-    _id: int = 0
-    title: str = None
-    language_code: str = None
-    course_url: str = None
-    level: str = "-"
-    hasAudio: bool = False
-    status: str = None
-    first_update: str = None
-    last_update: str = None
+    # fmt: off
+    _id:            int = 0
+    title:          str = None
+    language_code:  str = None
+    course_url:     str = None
+    level:          str = "-"
+    hasAudio:       bool = False
+    is_shared:      bool = False
+    first_update:   str = None
+    last_update:    str = None
     amount_lessons: int = 0
-    viewsCount: int = 0
+    viewsCount:     int = 0
+    # fmt: off
 
-    def addData(self, collection):
-        lessons = collection["lessons"]
-
+    def add_data(self, collection):
         # fmt: off
         self._id          = collection['pk']  # it's pk in V2 and id in V3
         self.title        = collection['title']
         self.course_url   = f"https://www.lingq.com/en/learn/{self.language_code}/web/library/course/{self._id}"
-        self.level        = TOEUROPEAN.get(collection['level'], collection['level']) or '-'
-        self.hasAudio     = lessons[0]['audio'] is not None
-        self.last_update  = lessons[0]['pubDate']
-        self.first_update = lessons[0]['pubDate']
+        # fmt: off
+
+        lessons = collection["lessons"]
+        if not lessons:
+            print(f"  No lessons found for {self.title}")
+            print("  Course url:", self.course_url)
+            print("  Api url   :", collection['url'])
+            print("  Skipping add_data.")
+            return
+
+        # fmt: on
+        self.level = TOEUROPEAN.get(collection["level"], collection["level"]) or "-"
+        self.hasAudio = lessons[0]["audio"] is not None
+        self.last_update = lessons[0]["pubDate"]
+        self.first_update = lessons[0]["pubDate"]
         # fmt: on
 
         for lesson in lessons:
             # The collection has audio if at least one lesson has audio:
             self.hasAudio = self.hasAudio or (lesson["audio"] is not None)
+
+            # The collection is shated if at least one lesson is shared:
+            # NOTE: D for private, P for public
+            self.is_shared = self.is_shared or (lesson["status"] == "P")
+            # print(lesson["status"] == "P")
 
             # Track the first and last updates:
             cur_update = dt.strptime(lesson["pubDate"], "%Y-%m-%d")
