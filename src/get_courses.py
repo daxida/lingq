@@ -58,7 +58,7 @@ def main():
 
         collection = Collection()
         collection.language_code = LANGUAGE_CODE
-        collection.addData(col)
+        collection.add_data(col)
 
         print(collection)
 
