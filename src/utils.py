@@ -1,7 +1,17 @@
 import os
+import time
+from functools import wraps
 from dotenv import dotenv_values
 from dataclasses import dataclass
 from datetime import datetime as dt
+
+# fmt: off
+RED    = "\033[31m"  # Error
+GREEN  = "\033[32m"  # Success
+YELLOW = "\033[33m"  # Skips
+CYAN   = "\033[36m"  # Timings
+RESET  = "\033[0m"
+# fmt: on
 
 # fmt: off
 TOEUROPEAN = {
@@ -111,3 +121,15 @@ class Collection:
         # We remove our own view from the count (assuming we read everything).
         self.amount_lessons = len(lessons)
         self.viewsCount -= self.amount_lessons
+
+
+def timing(f):
+    @wraps(f)
+    def wrap(*args, **kw):
+        ts = time.time()
+        result = f(*args, **kw)
+        te = time.time()
+        print(f"{CYAN}({f.__name__} {te-ts:2.2f}sec){RESET}")
+        return result
+
+    return wrap
