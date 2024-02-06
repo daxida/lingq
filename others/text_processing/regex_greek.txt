@@ -1,0 +1,22 @@
+# For finding words with double accents
+#
+# The minimum is 2 letters + vowel (δωμάτιό μου)
+#
+# Requires at most 2 vowels: 
+# Won't match "περπατώντας τον"
+# Will match "γάιδαρος μου"
+# Will match vowel digraphs (undesired) "πηγάζει το" or "περίπου το"
+# Will match "πρόβλημα μου"
+#
+#  acc       greek letters    (vowel + greek letter*) 2 times           article + delim
+[έόίύάήώ][^,.!?\-;:\n«»\"\' ]*([εοιυαηω][^,.!?\-;:\n«»\"\' ]*){2} (το|τα|τον|του|τους|των|τη|της|την|τις|σου|σας|μου|μας)[,.!?\-;:\n«»\"\' ]
+
+# 
+# Greek letters
+#
+[αβγδεζηθικλμνξοπρσςτυφχψω]
+
+#
+# No capital letter after a dot
+#
+\.[ \n][αβγδεζηθικλμνξοπρσςτυφχψω]
