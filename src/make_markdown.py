@@ -14,7 +14,7 @@ LANGUAGE_CODES = ["fr"]
 SHARED_ONLY = False
 
 # The folder name where we save the markdowns
-OUT_FOLDER = f"{'shared' if SHARED_ONLY else 'all'}_markdown"
+OUT_FOLDER = f"markdown_{'shared' if SHARED_ONLY else 'all'}"
 
 GREEN = "\033[32m"
 YELLOW = "\033[33m"
