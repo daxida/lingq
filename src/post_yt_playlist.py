@@ -1,10 +1,8 @@
-import requests
 import time
+
 import yt_dlp
 from requests_toolbelt.multipart.encoder import MultipartEncoder
-
-from utils import Config, timing
-from post import post_to_lingq
+from utils import LingqHandler, timing
 
 LANGUAGE_CODE = "ja"
 SLEEP_SECONDS = 5
@@ -36,15 +34,7 @@ RESET  = "\033[0m"
 # fmt: on
 
 
-def get_ling_collection(config: Config, session):
-    url = f"{Config.API_URL_V2}{LANGUAGE_CODE}/collections/{COURSE_ID}"
-    response = session.get(url=url, headers=config.headers)
-    assert response.status_code == 200, f"Couldn't get the collection at {url}"
-
-    return response
-
-
-def filter_playlist_entries(config: Config, session, playlist_entries):
+def filter_playlist_entries(handler: LingqHandler, playlist_entries):
     if SKIP_WITHOUT_CC:
         filtered_playlist_entries = list()
         for entry in playlist_entries:
@@ -56,8 +46,8 @@ def filter_playlist_entries(config: Config, session, playlist_entries):
         playlist_entries = filtered_playlist_entries
 
     if SKIP_ALREADY_UPLOADED:
-        response = get_ling_collection(config, session)
-        lessons = response.json()["lessons"]
+        collection = handler.get_collection_from_id(LANGUAGE_CODE, COURSE_ID)
+        lessons = collection["lessons"]
         lessons_urls = [lesson["originalUrl"] for lesson in lessons]
         lessons_urls = set(lessons_urls)
 
@@ -78,10 +68,8 @@ def filter_playlist_entries(config: Config, session, playlist_entries):
 
 
 @timing
-def process_playlist_entries(config: Config, playlist_entries, max_iterations=10):
-    session = requests.Session()
-
-    playlist_entries = filter_playlist_entries(config, session, playlist_entries)
+def process_playlist_entries(handler: LingqHandler, playlist_entries, max_iterations=10):
+    playlist_entries = filter_playlist_entries(handler, playlist_entries)
 
     n_entries = len(playlist_entries)
     max_entries = min(n_entries, max_iterations)
@@ -106,7 +94,7 @@ def process_playlist_entries(config: Config, playlist_entries, max_iterations=10
             ]
         )
 
-        response = post_to_lingq(config, m)
+        response = handler.post_from_multiencoded_data(LANGUAGE_CODE, m)
 
         if response.status_code == 201:
             padded_idx = f"{i + 1}".zfill(pad)
@@ -137,7 +125,7 @@ def get_playlist(URL, ydl_opts):
 
 @timing
 def main():
-    config = Config()
+    handler = LingqHandler()
 
     ydl_opts = {
         # Set title language "extractor_args": {"youtube": {"lang": ["zh-TW"]}},
@@ -155,7 +143,7 @@ def main():
     playlist_data = get_playlist(PLAYLIST_URL, ydl_opts)
 
     if "entries" in playlist_data:
-        process_playlist_entries(config, playlist_data["entries"], MAX_UPLOADS)
+        process_playlist_entries(handler, playlist_data["entries"], MAX_UPLOADS)
 
     print("Finished!")
 

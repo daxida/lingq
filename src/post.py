@@ -2,10 +2,9 @@ import os
 import time
 from typing import List
 
-import requests
-from utils import Config
 from natsort import os_sorted
 from requests_toolbelt.multipart.encoder import MultipartEncoder
+from utils import LingqHandler
 
 # post_text seems to work but it has been a long time since I tried post_text_and_audio.
 # The same goes for patch_text, although now that the limit is 6k words it should be fine.
@@ -73,7 +72,7 @@ def read_sorted_folders(folder: str, mode: str) -> List:
     ]
 
 
-def post_text(config: Config):
+def post_text(handler: LingqHandler):
     texts = read_sorted_folders(TEXTS_FOLDER, mode="human")
 
     for text_filename in texts[FR_LESSON - 1 : TO_LESSON]:
@@ -92,7 +91,7 @@ def post_text(config: Config):
             ]
         )
 
-        response = post_to_lingq(config, m)
+        response = handler.post_from_multiencoded_data(LANGUAGE_CODE, m)
         if response.status_code != 201:
             return
 
@@ -101,7 +100,7 @@ def post_text(config: Config):
         time.sleep(SLEEP_SECONDS)
 
 
-def post_text_and_audio(config: Config):
+def post_text_and_audio(handler: LingqHandler):
     texts = read_sorted_folders(TEXTS_FOLDER, mode="human")
     audios = read_sorted_folders(AUDIOS_FOLDER, mode="human")
     pairs = list(zip(texts, audios))
@@ -121,7 +120,7 @@ def post_text_and_audio(config: Config):
             ]
         )
 
-        response = post_to_lingq(config, m)
+        response = handler.post_from_multiencoded_data(LANGUAGE_CODE, m)
         if response.status_code != 201:
             return
 
@@ -132,23 +131,8 @@ def post_text_and_audio(config: Config):
         time.sleep(SLEEP_SECONDS)
 
 
-def post_to_lingq(config: Config, m) -> int:
-    headers = {**config.headers}
-    headers["Content-Type"] = m.content_type
-
-    url = f"{Config.API_URL_V3}{LANGUAGE_CODE}/lessons/import/"
-    response = requests.post(url=url, data=m, headers=headers)
-
-    if response.status_code != 201:
-        print("Error:")
-        print(f"Response code: {response.status_code}")
-        print(f"Response text: {response.text}")
-
-    return response
-
-
 def main():
-    config = Config()
+    handler = LingqHandler()
 
     if not TEXTS_FOLDER:
         print("No texts folder declared, exiting!")
@@ -159,10 +143,10 @@ def main():
 
     if AUDIOS_FOLDER:
         print(f"Posting text and audio for lessons {FR_LESSON} to {TO_LESSON}...")
-        post_text_and_audio(config)
+        post_text_and_audio(handler)
     else:
         print(f"Posting text for lessons {FR_LESSON} to {TO_LESSON}...")
-        post_text(config)
+        post_text(handler)
 
 
 if __name__ == "__main__":

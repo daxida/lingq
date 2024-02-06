@@ -1,9 +1,7 @@
-import json
 import os
-
-import requests
-from utils import Config
 from typing import Dict, List
+
+from utils import LingqHandler
 
 # Downloads audio / text from a Collection given the language code and the pk.
 # The pk is just the last number you see when you open a course in the web.
@@ -16,10 +14,6 @@ LANGUAGE_CODE = "ja"
 COURSE_ID = "537808"
 
 DOWNLOAD_FOLDER = "downloads"
-
-
-def E(myjson):
-    json.dump(myjson, ensure_ascii=False, indent=2)
 
 
 def clear_folders() -> None:
@@ -50,25 +44,21 @@ def create_folders(collection_title: str) -> None:
             print("Folder created:", folder_path)
 
 
-def get_lessons(config: Config, collection: Dict) -> List:
+def get_lessons(handler: LingqHandler, collection: Dict) -> List:
     lessons = list()
 
     for idx, lesson in enumerate(collection["lessons"], 1):
         title = lesson["title"]
         # title = f"{idx}.{lesson['title']}" # add indices
 
-        lesson_response = requests.get(lesson["url"], headers=config.headers)
-        lesson_json = lesson_response.json()
-
+        lesson_json = handler.get_lesson_from_url(lesson["url"])
         text = []
         for token in lesson_json["tokenizedText"]:
             paragraph = " ".join(line["text"] for line in token)
             text.append(paragraph)
 
-        audio = None
-        if lesson["audio"]:
-            audio_response = requests.get(lesson["audio"])
-            audio = audio_response.content
+        # The audio doesn't need the lesson_json
+        audio = handler.get_audio_from_lesson(lesson)
 
         downloaded_lesson = (title, text, audio)
         lessons.append(downloaded_lesson)
@@ -96,14 +86,11 @@ def write_lessons(collection_title: str, lessons) -> None:
 
 
 def main():
-    config = Config()
-
-    url = f"{Config.API_URL_V2}{LANGUAGE_CODE}/collections/{COURSE_ID}"
-    response = requests.get(url=url, headers=config.headers)
-    collection = response.json()
+    handler = LingqHandler()
+    collection = handler.get_collection_from_id(LANGUAGE_CODE, COURSE_ID)
 
     print(f"Downloading https://www.lingq.com/learn/{LANGUAGE_CODE}/web/library/course/{COURSE_ID}")
-    lessons = get_lessons(config, collection)
+    lessons = get_lessons(handler, collection)
 
     collection_title = collection["title"]
     create_folders(collection_title)

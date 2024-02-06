@@ -1,13 +1,11 @@
-import json
 import os
 from datetime import datetime
 
-import requests
-from utils import Config, Collection
+from utils import Collection, LingqHandler
 
 # If True, creates a markdown for every language where we have known words.
 # Otherwise set it to false and fill language_codes with the desired languages.
-DOWNLOAD_ALL = True
+DOWNLOAD_ALL = False
 LANGUAGE_CODES = ["fr"]
 
 # If True, it will only make a markdown of shared collections (ignore private)
@@ -23,25 +21,10 @@ MAGENTA = "\033[35m"
 RESET = "\033[0m"
 
 
-def E(myjson):
-    import sys
-
-    json.dump(myjson, sys.stdout, ensure_ascii=False, indent=2)
-
-
 def double_check():
     if input("Proceed? [y/n] ") != "y":
         print("Exiting")
         exit(1)
-
-
-def get_my_language_codes(config: Config):
-    """Returns a list of language codes where I have known words"""
-    response = requests.get(url=f"{Config.API_URL_V2}languages", headers=config.headers)
-    languages = response.json()
-    codes = [lan["code"] for lan in languages if lan["knownWords"] > 0]
-
-    return codes
 
 
 def create_README(language_codes):
@@ -76,26 +59,21 @@ def write_markdown(collection_list, language_code):
             # fmt: on
 
 
-def get_shared_collections(config: Config, language_code: str):
+def get_shared_collections(handler: LingqHandler, language_code: str):
     """
     A collection is just a course in the web lingo.
     Given a language code, returns a list of Collection objects.
     Those store the important information of the JSON to then make the markdown.
     """
 
-    # API_URL_V3 or API_URL_V2 yield the same here
-    url = f"{Config.API_URL_V3}{language_code}/collections/my/"
-    my_collections = requests.get(url=url, headers=config.headers).json()
+    my_collections = handler.get_all_collections(language_code)
     collection_list = []
-    n_collections = int(my_collections["count"])
+    n_collections = len(my_collections)
 
-    for idx, my_collection in enumerate(my_collections["results"], 1):
+    for idx, my_collection in enumerate(my_collections, 1):
         _id = my_collection["id"]
 
-        collection_url_v2 = f"{Config.API_URL_V2}{language_code}/collections/{_id}/"
-        response = requests.get(url=collection_url_v2, headers=config.headers)
-        collection_v2 = response.json()
-        # E(collection_v2)
+        collection_v2 = handler.get_collection_from_id(language_code, _id)
 
         col = Collection()
         col.language_code = language_code
@@ -124,10 +102,10 @@ def sort_collections(collections) -> None:
 
 
 def main(language_codes):
-    config = Config()
+    handler = LingqHandler()
 
     if DOWNLOAD_ALL:
-        language_codes = get_my_language_codes(config)
+        language_codes = handler.get_language_codes()
 
     print(
         f"Making markdown for languages = {', '.join(language_codes)}",
@@ -148,7 +126,7 @@ def main(language_codes):
     for idx, language_code in enumerate(language_codes, 1):
         print(f"Starting download for {language_code} ({idx} of {n_languages})")
 
-        collection_list = get_shared_collections(config, language_code)
+        collection_list = get_shared_collections(handler, language_code)
 
         if not collection_list:
             print(f"Didn't find any courses for language: {language_code}")
