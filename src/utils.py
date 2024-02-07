@@ -33,9 +33,6 @@ TOEUROPEAN = {
 
 
 class Config:
-    API_URL_V2 = "https://www.lingq.com/api/v2/"
-    API_URL_V3 = "https://www.lingq.com/api/v3/"
-
     def __init__(self):
         # Assumes the scripts are run in the src folder
         parent_dir = os.path.dirname(os.getcwd())
@@ -72,15 +69,25 @@ class LingqHandler:
 
         return codes
 
-    def get_all_collections(self, language_code: str) -> Any:
+    def get_my_collections(self, language_code: str) -> Any:
         """
-        Return a json file with all the collections in this language.
+        Return a json file with all my imported collections in this language.
         """
         url = f"{LingqHandler.API_URL_V3}{language_code}/collections/my/"
         response = requests.get(url=url, headers=self.config.headers)
-        my_collections = response.json()
+        collections = response.json()
 
-        return my_collections["results"]
+        return collections["results"]
+
+    def get_currently_studying_collections(self, language_code: str) -> Any:
+        """
+        Return a json file with all the studied collections (Continue Studying shelf) in this language.
+        """
+        url = f"{LingqHandler.API_URL_V3}{language_code}/search/?shelf=my_lessons&type=collection&sortBy=recentlyOpened"
+        response = requests.get(url=url, headers=self.config.headers)
+        collections = response.json()
+
+        return collections["results"]
 
     def get_collection_from_id(self, language_code: str, course_id: str) -> Any:
         """Return a json file with collection in this language"""
@@ -142,7 +149,7 @@ class LingqHandler:
     def post_from_multiencoded_data(self, language_code: str, data: MultipartEncoder) -> Response:
         """Returns the response for error management"""
         headers = {**self.config.headers} | {"Content-Type": data.content_type}
-        url = f"{Config.API_URL_V3}{language_code}/lessons/import/"
+        url = f"{LingqHandler.API_URL_V3}{language_code}/lessons/import/"
         response = requests.post(url=url, data=data, headers=headers)
 
         if response.status_code != 201:

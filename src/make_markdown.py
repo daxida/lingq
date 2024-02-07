@@ -8,17 +8,21 @@ from utils import Collection, LingqHandler
 DOWNLOAD_ALL = False
 LANGUAGE_CODES = ["fr"]
 
-# If True, it will only make a markdown of shared collections (ignore private)
-SHARED_ONLY = False
+# "shared" for only my imported and shared collections (ignore private)
+# "mine"   for only my imported
+# "all"    for everything in the "Continue Studying" shelf
+SELECT = "all"
 
 # The folder name where we save the markdowns
-OUT_FOLDER = f"markdown_{'shared' if SHARED_ONLY else 'all'}"
+OUT_FOLDER = f"markdown_{SELECT}"
 
-GREEN = "\033[32m"
-YELLOW = "\033[33m"
-CYAN = "\033[33m"
+# fmt: off
+GREEN   = "\033[32m"
+YELLOW  = "\033[33m"
+CYAN    = "\033[33m"
 MAGENTA = "\033[35m"
-RESET = "\033[0m"
+RESET   = "\033[0m"
+# fmt: on
 
 
 def double_check():
@@ -59,18 +63,22 @@ def write_markdown(collection_list, language_code):
             # fmt: on
 
 
-def get_shared_collections(handler: LingqHandler, language_code: str):
+def get_collections(handler: LingqHandler, language_code: str):
     """
     A collection is just a course in the web lingo.
     Given a language code, returns a list of Collection objects.
     Those store the important information of the JSON to then make the markdown.
     """
 
-    my_collections = handler.get_all_collections(language_code)
-    collection_list = []
-    n_collections = len(my_collections)
+    if SELECT == "all":
+        collections = handler.get_currently_studying_collections(language_code)
+    else:
+        collections = handler.get_my_collections(language_code)
 
-    for idx, my_collection in enumerate(my_collections, 1):
+    collection_list = []
+    n_collections = len(collections)
+
+    for idx, my_collection in enumerate(collections, 1):
         _id = my_collection["id"]
 
         collection_v2 = handler.get_collection_from_id(language_code, _id)
@@ -85,7 +93,7 @@ def get_shared_collections(handler: LingqHandler, language_code: str):
             continue
 
         # Ignore private collection if the shared_only flag is true
-        if SHARED_ONLY and not col.is_shared:
+        if SELECT == "shared" and not col.is_shared:
             print(f"[{idx}/{n_collections}] {YELLOW}SKIP{RESET} {col.title} (NOT SHARED)")
             continue
 
@@ -109,7 +117,7 @@ def main(language_codes):
 
     print(
         f"Making markdown for languages = {', '.join(language_codes)}",
-        f"with shared_only = {SHARED_ONLY}",
+        f"with select = {SELECT}",
     )
     double_check()
 
@@ -126,7 +134,7 @@ def main(language_codes):
     for idx, language_code in enumerate(language_codes, 1):
         print(f"Starting download for {language_code} ({idx} of {n_languages})")
 
-        collection_list = get_shared_collections(handler, language_code)
+        collection_list = get_collections(handler, language_code)
 
         if not collection_list:
             print(f"Didn't find any courses for language: {language_code}")
