@@ -1,6 +1,6 @@
 |Status| |Title|Views|Lessons|Created&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Updated&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|
 |------|-|-----|-----|-------|--------------|--------------|
-|shared|A2|[LingQ Mini Stories](https://www.lingq.com/en/learn/it/web/library/course/276534)|266595|63|2017-05-04|2023-09-07
+|shared|A2|[LingQ Mini Stories](https://www.lingq.com/en/learn/it/web/library/course/276534)|266608|63|2017-05-04|2023-09-07
 |shared|B2|[Italian LingQ Podcast 2.0](https://www.lingq.com/en/learn/it/web/library/course/927262)|7987|21|2021-09-28|2023-03-28
 |shared|C2|[Gli Indifferenti - Alberto Moravia](https://www.lingq.com/en/learn/it/web/library/course/1138389)|1228|22|2022-09-05|2022-09-07
 |private|B2|[Esercizi di stile - Queneau](https://www.lingq.com/en/learn/it/web/library/course/881365)|28|40|2021-07-12|2022-02-07

@@ -5,7 +5,7 @@ from utils import Collection, LingqHandler
 
 # If True, creates a markdown for every language where we have known words.
 # Otherwise set it to false and fill language_codes with the desired languages.
-DOWNLOAD_ALL = False
+DOWNLOAD_ALL = True
 LANGUAGE_CODES = ["fr"]
 
 # "shared" for only my imported and shared collections (ignore private)
@@ -58,9 +58,9 @@ def write_markdown(collection_list, language_code):
         for c in collection_list:
             c.viewsCount = "-" if not c.viewsCount else c.viewsCount
             is_shared = "shared" if c.is_shared else "private"
-            # fmt: off
-            md.write(f"|{is_shared}|{c.level}|[{c.title}]({c.course_url})|{c.viewsCount}|{c.amount_lessons}|{c.first_update}|{c.last_update}\n")
-            # fmt: on
+            sanitized_title = c.title.replace("|", "-").replace("[", "(").replace("]", ")")
+            line = f"|{is_shared}|{c.level}|[{sanitized_title}]({c.course_url})|{c.viewsCount}|{c.amount_lessons}|{c.first_update}|{c.last_update}\n"
+            md.write(line)
 
 
 def get_collections(handler: LingqHandler, language_code: str):

@@ -4,7 +4,7 @@
 |private|C1|[ノルウェイの森 - 村上春樹](https://www.lingq.com/en/learn/ja/web/library/course/1597235)|-|28|2024-02-02|2024-02-02
 |shared|B2|[4989 American Life Podcast](https://www.lingq.com/en/learn/ja/web/library/course/553965)|24762|239|2020-01-14|2024-02-02
 |private|B1|[Youtube -  Miku Real Japanese](https://www.lingq.com/en/learn/ja/web/library/course/918677)|-|149|2021-01-01|2024-01-12
-|shared|A2|[LingQ Mini Stories](https://www.lingq.com/en/learn/ja/web/library/course/411402)|309091|63|2018-11-19|2023-09-07
+|shared|A2|[LingQ Mini Stories](https://www.lingq.com/en/learn/ja/web/library/course/411402)|309102|63|2018-11-19|2023-09-07
 |shared|B1|[Comprehensible Japanese - Intermediate (Free)](https://www.lingq.com/en/learn/ja/web/library/course/1105225)|2062|27|2022-07-08|2023-04-03
 |private|-|[Interesting imports](https://www.lingq.com/en/learn/ja/web/library/course/1209807)|-|7|2021-02-22|2023-03-09
 |shared|A2|[あかね的日本語教室 (Akane's Japanese Classroom)](https://www.lingq.com/en/learn/ja/web/library/course/880618)|211|1|2023-01-25|2023-01-25
@@ -54,7 +54,7 @@
 |shared|C1|[走れメロス - 太宰治](https://www.lingq.com/en/learn/ja/web/library/course/860023)|38|7|2021-06-06|2021-06-10
 |shared|B1|[1 - Harry Potter](https://www.lingq.com/en/learn/ja/web/library/course/854312)|11537|42|2021-05-27|2021-06-09
 |shared|C1|[Readings](https://www.lingq.com/en/learn/ja/web/library/course/811588)|12|2|2021-03-15|2021-06-08
-|shared|B1|[2 - Harry Potter](https://www.lingq.com/en/learn/ja/web/library/course/763592)|3790|45|2021-01-04|2021-05-28
+|shared|B1|[2 - Harry Potter](https://www.lingq.com/en/learn/ja/web/library/course/763592)|3791|45|2021-01-04|2021-05-28
 |private|C2|[『源氏物語』へのいざない](https://www.lingq.com/en/learn/ja/web/library/course/830520)|-|23|2021-04-16|2021-05-08
 |private|-|[Youtube - 中田敦彦　文学](https://www.lingq.com/en/learn/ja/web/library/course/788118)|-|23|2021-02-11|2021-04-15
 |shared|C2|[茶の本 - 岡倉天心](https://www.lingq.com/en/learn/ja/web/library/course/809805)|28|10|2021-03-13|2021-03-13
@@ -84,7 +84,7 @@
 |shared|B1|[Aozora Bunko imports](https://www.lingq.com/en/learn/ja/web/library/course/423773)|2224|10|2019-01-03|2019-01-03
 |shared|C2|[この素晴らしい世界に祝福を！ あぁ、駄女神さま (KonoSuba)](https://www.lingq.com/en/learn/ja/web/library/course/419886)|9562|23|2018-12-19|2018-12-31
 |shared|B1|[JapanesePod101 - Miki's Audio Blog (continued)](https://www.lingq.com/en/learn/ja/web/library/course/395739)|11508|49|2018-09-24|2018-10-03
-|shared|B2|[盾の勇者の成り上がり (The Rising of the Shield Hero )](https://www.lingq.com/en/learn/ja/web/library/course/326292)|5868|26|2018-01-15|2018-01-15
+|shared|B2|[盾の勇者の成り上がり (The Rising of the Shield Hero )](https://www.lingq.com/en/learn/ja/web/library/course/326292)|5872|26|2018-01-15|2018-01-15
 |shared|C1|[世界から猫が消えたなら (If Cats Disappeared from the World)](https://www.lingq.com/en/learn/ja/web/library/course/312406)|5105|11|2017-11-11|2017-11-11
 |shared|C1|[クラッシェン氏と習得－学習仮説](https://www.lingq.com/en/learn/ja/web/library/course/259769)|870|5|2016-12-30|2016-12-30
 |shared|B2|[Akutagawa Ryunosuke Short Stories](https://www.lingq.com/en/learn/ja/web/library/course/247571)|419|12|2016-09-30|2016-09-30

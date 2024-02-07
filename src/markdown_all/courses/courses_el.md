@@ -2,7 +2,7 @@
 |------|-|-----|-----|-------|--------------|--------------|
 |private|C2|[Readings - Ο Ανδρέας Διαβάζει](https://www.lingq.com/en/learn/el/web/library/course/769937)|57|68|2021-01-16|2023-12-20
 |private|C2|[Kathimerini - Archives](https://www.lingq.com/en/learn/el/web/library/course/1032999)|10|109|2019-06-16|2023-11-28
-|shared|A2|[LingQ Mini Stories](https://www.lingq.com/en/learn/el/web/library/course/270132)|64514|63|2017-03-17|2023-10-08
+|shared|A2|[LingQ Mini Stories](https://www.lingq.com/en/learn/el/web/library/course/270132)|64517|63|2017-03-17|2023-10-08
 |shared|C2|[Youtube - Alpha Omega (History & Mythology)](https://www.lingq.com/en/learn/el/web/library/course/800621)|1473|61|2021-02-28|2023-09-10
 |shared|C2|[Philosophy - Βιβλιοεμβριθής](https://www.lingq.com/en/learn/el/web/library/course/720356)|292|23|2020-10-29|2023-07-25
 |shared|C1|[Ο ΚΑΤΑΔΙΚΟΣ «ΖΕΚ-18376» π. Αρσένιος](https://www.lingq.com/en/learn/el/web/library/course/1289772)|85|24|2023-04-26|2023-06-28
@@ -56,7 +56,7 @@
 |shared|B2|[Youtube -  Γνωρίζοντας την Αττική](https://www.lingq.com/en/learn/el/web/library/course/848945)|602|39|2021-05-18|2021-06-29
 |shared|C1|[Coelho - Ο αλχημιστής (AudioBookWorms)](https://www.lingq.com/en/learn/el/web/library/course/852627)|248|15|2021-05-24|2021-06-27
 |private|C2|[Πασχαλινά Διηγήματα](https://www.lingq.com/en/learn/el/web/library/course/836250)|-|15|2021-04-25|2021-05-05
-|shared|C2|[Tolkien - Τα Παιδιά του Χούριν](https://www.lingq.com/en/learn/el/web/library/course/791572)|1344|35|2021-02-15|2021-04-29
+|shared|C2|[Tolkien - Τα Παιδιά του Χούριν](https://www.lingq.com/en/learn/el/web/library/course/791572)|1346|35|2021-02-15|2021-04-29
 |private|C2|[Ancient Greek - Selected Texts](https://www.lingq.com/en/learn/el/web/library/course/795432)|77|31|2021-02-21|2021-04-29
 |shared|C2|[Conan Doyle, A. - Το Σημάδι Των Τεσσάρων](https://www.lingq.com/en/learn/el/web/library/course/822031)|557|21|2021-04-02|2021-04-21
 |private|C2|[1821-2021 Commemoration](https://www.lingq.com/en/learn/el/web/library/course/818350)|-|6|2021-03-27|2021-03-27
@@ -79,7 +79,7 @@
 |private|B2|[Ἀποκάλυψις Ἰωάννου](https://www.lingq.com/en/learn/el/web/library/course/631952)|353|22|2020-05-25|2020-05-27
 |private|-|[Ντίκενς, Κ. - Μεγάλες προσδοκίες](https://www.lingq.com/en/learn/el/web/library/course/632194)|-|101|2020-05-25|2020-05-25
 |private|-|[Νιρβάνα, Π. - Το αγριολούλουδο](https://www.lingq.com/en/learn/el/web/library/course/567232)|-|31|2020-02-08|2020-02-08
-|private|B1|[Τὸ Εὐαγγέλιον κατὰ Μάρκον | The Gospel according to Mark | Koine–YouTube videos](https://www.lingq.com/en/learn/el/web/library/course/562097)|224|17|2020-01-29|2020-01-29
+|private|B1|[Τὸ Εὐαγγέλιον κατὰ Μάρκον - The Gospel according to Mark - Koine–YouTube videos](https://www.lingq.com/en/learn/el/web/library/course/562097)|224|17|2020-01-29|2020-01-29
 |private|-|[Βουτυράς, Δ. - Διηγήματα](https://www.lingq.com/en/learn/el/web/library/course/561826)|-|26|2020-01-29|2020-01-29
 |private|-|[Πολίτης - Λεμονοδάσος](https://www.lingq.com/en/learn/el/web/library/course/556440)|-|20|2020-01-19|2020-01-19
 |private|-|[Πιραντέλο, Λ. - Είκοσι νουβέλες](https://www.lingq.com/en/learn/el/web/library/course/537818)|-|37|2019-12-07|2019-12-07
@@ -88,7 +88,7 @@
 |private|-|[Nietzsche - Έτσι μίλησε ο Ζαρατούστρα](https://www.lingq.com/en/learn/el/web/library/course/457741)|-|50|2019-04-19|2019-08-31
 |private|-|[Music - The Ballad of Mauthausen (Mikis Theodorakis)](https://www.lingq.com/en/learn/el/web/library/course/472591)|-|10|2019-06-06|2019-06-06
 |shared|C2|[Εγκλημα και τιμωρία (Μερος 1ο)](https://www.lingq.com/en/learn/el/web/library/course/213006)|748|18|2016-09-11|2019-03-26
-|shared|B2|[► 007 - Ο Μικρός Πρίγκιπας | The Little Prince](https://www.lingq.com/en/learn/el/web/library/course/185101)|3910|28|2015-01-07|2016-02-01
+|shared|B2|[► 007 - Ο Μικρός Πρίγκιπας - The Little Prince](https://www.lingq.com/en/learn/el/web/library/course/185101)|3910|28|2015-01-07|2016-02-01
 |shared|B2|[Παραμύθια δίχως τέλος](https://www.lingq.com/en/learn/el/web/library/course/210988)|296|4|2015-09-29|2015-10-27
 |shared|C2|[Παραμύθι χωρίς όνομα](https://www.lingq.com/en/learn/el/web/library/course/206713)|973|13|2015-08-10|2015-08-10
 |shared|A2|[Hellenic American Union PodCast](https://www.lingq.com/en/learn/el/web/library/course/185831)|20677|78|2015-01-14|2015-01-15
