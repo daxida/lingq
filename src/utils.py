@@ -77,6 +77,8 @@ class LingqHandler:
         response = requests.get(url=url, headers=self.config.headers)
         collections = response.json()
 
+        assert collections["next"] is None, "We are missing some collections"
+
         return collections["results"]
 
     def get_currently_studying_collections(self, language_code: str) -> Any:
@@ -86,6 +88,8 @@ class LingqHandler:
         url = f"{LingqHandler.API_URL_V3}{language_code}/search/?shelf=my_lessons&type=collection&sortBy=recentlyOpened"
         response = requests.get(url=url, headers=self.config.headers)
         collections = response.json()
+
+        assert collections["next"] is None, "We are missing some collections"
 
         return collections["results"]
 
