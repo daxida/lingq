@@ -36,7 +36,7 @@ def get_greek_sorting_fn():
     NUMERALS = "Α Β Γ Δ Ε ΣΤ Ζ Η Θ Ι ΙΑ ΙΒ ΙΓ ΙΔ ΙΕ ΙΣΤ ΙΖ".split()
     ORDER = [f"{num}'" for num in NUMERALS]
 
-    def sorting_fn(x):
+    def sorting_fn(x: str) -> int:
         return ORDER.index(x.split(".")[0])
 
     return sorting_fn
@@ -46,15 +46,16 @@ def get_roman_sorting_fn():
     # This requires fine tuning depending of the entries' name format:
     # I was working with:
     # Chapitre X.mp3 -> X
-    import roman
+    import roman  # may require another pip install
 
-    def sorting_fn(x):
+    def sorting_fn(x: str) -> int:
         return roman.fromRoman((x.split()[1]).split(".")[0])
 
     return sorting_fn
 
 
-def read_sorted_folders(folder: str, mode: str) -> List:
+def read_sorted_folders(folder: str, mode: str) -> List[str]:
+    """Supports human (natsort), roman (I < V) and greek (Β < Γ) sorting"""
     if mode == "human":
         sorting_fn = os_sorted
     elif mode == "greek":
@@ -101,6 +102,8 @@ def post_text(handler: LingqHandler):
 
 
 def post_text_and_audio(handler: LingqHandler):
+    assert AUDIOS_FOLDER is not None
+
     texts = read_sorted_folders(TEXTS_FOLDER, mode="human")
     audios = read_sorted_folders(AUDIOS_FOLDER, mode="human")
     pairs = list(zip(texts, audios))
