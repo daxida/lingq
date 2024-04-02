@@ -1,4 +1,5 @@
-from utils import Collection, LingqHandler
+from utils import LingqHandler
+from collection import Collection
 
 # Given a language code print the fetched collections (courses) as "Collection" objects
 
@@ -10,7 +11,7 @@ LANGUAGE_CODE = "fr"
 
 def main():
     handler = LingqHandler()
-    collections = handler.get_all_collections(LANGUAGE_CODE)
+    collections = handler.get_my_collections(LANGUAGE_CODE)
 
     print(f"Found {len(collections)} courses in language: {LANGUAGE_CODE}")
 

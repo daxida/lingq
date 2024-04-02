@@ -1,5 +1,5 @@
 import os
-from typing import Dict, List
+from typing import Any, List, Tuple
 
 from utils import LingqHandler
 
@@ -16,36 +16,12 @@ COURSE_ID = "537808"
 DOWNLOAD_FOLDER = "downloads"
 
 
-def clear_folders() -> None:
-    for folder_name in ["texts", "audios"]:
-        folder_path = os.path.join(DOWNLOAD_FOLDER, folder_name)
-        for file_name in os.listdir(folder_path):
-            file = os.path.join(folder_path, file_name)
-            if os.path.isfile(file):
-                print("Deleting file:", file)
-                os.remove(file)
-        print("Folder cleared:", folder_path)
+# A simple lesson type: (title, text, audio)
+Lesson = Tuple[str, List[str], bytes | None]
 
 
-def create_folders(collection_title: str) -> None:
-    if not os.path.exists(DOWNLOAD_FOLDER):
-        os.mkdir(DOWNLOAD_FOLDER)
-        print("Download folder created:", DOWNLOAD_FOLDER)
-
-    collection_path = os.path.join(DOWNLOAD_FOLDER, collection_title)
-    if not os.path.exists(collection_path):
-        os.mkdir(collection_path)
-        print("Download folder created:", collection_path)
-
-    for folder_name in ["texts", "audios"]:
-        folder_path = os.path.join(DOWNLOAD_FOLDER, collection_title, folder_name)
-        if not os.path.exists(folder_path):
-            os.mkdir(folder_path)
-            print("Folder created:", folder_path)
-
-
-def get_lessons(handler: LingqHandler, collection: Dict) -> List:
-    lessons = list()
+def get_lessons(handler: LingqHandler, collection: Any) -> List[Lesson]:
+    lessons: List[Lesson] = list()
 
     for idx, lesson in enumerate(collection["lessons"], 1):
         title = lesson["title"]
@@ -55,12 +31,12 @@ def get_lessons(handler: LingqHandler, collection: Dict) -> List:
         text = []
         for token in lesson_json["tokenizedText"]:
             paragraph = " ".join(line["text"] for line in token)
-            text.append(paragraph)
+            text.append(paragraph)  # type: ignore
 
         # The audio doesn't need the lesson_json
         audio = handler.get_audio_from_lesson(lesson)
 
-        downloaded_lesson = (title, text, audio)
+        downloaded_lesson: Lesson = (title, text, audio)
         lessons.append(downloaded_lesson)
 
         print(f"Downloaded lesson nº{idx}: {title}")
@@ -68,7 +44,7 @@ def get_lessons(handler: LingqHandler, collection: Dict) -> List:
     return lessons
 
 
-def write_lessons(collection_title: str, lessons) -> None:
+def write_lessons(collection_title: str, lessons: List[Lesson]) -> None:
     texts_folder = os.path.join(DOWNLOAD_FOLDER, collection_title, "texts")
     audios_folder = os.path.join(DOWNLOAD_FOLDER, collection_title, "audios")
 
@@ -88,15 +64,16 @@ def write_lessons(collection_title: str, lessons) -> None:
 def main():
     handler = LingqHandler()
     collection = handler.get_collection_from_id(LANGUAGE_CODE, COURSE_ID)
-
-    print(f"Downloading https://www.lingq.com/learn/{LANGUAGE_CODE}/web/library/course/{COURSE_ID}")
-    lessons = get_lessons(handler, collection)
-
     collection_title = collection["title"]
-    create_folders(collection_title)
-    # Uncomment to clear downloads folder before downloading
-    # clear_folders()
 
+    print(
+        f"Downloading: '{collection_title}' at https://www.lingq.com/learn/{LANGUAGE_CODE}/web/library/course/{COURSE_ID}"
+    )
+
+    for folder_name in ["audios", "texts"]:
+        os.makedirs(os.path.join(DOWNLOAD_FOLDER, collection_title, folder_name), exist_ok=True)
+
+    lessons = get_lessons(handler, collection)
     write_lessons(collection_title, lessons)
     print("Finished download")
 
