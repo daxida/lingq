@@ -2,8 +2,6 @@ import json
 import os
 import sys
 import time
-from dataclasses import dataclass
-from datetime import datetime as dt
 from functools import wraps
 from typing import Any, Dict, List
 
@@ -20,21 +18,10 @@ CYAN   = "\033[36m"  # Timings
 RESET  = "\033[0m"
 # fmt: on
 
-# fmt: off
-TOEUROPEAN = {
-    'Advanced 2'     : 'C2',
-    'Advanced 1'     : 'C1',
-    'Intermediate 2' : 'B2',
-    'Intermediate 1' : 'B1',
-    'Beginner 2'     : 'A2',
-    'Beginner 1'     : 'A1'
-}
-# fmt: on
-
 
 class Config:
     def __init__(self):
-        # Assumes the scripts are run in the src folder
+        # TODO: fix -> Assumes the scripts are run in the src folder
         parent_dir = os.path.dirname(os.getcwd())
         env_path = os.path.join(parent_dir, ".env")
         config = dotenv_values(env_path)
@@ -60,7 +47,7 @@ class LingqHandler:
     def __init__(self):
         self.config = Config()
 
-    def get_language_codes(self) -> List:
+    def get_language_codes(self) -> List[str]:
         """Returns a list of language codes with known words"""
         url = f"{LingqHandler.API_URL_V2}languages"
         response = requests.get(url=url, headers=self.config.headers)
@@ -106,7 +93,7 @@ class LingqHandler:
 
         return collection
 
-    def iter_lessons_from_collection(self, collection: Dict, fr_lesson: int, to_lesson: int):
+    def iter_lessons_from_collection(self, collection: Any, fr_lesson: int, to_lesson: int):
         """Iterate over the lessons of a given collection between indices fr_lesson to to_lesson"""
         for lesson in collection["lessons"][fr_lesson - 1 : to_lesson]:
             response = requests.get(lesson["url"], headers=self.config.headers)
@@ -127,7 +114,7 @@ class LingqHandler:
 
         return lesson
 
-    def get_audio_from_lesson(self, lesson: Dict) -> bytes | None:
+    def get_audio_from_lesson(self, lesson: Any) -> bytes | None:
         """
         From a list of lessons obtained by collection["lessons"], gets the audio
         (if any) given a lesson of that list.
@@ -178,90 +165,6 @@ class LingqHandler:
             print(f"Response text: {response.text}")
 
         return response
-
-
-# NOTE: not used
-@dataclass
-class Lesson:
-    title: str = None
-    language_code: str = None
-    course_url: str = None
-    level: str = None
-    hasAudio: bool = False
-    isShared: bool = False
-    update: str = None
-
-    def addData(self, lesson):
-        # fmt: off
-        self.title      = lesson['collectionTitle']
-        self.course_url = f"https://www.lingq.com/en/learn/{self.language_code}/web/library/course/{lesson['collectionId']}"
-        self.level      = TOEUROPEAN.get(lesson['level'], lesson['level'])
-        self.hasAudio   = lesson['audio'] is not None
-        self.isShared   = lesson['sharedDate'] is not None
-        self.update     = lesson['pubDate']
-        # fmt: on
-
-
-@dataclass
-class Collection:
-    # fmt: off
-    _id:            int = 0
-    title:          str = None
-    language_code:  str = None
-    course_url:     str = None
-    level:          str = "-"
-    hasAudio:       bool = False
-    is_shared:      bool = False
-    first_update:   str = None
-    last_update:    str = None
-    amount_lessons: int = 0
-    viewsCount:     int = 0
-    # fmt: off
-
-    def add_data(self, collection):
-        # fmt: off
-        self._id          = collection['pk']  # it's pk in V2 and id in V3
-        self.title        = collection['title']
-        self.course_url   = f"https://www.lingq.com/en/learn/{self.language_code}/web/library/course/{self._id}"
-        # fmt: off
-
-        lessons = collection["lessons"]
-        if not lessons:
-            print(f"  No lessons found for {self.title}")
-            print("  Course url:", self.course_url)
-            print("  Api url   :", collection['url'])
-            print("  Skipping add_data.")
-            return
-
-        # fmt: on
-        self.level = TOEUROPEAN.get(collection["level"], collection["level"]) or "-"
-        self.hasAudio = lessons[0]["audio"] is not None
-        self.last_update = lessons[0]["pubDate"]
-        self.first_update = lessons[0]["pubDate"]
-        # fmt: on
-
-        for lesson in lessons:
-            # The collection has audio if at least one lesson has audio:
-            self.hasAudio = self.hasAudio or (lesson["audio"] is not None)
-
-            # The collection is shated if at least one lesson is shared:
-            # NOTE: D for private, P for public
-            self.is_shared = self.is_shared or (lesson["status"] == "P")
-            # print(lesson["status"] == "P")
-
-            # Track the first and last updates:
-            cur_update = dt.strptime(lesson["pubDate"], "%Y-%m-%d")
-            if dt.strptime(self.first_update, "%Y-%m-%d") > cur_update:
-                self.first_update = lesson["pubDate"]
-            if dt.strptime(self.last_update, "%Y-%m-%d") < cur_update:
-                self.last_update = lesson["pubDate"]
-
-            # The view count is the total sum of the viewsCount of the lessons
-            self.viewsCount += lesson["viewsCount"]
-
-        # We remove our own view from the count (assuming we read everything).
-        self.amount_lessons = len(lessons)
-        self.viewsCount -= self.amount_lessons
 
 
 def timing(f):
