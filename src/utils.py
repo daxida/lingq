@@ -126,7 +126,9 @@ class LingqHandler:
 
         return audio
 
-    def patch_audio(self, language_code: str, lesson_id: str, audio_files: Dict) -> Response:
+    def patch_audio(
+        self, language_code: str, lesson_id: str, audio_files: Dict[str, Any]
+    ) -> Response:
         """Returns the response for error management"""
         url = f"{LingqHandler.API_URL_V3}{language_code}/lessons/{lesson_id}/"
         response = requests.patch(url=url, headers=self.config.headers, files=audio_files)
