@@ -20,26 +20,31 @@ DOWNLOAD_FOLDER = "downloads"
 Lesson = Tuple[str, List[str], bytes | None]
 
 
+def get_lesson(handler: LingqHandler, lesson_json: Any, idx: int) -> Lesson:
+    title = lesson_json["title"]
+    # title = f"{idx}.{lesson['title']}" # add indices
+
+    lesson_text_json = handler.get_lesson_from_url(lesson_json["url"])
+    text = []
+    for token in lesson_text_json["tokenizedText"]:
+        paragraph = " ".join(line["text"] for line in token)
+        text.append(paragraph)  # type: ignore
+
+    # The audio doesn't need the lesson_text_json
+    audio = handler.get_audio_from_lesson(lesson_json)
+
+    lesson: Lesson = (title, text, audio)
+    print(f"Downloaded lesson nº{idx}: {lesson_json['title']}")
+
+    return lesson
+
+
 def get_lessons(handler: LingqHandler, collection: Any) -> List[Lesson]:
     lessons: List[Lesson] = list()
 
-    for idx, lesson in enumerate(collection["lessons"], 1):
-        title = lesson["title"]
-        # title = f"{idx}.{lesson['title']}" # add indices
-
-        lesson_json = handler.get_lesson_from_url(lesson["url"])
-        text = []
-        for token in lesson_json["tokenizedText"]:
-            paragraph = " ".join(line["text"] for line in token)
-            text.append(paragraph)  # type: ignore
-
-        # The audio doesn't need the lesson_json
-        audio = handler.get_audio_from_lesson(lesson)
-
-        downloaded_lesson: Lesson = (title, text, audio)
-        lessons.append(downloaded_lesson)
-
-        print(f"Downloaded lesson nº{idx}: {title}")
+    for idx, lesson_json in enumerate(collection["lessons"], 1):
+        lesson = get_lesson(handler, lesson_json, idx)
+        lessons.append(lesson)
 
     return lessons
 
