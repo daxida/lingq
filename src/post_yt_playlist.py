@@ -1,6 +1,7 @@
 import time
 
 import yt_dlp
+from typing import Any, Dict, List
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 from utils import LingqHandler, timing
 
@@ -10,7 +11,7 @@ COURSE_ID = "537808"
 
 # To download a whole channel with yt-dlp, try:
 # https://www.youtube.com/@{userName}/videos
-PLAYLIST_URL = "https://www.youtube.com/watch?v=gLq7vKsvu9E&list=PLINFE8v4DOhsXKG7KSrbeMt-0EVK3OxAM"
+# PLAYLIST_URL = "https://www.youtube.com/watch?v=gLq7vKsvu9E&list=PLINFE8v4DOhsXKG7KSrbeMt-0EVK3OxAM"
 PLAYLIST_URL = "https://www.youtube.com/@mikurealjapanese/videos"
 
 # The script will upload "at most" MAX_UPLOADS videos to LingQ
@@ -33,17 +34,20 @@ CYAN   = "\033[36m"  # Timings
 RESET  = "\033[0m"
 # fmt: on
 
+# Until we find something better
+Playlist = List[Any]
 
-def filter_playlist_entries(handler: LingqHandler, playlist_entries):
+
+def filter_playlist(handler: LingqHandler, playlist: Playlist) -> Playlist:
     if SKIP_WITHOUT_CC:
-        filtered_playlist_entries = list()
-        for entry in playlist_entries:
+        filtered_playlist: Playlist = list()
+        for entry in playlist:
             title = entry["title"]
             if "subtitles" in entry and LANGUAGE_CODE in entry["subtitles"]:
-                filtered_playlist_entries.append(entry)
+                filtered_playlist.append(entry)
             else:
                 print(f"{YELLOW}[skip: no CC]{RESET} {title}")
-        playlist_entries = filtered_playlist_entries
+        playlist = filtered_playlist
 
     if SKIP_ALREADY_UPLOADED:
         collection = handler.get_collection_from_id(LANGUAGE_CODE, COURSE_ID)
@@ -51,32 +55,32 @@ def filter_playlist_entries(handler: LingqHandler, playlist_entries):
         lessons_urls = [lesson["originalUrl"] for lesson in lessons]
         lessons_urls = set(lessons_urls)
 
-        filtered_playlist_entries = list()
-        for entry in playlist_entries:
+        filtered_playlist = list()
+        for entry in playlist:
             title = entry["title"]
             url = entry["original_url" if SKIP_WITHOUT_CC else "url"]
             if url not in lessons_urls:
-                filtered_playlist_entries.append(entry)
+                filtered_playlist.append(entry)
             else:
                 print(f"{YELLOW}[skip: already uploaded]{RESET} {title}")
-        playlist_entries = filtered_playlist_entries
+        playlist = filtered_playlist
 
-    skipped = len(playlist_entries) - len(filtered_playlist_entries)
+    skipped = len(playlist) - len(filtered_playlist)
     print(f"Skipped {skipped} videos")
 
-    return playlist_entries
+    return playlist
 
 
 @timing
-def process_playlist_entries(handler: LingqHandler, playlist_entries, max_iterations=10):
-    playlist_entries = filter_playlist_entries(handler, playlist_entries)
+def process_playlist(handler: LingqHandler, playlist: Playlist, max_iterations: int = 10):
+    playlist = filter_playlist(handler, playlist)
 
-    n_entries = len(playlist_entries)
+    n_entries = len(playlist)
     max_entries = min(n_entries, max_iterations)
     pad = len(str(max_entries))
     print(f"Uploading {max_entries} videos (from {n_entries} available)")
 
-    for i, entry in enumerate(playlist_entries):
+    for i, entry in enumerate(playlist):
         if i >= max_iterations:
             break
 
@@ -114,11 +118,12 @@ def process_playlist_entries(handler: LingqHandler, playlist_entries, max_iterat
 
 
 @timing
-def get_playlist(URL, ydl_opts):
+def get_playlist(url: str, ydl_opts: Dict[str, Any]) -> Any:
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(URL, download=False)
-        sanitized = ydl.sanitize_info(info)
-        # print(json.dumps(sanitized, indent=2)) # DEBUG
+        info = ydl.extract_info(url, download=False)
+        sanitized: Any = ydl.sanitize_info(info)
+        # import json
+        # print(json.dumps(sanitized, indent=2))  # DEBUG
 
         return sanitized
 
@@ -138,12 +143,13 @@ def main():
 
     # If we don't want to filter by CC, just bulk download the urls (faster).
     if not SKIP_WITHOUT_CC:
-        ydl_opts.update({"extract_flat": "in_playlist"})
+        ydl_opts.update({"extract_flat": "in_playlist"})  # type: ignore
 
     playlist_data = get_playlist(PLAYLIST_URL, ydl_opts)
 
     if "entries" in playlist_data:
-        process_playlist_entries(handler, playlist_data["entries"], MAX_UPLOADS)
+        playlist = playlist_data["entries"]
+        process_playlist(handler, playlist, MAX_UPLOADS)
 
     print("Finished!")
 
