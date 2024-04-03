@@ -1,9 +1,9 @@
+import asyncio
 import time
+from typing import Any, Dict, List
 
 import yt_dlp
-from typing import Any, Dict, List
-from requests_toolbelt.multipart.encoder import MultipartEncoder
-from utils import LingqHandler, timing
+from utils import LingqHandler, timing  # type: ignore
 
 LANGUAGE_CODE = "ja"
 SLEEP_SECONDS = 5
@@ -38,7 +38,9 @@ RESET  = "\033[0m"
 Playlist = List[Any]
 
 
-def filter_playlist(handler: LingqHandler, playlist: Playlist) -> Playlist:
+async def filter_playlist(handler: LingqHandler, playlist: Playlist) -> Playlist:
+    initial_size = len(playlist)
+
     if SKIP_WITHOUT_CC:
         filtered_playlist: Playlist = list()
         for entry in playlist:
@@ -50,7 +52,7 @@ def filter_playlist(handler: LingqHandler, playlist: Playlist) -> Playlist:
         playlist = filtered_playlist
 
     if SKIP_ALREADY_UPLOADED:
-        collection = handler.get_collection_from_id(LANGUAGE_CODE, COURSE_ID)
+        collection = await handler.get_collection_json_from_id(LANGUAGE_CODE, COURSE_ID)
         lessons = collection["lessons"]
         lessons_urls = [lesson["originalUrl"] for lesson in lessons]
         lessons_urls = set(lessons_urls)
@@ -65,49 +67,43 @@ def filter_playlist(handler: LingqHandler, playlist: Playlist) -> Playlist:
                 print(f"{YELLOW}[skip: already uploaded]{RESET} {title}")
         playlist = filtered_playlist
 
-    skipped = len(playlist) - len(filtered_playlist)
+    skipped = initial_size - len(playlist)
     print(f"Skipped {skipped} videos")
 
     return playlist
 
 
-@timing
-def process_playlist(handler: LingqHandler, playlist: Playlist, max_iterations: int = 10):
-    playlist = filter_playlist(handler, playlist)
-
+async def post_playlist(handler: LingqHandler, playlist: Playlist, max_uploads: int = 10):
     n_entries = len(playlist)
-    max_entries = min(n_entries, max_iterations)
+    max_entries = min(n_entries, max_uploads)
     pad = len(str(max_entries))
     print(f"Uploading {max_entries} videos (from {n_entries} available)")
 
     for i, entry in enumerate(playlist):
-        if i >= max_iterations:
+        if i >= max_uploads:
             break
 
         title = entry["title"]
         # url = entry["url"] # assumes "extract_flat": "in_playlist"
         url = entry["original_url" if SKIP_WITHOUT_CC else "url"]
 
-        m = MultipartEncoder(
-            [
-                ("title", title),
-                ("url", url),
-                ("collection", COURSE_ID),
-                ("source", "Firefox"),
-                ("save", "true"),
-            ]
-        )
+        data = {
+            "title": title,
+            "url": url,
+            "collection": COURSE_ID,
+            "save": "true",
+        }
 
-        response = handler.post_from_multiencoded_data(LANGUAGE_CODE, m)
+        response = await handler.post_from_multipart(LANGUAGE_CODE, data)
 
-        if response.status_code == 201:
+        if response.status == 201:
             padded_idx = f"{i + 1}".zfill(pad)
             progress_msg = f"{GREEN}[{padded_idx}/{max_entries}]{RESET}"
             print(f"{progress_msg} Uploaded successfully: {title}")
         else:
             print(f"{RED}[Failed to upload]{RESET} {title}.")
-            print(f"Response code: {response.status_code}")
-            if response.status_code == 524:
+            print(f"Response code: {response.status}")
+            if response.status == 524:
                 print("Cloudflare timeout (> 100 secs).")
             else:
                 print(f"Response text: {response.text}")
@@ -120,7 +116,7 @@ def process_playlist(handler: LingqHandler, playlist: Playlist, max_iterations: 
 @timing
 def get_playlist(url: str, ydl_opts: Dict[str, Any]) -> Any:
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(url, download=False)
+        info: Any = ydl.extract_info(url, download=False)
         sanitized: Any = ydl.sanitize_info(info)
         # import json
         # print(json.dumps(sanitized, indent=2))  # DEBUG
@@ -128,10 +124,7 @@ def get_playlist(url: str, ydl_opts: Dict[str, Any]) -> Any:
         return sanitized
 
 
-@timing
-def main():
-    handler = LingqHandler()
-
+async def post_yt_playlist():
     ydl_opts = {
         # Set title language "extractor_args": {"youtube": {"lang": ["zh-TW"]}},
         # "forceprint": {"video": ["title", "url"]}, # DEBUG
@@ -148,10 +141,17 @@ def main():
     playlist_data = get_playlist(PLAYLIST_URL, ydl_opts)
 
     if "entries" in playlist_data:
-        playlist = playlist_data["entries"]
-        process_playlist(handler, playlist, MAX_UPLOADS)
+        async with LingqHandler() as handler:
+            playlist = playlist_data["entries"]
+            playlist = await filter_playlist(handler, playlist)
+            await post_playlist(handler, playlist, MAX_UPLOADS)
 
     print("Finished!")
+
+
+@timing
+def main():
+    asyncio.run(post_yt_playlist())
 
 
 if __name__ == "__main__":

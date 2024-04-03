@@ -1,9 +1,10 @@
+import asyncio
 import os
 from datetime import datetime
 from typing import List
 
-from utils import LingqHandler
 from collection import Collection
+from utils import LingqHandler, timing  # type: ignore
 
 # If True, creates a markdown for every language where we have known words.
 # Otherwise set it to false and fill language_codes with the desired languages.
@@ -66,7 +67,7 @@ def write_markdown(collection_list: List[Collection], language_code: str) -> Non
             md.write(line)
 
 
-def get_collections(handler: LingqHandler, language_code: str) -> List[Collection]:
+async def get_collections(handler: LingqHandler, language_code: str) -> List[Collection]:
     """
     A collection is just a course in the web lingo.
     Given a language code, returns a list of Collection objects.
@@ -74,22 +75,19 @@ def get_collections(handler: LingqHandler, language_code: str) -> List[Collectio
     """
 
     if SELECT_COURSES == "all":
-        collections = handler.get_currently_studying_collections(language_code)
+        collections_json = await handler.get_currently_studying_collections(language_code)
     else:
-        collections = handler.get_my_collections(language_code)
+        collections_json = await handler.get_my_collections(language_code)
 
     collections_list: List[Collection] = []
-    n_collections = len(collections)
+    n_collections = len(collections_json)
 
-    for idx, my_collection in enumerate(collections, 1):
-        _id = my_collection["id"]
+    tasks = [
+        handler.get_collection_object_from_id(language_code, c["id"]) for c in collections_json
+    ]
+    collections = await asyncio.gather(*tasks)
 
-        collection_v2 = handler.get_collection_from_id(language_code, _id)
-
-        col = Collection()
-        col.language_code = language_code
-        col.add_data(collection_v2)
-
+    for idx, col in enumerate(collections, 1):
         # To not mess with the sorting later on. This only happens in very weird cases.
         if col.last_update is None:
             print(f"[{idx}/{n_collections}] {YELLOW}SKIP{RESET} {col.title} (last_update=None)")
@@ -113,35 +111,40 @@ def sort_collections(collections: List[Collection]) -> None:
     collections.sort(key=lambda x: datetime.strptime(x.last_update, "%Y-%m-%d"), reverse=True)  # type: ignore
 
 
-def main(language_codes: List[str]):
-    handler = LingqHandler()
+async def make_markdown():
+    async with LingqHandler() as handler:
+        language_codes = LANGUAGE_CODES
+        if DOWNLOAD_ALL:
+            language_codes = handler.get_language_codes()
 
-    if DOWNLOAD_ALL:
-        language_codes = handler.get_language_codes()
+        print(f"Making markdown for languages: '{', '.join(language_codes)}'")
+        print(f"With selection: {SELECT_COURSES}")
+        print(f"At folder: {OUT_FOLDER}")
+        double_check()
 
-    print(f"Making markdown for languages: '{', '.join(language_codes)}'")
-    print(f"With selection: {SELECT_COURSES}")
-    print(f"At folder: {OUT_FOLDER}")
-    double_check()
+        os.makedirs(os.path.join(OUT_FOLDER, "courses"), exist_ok=True)
 
-    os.makedirs(os.path.join(OUT_FOLDER, "courses"), exist_ok=True)
+        create_README(language_codes)
 
-    create_README(language_codes)
+        n_languages = len(language_codes)
+        for idx, language_code in enumerate(language_codes, 1):
+            print(f"Starting download for {language_code} ({idx} of {n_languages})")
 
-    n_languages = len(language_codes)
-    for idx, language_code in enumerate(language_codes, 1):
-        print(f"Starting download for {language_code} ({idx} of {n_languages})")
+            collections_list = await get_collections(handler, language_code)
 
-        collections_list = get_collections(handler, language_code)
+            if not collections_list:
+                print(f"Didn't find any courses for language: {language_code}")
+                continue
 
-        if not collections_list:
-            print(f"Didn't find any courses for language: {language_code}")
-            continue
+            sort_collections(collections_list)
+            write_markdown(collections_list, language_code)
+            print(f"Created markdown for {language_code}!")
 
-        sort_collections(collections_list)
-        write_markdown(collections_list, language_code)
-        print(f"Created markdown for {language_code}!")
+
+@timing
+def main():
+    asyncio.run(make_markdown())
 
 
 if __name__ == "__main__":
-    main(LANGUAGE_CODES)
+    main()

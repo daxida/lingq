@@ -1,10 +1,11 @@
+import asyncio
 import os
 import time
 from os import path
+from typing import Any, List
 
 from natsort import os_sorted
-from typing import Any, List
-from utils import LingqHandler
+from utils import LingqHandler, timing  # type: ignore
 
 # from requests_toolbelt.multipart.encoder import MultipartEncoder
 
@@ -39,7 +40,17 @@ def double_check():
         exit(1)
 
 
-def patch_blank_audio(
+async def patch_blank_audio_single(
+    handler: LingqHandler, audio_path: str, idx: int, lesson: Any, max_iterations: int
+) -> None:
+    url = lesson["url"]
+    lesson_json = await handler.get_lesson_from_url(url)
+    audio_files = {"audio": open(audio_path, "rb")}
+    await handler.patch_audio(LANGUAGE_CODE, lesson_json, audio_files)
+    print(f"[{idx}/{max_iterations}] Patched audio for: {lesson['title']}")
+
+
+async def patch_blank_audio(
     handler: LingqHandler, collection: Any, from_lesson: int, to_lesson: int
 ) -> None:
     print(
@@ -47,29 +58,24 @@ def patch_blank_audio(
     )
     double_check()
 
-    lesson_iter = handler.iter_lessons_from_collection(collection, from_lesson, to_lesson)
-    lessons = list(lesson_iter)
+    lessons = collection["lessons"][from_lesson - 1 : to_lesson]
     max_iterations = len(lessons)
     blank_audio_path = os.path.join(AUDIOS_FOLDER, "15-seconds-of-silence.mp3")
 
-    for idx, lesson in enumerate(lessons, 1):
-        audio_files = {"audio": open(blank_audio_path, "rb")}
-
-        response = handler.patch_audio(LANGUAGE_CODE, lesson["id"], audio_files)
-        if response.status_code != 200:
-            print(f"Error in patch blank audio for lesson: {lesson['title']}")
-
-        print(f"[{idx}/{max_iterations}] Patched audio for: {lesson['title']}")
-        time.sleep(SLEEP_SECONDS)
+    tasks = [
+        patch_blank_audio_single(handler, blank_audio_path, idx, lesson, max_iterations)
+        for idx, lesson in enumerate(lessons, 1)
+    ]
+    await asyncio.gather(*tasks)
 
     print("patch_blank_audio finished!")
 
 
-def patch_bulk_audios(
+async def patch_bulk_audios(
     handler: LingqHandler, collection: Any, audios_path: List[str], from_lesson: int, to_lesson: int
 ) -> None:
-    lesson_iter = handler.iter_lessons_from_collection(collection, from_lesson, to_lesson)
-    lessons = list(lesson_iter)
+    urls = [lesson["url"] for lesson in collection["lessons"][from_lesson - 1 : to_lesson]]
+    lessons = await handler.get_lessons_from_urls(urls)
     max_iterations = len(lessons)
 
     # Confirm the patching
@@ -113,16 +119,20 @@ def resplit_japanese(handler: LingqHandler, collection: Any, from_lesson: int, t
         time.sleep(SLEEP_SECONDS)
 
 
+async def patch():
+    async with LingqHandler() as handler:
+        audios_path = read(AUDIOS_FOLDER)
+
+        collection = await handler.get_collection_json_from_id(LANGUAGE_CODE, COURSE_ID)
+
+        await patch_blank_audio(handler, collection, 1, 3)
+        # patch_bulk_audios(handler, collection, audios_path, 1, 2)
+        # resplit_japanese(handler, collection, 1, 2)
+
+
+@timing
 def main():
-    handler = LingqHandler()
-
-    audios_path = read(AUDIOS_FOLDER)
-
-    collection = handler.get_collection_from_id(LANGUAGE_CODE, COURSE_ID)
-
-    patch_blank_audio(handler, collection, 1, 3)
-    # patch_bulk_audios(handler, collection, audios_path, 1, 2)
-    # resplit_japanese(handler, collection, 1, 2)
+    asyncio.run(patch())
 
 
 if __name__ == "__main__":
