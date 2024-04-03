@@ -1,10 +1,10 @@
+import asyncio
 import os
-import time
-from typing import List
+from typing import Any, List
 
+import aiohttp
 from natsort import os_sorted
-from requests_toolbelt.multipart.encoder import MultipartEncoder
-from utils import LingqHandler
+from utils import LingqHandler, timing  # type: ignore
 
 # post_text seems to work but it has been a long time since I tried post_text_and_audio.
 # The same goes for patch_text, although now that the limit is 6k words it should be fine.
@@ -46,7 +46,8 @@ def get_roman_sorting_fn():
     # This requires fine tuning depending of the entries' name format:
     # I was working with:
     # Chapitre X.mp3 -> X
-    import roman  # may require another pip install
+    # NOTE: requires pip install roman
+    import roman
 
     def sorting_fn(x: str) -> int:
         return roman.fromRoman((x.split()[1]).split(".")[0])
@@ -63,8 +64,7 @@ def read_sorted_folders(folder: str, mode: str) -> List[str]:
     elif mode == "roman":
         sorting_fn = get_roman_sorting_fn()
     else:
-        print("Unsupported mode in read_folder")
-        exit(1)
+        raise NotImplementedError("Unsupported mode in read_folder")
 
     return [
         f
@@ -73,83 +73,106 @@ def read_sorted_folders(folder: str, mode: str) -> List[str]:
     ]
 
 
-def post_text(handler: LingqHandler):
+async def post_text_in_order(handler: LingqHandler):
+    """Use this if you care about the order of the lessons."""
     texts = read_sorted_folders(TEXTS_FOLDER, mode="human")
 
-    for text_filename in texts[FR_LESSON - 1 : TO_LESSON]:
+    to_lesson = min(TO_LESSON, len(texts))
+    print(f"Posting text (in order) for lessons {FR_LESSON} to {to_lesson}...")
+    texts = texts[FR_LESSON - 1 : to_lesson]
+
+    for text_filename in texts:
         title = text_filename.replace(".txt", "")
-
         file_path = os.path.join(TEXTS_FOLDER, text_filename)
-        with open(file_path, "r", encoding="utf-8") as file:
-            text = file.read()
+        data = {
+            "title": title,
+            "text": open(file_path, "r", encoding="utf-8").read(),
+            "collection": COURSE_ID,
+            "save": "true",
+        }
 
-        m = MultipartEncoder(
-            [
-                ("title", title),
-                ("text", text),
-                ("collection", COURSE_ID),
-                ("save", "true"),
-            ]
-        )
-
-        response = handler.post_from_multiencoded_data(LANGUAGE_CODE, m)
-        if response.status_code != 201:
-            return
-
+        await handler.post_from_multipart(LANGUAGE_CODE, data)
         print(f"  Posted text for lesson {title}")
 
-        time.sleep(SLEEP_SECONDS)
+
+async def post_text_fully_async(handler: LingqHandler):
+    """
+    Use this if you DONT care about the order of the lessons.
+    NOTE: Much faster than post_text_in_order.
+    """
+    texts = read_sorted_folders(TEXTS_FOLDER, mode="human")
+
+    to_lesson = min(TO_LESSON, len(texts))
+    print(f"Posting text for lessons {FR_LESSON} to {to_lesson}...")
+    texts = texts[FR_LESSON - 1 : to_lesson]
+
+    data_list: List[Any] = list()
+    for text_filename in texts:
+        title = text_filename.replace(".txt", "")
+        file_path = os.path.join(TEXTS_FOLDER, text_filename)
+        data = {
+            "title": title,
+            "text": open(file_path, "r", encoding="utf-8").read(),
+            "collection": COURSE_ID,
+            "save": "true",
+        }
+        data_list.append(data)
+
+    tasks = [handler.post_from_multipart(LANGUAGE_CODE, data) for data in data_list]
+    await asyncio.gather(*tasks)
 
 
-def post_text_and_audio(handler: LingqHandler):
+async def post_text_and_audio_in_order(handler: LingqHandler):
     assert AUDIOS_FOLDER is not None
 
     texts = read_sorted_folders(TEXTS_FOLDER, mode="human")
     audios = read_sorted_folders(AUDIOS_FOLDER, mode="human")
-    pairs = list(zip(texts, audios))
 
-    for text_filename, audio_filename in pairs[FR_LESSON - 1 : TO_LESSON]:
+    # NOTE: What if len(texts) != len(audios) ?
+    to_lesson = min(TO_LESSON, len(texts))
+    print(f"Posting text and audio (in order) for lessons {FR_LESSON} to {to_lesson}...")
+    pairs = list(zip(texts, audios))[FR_LESSON - 1 : to_lesson]
+    print(f"Found {len(pairs)} pairs of texts ({len(texts)}) / audio ({len(audios)}).")
+
+    for text_filename, audio_filename in pairs:
         title = text_filename.replace(".txt", "")
         text = open(os.path.join(TEXTS_FOLDER, text_filename), "r").read()
-        audio = open(os.path.join(AUDIOS_FOLDER, audio_filename), "rb")
+        audio_file = open(os.path.join(AUDIOS_FOLDER, audio_filename), "rb")
+        data = {
+            "title": title,
+            "text": text,
+            "collection": COURSE_ID,
+            "save": "true",
+        }
 
-        m = MultipartEncoder(
-            [
-                ("title", title),
-                ("text", text),
-                ("collection", COURSE_ID),
-                ("audio", (audio_filename, audio, "audio/mpeg")),
-                ("save", "true"),
-            ]
-        )
+        fdata = aiohttp.FormData()
+        for key, value in data.items():
+            fdata.add_field(key, value)
 
-        response = handler.post_from_multiencoded_data(LANGUAGE_CODE, m)
-        if response.status_code != 201:
+        fdata.add_field("audio", audio_file, filename=audio_filename, content_type="audio/mpeg")
+
+        await handler.post_from_multipart(LANGUAGE_CODE, fdata)
+        print(f"  Posted text and audio for lesson {title}")
+
+
+async def post():
+    async with LingqHandler() as handler:
+        if not TEXTS_FOLDER:
+            print("No texts folder declared, exiting!")
             return
 
-        print(f"Title: {title}")
-        print(f"Audio: {audio_filename}")
-        print(f"Posted text and audio for lesson {title}")
+        url = f"https://www.lingq.com/en/learn/{LANGUAGE_CODE}/web/editor/courses/{COURSE_ID}"
+        print(f"Starting upload at {url}")
 
-        time.sleep(SLEEP_SECONDS)
+        if AUDIOS_FOLDER:
+            await post_text_and_audio_in_order(handler)
+        else:
+            await post_text_in_order(handler)
 
 
+@timing
 def main():
-    handler = LingqHandler()
-
-    if not TEXTS_FOLDER:
-        print("No texts folder declared, exiting!")
-        return
-
-    url = f"https://www.lingq.com/en/learn/{LANGUAGE_CODE}/web/editor/courses/{COURSE_ID}"
-    print(f"Starting upload at {url}")
-
-    if AUDIOS_FOLDER:
-        print(f"Posting text and audio for lessons {FR_LESSON} to {TO_LESSON}...")
-        post_text_and_audio(handler)
-    else:
-        print(f"Posting text for lessons {FR_LESSON} to {TO_LESSON}...")
-        post_text(handler)
+    asyncio.run(post())
 
 
 if __name__ == "__main__":
