@@ -67,7 +67,7 @@ def write_markdown(collection_list: List[Collection], language_code: str) -> Non
             md.write(line)
 
 
-async def get_collections(handler: LingqHandler, language_code: str) -> List[Collection]:
+async def get_collections(handler: LingqHandler) -> List[Collection]:
     """
     A collection is just a course in the web lingo.
     Given a language code, returns a list of Collection objects.
@@ -75,15 +75,15 @@ async def get_collections(handler: LingqHandler, language_code: str) -> List[Col
     """
 
     if SELECT_COURSES == "all":
-        collections_json = await handler.get_currently_studying_collections(language_code)
+        collections_json = await handler.get_currently_studying_collections()
     else:
-        collections_json = await handler.get_my_collections(language_code)
+        collections_json = await handler.get_my_collections()
 
     collections_list: List[Collection] = []
     n_collections = len(collections_json)
 
     tasks = [
-        handler.get_collection_object_from_id(language_code, c["id"]) for c in collections_json
+        handler.get_collection_object_from_id(collection["id"]) for collection in collections_json
     ]
     collections = await asyncio.gather(*tasks)
 
@@ -112,7 +112,7 @@ def sort_collections(collections: List[Collection]) -> None:
 
 
 async def make_markdown():
-    async with LingqHandler() as handler:
+    async with LingqHandler("Filler") as handler:
         language_codes = LANGUAGE_CODES
         if DOWNLOAD_ALL:
             language_codes = handler.get_language_codes()
@@ -130,7 +130,8 @@ async def make_markdown():
         for idx, language_code in enumerate(language_codes, 1):
             print(f"Starting download for {language_code} ({idx} of {n_languages})")
 
-            collections_list = await get_collections(handler, language_code)
+            handler.language_code = language_code
+            collections_list = await get_collections(handler)
 
             if not collections_list:
                 print(f"Didn't find any courses for language: {language_code}")

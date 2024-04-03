@@ -52,7 +52,7 @@ async def filter_playlist(handler: LingqHandler, playlist: Playlist) -> Playlist
         playlist = filtered_playlist
 
     if SKIP_ALREADY_UPLOADED:
-        collection = await handler.get_collection_json_from_id(LANGUAGE_CODE, COURSE_ID)
+        collection = await handler.get_collection_json_from_id(COURSE_ID)
         lessons = collection["lessons"]
         lessons_urls = [lesson["originalUrl"] for lesson in lessons]
         lessons_urls = set(lessons_urls)
@@ -94,7 +94,7 @@ async def post_playlist(handler: LingqHandler, playlist: Playlist, max_uploads: 
             "save": "true",
         }
 
-        response = await handler.post_from_multipart(LANGUAGE_CODE, data)
+        response = await handler.post_from_multipart(data)
 
         if response.status == 201:
             padded_idx = f"{i + 1}".zfill(pad)
@@ -141,7 +141,7 @@ async def post_yt_playlist():
     playlist_data = get_playlist(PLAYLIST_URL, ydl_opts)
 
     if "entries" in playlist_data:
-        async with LingqHandler() as handler:
+        async with LingqHandler(LANGUAGE_CODE) as handler:
             playlist = playlist_data["entries"]
             playlist = await filter_playlist(handler, playlist)
             await post_playlist(handler, playlist, MAX_UPLOADS)

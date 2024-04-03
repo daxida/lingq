@@ -91,7 +91,7 @@ async def post_text_in_order(handler: LingqHandler):
             "save": "true",
         }
 
-        await handler.post_from_multipart(LANGUAGE_CODE, data)
+        await handler.post_from_multipart(data)
         print(f"  Posted text for lesson {title}")
 
 
@@ -118,7 +118,7 @@ async def post_text_fully_async(handler: LingqHandler):
         }
         data_list.append(data)
 
-    tasks = [handler.post_from_multipart(LANGUAGE_CODE, data) for data in data_list]
+    tasks = [handler.post_from_multipart(data) for data in data_list]
     await asyncio.gather(*tasks)
 
 
@@ -151,12 +151,12 @@ async def post_text_and_audio_in_order(handler: LingqHandler):
 
         fdata.add_field("audio", audio_file, filename=audio_filename, content_type="audio/mpeg")
 
-        await handler.post_from_multipart(LANGUAGE_CODE, fdata)
+        await handler.post_from_multipart(fdata)
         print(f"  Posted text and audio for lesson {title}")
 
 
 async def post():
-    async with LingqHandler() as handler:
+    async with LingqHandler(LANGUAGE_CODE) as handler:
         if not TEXTS_FOLDER:
             print("No texts folder declared, exiting!")
             return

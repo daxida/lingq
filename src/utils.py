@@ -4,13 +4,12 @@ import os
 import sys
 import time
 from functools import wraps
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import requests
 from aiohttp import ClientResponse, ClientSession
 from collection import Collection
 from dotenv import dotenv_values
-from requests import Response
 
 # fmt: off
 RED    = "\033[31m"  # Error
@@ -36,6 +35,15 @@ def E(my_json: Any):
     json.dump(my_json, sys.stdout, ensure_ascii=False, indent=2)
 
 
+def response_debug(response: ClientResponse, function_name: str, lesson: Optional[Any] = None):
+    print(f"Error in {function_name}")
+    if lesson is not None:
+        print(f"For lesson: {lesson['title']}")
+    print(f"Response code: {response.status}")
+    print(f"Response text: {response.text}")
+    exit(0)
+
+
 class LingqHandler:
     """
     NOTE: A collection is a course in the API lingo. It is a group of lessons.
@@ -46,7 +54,8 @@ class LingqHandler:
     API_URL_V2 = "https://www.lingq.com/api/v2/"
     API_URL_V3 = "https://www.lingq.com/api/v3/"
 
-    def __init__(self) -> None:
+    def __init__(self, language_code: str) -> None:
+        self.language_code = language_code
         self.session = ClientSession()
         self.config = Config()
 
@@ -66,7 +75,7 @@ class LingqHandler:
 
         return codes
 
-    async def _get_collections_from_url(self, language_code: str, url: str) -> Any:
+    async def _get_collections_from_url(self, url: str) -> Any:
         async with self.session.get(url, headers=self.config.headers) as response:
             collections = await response.json()
 
@@ -74,45 +83,40 @@ class LingqHandler:
 
         return collections["results"]
 
-    async def get_my_collections(self, language_code: str) -> Any:
-        """
-        Return a json file with all my imported collections in this language.
-        """
-        url = f"{LingqHandler.API_URL_V3}{language_code}/collections/my/"
-        return await self._get_collections_from_url(language_code, url)
+    async def get_my_collections(self) -> Any:
+        """Return a JSON with all my imported collections."""
+        url = f"{LingqHandler.API_URL_V3}{self.language_code}/collections/my/"
+        return await self._get_collections_from_url(url)
 
-    async def get_currently_studying_collections(self, language_code: str) -> Any:
-        """
-        Return a json file with all the studied collections (Continue Studying shelf) in this language.
-        """
-        url = f"{LingqHandler.API_URL_V3}{language_code}/search/?shelf=my_lessons&type=collection&sortBy=recentlyOpened"
-        return await self._get_collections_from_url(language_code, url)
+    async def get_currently_studying_collections(self) -> Any:
+        """Return a JSON with all the studied collections (Continue Studying shelf)."""
+        url = f"{LingqHandler.API_URL_V3}{self.language_code}/search/?shelf=my_lessons&type=collection&sortBy=recentlyOpened"
+        return await self._get_collections_from_url(url)
 
-    async def get_collection_json_from_id(self, language_code: str, collection_id: str) -> Any:
-        """Return a JSON file with collection in this language"""
-        url = f"{LingqHandler.API_URL_V2}{language_code}/collections/{collection_id}"
+    async def get_collection_json_from_id(self, collection_id: str) -> Any:
+        """Return a JSON with the collection from a collection_id."""
+        url = f"{LingqHandler.API_URL_V2}{self.language_code}/collections/{collection_id}"
 
         async with self.session.get(url, headers=self.config.headers) as response:
             collection = await response.json()
 
         if not collection["lessons"]:
-            editor_url = f"https://www.lingq.com/learn/{language_code}/web/editor/courses/"
+            editor_url = f"https://www.lingq.com/learn/{self.language_code}/web/editor/courses/"
             msg = f"The collection {collection['title']} at {editor_url}{collection_id} has no lessons, (delete it?)"
             print(msg)
 
         return collection
 
-    async def get_collection_object_from_id(
-        self, language_code: str, collection_id: str
-    ) -> Collection:
-        collection_data = await self.get_collection_json_from_id(language_code, collection_id)
+    async def get_collection_object_from_id(self, collection_id: str) -> Collection:
+        """Return a Collection object from a collection_id."""
+        collection_data = await self.get_collection_json_from_id(collection_id)
         collection = Collection()
-        collection.language_code = language_code
+        collection.language_code = self.language_code
         collection.add_data(collection_data)
         return collection
 
     async def get_lesson_from_url(self, url: str) -> Any:
-        """Return a json file with the lesson, given its url."""
+        """Return a JSON with the lesson, from its url."""
         async with self.session.get(url, headers=self.config.headers) as response:
             lesson = await response.json()
 
@@ -125,10 +129,7 @@ class LingqHandler:
         return lessons
 
     async def get_audio_from_lesson(self, lesson: Any) -> bytes | None:
-        """
-        From a list of lessons obtained by collection["lessons"], gets the audio
-        (if any) given a lesson of that list.
-        """
+        """Get the audio from a lesson. Returns None if there is no audio."""
         audio = None
         if lesson["audio"]:
             async with self.session.get(lesson["audio"]) as response:
@@ -136,25 +137,21 @@ class LingqHandler:
 
         return audio
 
-    async def patch_audio(
-        self, language_code: str, lesson: Any, audio_files: Dict[str, Any]
-    ) -> None:
-        lesson_id = lesson["id"]
-        url = f"{LingqHandler.API_URL_V3}{language_code}/lessons/{lesson_id}/"
-        # response = requests.patch(url=url, headers=self.config.headers, files=audio_files)
-        async with self.session.get(url, headers=self.config.headers, data=audio_files) as response:
+    async def patch_audio(self, lesson: Any, audio_files: Dict[str, Any]) -> ClientResponse:
+        url = f"{LingqHandler.API_URL_V3}{self.language_code}/lessons/{lesson['id']}/"
+        async with self.session.patch(
+            url, headers=self.config.headers, data=audio_files
+        ) as response:
             if response.status != 200:
-                print(f"Error in patch blank audio for lesson: {lesson['title']}")
-                print(f"Response code: {response.status}")
-                print(f"Response text: {response.text}")
+                response_debug(response, "patch_audio", lesson)
+        return response
 
-    async def post_from_multipart(self, language_code: str, data: Any) -> ClientResponse:
-        url = f"{LingqHandler.API_URL_V3}{language_code}/lessons/import/"
+    async def post_from_multipart(self, data: Any) -> ClientResponse:
+        url = f"{LingqHandler.API_URL_V3}{self.language_code}/lessons/import/"
         async with self.session.post(url, headers=self.config.headers, data=data) as response:
             if response.status != 201:
-                print(f"Response code: {response.status}")
-                print(f"Response text: {response.text}")
-            return response
+                response_debug(response, "post_from_multipart")
+        return response
 
     def resplit_lesson(self, language_code: str, lesson_id: str, method: str) -> Response:
         """Returns the response for error management"""

@@ -62,8 +62,8 @@ def write_lessons(collection_title: str, lessons: List[Lesson]) -> None:
 
 
 async def get_lessons():
-    async with LingqHandler() as handler:
-        collection_json = await handler.get_collection_json_from_id(LANGUAGE_CODE, COURSE_ID)
+    async with LingqHandler(LANGUAGE_CODE) as handler:
+        collection_json = await handler.get_collection_json_from_id(COURSE_ID)
         collection_title = collection_json["title"]
 
         print(
