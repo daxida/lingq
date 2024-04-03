@@ -129,7 +129,7 @@ class LingqHandler:
         return lessons
 
     async def get_audio_from_lesson(self, lesson: Any) -> bytes | None:
-        """Get the audio from a lesson. Returns None if there is no audio."""
+        """Get the audio from a lesson. Return None if there is no audio."""
         audio = None
         if lesson["audio"]:
             async with self.session.get(lesson["audio"]) as response:
@@ -153,21 +153,21 @@ class LingqHandler:
                 response_debug(response, "post_from_multipart")
         return response
 
-    def resplit_lesson(self, language_code: str, lesson_id: str, method: str) -> Response:
-        """Returns the response for error management"""
-        url = f"{LingqHandler.API_URL_V3}{language_code}/lessons/{lesson_id}/resplit/"
+    async def resplit_lesson(self, lesson: Any, method: str) -> ClientResponse:
+        """Resplit a Japanese lesson using the new splitting logic.
+        Cf: https://forum.lingq.com/t/refining-parsing-in-spaceless-languages-like-japanese-with-ai/179754/5"""
+        url = f"{LingqHandler.API_URL_V3}{self.language_code}/lessons/{lesson['id']}/resplit/"
         data = {}
         if method == "ichimoe":
             data = {"method": "ichimoe"}
         else:
             raise NotImplementedError(f"Method {method} in resplit_lesson")
 
-        response = requests.post(url=url, headers=self.config.headers, data=data)
-
-        if response.status_code != 200:
-            print(f"Response code: {response.status_code}")
-            print(f"Response text: {response.text}")
-
+        async with self.session.post(url, headers=self.config.headers, data=data) as response:
+            if response.status == 409:
+                print("Already splitting.")
+            elif response.status != 200:
+                response_debug(response, "resplit_lesson", lesson)
         return response
 
 

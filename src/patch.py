@@ -21,7 +21,6 @@ LANGUAGE_CODE = "ja"
 COURSE_ID = "537808"
 
 AUDIOS_FOLDER = "audios"
-SLEEP_SECONDS = 0
 
 
 # TODO: implement the changes from the updated "post.py" script
@@ -40,13 +39,13 @@ def double_check():
         exit(1)
 
 
-async def patch_blank_audio_single(
+async def patch_single_audio(
     handler: LingqHandler, audio_path: str, idx: int, lesson: Any, max_iterations: int
 ) -> None:
     url = lesson["url"]
     lesson_json = await handler.get_lesson_from_url(url)
     audio_files = {"audio": open(audio_path, "rb")}
-    await handler.patch_audio(LANGUAGE_CODE, lesson_json, audio_files)
+    await handler.patch_audio(lesson_json, audio_files)
     print(f"[{idx}/{max_iterations}] Patched audio for: {lesson['title']}")
 
 
@@ -63,7 +62,7 @@ async def patch_blank_audio(
     blank_audio_path = os.path.join(AUDIOS_FOLDER, "15-seconds-of-silence.mp3")
 
     tasks = [
-        patch_blank_audio_single(handler, blank_audio_path, idx, lesson, max_iterations)
+        patch_single_audio(handler, blank_audio_path, idx, lesson, max_iterations)
         for idx, lesson in enumerate(lessons, 1)
     ]
     await asyncio.gather(*tasks)
@@ -76,58 +75,53 @@ async def patch_bulk_audios(
 ) -> None:
     urls = [lesson["url"] for lesson in collection["lessons"][from_lesson - 1 : to_lesson]]
     lessons = await handler.get_lessons_from_urls(urls)
-    max_iterations = len(lessons)
+    max_iterations = min(len(lessons), len(audios_path))
 
-    # Confirm the patching
+    print("Confirm the following audio patching:")
     for idx, (audio_path, lesson) in enumerate(zip(audios_path, lessons), 1):
-        print(f"{audio_path} -> {lesson['title']}")
+        print(f"  {audio_path} -> {lesson['title']}")
     double_check()
 
     for idx, (audio_path, lesson) in enumerate(zip(audios_path, lessons), 1):
         audio_path = path.join(AUDIOS_FOLDER, audio_path)
         audio_files = {"audio": open(audio_path, "rb")}
-
-        response = handler.patch_audio(LANGUAGE_CODE, lesson["id"], audio_files)
-        if response.status_code != 200:
-            print(f"Error in patch blank audio for lesson: {lesson['title']}")
-
+        await handler.patch_audio(lesson, audio_files)
         print(f"[{idx}/{max_iterations}] Patched audio for: {lesson['title']}")
-        time.sleep(SLEEP_SECONDS)
 
     print("patch_bulk_audios finished!")
 
 
-def resplit_japanese(handler: LingqHandler, collection: Any, from_lesson: int, to_lesson: int):
+async def resplit_japanese(
+    handler: LingqHandler, collection: Any, from_lesson: int, to_lesson: int
+):
     """
     Re-split an existing lesson in japanese with ichimoe.
     Cf: https://forum.lingq.com/t/refining-parsing-in-spaceless-languages-like-japanese-with-ai/179754
     """
 
-    assert LANGUAGE_CODE == "ja"
+    assert handler.language_code == "ja"
     print(
         f"Resplitting text for course: {COURSE_ID}, in language: {LANGUAGE_CODE} (lessons {from_lesson} to {to_lesson})"
     )
     double_check()
 
-    for lesson in handler.iter_lessons_from_collection(collection, from_lesson, to_lesson):
-        response = handler.resplit_lesson(LANGUAGE_CODE, lesson["id"], method="ichimoe")
-        if response.status_code != 200:
-            print(f"Error in patch blank text for lesson: {lesson['title']}")
-            return
+    urls = [lesson["url"] for lesson in collection["lessons"][from_lesson - 1 : to_lesson]]
+    lessons = await handler.get_lessons_from_urls(urls)
 
+    for lesson in lessons:
+        await handler.resplit_lesson(lesson, method="ichimoe")
         print(f"Resplit text for: {lesson['title']}")
-        time.sleep(SLEEP_SECONDS)
 
 
 async def patch():
-    async with LingqHandler() as handler:
+    async with LingqHandler(LANGUAGE_CODE) as handler:
         audios_path = read(AUDIOS_FOLDER)
 
-        collection = await handler.get_collection_json_from_id(LANGUAGE_CODE, COURSE_ID)
+        collection = await handler.get_collection_json_from_id(COURSE_ID)
 
         await patch_blank_audio(handler, collection, 1, 3)
-        # patch_bulk_audios(handler, collection, audios_path, 1, 2)
-        # resplit_japanese(handler, collection, 1, 2)
+        # await patch_bulk_audios(handler, collection, audios_path, 1, 5)
+        # await resplit_japanese(handler, collection, 1, 2)
 
 
 @timing
