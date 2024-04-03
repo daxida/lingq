@@ -1,5 +1,6 @@
-from utils import LingqHandler
-from collection import Collection
+import asyncio
+
+from utils import LingqHandler, timing  # type: ignore
 
 # Given a language code print the fetched collections (courses) as "Collection" objects
 
@@ -9,20 +10,27 @@ from collection import Collection
 LANGUAGE_CODE = "fr"
 
 
+async def get_collections():
+    async with LingqHandler() as handler:
+        # This is only for the courses ID, since in order to get the text we need
+        # to do yet another requests handled through `get_collection_from_id`
+        collections_json = await handler.get_my_collections(LANGUAGE_CODE)
+
+        print(f"Found {len(collections_json)} courses in language: {LANGUAGE_CODE}")
+
+        tasks = [
+            handler.get_collection_object_from_id(LANGUAGE_CODE, collection["id"])
+            for collection in collections_json
+        ]
+        collections = await asyncio.gather(*tasks)
+
+        for collection in collections:
+            print(collection)
+
+
+@timing
 def main():
-    handler = LingqHandler()
-    collections = handler.get_my_collections(LANGUAGE_CODE)
-
-    print(f"Found {len(collections)} courses in language: {LANGUAGE_CODE}")
-
-    for col in collections:
-        col = handler.get_collection_from_id(LANGUAGE_CODE, col["id"])
-
-        collection = Collection()
-        collection.language_code = LANGUAGE_CODE
-        collection.add_data(col)
-
-        print(collection)
+    asyncio.run(get_collections())
 
 
 if __name__ == "__main__":
