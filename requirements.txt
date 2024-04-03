@@ -2,5 +2,4 @@ natsort==8.4.0
 pandas==2.2.0
 python-dotenv==1.0.1
 Requests==2.31.0
-requests_toolbelt==1.0.0
-yt-dlp==2023.07.06
+yt-dlp>=2023.11.14
