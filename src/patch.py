@@ -1,11 +1,9 @@
 import asyncio
 import os
-import time
 from os import path
 from typing import Any, List
 
-from natsort import os_sorted
-from utils import LingqHandler, timing  # type: ignore
+from utils import LingqHandler, read_sorted_folders, timing  # type: ignore
 
 # from requests_toolbelt.multipart.encoder import MultipartEncoder
 
@@ -21,16 +19,6 @@ LANGUAGE_CODE = "ja"
 COURSE_ID = "537808"
 
 AUDIOS_FOLDER = "audios"
-
-
-# TODO: implement the changes from the updated "post.py" script
-def read(folder: str) -> List[str]:
-    """Returns a human sorted list of non-hidden directories"""
-    return [
-        f
-        for f in os_sorted(os.listdir(folder))
-        if path.isfile(path.join(folder, f)) and not f.startswith(".")
-    ]
 
 
 def double_check():
@@ -115,7 +103,7 @@ async def resplit_japanese(
 
 async def patch():
     async with LingqHandler(LANGUAGE_CODE) as handler:
-        audios_path = read(AUDIOS_FOLDER)
+        audios_path = read_sorted_folders(AUDIOS_FOLDER, mode="human")
 
         collection = await handler.get_collection_json_from_id(COURSE_ID)
 

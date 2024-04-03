@@ -3,8 +3,7 @@ import os
 from typing import Any, List
 
 import aiohttp
-from natsort import os_sorted
-from utils import LingqHandler, timing  # type: ignore
+from utils import LingqHandler, read_sorted_folders, timing  # type: ignore
 
 # post_text seems to work but it has been a long time since I tried post_text_and_audio.
 # The same goes for patch_text, although now that the limit is 6k words it should be fine.
@@ -27,50 +26,6 @@ SLEEP_SECONDS = 2
 
 LANGUAGE_CODE = "ja"
 COURSE_ID = "537808"
-
-
-def get_greek_sorting_fn():
-    # This requires fine tuning depending of the entries' name format:
-    # I was working with:
-    # Ι'. Η μάχη -> 10
-    NUMERALS = "Α Β Γ Δ Ε ΣΤ Ζ Η Θ Ι ΙΑ ΙΒ ΙΓ ΙΔ ΙΕ ΙΣΤ ΙΖ".split()
-    ORDER = [f"{num}'" for num in NUMERALS]
-
-    def sorting_fn(x: str) -> int:
-        return ORDER.index(x.split(".")[0])
-
-    return sorting_fn
-
-
-def get_roman_sorting_fn():
-    # This requires fine tuning depending of the entries' name format:
-    # I was working with:
-    # Chapitre X.mp3 -> X
-    # NOTE: requires pip install roman
-    import roman
-
-    def sorting_fn(x: str) -> int:
-        return roman.fromRoman((x.split()[1]).split(".")[0])
-
-    return sorting_fn
-
-
-def read_sorted_folders(folder: str, mode: str) -> List[str]:
-    """Supports human (natsort), roman (I < V) and greek (Β < Γ) sorting"""
-    if mode == "human":
-        sorting_fn = os_sorted
-    elif mode == "greek":
-        sorting_fn = get_greek_sorting_fn()
-    elif mode == "roman":
-        sorting_fn = get_roman_sorting_fn()
-    else:
-        raise NotImplementedError("Unsupported mode in read_folder")
-
-    return [
-        f
-        for f in sorting_fn(os.listdir(folder))
-        if os.path.isfile(os.path.join(folder, f)) and not f.startswith(".")
-    ]
 
 
 async def post_text_in_order(handler: LingqHandler):
