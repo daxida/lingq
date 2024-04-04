@@ -2,7 +2,8 @@ import asyncio
 import os
 from typing import Any, List, Tuple
 
-from utils import LingqHandler, timing  # type: ignore
+from lingqhandler import LingqHandler
+from utils import timing  # type: ignore
 
 # Downloads audio / text from a Collection given the language code and the pk.
 # The pk is just the last number you see when you open a course in the web.

@@ -3,7 +3,8 @@ import time
 from typing import Any, Dict, List
 
 import yt_dlp
-from utils import LingqHandler, timing  # type: ignore
+from lingqhandler import LingqHandler
+from utils import timing  # type: ignore
 
 LANGUAGE_CODE = "ja"
 SLEEP_SECONDS = 5

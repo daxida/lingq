@@ -1,6 +1,7 @@
 import asyncio
 
-from utils import LingqHandler, timing  # type: ignore
+from lingqhandler import LingqHandler
+from utils import timing  # type: ignore
 
 # Given a language code print the fetched collections (courses) as "Collection" objects
 

@@ -3,7 +3,8 @@ import os
 from typing import Any, List
 
 import aiohttp
-from utils import LingqHandler, read_sorted_folders, timing  # type: ignore
+from lingqhandler import LingqHandler
+from utils import read_sorted_folders, timing  # type: ignore
 
 # post_text seems to work but it has been a long time since I tried post_text_and_audio.
 # The same goes for patch_text, although now that the limit is 6k words it should be fine.

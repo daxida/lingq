@@ -3,7 +3,8 @@ import os
 from os import path
 from typing import Any, List
 
-from utils import LingqHandler, read_sorted_folders, timing  # type: ignore
+from lingqhandler import LingqHandler
+from utils import read_sorted_folders, timing  # type: ignore
 
 # This deals with overwriting of existing lessons / collections.
 # The main usecase is to add audio to an already uploaded book where some

@@ -4,7 +4,8 @@ from datetime import datetime
 from typing import List
 
 from collection import Collection
-from utils import LingqHandler, timing  # type: ignore
+from lingqhandler import LingqHandler
+from utils import timing  # type: ignore
 
 # If True, creates a markdown for every language where we have known words.
 # Otherwise set it to false and fill language_codes with the desired languages.
