@@ -35,8 +35,6 @@ Scripts for basic interactions with LingQ's (awful) API.
 - **Other scripts**:
   - Processing text: A bunch of ad-hoc scripts.
   - Processing audio: uses [this](https://gist.github.com/Ashwinning/a9677b5b3afa426667d979b36c019b04) to split the timestamps if the original video didn't have them and you wanted to do it manually.
-  - Stats: periodically export LingQ stats. From this [discussion](https://www.lingq.com/es/community/forum/support-feedback-forum/how-do-you-export-statistics-i).
-
 
 ## Links
 
