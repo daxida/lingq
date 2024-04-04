@@ -5,8 +5,6 @@ from typing import Any, List
 
 from utils import LingqHandler, read_sorted_folders, timing  # type: ignore
 
-# from requests_toolbelt.multipart.encoder import MultipartEncoder
-
 # This deals with overwriting of existing lessons / collections.
 # The main usecase is to add audio to an already uploaded book where some
 # editing has already be done, and we wouldn't want to upload the text again.

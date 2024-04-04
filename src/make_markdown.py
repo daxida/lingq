@@ -115,10 +115,10 @@ async def make_markdown():
     async with LingqHandler("Filler") as handler:
         language_codes = LANGUAGE_CODES
         if DOWNLOAD_ALL:
-            language_codes = handler.get_language_codes()
+            language_codes = await handler.get_language_codes()
 
         print(f"Making markdown for languages: '{', '.join(language_codes)}'")
-        print(f"With selection: {SELECT_COURSES}")
+        print(f"With courses selection: {SELECT_COURSES}")
         print(f"At folder: {OUT_FOLDER}")
         double_check()
 

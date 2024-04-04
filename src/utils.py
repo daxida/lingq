@@ -6,7 +6,6 @@ import time
 from functools import wraps
 from typing import Any, Dict, List, Optional
 
-import requests
 from aiohttp import ClientResponse, ClientSession
 from collection import Collection
 from dotenv import dotenv_values
@@ -67,12 +66,12 @@ class LingqHandler:
     async def __aexit__(self, exc_type, exc_value, tb):  # type: ignore
         await self.session.close()
 
-    def get_language_codes(self) -> List[str]:
+    async def get_language_codes(self) -> List[str]:
         """Returns a list of language codes with known words"""
         url = f"{LingqHandler.API_URL_V2}languages"
-        response = requests.get(url=url, headers=self.config.headers)
-        languages = response.json()
-        codes = [lan["code"] for lan in languages if lan["knownWords"] > 0]
+        async with self.session.get(url, headers=self.config.headers) as response:
+            languages = await response.json()
+            codes = [lan["code"] for lan in languages if lan["knownWords"] > 0]
 
         return codes
 
