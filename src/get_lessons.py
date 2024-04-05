@@ -5,18 +5,15 @@ from typing import Any, List, Tuple
 from lingqhandler import LingqHandler
 from utils import timing  # type: ignore
 
-# Downloads audio / text from a Collection given the language code and the pk.
-# The pk is just the last number you see when you open a course in the web.
-# In https://www.lingq.com/en/learn/el/web/library/course/1289772 the pk is 1289772
+# Downloads audio / text from a Collection (=Course) given the language code and the ID.
+# The ID is just the last number you see when you open a course in the web.
+# > In https://www.lingq.com/en/learn/el/web/library/course/1289772 the ID is 1289772
 
-# Creates a 'download' folder and saves the text/audio in a 'text'/'audio' folder
+# Creates a 'download' folder and saves the text/audio in a 'text'/'audio' folder.
 
-# Change these two. Pk (or course_id) is the id of the collection
 LANGUAGE_CODE = "ja"
 COURSE_ID = "537808"
-
 DOWNLOAD_FOLDER = "downloads"
-
 
 # A simple lesson type: (title, text, audio)
 Lesson = Tuple[str, List[str], bytes | None]

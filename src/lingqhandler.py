@@ -30,7 +30,7 @@ def response_debug(response: ClientResponse, function_name: str, lesson: Optiona
         print(f"For lesson: {lesson['title']}")
     print(f"Response code: {response.status}")
     print(f"Response text: {response.text}")
-    exit(0)
+    # exit(0)
 
 
 class LingqHandler:

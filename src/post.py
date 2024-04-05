@@ -13,6 +13,9 @@ from utils import read_sorted_folders, timing  # type: ignore
 # and the same goes for the .mp3 in AUDIOS_FOLDER
 # This assumes that they are paired in a way that zipping them makes sense.
 
+LANGUAGE_CODE = "ja"
+COURSE_ID = "537808"
+
 # Change these:
 TEXTS_FOLDER = "split"
 # If you want to post only text, set AUDIOS_FOLDER to None
@@ -21,12 +24,6 @@ AUDIOS_FOLDER = None
 # Just write an arbitrarily high number in TO_LESSON to post everything.
 FR_LESSON = 1
 TO_LESSON = 99
-
-# Time in seconds to wait between requests
-SLEEP_SECONDS = 2
-
-LANGUAGE_CODE = "ja"
-COURSE_ID = "537808"
 
 
 async def post_text_in_order(handler: LingqHandler):

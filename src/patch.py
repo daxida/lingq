@@ -10,13 +10,10 @@ from utils import read_sorted_folders, timing  # type: ignore
 # The main usecase is to add audio to an already uploaded book where some
 # editing has already be done, and we wouldn't want to upload the text again.
 
-# The blank audios were found here: https://github.com/anars/blank-audio
+# The blank audios were found here: https://github.com/anars/blank-audio.
 
-# Change these two. Pk is the id of the collection
-# pk = "1070313" # Quick imports
 LANGUAGE_CODE = "ja"
 COURSE_ID = "537808"
-
 AUDIOS_FOLDER = "audios"
 
 
