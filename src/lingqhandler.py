@@ -64,6 +64,28 @@ class LingqHandler:
 
         return codes
 
+    async def get_lesson_from_url(self, url: str) -> Any:
+        """Return a JSON with the lesson, from its url."""
+        async with self.session.get(url, headers=self.config.headers) as response:
+            lesson = await response.json()
+
+        return lesson
+
+    async def get_lessons_from_urls(self, urls: List[str]) -> List[Any]:
+        tasks = [self.get_lesson_from_url(url) for url in urls]
+        lessons = await asyncio.gather(*tasks)
+
+        return lessons
+
+    async def get_audio_from_lesson(self, lesson: Any) -> bytes | None:
+        """Get the audio from a lesson. Return None if there is no audio."""
+        audio = None
+        if lesson["audio"]:
+            async with self.session.get(lesson["audio"]) as response:
+                audio = await response.read()
+
+        return audio
+
     async def _get_collections_from_url(self, url: str) -> Any:
         async with self.session.get(url, headers=self.config.headers) as response:
             collections = await response.json()
@@ -104,28 +126,6 @@ class LingqHandler:
         collection.add_data(collection_data)
         return collection
 
-    async def get_lesson_from_url(self, url: str) -> Any:
-        """Return a JSON with the lesson, from its url."""
-        async with self.session.get(url, headers=self.config.headers) as response:
-            lesson = await response.json()
-
-        return lesson
-
-    async def get_lessons_from_urls(self, urls: List[str]) -> List[Any]:
-        tasks = [self.get_lesson_from_url(url) for url in urls]
-        lessons = await asyncio.gather(*tasks)
-
-        return lessons
-
-    async def get_audio_from_lesson(self, lesson: Any) -> bytes | None:
-        """Get the audio from a lesson. Return None if there is no audio."""
-        audio = None
-        if lesson["audio"]:
-            async with self.session.get(lesson["audio"]) as response:
-                audio = await response.read()
-
-        return audio
-
     async def patch_audio(self, lesson: Any, audio_files: Dict[str, Any]) -> ClientResponse:
         url = f"{LingqHandler.API_URL_V3}{self.language_code}/lessons/{lesson['id']}/"
         async with self.session.patch(
@@ -138,7 +138,10 @@ class LingqHandler:
     async def post_from_multipart(self, data: Any) -> ClientResponse:
         url = f"{LingqHandler.API_URL_V3}{self.language_code}/lessons/import/"
         async with self.session.post(url, headers=self.config.headers, data=data) as response:
-            if response.status != 201:
+            if response.status == 524:
+                # Ok error. Happens if their servers are overloaded.
+                print("Cloudflare timeout (> 100 secs).")
+            elif response.status != 201:
                 response_debug(response, "post_from_multipart")
         return response
 
