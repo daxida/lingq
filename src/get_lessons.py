@@ -38,9 +38,9 @@ async def get_lesson(handler: LingqHandler, lesson_json: Any, idx: int) -> Lesso
     return lesson
 
 
-def write_lessons(collection_title: str, lessons: List[Lesson]) -> None:
-    texts_folder = os.path.join(DOWNLOAD_FOLDER, collection_title, "texts")
-    audios_folder = os.path.join(DOWNLOAD_FOLDER, collection_title, "audios")
+def write_lessons(language_code: str, collection_title: str, lessons: List[Lesson]) -> None:
+    texts_folder = os.path.join(DOWNLOAD_FOLDER, language_code, collection_title, "texts")
+    audios_folder = os.path.join(DOWNLOAD_FOLDER, language_code, collection_title, "audios")
 
     os.makedirs(texts_folder, exist_ok=True)
     os.makedirs(audios_folder, exist_ok=True)
@@ -59,13 +59,13 @@ def write_lessons(collection_title: str, lessons: List[Lesson]) -> None:
         print(f"Writing lesson nº{idx}: {title}")
 
 
-async def get_lessons():
-    async with LingqHandler(LANGUAGE_CODE) as handler:
-        collection_json = await handler.get_collection_json_from_id(COURSE_ID)
+async def get_lessons(language_code: str, course_id: str):
+    async with LingqHandler(language_code) as handler:
+        collection_json = await handler.get_collection_json_from_id(course_id)
         collection_title = collection_json["title"]
 
         print(
-            f"Downloading: '{collection_title}' at https://www.lingq.com/learn/{LANGUAGE_CODE}/web/library/course/{COURSE_ID}"
+            f"Downloading: '{collection_title}' at https://www.lingq.com/learn/{language_code}/web/library/course/{COURSE_ID}"
         )
 
         tasks = [
@@ -74,14 +74,14 @@ async def get_lessons():
         ]
         lessons = await asyncio.gather(*tasks)
 
-        write_lessons(collection_title, lessons)
+        write_lessons(language_code, collection_title, lessons)
 
         print("Finished download.")
 
 
 @timing
 def main():
-    asyncio.run(get_lessons())
+    asyncio.run(get_lessons(LANGUAGE_CODE, COURSE_ID))
 
 
 if __name__ == "__main__":
