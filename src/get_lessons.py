@@ -46,12 +46,13 @@ def write_lessons(language_code: str, collection_title: str, lessons: List[Lesso
     os.makedirs(audios_folder, exist_ok=True)
 
     for idx, (title, text, audio) in enumerate(lessons, 1):
+        sanitized_title = title.replace("/", "-")
+
         if audio:
-            mp3_path = os.path.join(audios_folder, f"{title}.mp3")
+            mp3_path = os.path.join(audios_folder, f"{sanitized_title}.mp3")
             with open(mp3_path, "wb") as audio_file:
                 audio_file.write(audio)
 
-        sanitized_title = title.replace("/", "-")
         txt_path = os.path.join(texts_folder, f"{sanitized_title}.txt")
         with open(txt_path, "w", encoding="utf-8") as text_file:
             text_file.write("\n".join(text))

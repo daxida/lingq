@@ -16,11 +16,14 @@ async def get_collections(language_code: str) -> None:
         # to do yet another request handled through `get_collection_from_id`
         collections_json = await handler.get_my_collections()
         print(f"Found {len(collections_json)} courses in language: {language_code}")
-        tasks = [
-            get_lessons(language_code, collection_json["id"])
-            for collection_json in collections_json
-        ]
-        await asyncio.gather(*tasks)
+        for collection_json in collections_json:
+            await get_lessons(language_code, collection_json["id"])
+            await asyncio.sleep(1)
+        # tasks = [
+        #     get_lessons(language_code, collection_json["id"])
+        #     for collection_json in collections_json
+        # ]
+        # await asyncio.gather(*tasks)
 
 
 async def get_all_collections() -> None:
@@ -28,6 +31,7 @@ async def get_all_collections() -> None:
         language_codes = await handler.get_language_codes()
         for language_code in language_codes:
             await get_collections(language_code)
+            await asyncio.sleep(1)
 
 
 @timing
