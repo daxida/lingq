@@ -135,6 +135,17 @@ class LingqHandler:
                 response_debug(response, "patch_audio", lesson)
         return response
 
+    async def generate_timestamps(self, lesson: Any) -> ClientResponse:
+        url = f"{LingqHandler.API_URL_V3}{self.language_code}/lessons/{lesson['id']}/genaudio/"
+        async with self.session.post(url, headers=self.config.headers) as response:
+            if response.status == 409:
+                # Ok error. Happens if you try to generate timestamps
+                # before the previous query has had time to finish.
+                print(f"Timestamps are still being generated... ({lesson['title']})")
+            elif response.status != 200:
+                response_debug(response, "generate_timestamps", lesson)
+        return response
+
     async def post_from_multipart(self, data: Any) -> ClientResponse:
         url = f"{LingqHandler.API_URL_V3}{self.language_code}/lessons/import/"
         async with self.session.post(url, headers=self.config.headers, data=data) as response:
