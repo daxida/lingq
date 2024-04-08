@@ -1,6 +1,6 @@
 import asyncio
 import os
-from typing import List
+from typing import List, Tuple
 
 import aiohttp
 from lingqhandler import LingqHandler
@@ -13,13 +13,26 @@ from utils import read_sorted_folders, timing  # type: ignore
 LANGUAGE_CODE = "ja"
 COURSE_ID = "537808"
 
-TEXTS_FOLDER = None  # "split"
-AUDIOS_FOLDER = "downloads/audio_tmp"  # Set this to None if you want to post only text
-SRT_FOLDER = "downloads/whisper_tmp/srt"  # Set this to None if you want to post only text
+# Default folder: "split"
+TEXTS_FOLDER = "downloads/Japanese childhood/texts"
+# Default folder: "audios"
+# Set this to None if you want to post only text.
+AUDIOS_FOLDER = "downloads/Japanese childhood/audios"
+# Set this to None if you want to post only text.
+SRT_FOLDER = None
 
 # 1-idxed, 1 is the first lesson.
 FR_LESSON = 1
-TO_LESSON = 3  # Write an arbitrarily high number to post everything.
+TO_LESSON = 99  # Write an arbitrarily high number to post everything.
+
+# How to pair the files found in TEXTS_FOLDER and AUDIOS_FOLDER.
+# "zip": simple zip of files
+# "match_exact_titles": Group texts and audios with the same title.
+#   This will post texts if no corresponding audio is found,
+#   and ignore audios with no corresponding texts.
+PAIRING_STRATEGY = "match_exact_titles"
+
+Pairings = List[Tuple[str, str | None]]
 
 
 async def post_lesson(
@@ -32,6 +45,7 @@ async def post_lesson(
     data = {
         "collection": COURSE_ID,
         "save": "true",
+        "description": "Uploaded with https://github.com/daxida/lingq",
     }
     fdata = aiohttp.FormData()
     for key, value in data.items():
@@ -61,7 +75,8 @@ async def post_lesson(
         fdata.add_field("audio", audio_file, filename="audio.mp3", content_type="audio/mpeg")
 
     await handler.post_from_multipart(fdata)
-    print(f"  [OK] Posted lesson {title}")
+    with_audio = "with audio " if audio_filename else " "
+    print(f"  [OK] Posted lesson {with_audio}'{title}.txt'")
 
 
 async def post_texts(handler: LingqHandler, texts: List[str]):
@@ -69,16 +84,37 @@ async def post_texts(handler: LingqHandler, texts: List[str]):
         await post_lesson(handler, text_filename)
 
 
+def pairing_strategy(strategy: str, texts: List[str], audios: List[str]) -> Pairings:
+    if strategy == "zip":
+        pairs = list(zip(texts, audios))
+        print(f"Found {len(pairs)} pairs of texts ({len(texts)}) / audio ({len(audios)}).")
+    elif strategy == "match_exact_titles":
+        pairs: Pairings = list()
+        matching_audios = 0
+        for text_filename in texts:
+            audio_filename = None
+            matching_audio_filename = text_filename.replace(".txt", ".mp3")
+            if matching_audio_filename in audios:
+                audio_filename = matching_audio_filename
+                matching_audios += 1
+            pairs.append((text_filename, audio_filename))
+        print(
+            f"Found {matching_audios} matching pairs of texts ({len(texts)}) / audio ({len(audios)})."
+        )
+    else:
+        raise NotImplementedError
+
+    return pairs
+
+
 async def post_texts_and_audios(handler: LingqHandler, texts: List[str], audios: List[str]):
-    pairs = list(zip(texts, audios))
-    print(f"Found {len(pairs)} pairs of texts ({len(texts)}) / audio ({len(audios)}).")
+    pairs = pairing_strategy(PAIRING_STRATEGY, texts, audios)
     for text_filename, audio_filename in pairs:
         await post_lesson(handler, text_filename, audio_filename)
 
 
 async def post_subtitles_and_audios(handler: LingqHandler, subs: List[str], audios: List[str]):
-    pairs = list(zip(subs, audios))
-    print(f"Found {len(pairs)} pairs of subs ({len(subs)}) / audio ({len(audios)}).")
+    pairs = pairing_strategy(PAIRING_STRATEGY, subs, audios)
     for srt_filename, audio_filename in pairs:
         await post_lesson(handler, srt_filename=srt_filename, audio_filename=audio_filename)
 
