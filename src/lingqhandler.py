@@ -126,13 +126,11 @@ class LingqHandler:
         collection.add_data(collection_data)
         return collection
 
-    async def patch_audio(self, lesson: Any, audio_files: Dict[str, Any]) -> ClientResponse:
+    async def patch(self, lesson: Any, data: Dict[str, Any]) -> ClientResponse:
         url = f"{LingqHandler.API_URL_V3}{self.language_code}/lessons/{lesson['id']}/"
-        async with self.session.patch(
-            url, headers=self.config.headers, data=audio_files
-        ) as response:
+        async with self.session.patch(url, headers=self.config.headers, data=data) as response:
             if response.status != 200:
-                response_debug(response, "patch_audio", lesson)
+                response_debug(response, "patch", lesson)
         return response
 
     async def generate_timestamps(self, lesson: Any) -> ClientResponse:

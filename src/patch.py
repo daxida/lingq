@@ -29,7 +29,7 @@ async def patch_single_audio(
     url = lesson["url"]
     lesson_json = await handler.get_lesson_from_url(url)
     audio_files = {"audio": open(audio_path, "rb")}
-    await handler.patch_audio(lesson_json, audio_files)
+    await handler.patch(lesson_json, audio_files)
     print(f"[{idx}/{max_iterations}] Patched audio for: {lesson['title']}")
 
 
@@ -69,7 +69,7 @@ async def patch_bulk_audios(
     for idx, (audio_path, lesson) in enumerate(zip(audios_path, lessons), 1):
         audio_path = path.join(AUDIOS_FOLDER, audio_path)
         audio_files = {"audio": open(audio_path, "rb")}
-        await handler.patch_audio(lesson, audio_files)
+        await handler.patch(lesson, audio_files)
         print(f"[{idx}/{max_iterations}] Patched audio for: {lesson['title']}")
 
     print("patch_bulk_audios finished!")
