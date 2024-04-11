@@ -10,11 +10,20 @@ COURSE_ID = "537808"
 
 
 def sorting_function(lesson: Any):
-    # Sort first by starting number if any, then the title
-    # NOTE: doesn't support versioned numbers 1.1.2
+    # Implement and replace your sorting logic here
+    return sort_by_versioned_numbers(lesson)
+
+
+def sort_by_versioned_numbers(lesson: Any):
+    # 1. Title < 1.1 OtherTitle < 1.2. Another < 2. LastTitle < TitleWithoutNumber
     title = lesson["title"]
-    m = re.findall(r"^\d+", title)
-    starting_number = int(m[0]) if m else 1e9
+    m = re.findall(r"^[\d.]+", title)
+    if m:
+        trimmed = m[0].strip(".")
+        nums = trimmed.split(".")
+        starting_number = tuple(int(num) for num in nums)
+    else:
+        starting_number = 1e9
     return (starting_number, title)
 
 
