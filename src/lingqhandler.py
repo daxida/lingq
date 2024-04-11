@@ -1,19 +1,18 @@
 import asyncio
 import json
-import os
 import sys
 from typing import Any, Dict, List, Optional
 
 from aiohttp import ClientResponse, ClientSession
 from collection import Collection
-from dotenv import dotenv_values
+from dotenv import find_dotenv, dotenv_values
 
 
 class Config:
     def __init__(self):
-        # TODO: fix -> Assumes the scripts are run in the src folder
-        parent_dir = os.path.dirname(os.getcwd())
-        env_path = os.path.join(parent_dir, ".env")
+        env_path = find_dotenv()
+        if not env_path:
+            raise EnvironmentError("Could not find .env file.")
         config = dotenv_values(env_path)
 
         self.key = config["APIKEY"]
@@ -45,8 +44,8 @@ class LingqHandler:
 
     def __init__(self, language_code: str) -> None:
         self.language_code = language_code
-        self.session = ClientSession()
         self.config = Config()
+        self.session = ClientSession()
 
     # Make the handler into an async context manager (for better debug messages)
     async def __aenter__(self):

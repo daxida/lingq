@@ -9,7 +9,6 @@ Scripts for basic interactions with LingQ's (awful) API.
 3. Get your API key from [here](https://www.lingq.com/en/accounts/apikey/).
 4. Create a `.env` file in the root directory with the following format:
    <br>`APIKEY="your-lingq-api-key"`.
-5. Move into the `src` folder: `cd src`.
 5. Run your desired script:
    ```
    # Modify the parameters in post_yt_playlist.py and...
