@@ -1,6 +1,6 @@
 import asyncio
 import re
-from typing import Any, List, Tuple, Dict
+from typing import Any, Dict, List, Tuple
 
 from lingqhandler import LingqHandler
 from utils import timing  # type: ignore

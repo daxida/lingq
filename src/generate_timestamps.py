@@ -1,7 +1,7 @@
 import asyncio
+from typing import Any, List
 
 from lingqhandler import LingqHandler
-from typing import Any, List
 
 LANGUAGE_CODE = "ja"
 COURSE_ID = "537808"
