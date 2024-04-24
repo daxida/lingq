@@ -1,13 +1,11 @@
 import asyncio
-import time
 from typing import Any, Dict, List
 
-import yt_dlp
+import yt_dlp  # type: ignore
 from lingqhandler import LingqHandler
 from utils import timing  # type: ignore
 
 LANGUAGE_CODE = "ja"
-SLEEP_SECONDS = 5
 COURSE_ID = "537808"
 
 # To download a whole channel with yt-dlp, try:
@@ -16,16 +14,17 @@ COURSE_ID = "537808"
 PLAYLIST_URL = "https://www.youtube.com/@mikurealjapanese/videos"
 
 # The script will upload "at most" MAX_UPLOADS videos to LingQ
-MAX_UPLOADS = 200
-
-# If true, skip videos without Closed Captions in the desired language.
-# (ISSUE ?) LANGUAGE_CODE (the LingQ argument) is used for checking suitability in yt-dlp
-# (WARNING) Setting this to true will make the yt-dlp part of the script quite slower
-#           since it also has to download the subtitles.
-SKIP_WITHOUT_CC = False
+MAX_UPLOADS = 50
 
 # If true, skip videos already imported to the course (if false, overwrite existing ones)
-SKIP_ALREADY_UPLOADED = True
+SKIP_UPLOADED = True
+
+# NOTE: This will make the script considerably slower but it's required for generating subtitles
+DOWNLOAD_AUDIO = False
+
+# If true, skip videos without Closed Captions (CC) in the desired language.
+SKIP_WITHOUT_CC = False  # requires DOWNLOAD_AUDIO to be True
+
 
 # fmt: off
 RED    = "\033[31m"  # Error
@@ -39,20 +38,27 @@ RESET  = "\033[0m"
 Playlist = List[Any]
 
 
+def has_closed_captions(entry: Any) -> bool:
+    return "subtitles" in entry and LANGUAGE_CODE in entry["subtitles"]
+
+
 async def filter_playlist(handler: LingqHandler, playlist: Playlist) -> Playlist:
+    # First filter 'None's that may result from downloading errors.
+    playlist = [entry for entry in playlist if entry is not None]
     initial_size = len(playlist)
 
-    if SKIP_WITHOUT_CC:
+    if DOWNLOAD_AUDIO:
         filtered_playlist: Playlist = list()
         for entry in playlist:
             title = entry["title"]
-            if "subtitles" in entry and LANGUAGE_CODE in entry["subtitles"]:
-                filtered_playlist.append(entry)
-            else:
+            if SKIP_WITHOUT_CC and not has_closed_captions(entry):
                 print(f"{YELLOW}[skip: no CC]{RESET} {title}")
+            else:
+                filtered_playlist.append(entry)
+
         playlist = filtered_playlist
 
-    if SKIP_ALREADY_UPLOADED:
+    if SKIP_UPLOADED:
         collection = await handler.get_collection_json_from_id(COURSE_ID)
         lessons = collection["lessons"]
         lessons_urls = [lesson["originalUrl"] for lesson in lessons]
@@ -61,7 +67,7 @@ async def filter_playlist(handler: LingqHandler, playlist: Playlist) -> Playlist
         filtered_playlist = list()
         for entry in playlist:
             title = entry["title"]
-            url = entry["original_url" if SKIP_WITHOUT_CC else "url"]
+            url = entry["original_url" if DOWNLOAD_AUDIO else "url"]
             if url not in lessons_urls:
                 filtered_playlist.append(entry)
             else:
@@ -74,51 +80,56 @@ async def filter_playlist(handler: LingqHandler, playlist: Playlist) -> Playlist
     return playlist
 
 
-async def post_playlist(handler: LingqHandler, playlist: Playlist, max_uploads: int = 10):
-    n_entries = len(playlist)
-    max_entries = min(n_entries, max_uploads)
-    pad = len(str(max_entries))
-    print(f"Uploading {max_entries} videos (from {n_entries} available)")
+async def post_playlist_entry(
+    handler: LingqHandler, entry: Any, idx: int, max_entries: int
+) -> None:
+    """
+    Request that only sends the url of the youtube video to LingQ.
+    They do the subtitle generation when needed (that is, when there are no CC).
+    """
+    title = entry["title"]
+    # assert len(title) < 60  # Max allowed
+    # url = entry["url"] # assumes "extract_flat": "in_playlist"
+    url = entry["original_url" if DOWNLOAD_AUDIO else "url"]
+    data = {
+        "title": title,
+        "url": url,
+        "collection": COURSE_ID,
+        "save": "true",
+    }
 
-    for i, entry in enumerate(playlist):
-        if i >= max_uploads:
-            break
+    response = await handler.post_from_multipart(data)
 
-        title = entry["title"]
-        # url = entry["url"] # assumes "extract_flat": "in_playlist"
-        url = entry["original_url" if SKIP_WITHOUT_CC else "url"]
+    if response.status == 201:
+        padded_idx = f"{idx + 1}".zfill(len(str(max_entries)))
+        progress_msg = f"{GREEN}[{padded_idx}/{max_entries}]{RESET}"
+        cc_msg = "(cc)" if has_closed_captions(entry) else "(whisper)"
+        print(f"{progress_msg} Uploaded successfully: {title} {cc_msg}")
+    else:
+        print(f"{RED}[Failed to upload]{RESET} {title}.")
+        exit(0)
 
-        data = {
-            "title": title,
-            "url": url,
-            "collection": COURSE_ID,
-            "save": "true",
-        }
 
-        response = await handler.post_from_multipart(data)
+async def post_playlist(handler: LingqHandler, playlist: Playlist, max_entries: int) -> None:
+    for idx, entry in enumerate(playlist):
+        await post_playlist_entry(handler, entry, idx, max_entries)
 
-        if response.status == 201:
-            padded_idx = f"{i + 1}".zfill(pad)
-            progress_msg = f"{GREEN}[{padded_idx}/{max_entries}]{RESET}"
-            print(f"{progress_msg} Uploaded successfully: {title}")
-        else:
-            print(f"{RED}[Failed to upload]{RESET} {title}.")
-            print(f"Response code: {response.status}")
-            if response.status == 524:
-                print("Cloudflare timeout (> 100 secs).")
-            else:
-                print(f"Response text: {response.text}")
-            print(f"url: {url}")
 
-        if i < n_entries - 1:
-            time.sleep(SLEEP_SECONDS)
+async def post_playlist_fully_async(
+    handler: LingqHandler, playlist: Playlist, max_entries: int
+) -> None:
+    """Faster version if you don't care about the order in which the lessons are posted."""
+    tasks = [
+        post_playlist_entry(handler, entry, idx, max_entries) for idx, entry in enumerate(playlist)
+    ]
+    await asyncio.gather(*tasks)
 
 
 @timing
 def get_playlist(url: str, ydl_opts: Dict[str, Any]) -> Any:
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info: Any = ydl.extract_info(url, download=False)
-        sanitized: Any = ydl.sanitize_info(info)
+        info: Any = ydl.extract_info(url, download=False)  # type: ignore
+        sanitized: Any = ydl.sanitize_info(info)  # type: ignore
         # import json
         # print(json.dumps(sanitized, indent=2))  # DEBUG
 
@@ -129,14 +140,16 @@ async def post_yt_playlist():
     ydl_opts = {
         # Set title language "extractor_args": {"youtube": {"lang": ["zh-TW"]}},
         # "forceprint": {"video": ["title", "url"]}, # DEBUG
-        "quiet": False,
+        "quiet": True,
         # "simulate": True, # not needed if .extract_info(download=False)
-        "ignoreerrors": False,
+        # If a playlist has private videos, '"ignoreerrors": True' will crash the whole
+        # program. If you know it hasn't, you would probably want this set to 'False'.
+        "ignoreerrors": True,
         "verbose": False,
     }
 
-    # If we don't want to filter by CC, just bulk download the urls (faster).
-    if not SKIP_WITHOUT_CC:
+    # Just bulk download the urls (faster).
+    if not DOWNLOAD_AUDIO:
         ydl_opts.update({"extract_flat": "in_playlist"})  # type: ignore
 
     playlist_data = get_playlist(PLAYLIST_URL, ydl_opts)
@@ -145,7 +158,13 @@ async def post_yt_playlist():
         async with LingqHandler(LANGUAGE_CODE) as handler:
             playlist = playlist_data["entries"]
             playlist = await filter_playlist(handler, playlist)
-            await post_playlist(handler, playlist, MAX_UPLOADS)
+
+            n_entries = len(playlist)
+            max_entries = min(n_entries, MAX_UPLOADS)
+            print(f"Uploading {max_entries} videos (from {n_entries} available)")
+            playlist = playlist[:MAX_UPLOADS]
+
+            await post_playlist(handler, playlist, max_entries)
 
     print("Finished!")
 
