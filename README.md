@@ -1,6 +1,6 @@
 # LingQ
 
-Scripts for basic interactions with LingQ's (awful) API.
+Scripts for basic interactions with [LingQ's](https://www.lingq.com/) API.
 
 ## How to use
 
@@ -18,22 +18,27 @@ Scripts for basic interactions with LingQ's (awful) API.
 ## Description
 
 - **Get** (download lessons): 
-  - get_lessons: download audio/text from a course.
-  - get_courses: download audio/text from all the courses in a language. (unfinished)
+  - **get_lessons**: download audio/text from a course.
+  - **get_courses**: download audio/text from all the courses in a/every language 
+    (NOTE: This reorders your 'Continue studying' shelf).
+  - **get_pictures**: download pictures from a course.
 
 - **Post** (upload lessons):
-  - post: Upload text or text with audio.
-  - post_yt_playlist: Upload an entire youtube playlist.
+  - **post**: Upload text or text with audio.
+  - **post_yt_playlist**: Upload an entire youtube playlist.
 
 - **Patch** (fix or complete lessons): 
-  - Allows to bulk upload audio to a collection with only text. 
-  - Can also be used to overwrite text and to bypass word limit (not recommended).
-
-- **Markdown** (create a markdown of courses)
+  - Bulk upload audio to a collection with only text. 
+  - Can be used to overwrite text, and to bypass word limit (not recommended).
 
 - **Other scripts**:
-  - Processing text: A bunch of ad-hoc scripts.
-  - Processing audio: uses [this](https://gist.github.com/Ashwinning/a9677b5b3afa426667d979b36c019b04) to split the timestamps if the original video didn't have them and you wanted to do it manually.
+  - **Make markdown**: create a markdown of courses.
+  - **Library overview**: get an overview of the library in a language.
+  - **Generate timestamps**: generate timestamps for a course.
+  - **Sort lessons**: sort your lessons according to some criteria.
+  - **Whisper**: Download a youtube playlist in a LingQ friendly format (to use together with `post`).
+  - **Processing text**: A bunch of ad-hoc scripts.
+  - **Processing audio**: uses [this](https://gist.github.com/Ashwinning/a9677b5b3afa426667d979b36c019b04) to split the timestamps if the original video didn't have them and you wanted to do it manually.
 
 ## Links
 
