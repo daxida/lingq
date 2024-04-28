@@ -14,7 +14,7 @@ from utils import timing  # type: ignore
 # get_all_collections(): download all 'my imported' courses in all languages.
 
 LANGUAGE_CODE = "ja"
-SLEEP_TIME = 5
+SLEEP_TIME = 2
 
 
 async def get_collections(language_code: str) -> None:
@@ -23,9 +23,11 @@ async def get_collections(language_code: str) -> None:
         # to do yet another request handled through `get_collection_from_id`
         collections_json = await handler.get_my_collections()
         print(f"Found {len(collections_json)} courses in language: {language_code}")
-        for collection_json in collections_json:
-            await get_lessons(language_code, collection_json["id"], skip_already_downloaded=True)
-            await asyncio.sleep(SLEEP_TIME)
+        tasks = [
+            get_lessons(language_code, collection_json["id"], skip_already_downloaded=True)
+            for collection_json in collections_json
+        ]
+        await asyncio.gather(*tasks)
 
 
 async def get_all_collections() -> None:
