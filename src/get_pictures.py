@@ -33,6 +33,7 @@ async def get_picture(handler: LingqHandler, lesson_json: Any) -> Tuple[str, Any
 async def get_pictures(language_code: str, course_id: str) -> None:
     async with LingqHandler(language_code) as handler:
         collection_json = await handler.get_collection_json_from_id(course_id)
+        assert collection_json is not None
         collection_title = collection_json["title"]
         tasks = [get_picture(handler, lesson_json) for lesson_json in collection_json["lessons"]]
         pictures_and_titles = await asyncio.gather(*tasks)

@@ -87,6 +87,7 @@ async def get_collections(handler: LingqHandler) -> List[Collection]:
         handler.get_collection_object_from_id(collection["id"]) for collection in collections_json
     ]
     collections = await asyncio.gather(*tasks)
+    collections = [collection for collection in collections if collection is not None]
 
     for idx, col in enumerate(collections, 1):
         # To not mess with the sorting later on. This only happens in very weird cases.

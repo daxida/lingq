@@ -103,23 +103,32 @@ class LingqHandler:
         url = f"{LingqHandler.API_URL_V3}{self.language_code}/search/?shelf=my_lessons&type=collection&sortBy=recentlyOpened"
         return await self._get_collections_from_url(url)
 
-    async def get_collection_json_from_id(self, collection_id: str) -> Any:
+    async def get_collection_json_from_id(self, collection_id: str) -> Any | None:
         """Return a JSON with the collection from a collection_id."""
         url = f"{LingqHandler.API_URL_V2}{self.language_code}/collections/{collection_id}"
 
         async with self.session.get(url, headers=self.config.headers) as response:
             collection = await response.json()
 
+        if not "lessons" in collection:
+            # I think this is mainly due to an issue with their garbage collection.
+            print(f"WARN: Ghost collection with id: {collection_id}")
+            return None
+
         if not collection["lessons"]:
             editor_url = f"https://www.lingq.com/learn/{self.language_code}/web/editor/courses/"
-            msg = f"The collection {collection['title']} at {editor_url}{collection_id} has no lessons, (delete it?)"
+            msg = f"WARN: The collection {collection['title']} at {editor_url}{collection_id} has no lessons, (delete it?)"
             print(msg)
 
         return collection
 
-    async def get_collection_object_from_id(self, collection_id: str) -> Collection:
+    async def get_collection_object_from_id(self, collection_id: str) -> Collection | None:
         """Return a Collection object from a collection_id."""
         collection_data = await self.get_collection_json_from_id(collection_id)
+        if collection_data is None:
+            return None
+        if not collection_data["lessons"]:
+            return None
         collection = Collection()
         collection.language_code = self.language_code
         collection.add_data(collection_data)

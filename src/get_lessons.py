@@ -65,9 +65,10 @@ def write_lessons(language_code: str, collection_title: str, lessons: List[Lesso
         print(f"Writing lesson nº{idx}: {title}")
 
 
-async def get_lessons(language_code: str, course_id: str, skip_already_downloaded: bool):
+async def get_lessons(language_code: str, course_id: str, skip_already_downloaded: bool) -> None:
     async with LingqHandler(language_code) as handler:
         collection_json = await handler.get_collection_json_from_id(course_id)
+        assert collection_json is not None
         collection_title = collection_json["title"]
         lessons = collection_json["lessons"]
 
