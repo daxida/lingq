@@ -17,8 +17,12 @@ LANGUAGE_CODES = ["fr"]
 # "all"    for everything in the "Continue Studying" shelf
 SELECT_COURSES = "all"
 
+# If false, do not include the number of views in the markdown.
+INCLUDE_VIEWS = False
+extension_msg = "_no_views" if not INCLUDE_VIEWS else ""
+
 # The folder name where we save the markdowns
-OUT_FOLDER = f"markdowns/markdown_{SELECT_COURSES}"
+OUT_FOLDER = f"markdowns/markdown_{SELECT_COURSES}{extension_msg}"
 
 # fmt: off
 GREEN   = "\033[32m"
@@ -51,6 +55,7 @@ def create_README(language_codes: List[str]) -> None:
 
 def write_markdown(collection_list: List[Collection], language_code: str) -> None:
     out_path = f"{OUT_FOLDER}/courses/courses_{language_code}.md"
+
     with open(out_path, "w", encoding="utf-8") as md:
         # Headings
         fixing_date_width = "&nbsp;" * 6  # Ugly but works
@@ -65,6 +70,26 @@ def write_markdown(collection_list: List[Collection], language_code: str) -> Non
             assert c.title is not None
             sanitized_title = c.title.replace("|", "-").replace("[", "(").replace("]", ")")
             line = f"|{is_shared}|{c.level}|[{sanitized_title}]({c.course_url})|{view_count}|{c.amount_lessons}|{c.first_update}|{c.last_update}\n"
+            md.write(line)
+
+
+def write_markdown_no_views(collection_list: List[Collection], language_code: str) -> None:
+    # The git diff is easier to visualize with no views polluting it.
+    out_path = f"{OUT_FOLDER}/courses/courses_{language_code}.md"
+
+    with open(out_path, "w", encoding="utf-8") as md:
+        # Headings
+        fixing_date_width = "&nbsp;" * 6  # Ugly but works
+        # fmt: off
+        md.write(f"|Status| |Title|Lessons|Created{fixing_date_width}|Updated{fixing_date_width}|\n")
+        md.write("|------|-|-----|-------|--------------|--------------|\n")
+        # fmt: on
+
+        for c in collection_list:
+            is_shared = "shared" if c.is_shared else "private"
+            assert c.title is not None
+            sanitized_title = c.title.replace("|", "-").replace("[", "(").replace("]", ")")
+            line = f"|{is_shared}|{c.level}|[{sanitized_title}]({c.course_url})|{c.amount_lessons}|{c.first_update}|{c.last_update}\n"
             md.write(line)
 
 
@@ -121,6 +146,7 @@ async def make_markdown():
 
         print(f"Making markdown for languages: '{', '.join(language_codes)}'")
         print(f"With courses selection: {SELECT_COURSES}")
+        print(f"With views selection: {INCLUDE_VIEWS}")
         print(f"At folder: {OUT_FOLDER}")
         double_check()
 
@@ -140,7 +166,10 @@ async def make_markdown():
                 continue
 
             sort_collections(collections_list)
-            write_markdown(collections_list, language_code)
+            if INCLUDE_VIEWS:
+                write_markdown(collections_list, language_code)
+            else:
+                write_markdown_no_views(collections_list, language_code)
             print(f"Created markdown for {language_code}!")
 
 
