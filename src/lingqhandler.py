@@ -4,6 +4,7 @@ import sys
 from typing import Any, Dict, List, Optional
 
 from aiohttp import ClientResponse, ClientSession
+from aiohttp_retry import RetryClient, ExponentialRetry
 from collection import Collection
 from dotenv import find_dotenv, dotenv_values
 
@@ -45,7 +46,12 @@ class LingqHandler:
     def __init__(self, language_code: str) -> None:
         self.language_code = language_code
         self.config = Config()
-        self.session = ClientSession()
+        retry_client = RetryClient(
+            client_session=ClientSession(),
+            raise_for_status=False,
+            retry_options=ExponentialRetry(attempts=3),
+        )
+        self.session = retry_client
 
     # Make the handler into an async context manager (for better debug messages)
     async def __aenter__(self):

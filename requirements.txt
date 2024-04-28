@@ -1,4 +1,5 @@
 aiohttp==3.9.4
+aiohttp-retry
 natsort==8.4.0
 python-dotenv==1.0.1
 yt_dlp==2024.4.9
