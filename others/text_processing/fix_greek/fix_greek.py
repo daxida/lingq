@@ -1,13 +1,16 @@
 import re
+from typing import Match
+
+# TODO: Make a test every time I use this script to fix a book.
 
 filename = "18. Η επιβράβευση του Ντόμπι.txt"
 
 
-def upper(pat):
+def upper(pat: Match[str]) -> str:
     return pat.group(1).upper()
 
 
-def capitalize(pat):
+def capitalize(pat: Match[str]) -> str:
     return pat.group(1).capitalize()
 
 
@@ -82,6 +85,8 @@ def specific_capitalizations(text: str) -> str:
     # Specific capitalizations
     to_capitalize = [
         # names
+        "χάρι",
+        "πότερ",
         "ελλάδα",
         "Ελλάδα",
     ]
