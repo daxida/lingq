@@ -3,10 +3,11 @@ Download a youtube playlist, generating subtitles if necessary with whisper.
 
 """
 
-from typing import Dict, Any
-from transcriber import Transcriber
 import os
+from typing import Any, Dict
+
 import yt_dlp  # type: ignore
+from transcriber import Transcriber
 
 PLAYLIST_URL = "https://www.youtube.com/..."
 

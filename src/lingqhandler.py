@@ -4,9 +4,9 @@ import sys
 from typing import Any, Dict, List, Optional
 
 from aiohttp import ClientResponse, ClientSession
-from aiohttp_retry import RetryClient, ExponentialRetry
+from aiohttp_retry import ExponentialRetry, RetryClient
 from collection import Collection
-from dotenv import find_dotenv, dotenv_values
+from dotenv import dotenv_values, find_dotenv
 
 
 class Config:

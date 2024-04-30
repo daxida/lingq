@@ -37,7 +37,7 @@ async def patch_blank_audio(
     handler: LingqHandler, collection: Any, from_lesson: int, to_lesson: int
 ) -> None:
     print(
-        f"Patching blank audio for course: {COURSE_ID}, in language: {LANGUAGE_CODE} (lessons {from_lesson} to {to_lesson})"
+        f"Patching blank audio for course: {collection['title']} (lessons {from_lesson} to {to_lesson})"
     )
     double_check()
 
@@ -85,7 +85,7 @@ async def resplit_japanese(
 
     assert handler.language_code == "ja"
     print(
-        f"Resplitting text for course: {COURSE_ID}, in language: {LANGUAGE_CODE} (lessons {from_lesson} to {to_lesson})"
+        f"Resplitting text for course: {collection['title']} (lessons {from_lesson} to {to_lesson})"
     )
     double_check()
 
@@ -99,13 +99,12 @@ async def resplit_japanese(
 
 async def patch():
     async with LingqHandler(LANGUAGE_CODE) as handler:
-        audios_path = read_sorted_folders(AUDIOS_FOLDER, mode="human")
-
         collection = await handler.get_collection_json_from_id(COURSE_ID)
 
-        await patch_blank_audio(handler, collection, 1, 3)
+        # await patch_blank_audio(handler, collection, 1, 3)
+        # audios_path = read_sorted_folders(AUDIOS_FOLDER, mode="human")
         # await patch_bulk_audios(handler, collection, audios_path, 1, 5)
-        # await resplit_japanese(handler, collection, 1, 2)
+        await resplit_japanese(handler, collection, 1, 200)
 
 
 @timing

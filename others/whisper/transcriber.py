@@ -1,6 +1,7 @@
+from typing import Any
+
 import faster_whisper  # type: ignore
 from tqdm import tqdm
-from typing import Any
 
 
 class Transcriber:

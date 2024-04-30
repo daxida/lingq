@@ -30,6 +30,7 @@ async def filter_already_timestamped(handler: LingqHandler, lessons: List[Any]) 
 async def generate_timestamps(language_code: str, course_id: str) -> None:
     async with LingqHandler(language_code) as handler:
         collection_json = await handler.get_collection_json_from_id(course_id)
+        assert collection_json is not None
         collection_title = collection_json["title"]
         lessons = collection_json["lessons"]
         if SKIP_ALREADY_TIMESTAMPED:
