@@ -1,6 +1,8 @@
 """
-Download a youtube playlist, generating subtitles if necessary with whisper.
+Download a youtube playlist and generate subtitles with whisper.
 
+https://forum.lingq.com/t/easy-whisper-text-generation-from-audio/76701/3
+https://github.com/m1guelpf/auto-subtitle
 """
 
 import os
