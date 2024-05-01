@@ -11,7 +11,20 @@ COURSE_ID = "537808"
 
 def sorting_function(lesson: Any):
     # Implement and replace your sorting logic here
-    return sort_by_versioned_numbers(lesson)
+    return sort_by_reverse_split_numbers(lesson)
+
+
+def sort_by_reverse_split_numbers(lesson: Any):
+    # NOTE: I think this is the standard now in LingQ.
+    # This assumes that the chapters are labelled with numbers.
+    # That is: Chapter1 => 1.txt, Chapter2 => 2.txt etc.
+    # 1:1 < 2:1 < 1:2 < 2:2 (the section number goes first).
+    title = lesson["title"]
+    if not ":" in title:
+        return (int(title), 1e9)
+    else:
+        section_num, title = title.split(": ")
+        return (int(title), int(section_num))
 
 
 def sort_by_versioned_numbers(lesson: Any):
@@ -100,6 +113,7 @@ def get_patch_requests_order(lessons: List[Any]) -> List[Tuple[Any, int]]:
 
     requests_with_ids = get_patch_requests_order_for_ids(lessons_ids, to_reorder)
     requests = [(lessons_ids_mapping[lesson_id], pos) for lesson_id, pos in requests_with_ids]
+    # print([(l["title"], p) for l, p in requests]) # DEBUG
 
     return requests
 

@@ -75,7 +75,7 @@ async def post_lesson(
         fdata.add_field("audio", audio_file, filename="audio.mp3", content_type="audio/mpeg")
 
     await handler.post_from_multipart(fdata)
-    with_audio = "with audio " if audio_filename else " "
+    with_audio = "with audio " if audio_filename else ""
     print(f"  [OK] Posted lesson {with_audio}'{title}.txt'")
 
 
