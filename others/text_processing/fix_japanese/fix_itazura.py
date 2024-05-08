@@ -1,6 +1,7 @@
 # Fixes some issues with itazura (vertical writing)
 
 import os
+import re
 
 FOLDER_PATH = "src/かがみの孤城"
 
@@ -10,9 +11,8 @@ def fix_vertical_characters(text: str) -> str:
         "︱": "ー",
         "︶": ")",
         "︵": "(",
-        # These do not display properly in LingQ
-        "﹁": "「",  # open
-        "﹂": "」",  # close
+        "﹁": "「",
+        "﹂": "」",
         "﹃": "『",
         "﹄": "』",
     }
@@ -24,11 +24,25 @@ def fix_vertical_characters(text: str) -> str:
 
 
 def fix_paragraph_jumps(text: str) -> str:
-    return text.replace("\n\n", "\n--\n")
+    # \n==\n is also a possible separator
+    return re.sub(r"\n(\n)+(?!\n)", "\n--\n", text)
+
+
+def specific_replacements(text: str) -> str:
+    # These do not display properly in LingQ when re-splitting
+    to_replace = {
+        "「": "<",
+        "」": ">",
+    }
+    for string, replacement in to_replace.items():
+        text = text.replace(string, replacement)
+
+    return text
 
 
 def fix(text: str) -> str:
     text = fix_vertical_characters(text)
+    text = specific_replacements(text)
     text = fix_paragraph_jumps(text)
     return text
 
@@ -37,7 +51,8 @@ def process_file(file_path: str):
     with open(file_path, "r") as file:
         text = file.read()
         text = fix(text)
-    with open(f"{file_path}", "w") as out:
+    extension = ""  # Fill this with some string to not overwrite the original
+    with open(f"{file_path}{extension}", "w") as out:
         out.write(text)
 
 
