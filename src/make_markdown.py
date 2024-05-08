@@ -5,7 +5,7 @@ from typing import List
 
 from collection import Collection
 from lingqhandler import LingqHandler
-from utils import timing  # type: ignore
+from utils import timing, double_check  # type: ignore
 
 # If True, creates a markdown for every language where we have known words.
 # Otherwise set it to false and fill language_codes with the desired languages.
@@ -31,12 +31,6 @@ CYAN    = "\033[33m"
 MAGENTA = "\033[35m"
 RESET   = "\033[0m"
 # fmt: on
-
-
-def double_check() -> None:
-    if input("Proceed? [y/n] ") != "y":
-        print("Exiting")
-        exit(1)
 
 
 def create_README(language_codes: List[str]) -> None:

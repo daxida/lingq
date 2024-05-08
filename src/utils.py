@@ -14,6 +14,14 @@ RESET  = "\033[0m"
 # fmt: on
 
 
+def double_check(msg: str = "") -> None:
+    if msg:
+        print(msg)
+    if input("Proceed? [y/n] ") != "y":
+        print("Exiting.")
+        exit(1)
+
+
 def get_greek_sorting_fn():
     # This requires fine tuning depending of the entries' name format:
     # I was working with:

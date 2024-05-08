@@ -4,7 +4,9 @@ from typing import List, Tuple
 
 import aiohttp
 from lingqhandler import LingqHandler
-from utils import read_sorted_folders, timing  # type: ignore
+from utils import read_sorted_folders, timing, double_check  # type: ignore
+
+# TODO: merge .srt and .txt logic
 
 # The preprocessed split text.txt files should be in TEXTS_FOLDER
 # and the same goes for the .mp3 in AUDIOS_FOLDER
@@ -103,6 +105,8 @@ def pairing_strategy(strategy: str, texts: List[str], audios: List[str]) -> Pair
         )
     else:
         raise NotImplementedError
+
+    double_check()
 
     return pairs
 

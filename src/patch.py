@@ -4,7 +4,7 @@ from os import path
 from typing import Any, List
 
 from lingqhandler import LingqHandler
-from utils import read_sorted_folders, timing  # type: ignore
+from utils import read_sorted_folders, timing, double_check  # type: ignore
 
 # This deals with overwriting of existing lessons / collections.
 # The main usecase is to add audio to an already uploaded book where some
@@ -15,12 +15,6 @@ from utils import read_sorted_folders, timing  # type: ignore
 LANGUAGE_CODE = "ja"
 COURSE_ID = "537808"
 AUDIOS_FOLDER = "audios"
-
-
-def double_check():
-    if input("Proceed? [y/n] ") != "y":
-        print("Exiting")
-        exit(1)
 
 
 async def patch_single_audio(
@@ -36,10 +30,8 @@ async def patch_single_audio(
 async def patch_blank_audio(
     handler: LingqHandler, collection: Any, from_lesson: int, to_lesson: int
 ) -> None:
-    print(
-        f"Patching blank audio for course: {collection['title']} (lessons {from_lesson} to {to_lesson})"
-    )
-    double_check()
+    msg = f"Patching blank audio for course: {collection['title']} (lessons {from_lesson} to {to_lesson})"
+    double_check(msg)
 
     lessons = collection["lessons"][from_lesson - 1 : to_lesson]
     max_iterations = len(lessons)
@@ -84,10 +76,10 @@ async def resplit_japanese(
     """
 
     assert handler.language_code == "ja"
-    print(
+    msg = (
         f"Resplitting text for course: {collection['title']} (lessons {from_lesson} to {to_lesson})"
     )
-    double_check()
+    double_check(msg)
 
     urls = [lesson["url"] for lesson in collection["lessons"][from_lesson - 1 : to_lesson]]
     lessons = await handler.get_lessons_from_urls(urls)

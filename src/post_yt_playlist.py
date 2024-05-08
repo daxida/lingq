@@ -60,6 +60,7 @@ async def filter_playlist(handler: LingqHandler, playlist: Playlist) -> Playlist
 
     if SKIP_UPLOADED:
         collection = await handler.get_collection_json_from_id(COURSE_ID)
+        assert collection is not None
         lessons = collection["lessons"]
         lessons_urls = [lesson["originalUrl"] for lesson in lessons]
         lessons_urls = set(lessons_urls)
