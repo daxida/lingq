@@ -95,7 +95,7 @@ def pairing_strategy(strategy: str, texts: List[str], audios: List[str]) -> Pair
         matching_audios = 0
         for text_filename in texts:
             audio_filename = None
-            matching_audio_filename = text_filename.replace(".txt", ".mp3")
+            matching_audio_filename = text_filename.replace(".txt", ".mp3").replace(".srt", ".mp3")
             if matching_audio_filename in audios:
                 audio_filename = matching_audio_filename
                 matching_audios += 1
