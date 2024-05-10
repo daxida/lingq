@@ -3,7 +3,7 @@ import re
 from typing import Any, Dict, List, Tuple
 
 from lingqhandler import LingqHandler
-from utils import timing  # type: ignore
+from utils import timing, sort_greek_words  # type: ignore
 
 LANGUAGE_CODE = "ja"
 COURSE_ID = "537808"
@@ -38,6 +38,10 @@ def sort_by_versioned_numbers(lesson: Any):
     else:
         starting_number = 1e9
     return (starting_number, title)
+
+
+def sort_by_greek_words(lesson: Any):
+    return sort_greek_words(lesson["title"])
 
 
 def longest_increasing_subsequence(lst: List[int]) -> List[int]:

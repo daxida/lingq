@@ -1,7 +1,8 @@
 import os
 import time
+import unicodedata
 from functools import wraps
-from typing import List
+from typing import Dict, List
 
 from natsort import os_sorted
 
@@ -20,6 +21,41 @@ def double_check(msg: str = "") -> None:
     if input("Proceed? [y/n] ") != "y":
         print("Exiting.")
         exit(1)
+
+
+def normalize_greek_word(word: str) -> str:
+    """
+    Return a greek word without accents in lowercase.
+    ["Άλφα", "Αλφα", "άλφα", "αλφα"] are all converted into "αλφα".
+
+    >>> words = ["Άλφα", "Αλφα", "άλφα", "αλφα"]
+    >>> normalized_words = [normalize_greek_word(w) for w in words]
+    >>> assert len(set(normalized_words)) == 1
+    """
+    normalized = unicodedata.normalize("NFKD", word).casefold()
+    return "".join(c for c in normalized if not unicodedata.combining(c))
+
+
+def sort_greek_words(word: str) -> List[float]:
+    """
+    Sort greek words while ignoring case and accents:
+
+    >>> words = ['Βελάκι', 'άλφα', 'αλφάδι', 'Άρτεμις', 'Άλφα', 'αλεπού']
+    >>> words.sort(key=sort_greek_words)
+    >>> ['αλεπού', 'άλφα', 'Άλφα', 'αλφάδι', 'Άρτεμις', 'Βελάκι']
+    """
+    if not word:
+        return [float("inf")]
+
+    # fmt: off
+    ALPHABET: Dict[str, int] = {
+        'α': 1, 'β': 2, 'γ': 3, 'δ': 4, 'ε': 5, 'ζ': 6, 'η': 7, 'θ': 8, 'ι': 9, 'κ': 10,
+        'λ': 11, 'μ': 12, 'ν': 13, 'ξ': 14, 'ο': 15, 'π': 16, 'ρ': 17, 'σ': 18, 'τ': 19, 'υ': 20,
+        'φ': 21, 'χ': 22, 'ψ': 23, 'ω': 24
+    }
+    # fmt: on
+
+    return [ALPHABET.get(normalize_greek_word(char), float("inf")) for char in word]
 
 
 def get_greek_sorting_fn():
@@ -76,3 +112,7 @@ def timing(f):
         return result
 
     return wrap
+
+
+if __name__ == "__main__":
+    pass
