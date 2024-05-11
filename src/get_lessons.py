@@ -15,6 +15,7 @@ LANGUAGE_CODE = "ja"
 COURSE_ID = "537808"
 DOWNLOAD_FOLDER = "downloads"
 SKIP_ALREADY_DOWNLOADED = False
+DOWNLOAD_AUDIO = False
 
 # A simple lesson type: (title, text, audio)
 Lesson = Tuple[str, List[str], bytes | None]
@@ -24,7 +25,9 @@ def sanitize_title(title: str) -> str:
     return title.replace("/", "-")
 
 
-async def get_lesson(handler: LingqHandler, lesson_json: Any, idx: int) -> Lesson:
+async def get_lesson(
+    handler: LingqHandler, lesson_json: Any, idx: int, download_audio: bool
+) -> Lesson:
     title = lesson_json["title"]
     # title = f"{idx}.{lesson['title']}" # add indices
 
@@ -34,8 +37,11 @@ async def get_lesson(handler: LingqHandler, lesson_json: Any, idx: int) -> Lesso
         paragraph = " ".join(line["text"] for line in token)
         text.append(paragraph)  # type: ignore
 
-    # The audio doesn't need the lesson_text_json
-    audio = await handler.get_audio_from_lesson(lesson_json)
+    if download_audio:
+        # The audio doesn't need the lesson_text_json
+        audio = await handler.get_audio_from_lesson(lesson_json)
+    else:
+        audio = None
 
     lesson: Lesson = (title, text, audio)
     print(f"Downloaded lesson nº{idx}: {lesson_json['title']}")
@@ -65,7 +71,9 @@ def write_lessons(language_code: str, collection_title: str, lessons: List[Lesso
         print(f"Writing lesson nº{idx}: {title}")
 
 
-async def get_lessons(language_code: str, course_id: str, skip_already_downloaded: bool) -> None:
+async def get_lessons(
+    language_code: str, course_id: str, skip_already_downloaded: bool, download_audio: bool
+) -> None:
     async with LingqHandler(language_code) as handler:
         collection_json = await handler.get_collection_json_from_id(course_id)
         assert collection_json is not None
@@ -90,7 +98,8 @@ async def get_lessons(language_code: str, course_id: str, skip_already_downloade
             lessons = filtered_lessons
 
         tasks = [
-            get_lesson(handler, lesson_json, idx) for idx, lesson_json in enumerate(lessons, 1)
+            get_lesson(handler, lesson_json, idx, download_audio)
+            for idx, lesson_json in enumerate(lessons, 1)
         ]
         lessons = await asyncio.gather(*tasks)
 
@@ -101,7 +110,7 @@ async def get_lessons(language_code: str, course_id: str, skip_already_downloade
 
 @timing
 def main():
-    asyncio.run(get_lessons(LANGUAGE_CODE, COURSE_ID, SKIP_ALREADY_DOWNLOADED))
+    asyncio.run(get_lessons(LANGUAGE_CODE, COURSE_ID, SKIP_ALREADY_DOWNLOADED, DOWNLOAD_AUDIO))
 
 
 if __name__ == "__main__":
