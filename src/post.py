@@ -1,6 +1,5 @@
 import asyncio
 import os
-from typing import List, Tuple
 
 import aiohttp
 from lingqhandler import LingqHandler
@@ -34,7 +33,7 @@ TO_LESSON = 99  # Write an arbitrarily high number to post everything.
 #   and ignore audios with no corresponding texts.
 PAIRING_STRATEGY = "match_exact_titles"
 
-Pairings = List[Tuple[str, str | None]]
+Pairings = list[tuple[str, str | None]]
 
 
 async def post_lesson(
@@ -81,12 +80,12 @@ async def post_lesson(
     print(f"  {colors.OK}[OK]{colors.END} Posted lesson {with_audio}'{title}.txt'")
 
 
-async def post_texts(handler: LingqHandler, texts: List[str]):
+async def post_texts(handler: LingqHandler, texts: list[str]):
     for text_filename in texts:
         await post_lesson(handler, text_filename)
 
 
-def pairing_strategy(strategy: str, texts: List[str], audios: List[str]) -> Pairings:
+def pairing_strategy(strategy: str, texts: list[str], audios: list[str]) -> Pairings:
     if strategy == "zip":
         pairs = list(zip(texts, audios))
         print(f"Found {len(pairs)} pairs of texts ({len(texts)}) / audio ({len(audios)}).")
@@ -111,13 +110,13 @@ def pairing_strategy(strategy: str, texts: List[str], audios: List[str]) -> Pair
     return pairs
 
 
-async def post_texts_and_audios(handler: LingqHandler, texts: List[str], audios: List[str]):
+async def post_texts_and_audios(handler: LingqHandler, texts: list[str], audios: list[str]):
     pairs = pairing_strategy(PAIRING_STRATEGY, texts, audios)
     for text_filename, audio_filename in pairs:
         await post_lesson(handler, text_filename, audio_filename)
 
 
-async def post_subtitles_and_audios(handler: LingqHandler, subs: List[str], audios: List[str]):
+async def post_subtitles_and_audios(handler: LingqHandler, subs: list[str], audios: list[str]):
     pairs = pairing_strategy(PAIRING_STRATEGY, subs, audios)
     for srt_filename, audio_filename in pairs:
         await post_lesson(handler, srt_filename=srt_filename, audio_filename=audio_filename)

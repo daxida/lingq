@@ -1,7 +1,7 @@
 import asyncio
 import os
 from os import path
-from typing import Any, List
+from typing import Any
 
 from lingqhandler import LingqHandler
 from utils import double_check, read_sorted_folders, timing  # type: ignore
@@ -47,7 +47,7 @@ async def patch_blank_audio(
 
 
 async def patch_bulk_audios(
-    handler: LingqHandler, collection: Any, audios_path: List[str], from_lesson: int, to_lesson: int
+    handler: LingqHandler, collection: Any, audios_path: list[str], from_lesson: int, to_lesson: int
 ) -> None:
     urls = [lesson["url"] for lesson in collection["lessons"][from_lesson - 1 : to_lesson]]
     lessons = await handler.get_lessons_from_urls(urls)

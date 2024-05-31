@@ -1,7 +1,7 @@
 import asyncio
 import json
 import sys
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from aiohttp import ClientResponse, ClientSession
 from aiohttp_retry import ExponentialRetry, RetryClient
@@ -25,7 +25,7 @@ def E(my_json: Any):
     json.dump(my_json, sys.stdout, ensure_ascii=False, indent=2)
 
 
-def response_debug(response: ClientResponse, function_name: str, lesson: Optional[Any] = None):
+def response_debug(response: ClientResponse, function_name: str, lesson: Any | None = None):
     print(f"Error in {function_name}")
     if lesson is not None:
         print(f"For lesson: {lesson['title']}")
@@ -61,7 +61,7 @@ class LingqHandler:
     async def __aexit__(self, exc_type, exc_value, tb):  # type: ignore
         await self.session.close()
 
-    async def get_language_codes(self) -> List[str]:
+    async def get_language_codes(self) -> list[str]:
         """Returns a list of language codes with known words"""
         url = f"{LingqHandler.API_URL_V2}languages"
         async with self.session.get(url, headers=self.config.headers) as response:
@@ -77,7 +77,7 @@ class LingqHandler:
 
         return lesson
 
-    async def get_lessons_from_urls(self, urls: List[str]) -> List[Any]:
+    async def get_lessons_from_urls(self, urls: list[str]) -> list[Any]:
         tasks = [self.get_lesson_from_url(url) for url in urls]
         lessons = await asyncio.gather(*tasks)
 
@@ -144,7 +144,7 @@ class LingqHandler:
         collection.add_data(collection_data)
         return collection
 
-    async def patch(self, lesson: Any, data: Dict[str, Any]) -> ClientResponse:
+    async def patch(self, lesson: Any, data: dict[str, Any]) -> ClientResponse:
         url = f"{LingqHandler.API_URL_V3}{self.language_code}/lessons/{lesson['id']}/"
         async with self.session.patch(url, headers=self.config.headers, data=data) as response:
             if response.status != 200:

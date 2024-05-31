@@ -1,5 +1,4 @@
 import os
-from typing import Dict, List
 
 OUT_FOLDER = "split"
 IN_FILE = "norwegian_wood.txt"
@@ -11,7 +10,7 @@ IN_FILE = "norwegian_wood.txt"
 HEADINGS_FOLDER = "headings.txt"
 
 
-def split_by_headings(lines: List[str], headings: List[str]) -> Dict:
+def split_by_headings(lines: list[str], headings: list[str]) -> dict:
     """
     Returns a dictionary where:
     - A key is the name of a chapter (=heading)
@@ -38,7 +37,7 @@ def split_by_headings(lines: List[str], headings: List[str]) -> Dict:
     return split_data
 
 
-def write(split_data: Dict, headings: List[str]) -> None:
+def write(split_data: dict, headings: list[str]) -> None:
     """In case of not found chapters, it writes a ?? file for easier fixing"""
     for idx_p, heading in enumerate(headings, 1):
         prefix = f"{OUT_FOLDER}/{idx_p:02d}. "
@@ -52,7 +51,7 @@ def write(split_data: Dict, headings: List[str]) -> None:
                 f.write("NONE")
 
 
-def test_titles(split_data: Dict, headings: List[str]) -> int:
+def test_titles(split_data: dict, headings: list[str]) -> int:
     """Tests that every chapter in the heading list is correctly found"""
     print(f"{len(split_data)} chapters were found:")
 

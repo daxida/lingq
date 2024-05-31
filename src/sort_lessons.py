@@ -1,6 +1,6 @@
 import asyncio
 import re
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 from lingqhandler import LingqHandler
 from utils import sort_greek_words, timing  # type: ignore
@@ -20,7 +20,7 @@ def sort_by_reverse_split_numbers(lesson: Any):
     # That is: Chapter1 => 1.txt, Chapter2 => 2.txt etc.
     # 1:1 < 2:1 < 1:2 < 2:2 (the section number goes first).
     title = lesson["title"]
-    if not ":" in title:
+    if ":" not in title:
         return (int(title), 1e9)
     else:
         section_num, title = title.split(": ")
@@ -44,7 +44,7 @@ def sort_by_greek_words(lesson: Any):
     return sort_greek_words(lesson["title"])
 
 
-def longest_increasing_subsequence(lst: List[int]) -> List[int]:
+def longest_increasing_subsequence(lst: list[int]) -> list[int]:
     n = len(lst)
     dp = [1] * n
     prev = [-1] * n
@@ -57,7 +57,7 @@ def longest_increasing_subsequence(lst: List[int]) -> List[int]:
     max_sz = max(dp)
     solutions = [idx for idx in range(len(dp)) if dp[idx] == max_sz]
 
-    res: List[int] = list()
+    res: list[int] = list()
     pos = solutions[0]
     while pos != -1:
         res.append(lst[pos])
@@ -67,12 +67,12 @@ def longest_increasing_subsequence(lst: List[int]) -> List[int]:
 
 
 def get_patch_requests_order_for_ids(
-    lessons_ids: List[int], to_reorder: List[int]
-) -> List[Tuple[int, int]]:
+    lessons_ids: list[int], to_reorder: list[int]
+) -> list[tuple[int, int]]:
     """This is just a possible solution to the problem. Maybe there is a simpler
     approach that equally finds some requests needed to sort the lessons."""
     fix_members = [0] + [elt for elt in lessons_ids if elt not in to_reorder]
-    requests_with_ids: List[Tuple[int, int]] = list()
+    requests_with_ids: list[tuple[int, int]] = list()
 
     for lesson_id in to_reorder:
         first_bigger_fix_member_idx = len(fix_members)
@@ -98,18 +98,18 @@ def get_patch_requests_order_for_ids(
     return requests_with_ids
 
 
-def get_patch_requests_order(lessons: List[Any]) -> List[Tuple[Any, int]]:
+def get_patch_requests_order(lessons: list[Any]) -> list[tuple[Any, int]]:
     """Faster (and way more complicated) version to minimize the number of requests.
     Uses a longest increasing subsequence to identify the lessons that should
     not be moved around, then computes some possible requests that sort the lessons."""
     sorted_lessons = sorted(lessons, key=sorting_function)
-    sorted_idxs: Dict[str, int] = dict()
+    sorted_idxs: dict[str, int] = dict()
     for idx, sorted_lesson in enumerate(sorted_lessons, 1):
         sorted_idxs[sorted_lesson["title"]] = idx
-    lessons_ids_mapping: Dict[int, Any] = {
+    lessons_ids_mapping: dict[int, Any] = {
         sorted_idxs[lesson["title"]]: lesson for lesson in lessons
     }
-    lessons_ids: List[int] = list(lessons_ids_mapping.keys())
+    lessons_ids: list[int] = list(lessons_ids_mapping.keys())
 
     lis = longest_increasing_subsequence(lessons_ids)
     to_reorder = sorted(lesson_id for lesson_id in lessons_ids if lesson_id not in lis)

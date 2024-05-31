@@ -1,5 +1,5 @@
 import asyncio
-from typing import Any, Dict, List
+from typing import Any
 
 import yt_dlp  # type: ignore
 from lingqhandler import LingqHandler
@@ -27,7 +27,7 @@ SKIP_WITHOUT_CC = False  # requires DOWNLOAD_AUDIO to be True
 
 
 # Until we find something better
-Playlist = List[Any]
+Playlist = list[Any]
 
 
 def has_closed_captions(entry: Any) -> bool:
@@ -119,7 +119,7 @@ async def post_playlist_fully_async(
 
 
 @timing
-def get_playlist(url: str, ydl_opts: Dict[str, Any]) -> Any:
+def get_playlist(url: str, ydl_opts: dict[str, Any]) -> Any:
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info: Any = ydl.extract_info(url, download=False)  # type: ignore
         sanitized: Any = ydl.sanitize_info(info)  # type: ignore
