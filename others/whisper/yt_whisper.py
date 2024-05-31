@@ -17,8 +17,16 @@ SKIP_DOWNLOADED = True
 DOWNLOAD_FOLDER = "downloads"
 WHISPER_MODEL = "large"
 
-YELLOW = "\033[33m"
-RESET = "\033[0m"
+
+class colors:
+    # fmt: off
+    FAIL = "\033[31m"    # RED
+    OK   = "\033[32m"    # GREEN
+    WARN = "\033[33m"    # YELLOW
+    SKIP = "\033[0;91m"  # ORANGE
+    TIME = "\033[36m"    # CYAN
+    END  = "\033[0m"
+    # fmt: on
 
 
 def get_audio_with_subtitles(entry: Any, skip_downloaded: bool) -> None:
@@ -34,7 +42,7 @@ def get_audio_with_subtitles(entry: Any, skip_downloaded: bool) -> None:
 
 def download_audio(entry: Any, wav_path: str, format: str, skip_downloaded: bool) -> None:
     if skip_downloaded and os.path.exists(wav_path):
-        print(f"{YELLOW}[skip download: found audio]{RESET} {entry['title']}")
+        print(f"{colors.SKIP}[skip download: found audio]{colors.END} {entry['title']}")
         return
 
     ydl_opts = {
@@ -55,7 +63,7 @@ def write_whisper_subtitles(
     entry: Any, srt_path: str, wav_path: str, skip_downloaded: bool
 ) -> None:
     if skip_downloaded and os.path.exists(srt_path):
-        print(f"{YELLOW}[skip transcription: found srt]{RESET} {entry['title']}")
+        print(f"{colors.SKIP}[skip transcription: found srt]{colors.END} {entry['title']}")
         return
 
     transcriber = Transcriber(wav_path, srt_path, WHISPER_MODEL)

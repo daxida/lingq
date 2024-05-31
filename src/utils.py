@@ -2,17 +2,19 @@ import os
 import time
 import unicodedata
 from functools import wraps
-from typing import Dict, List
 
 from natsort import os_sorted
 
-# fmt: off
-RED    = "\033[31m"  # Error
-GREEN  = "\033[32m"  # Success
-YELLOW = "\033[33m"  # Skips
-CYAN   = "\033[36m"  # Timings
-RESET  = "\033[0m"
-# fmt: on
+
+class colors:
+    # fmt: off
+    FAIL = "\033[31m"    # RED
+    OK   = "\033[32m"    # GREEN
+    WARN = "\033[33m"    # YELLOW
+    SKIP = "\033[0;91m"  # ORANGE
+    TIME = "\033[36m"    # CYAN
+    END  = "\033[0m"
+    # fmt: on
 
 
 def double_check(msg: str = "") -> None:
@@ -36,7 +38,7 @@ def normalize_greek_word(word: str) -> str:
     return "".join(c for c in normalized if not unicodedata.combining(c))
 
 
-def sort_greek_words(word: str) -> List[float]:
+def sort_greek_words(word: str) -> list[float]:
     """
     Sort greek words while ignoring case and accents:
 
@@ -48,7 +50,7 @@ def sort_greek_words(word: str) -> List[float]:
         return [float("inf")]
 
     # fmt: off
-    ALPHABET: Dict[str, int] = {
+    ALPHABET: dict[str, int] = {
         'α': 1, 'β': 2, 'γ': 3, 'δ': 4, 'ε': 5, 'ζ': 6, 'η': 7, 'θ': 8, 'ι': 9, 'κ': 10,
         'λ': 11, 'μ': 12, 'ν': 13, 'ξ': 14, 'ο': 15, 'π': 16, 'ρ': 17, 'σ': 18, 'τ': 19, 'υ': 20,
         'φ': 21, 'χ': 22, 'ψ': 23, 'ω': 24
@@ -84,7 +86,7 @@ def get_roman_sorting_fn():
     return sorting_fn
 
 
-def read_sorted_folders(folder: str, mode: str) -> List[str]:
+def read_sorted_folders(folder: str, mode: str) -> list[str]:
     """Supports human (natsort), roman (I < V) and greek (Β < Γ) sorting"""
     if mode == "human":
         sorting_fn = os_sorted
@@ -108,7 +110,7 @@ def timing(f):
         ts = time.time()
         result = f(*args, **kw)
         te = time.time()
-        print(f"{CYAN}({f.__name__} {te-ts:2.2f}sec){RESET}")
+        print(f"{colors.TIME}({f.__name__} {te-ts:2.2f}sec){colors.END}")
         return result
 
     return wrap

@@ -3,7 +3,7 @@ from typing import Any, Dict, List
 
 import yt_dlp  # type: ignore
 from lingqhandler import LingqHandler
-from utils import timing  # type: ignore
+from utils import colors, timing  # type: ignore
 
 LANGUAGE_CODE = "ja"
 COURSE_ID = "537808"
@@ -26,14 +26,6 @@ DOWNLOAD_AUDIO = False
 SKIP_WITHOUT_CC = False  # requires DOWNLOAD_AUDIO to be True
 
 
-# fmt: off
-RED    = "\033[31m"  # Error
-GREEN  = "\033[32m"  # Success
-YELLOW = "\033[33m"  # Skips
-CYAN   = "\033[36m"  # Timings
-RESET  = "\033[0m"
-# fmt: on
-
 # Until we find something better
 Playlist = List[Any]
 
@@ -52,7 +44,7 @@ async def filter_playlist(handler: LingqHandler, playlist: Playlist) -> Playlist
         for entry in playlist:
             title = entry["title"]
             if SKIP_WITHOUT_CC and not has_closed_captions(entry):
-                print(f"{YELLOW}[skip: no CC]{RESET} {title}")
+                print(f"{colors.SKIP}[skip: no CC]{colors.END} {title}")
             else:
                 filtered_playlist.append(entry)
 
@@ -72,7 +64,7 @@ async def filter_playlist(handler: LingqHandler, playlist: Playlist) -> Playlist
             if url not in lessons_urls:
                 filtered_playlist.append(entry)
             else:
-                print(f"{YELLOW}[skip: already uploaded]{RESET} {title}")
+                print(f"{colors.SKIP}[skip: already uploaded]{colors.END} {title}")
         playlist = filtered_playlist
 
     skipped = initial_size - len(playlist)
@@ -103,11 +95,11 @@ async def post_playlist_entry(
 
     if response.status == 201:
         padded_idx = f"{idx + 1}".zfill(len(str(max_entries)))
-        progress_msg = f"{GREEN}[{padded_idx}/{max_entries}]{RESET}"
+        progress_msg = f"{colors.OK}[{padded_idx}/{max_entries}]{colors.END}"
         cc_msg = "(cc)" if has_closed_captions(entry) else "(whisper)"
         print(f"{progress_msg} Uploaded successfully: {title} {cc_msg}")
     else:
-        print(f"{RED}[Failed to upload]{RESET} {title}.")
+        print(f"{colors.FAIL}[Failed to upload]{colors.END} {title}.")
         exit(0)
 
 

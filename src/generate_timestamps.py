@@ -2,6 +2,7 @@ import asyncio
 from typing import Any, List
 
 from lingqhandler import LingqHandler
+from utils import colors
 
 LANGUAGE_CODE = "ja"
 COURSE_ID = "537808"
@@ -14,7 +15,7 @@ async def check_if_timestamped(handler: LingqHandler, lesson: Any) -> None:
     assert len(tokens) > 0 and len(tokens[0]) == 1
     timestamp = tokens[0][0]["timestamp"]
     if timestamp[0] is not None:
-        print(f"[skip: already timestamped] {lesson['title']}")
+        print(f"{colors.SKIP}[skip: already timestamped]{colors.END} {lesson['title']}")
         lesson["is_timestamped"] = True
     else:
         print(f"Generating timestamps for {lesson['title']}")

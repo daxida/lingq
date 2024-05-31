@@ -3,7 +3,7 @@ import re
 from typing import Any, Dict, List, Tuple
 
 from lingqhandler import LingqHandler
-from utils import timing, sort_greek_words  # type: ignore
+from utils import sort_greek_words, timing  # type: ignore
 
 LANGUAGE_CODE = "ja"
 COURSE_ID = "537808"

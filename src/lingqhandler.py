@@ -7,6 +7,7 @@ from aiohttp import ClientResponse, ClientSession
 from aiohttp_retry import ExponentialRetry, RetryClient
 from collection import Collection
 from dotenv import dotenv_values, find_dotenv
+from utils import colors
 
 
 class Config:
@@ -95,6 +96,9 @@ class LingqHandler:
         async with self.session.get(url, headers=self.config.headers) as response:
             collections = await response.json()
 
+        assert (
+            collections.get("detail", "") != "Not found."
+        ), f"Error in processing the request at {url=}"
         assert collections["next"] is None, "We are missing some collections"
 
         return collections["results"]
@@ -116,14 +120,14 @@ class LingqHandler:
         async with self.session.get(url, headers=self.config.headers) as response:
             collection = await response.json()
 
-        if not "lessons" in collection:
+        if "lessons" not in collection:
             # I think this is mainly due to an issue with their garbage collection.
-            print(f"WARN: Ghost collection with id: {collection_id}")
+            print(f"{colors.WARN}WARN{colors.END}: Ghost collection with id: {collection_id}")
             return None
 
         if not collection["lessons"]:
             editor_url = f"https://www.lingq.com/learn/{self.language_code}/web/editor/courses/"
-            msg = f"WARN: The collection {collection['title']} at {editor_url}{collection_id} has no lessons, (delete it?)"
+            msg = f"{colors.WARN}WARN{colors.END}: The collection {collection['title']} at {editor_url}{collection_id} has no lessons, (delete it?)"
             print(msg)
 
         return collection

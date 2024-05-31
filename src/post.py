@@ -4,7 +4,7 @@ from typing import List, Tuple
 
 import aiohttp
 from lingqhandler import LingqHandler
-from utils import read_sorted_folders, timing, double_check  # type: ignore
+from utils import colors, double_check, read_sorted_folders, timing  # type: ignore
 
 # TODO: merge .srt and .txt logic
 
@@ -78,7 +78,7 @@ async def post_lesson(
 
     await handler.post_from_multipart(fdata)
     with_audio = "with audio " if audio_filename else ""
-    print(f"  [OK] Posted lesson {with_audio}'{title}.txt'")
+    print(f"  {colors.OK}[OK]{colors.END} Posted lesson {with_audio}'{title}.txt'")
 
 
 async def post_texts(handler: LingqHandler, texts: List[str]):
