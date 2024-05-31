@@ -42,6 +42,7 @@ Scripts for basic interactions with [LingQ's](https://www.lingq.com/) API.
 
 ## Links
 
+- Legacy (v1.0 and v2.0) LingQ's API [documentation](https://www.lingq.com/apidocs/index.html).
 - A miniminalist [script](https://github.com/paulywill/lingq_upload) to upload content to LingQ. May not be up to date.
 - A [script](https://github.com/justbrendo/lingq-yt) to upload youtube playlists to LingQ with Whisper generated subtitles.
 - For [splitting](https://gist.github.com/Ashwinning/a9677b5b3afa426667d979b36c019b04) downloaded audio from youtube.
