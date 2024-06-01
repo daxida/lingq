@@ -1,24 +1,12 @@
 import asyncio
 import os
-from typing import Any, List, Tuple
+from typing import Any
 
 from lingqhandler import LingqHandler
 from utils import timing  # type: ignore
 
-# Downloads audio / text from a Collection (=Course) given the language code and the ID.
-# The ID is just the last number you see when you open a course in the web.
-# > In https://www.lingq.com/en/learn/el/web/library/course/1289772 the ID is 1289772
-
-# Creates a 'download' folder and saves the text/audio in a 'text'/'audio' folder.
-
-LANGUAGE_CODE = "ja"
-COURSE_ID = "537808"
-DOWNLOAD_FOLDER = "downloads"
-SKIP_ALREADY_DOWNLOADED = False
-DOWNLOAD_AUDIO = False
-
 # A simple lesson type: (title, text, audio)
-Lesson = Tuple[str, List[str], bytes | None]
+Lesson = tuple[str, list[str], bytes | None]
 
 
 def sanitize_title(title: str) -> str:
@@ -49,9 +37,11 @@ async def get_lesson(
     return lesson
 
 
-def write_lessons(language_code: str, collection_title: str, lessons: List[Lesson]) -> None:
-    texts_folder = os.path.join(DOWNLOAD_FOLDER, language_code, collection_title, "texts")
-    audios_folder = os.path.join(DOWNLOAD_FOLDER, language_code, collection_title, "audios")
+def write_lessons(
+    language_code: str, collection_title: str, lessons: list[Lesson], download_folder: str
+) -> None:
+    texts_folder = os.path.join(download_folder, language_code, collection_title, "texts")
+    audios_folder = os.path.join(download_folder, language_code, collection_title, "audios")
 
     os.makedirs(texts_folder, exist_ok=True)
     os.makedirs(audios_folder, exist_ok=True)
@@ -71,8 +61,12 @@ def write_lessons(language_code: str, collection_title: str, lessons: List[Lesso
         print(f"Writing lesson nº{idx}: {title}")
 
 
-async def get_lessons(
-    language_code: str, course_id: str, skip_already_downloaded: bool, download_audio: bool
+async def _get_lessons(
+    language_code: str,
+    course_id: str,
+    skip_already_downloaded: bool,
+    download_audio: bool,
+    download_folder: str,
 ) -> None:
     async with LingqHandler(language_code) as handler:
         collection_json = await handler.get_collection_json_from_id(course_id)
@@ -84,7 +78,7 @@ async def get_lessons(
             f"Downloading: '{collection_title}' at https://www.lingq.com/learn/{language_code}/web/library/course/{course_id}"
         )
 
-        texts_folder = os.path.join(DOWNLOAD_FOLDER, language_code, collection_title, "texts")
+        texts_folder = os.path.join(download_folder, language_code, collection_title, "texts")
         if skip_already_downloaded and os.path.exists(texts_folder):
             text_files = os.listdir(texts_folder)
             filtered_lessons = [
@@ -103,15 +97,44 @@ async def get_lessons(
         ]
         lessons = await asyncio.gather(*tasks)
 
-        write_lessons(language_code, collection_title, lessons)
+        write_lessons(language_code, collection_title, lessons, download_folder)
 
         print("Finished download.")
 
 
 @timing
-def main():
-    asyncio.run(get_lessons(LANGUAGE_CODE, COURSE_ID, SKIP_ALREADY_DOWNLOADED, DOWNLOAD_AUDIO))
+def get_lessons(
+    language_code: str,
+    course_id: str,
+    skip_already_downloaded: bool,
+    download_audio: bool,
+    download_folder: str = ".",
+):
+    """
+    Downloads text and/or audio from a collection (course) given the language code and the course ID.
+
+    Args:
+        language_code (str): The language code of the course (e.g., 'en' for English, 'es' for Spanish).
+        course_id (str): The ID of the course. This is the last number in the course URL.
+        skip_already_downloaded (bool): If True, skips downloading lessons that have already been downloaded.
+        download_audio (bool): If True, downloads the audio files for the lessons.
+        download_folder (str): The folder where the downloaded text and audio files will be saved.
+
+    Creates a 'download' folder and saves the text/audio in 'text'/'audio' subfolders.
+    """
+    asyncio.run(
+        _get_lessons(
+            language_code, course_id, skip_already_downloaded, download_audio, download_folder
+        )
+    )
 
 
 if __name__ == "__main__":
-    main()
+    # Defaults for manually running this script.
+    get_lessons(
+        language_code="ja",
+        course_id="537808",
+        skip_already_downloaded=False,
+        download_audio=False,
+        download_folder="downloads",
+    )
