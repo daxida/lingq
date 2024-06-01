@@ -38,7 +38,7 @@ def normalize_greek_word(word: str) -> str:
     return "".join(c for c in normalized if not unicodedata.combining(c))
 
 
-def sort_greek_words(word: str) -> list[float]:
+def sort_greek_words(word: str) -> tuple[float, ...]:
     """
     Sort greek words while ignoring case and accents:
 
@@ -47,7 +47,7 @@ def sort_greek_words(word: str) -> list[float]:
     >>> ['αλεπού', 'άλφα', 'Άλφα', 'αλφάδι', 'Άρτεμις', 'Βελάκι']
     """
     if not word:
-        return [float("inf")]
+        return (float("inf"),)
 
     # fmt: off
     ALPHABET: dict[str, int] = {
@@ -57,7 +57,7 @@ def sort_greek_words(word: str) -> list[float]:
     }
     # fmt: on
 
-    return [ALPHABET.get(normalize_greek_word(char), float("inf")) for char in word]
+    return tuple(ALPHABET.get(normalize_greek_word(char), float("inf")) for char in word)
 
 
 def get_greek_sorting_fn():

@@ -5,42 +5,40 @@ from typing import Any
 from lingqhandler import LingqHandler
 from utils import sort_greek_words, timing  # type: ignore
 
-LANGUAGE_CODE = "ja"
-COURSE_ID = "537808"
 
-
-def sorting_function(lesson: Any):
+def sorting_function(lesson: Any) -> tuple[float, ...]:
     # Implement and replace your sorting logic here
-    return sort_by_reverse_split_numbers(lesson)
+    # return sort_by_reverse_split_numbers(lesson)
+    return sort_by_versioned_numbers(lesson)
 
 
-def sort_by_reverse_split_numbers(lesson: Any):
+def sort_by_reverse_split_numbers(lesson: Any) -> tuple[float, ...]:
     # NOTE: I think this is the standard now in LingQ.
     # This assumes that the chapters are labelled with numbers.
     # That is: Chapter1 => 1.txt, Chapter2 => 2.txt etc.
     # 1:1 < 2:1 < 1:2 < 2:2 (the section number goes first).
     title = lesson["title"]
     if ":" not in title:
-        return (int(title), 1e9)
+        return (int(title), float("inf"))
     else:
         section_num, title = title.split(": ")
         return (int(title), int(section_num))
 
 
-def sort_by_versioned_numbers(lesson: Any):
+def sort_by_versioned_numbers(lesson: Any) -> tuple[float, ...]:
     # 1. Title < 1.1 OtherTitle < 1.2. Another < 2. LastTitle < TitleWithoutNumber
     title = lesson["title"]
     m = re.findall(r"^[\d.]+", title)
     if m:
         trimmed = m[0].strip(".")
         nums = trimmed.split(".")
-        starting_number = tuple(int(num) for num in nums)
+        starting_numbers = tuple(int(num) for num in nums)
     else:
-        starting_number = 1e9
-    return (starting_number, title)
+        starting_numbers = (float("inf"),)
+    return starting_numbers + (title,)
 
 
-def sort_by_greek_words(lesson: Any):
+def sort_by_greek_words(lesson: Any) -> tuple[float, ...]:
     return sort_greek_words(lesson["title"])
 
 
@@ -122,7 +120,7 @@ def get_patch_requests_order(lessons: list[Any]) -> list[tuple[Any, int]]:
     return requests
 
 
-async def sort_lessons(language_code: str, course_id: str):
+async def _sort_lessons(language_code: str, course_id: str):
     async with LingqHandler(language_code) as handler:
         collection_json = await handler.get_collection_json_from_id(course_id)
         assert collection_json is not None
@@ -133,18 +131,20 @@ async def sort_lessons(language_code: str, course_id: str):
             await handler.patch(lesson, {"pos": pos})
 
         # Simple solution. NOTE: sends a patch request per lesson (too slow).
+
         # lessons.sort(key=sorting_function)
         # for pos, lesson in enumerate(lessons, 1):
         #     payload = {"pos": pos}
         #     await handler.patch(lesson, payload)
 
-        print(f"Finished sorting {collection_json['title']}")
+        print(f"Finished sorting {collection_json['title']}.")
 
 
 @timing
-def main():
-    asyncio.run(sort_lessons(LANGUAGE_CODE, COURSE_ID))
+def sort_lessons(language_code: str, course_id: str) -> None:
+    asyncio.run(_sort_lessons(language_code, course_id))
 
 
 if __name__ == "__main__":
-    main()
+    # Defaults for manually running this script.
+    sort_lessons(language_code="ja", course_id="537808")
