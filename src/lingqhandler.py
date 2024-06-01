@@ -25,12 +25,19 @@ def E(my_json: Any):
     json.dump(my_json, sys.stdout, ensure_ascii=False, indent=2)
 
 
-def response_debug(response: ClientResponse, function_name: str, lesson: Any | None = None):
-    print(f"Error in {function_name}")
+async def response_debug(
+    response: ClientResponse, function_name: str, lesson: Any | None = None
+) -> None:
+    print(f"{colors.FAIL}Error in {function_name}{colors.END}")
     if lesson is not None:
         print(f"For lesson: {lesson['title']}")
     print(f"Response code: {response.status}")
-    print(f"Response text: {response.text}")
+    if response.headers.get("Content-Type") == "application/json":
+        print("Response JSON:")
+        response_json = await response.json()
+        print(response_json)
+    else:
+        print(f"Response text: {response.text}")
     # exit(0)
 
 
@@ -38,7 +45,12 @@ class LingqHandler:
     """
     NOTE: A collection is a course in the API lingo. It is a group of lessons.
 
-    This abstracts all the requests sent to the LingQ API.
+    This abstracts some of the requests sent to the LingQ API.
+
+    Attributes:
+        language_code (str): The language code for the course (e.g., 'ja' for Japanese).
+        config (Config): Configuration settings for the LingQ API.
+        session (RetryClient): A retry-enabled HTTP client session.
     """
 
     API_URL_V2 = "https://www.lingq.com/api/v2/"
@@ -148,7 +160,7 @@ class LingqHandler:
         url = f"{LingqHandler.API_URL_V3}{self.language_code}/lessons/{lesson['id']}/"
         async with self.session.patch(url, headers=self.config.headers, data=data) as response:
             if response.status != 200:
-                response_debug(response, "patch", lesson)
+                await response_debug(response, "patch", lesson)
         return response
 
     async def generate_timestamps(self, lesson: Any) -> ClientResponse:
@@ -159,7 +171,7 @@ class LingqHandler:
                 # before the previous query has had time to finish.
                 print(f"Timestamps are still being generated... ({lesson['title']})")
             elif response.status != 200:
-                response_debug(response, "generate_timestamps", lesson)
+                await response_debug(response, "generate_timestamps", lesson)
         return response
 
     async def post_from_multipart(self, data: Any) -> ClientResponse:
@@ -169,7 +181,7 @@ class LingqHandler:
                 # Ok error. Happens if their servers are overloaded.
                 print("Cloudflare timeout (> 100 secs).")
             elif response.status != 201:
-                response_debug(response, "post_from_multipart")
+                await response_debug(response, "post_from_multipart")
         return response
 
     async def resplit_lesson(self, lesson: Any, method: str) -> ClientResponse:
@@ -186,5 +198,5 @@ class LingqHandler:
             if response.status == 409:
                 print("Already splitting.")
             elif response.status != 200:
-                response_debug(response, "resplit_lesson", lesson)
+                await response_debug(response, "resplit_lesson", lesson)
         return response
