@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime as dt
-from typing import Any, Optional
+from typing import Any
 
 # fmt: off
 TOEUROPEAN = {
@@ -18,14 +18,14 @@ TOEUROPEAN = {
 class Collection:
     # fmt: off
     _id:            int = 0
-    title:          Optional[str] = None
-    language_code:  Optional[str] = None
-    course_url:     Optional[str] = None
+    title:          str | None = None
+    language_code:  str | None = None
+    course_url:     str | None = None
     level:          str = "-"
     hasAudio:       bool = False
     is_shared:      bool = False
-    first_update:   Optional[str] = None
-    last_update:    Optional[str] = None
+    first_update:   str | None = None
+    last_update:    str | None = None
     amount_lessons: int = 0
     viewsCount:     int = 0
     # fmt: on
