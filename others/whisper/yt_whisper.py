@@ -6,16 +6,10 @@ https://github.com/m1guelpf/auto-subtitle
 """
 
 import os
-from typing import Any, Dict
+from typing import Any
 
 import yt_dlp  # type: ignore
 from transcriber import Transcriber
-
-PLAYLIST_URL = "https://www.youtube.com/..."
-
-SKIP_DOWNLOADED = True
-DOWNLOAD_FOLDER = "downloads"
-WHISPER_MODEL = "large"
 
 
 class colors:
@@ -29,15 +23,17 @@ class colors:
     # fmt: on
 
 
-def get_audio_with_subtitles(entry: Any, skip_downloaded: bool) -> None:
+def get_audio_with_subtitles(
+    entry: Any, skip_downloaded: bool, download_folder: str, whisper_model: str
+) -> None:
     title = entry["title"]
-    wav_path = f"{DOWNLOAD_FOLDER}/wav/{title}.wav"
-    srt_path = f"{DOWNLOAD_FOLDER}/srt/{title}.srt"
-    os.makedirs(f"{DOWNLOAD_FOLDER}/srt", exist_ok=True)
+    wav_path = f"{download_folder}/wav/{title}.wav"
+    srt_path = f"{download_folder}/srt/{title}.srt"
+    os.makedirs(f"{download_folder}/srt", exist_ok=True)
     entry["transcribed_by_whisper_srt_path"] = srt_path
 
     download_audio(entry, wav_path, "wav", skip_downloaded)
-    write_whisper_subtitles(entry, srt_path, wav_path, skip_downloaded)
+    write_whisper_subtitles(entry, whisper_model, srt_path, wav_path, skip_downloaded)
 
 
 def download_audio(entry: Any, wav_path: str, format: str, skip_downloaded: bool) -> None:
@@ -60,17 +56,17 @@ def download_audio(entry: Any, wav_path: str, format: str, skip_downloaded: bool
 
 
 def write_whisper_subtitles(
-    entry: Any, srt_path: str, wav_path: str, skip_downloaded: bool
+    entry: Any, whisper_model: str, srt_path: str, wav_path: str, skip_downloaded: bool
 ) -> None:
     if skip_downloaded and os.path.exists(srt_path):
         print(f"{colors.SKIP}[skip transcription: found srt]{colors.END} {entry['title']}")
         return
 
-    transcriber = Transcriber(wav_path, srt_path, WHISPER_MODEL)
+    transcriber = Transcriber(wav_path, srt_path, whisper_model)
     transcriber.transcribe(entry)
 
 
-def get_playlist(url: str, ydl_opts: Dict[str, Any]) -> Any:
+def get_playlist(url: str, ydl_opts: dict[str, Any]) -> Any:
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info: Any = ydl.extract_info(url, download=False)  # type: ignore
         sanitized: Any = ydl.sanitize_info(info)  # type: ignore
@@ -80,7 +76,9 @@ def get_playlist(url: str, ydl_opts: Dict[str, Any]) -> Any:
         return sanitized
 
 
-def main():
+def main(
+    playlist_url: str, skip_downloaded: bool, download_folder: str, whisper_model: str
+) -> None:
     ydl_opts = {
         # Set title language "extractor_args": {"youtube": {"lang": ["zh-TW"]}},
         # "forceprint": {"video": ["title", "url"]}, # DEBUG
@@ -92,11 +90,17 @@ def main():
         "verbose": False,
     }
 
-    playlist_data = get_playlist(PLAYLIST_URL, ydl_opts)
+    playlist_data = get_playlist(playlist_url, ydl_opts)
     entries = playlist_data["entries"]
     for entry in entries:
-        get_audio_with_subtitles(entry, SKIP_DOWNLOADED)
+        get_audio_with_subtitles(entry, skip_downloaded, download_folder, whisper_model)
 
 
 if __name__ == "__main__":
-    main()
+    # Defaults for manually running this script.
+    main(
+        playlist_url="https://www.youtube.com/...",
+        skip_downloaded=True,
+        download_folder="downloads",
+        whisper_model="large",
+    )
