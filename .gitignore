@@ -1,8 +1,9 @@
-venv/
-.env
-
-.vscode
-
 __pycache__
+venv
+build
+*.egg-info
+
+.env
+.vscode
 
 downloads
