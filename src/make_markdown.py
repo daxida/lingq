@@ -116,13 +116,12 @@ def sort_collections(collections: list[Collection]) -> None:
 
 async def _make_markdown(
     language_codes: list[str],
-    download_all: bool,
     select_courses: str,
     include_views: bool,
     out_folder: str,
 ) -> None:
     async with LingqHandler("Filler") as handler:
-        if download_all:
+        if not language_codes:
             language_codes = await handler.get_language_codes()
 
         print(f"Making markdown for language(s): '{', '.join(language_codes)}'")
@@ -160,18 +159,16 @@ async def _make_markdown(
 @timing
 def make_markdown(
     language_codes: list[str],
-    download_all: bool,
     select_courses: str,
     include_views: bool,
     out_folder: str,
 ) -> None:
     """
-    Generates markdown files for specified languages and saves them to the specified folder.
+    Generate markdown files for the given language codes.
 
     Args:
         language_codes (list[str]): List of language codes to process.
-            If `download_all` is True, this will be ignored.
-        download_all (bool): If True, markdowns will be created for all available languages.
+            If no language codes are given, use all languages.
         select_courses (str): Determines which courses to include.
             - "shared" for only my imported and shared collections (ignore private)
             - "mine"   for only my imported collections
@@ -179,16 +176,13 @@ def make_markdown(
         include_views (bool): If True, includes the number of views in the markdown.
         out_folder (str): The output folder where the markdown files will be saved.
     """
-    asyncio.run(
-        _make_markdown(language_codes, download_all, select_courses, include_views, out_folder)
-    )
+    asyncio.run(_make_markdown(language_codes, select_courses, include_views, out_folder))
 
 
 if __name__ == "__main__":
     # Defaults for manually running this script.
     make_markdown(
         language_codes=["fr"],
-        download_all=False,
         select_courses="all",  # all, shared or mine
         include_views=False,
         out_folder="downloads",
