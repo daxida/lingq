@@ -1,44 +1,78 @@
 # LingQ
 
-Scripts for basic interactions with [LingQ's](https://www.lingq.com/) API.
+Command line utilities and scripts for interacting with [LingQ's](https://www.lingq.com/) API.
+
+You will need a LingQ API key. You can get from [here](https://www.lingq.com/en/accounts/apikey/).
+
+## Installation
+
+(Optional) Create a virtual environment: `python3 -m venv venv` and activate it.
+
+Then either directly:
+```
+pip install git+https://github.com/daxida/lingq
+```
+Or clone the repository:
+```
+git clone https://github.com/daxida/lingq
+cd lingq
+pip install .
+```
+
+Finally, create an `.env` file in the root directory with the following format:
+```
+APIKEY="your-lingq-api-key"
+```
 
 ## How to use
 
-1. (Optional) Create a virtual environment: `python3 -m venv venv`.
-2. Install the required packages: `pip install -r requirements.txt`.
-3. Get your API key from [here](https://www.lingq.com/en/accounts/apikey/).
-4. Create a `.env` file in the root directory with the following format:
-   <br>`APIKEY="your-lingq-api-key"`.
-5. Run your desired script:
-   ```
-   # Modify the parameters in post_yt_playlist.py and...
-   python3 post_yt_playlist.py
-   ```
+Some examples:
+```
+# Upload a playlist to a greek course.
+lingq postyt el 129129 "https://www.youtube.com/@awesomeyoutuber"
 
-## Description
+# Bulk upload texts with audio to a german course.
+lingq post de 129129 "mybook/texts" --audios_folder "mybook/audios"
 
-- **Get** (download lessons): 
-  - **get_lessons**: download audio/text from a course.
-  - **get_courses**: download audio/text from all the courses in a/every language 
-    (NOTE: This reorders your 'Continue studying' shelf).
-  - **get_pictures**: download pictures from a course.
+# Timestamp an entire course.
+lingq timestamp es 129129
+```
 
-- **Post** (upload lessons):
-  - **post**: Upload text or text with audio.
-  - **post_yt_playlist**: Upload an entire youtube playlist.
+The full set of commands can be found with `lingq --help`. 
+Per command information uses again the help flag: `lingq timestamp --help`.
 
-- **Patch** (fix or complete lessons): 
-  - Bulk upload audio to a collection with only text. 
-  - Can be used to overwrite text, and to bypass word limit (not recommended).
+A command tree made with [this](https://github.com/whwright/click-command-tree):
+```
+cli - Lingq command line scripts.
+├── get - Get commands.
+│   ├── courses - Get every course from a list of languages.
+│   ├── lessons - Get every lesson from a course id.
+│   └── pictures - Get pictures.
+├── markdown - Generate markdown files for the given language codes.
+├── overview - Library overview.
+├── patch - Patch commands.
+│   ├── audios - Patch commands.
+│   └── texts - Not implemented.
+├── post - Post command.
+├── postyt - Post youtube playlist.
+├── resplit - Resplit a course (only for japanese).
+├── sort - Sort all lessons from a course.
+├── timestamp - Generate timestamps for a course.
+```
 
-- **Other scripts**:
-  - **Make markdown**: create a markdown of courses.
-  - **Library overview**: get an overview of the library in a language.
-  - **Generate timestamps**: generate timestamps for a course.
-  - **Sort lessons**: sort your lessons according to some criteria.
-  - **Whisper**: Download a youtube playlist in a LingQ friendly format (to use together with `post`).
-  - **Processing text**: A bunch of ad-hoc scripts.
-  - **Processing audio**: uses [this](https://gist.github.com/Ashwinning/a9677b5b3afa426667d979b36c019b04) to split the timestamps if the original video didn't have them and you wanted to do it manually.
+## Etc.
+
+Mainly undocumented scripts to scrape, process text and audio, and to manually use whisper.
+
+If you want to use some of it:
+
+```
+git clone https://github.com/daxida/lingq
+cd lingq
+pip install .[etc]
+# And for example
+python3 etc/scrape/japanese/sc_itazura.py
+```
 
 ## Links
 
