@@ -6,6 +6,8 @@ from typing import Any
 import requests
 from bs4 import BeautifulSoup
 
+DOWNLOAD_FOLDER = "downloads"
+
 BOOK_ID = "satu000987/satu000987"
 BOOK_NAME = "かがみの孤城"  # name for the out_folder
 # Inspect and find the first section after contents, pictures etc.
@@ -34,7 +36,8 @@ def remove_ruby(section: Any) -> Any:
         element.string = element.get_text(strip=True)
 
 
-os.makedirs(BOOK_NAME, exist_ok=True)
+book_path = os.path.join(DOWNLOAD_FOLDER, BOOK_NAME)
+os.makedirs(book_path, exist_ok=True)
 
 res = None
 for mirror in range(1, 4):
@@ -56,6 +59,6 @@ for idx, chapter in enumerate(chapters, 1):
     chapter_title = str(idx)
     chapter_text = chapter.text.strip()
 
-    chapter_path = f"{BOOK_NAME}/{chapter_title}"
+    chapter_path = os.path.join(book_path, chapter_title)
     with open(chapter_path, "w") as f:
         f.write(chapter_text)

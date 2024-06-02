@@ -5,8 +5,10 @@ import os
 import requests
 from bs4 import BeautifulSoup
 
-BOOK_ID = "n9636x"
-BOOK_NAME = "book"  # name for the out_folder
+DOWNLOAD_FOLDER = "downloads"
+
+BOOK_ID = "n9636x"  # get this from the url
+BOOK_NAME = "syosetu"  # name for the out_folder
 
 FAKE_BROWSER_HEADERS = {
     "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
@@ -20,7 +22,8 @@ FAKE_BROWSER_HEADERS = {
     "upgrade-insecure-requests": "1",
 }
 
-os.makedirs(BOOK_NAME, exist_ok=True)
+book_path = os.path.join(DOWNLOAD_FOLDER, BOOK_NAME)
+os.makedirs(book_path, exist_ok=True)
 
 url = f"https://ncode.syosetu.com/{BOOK_ID}/"
 res = requests.get(url, headers=FAKE_BROWSER_HEADERS)
@@ -35,6 +38,6 @@ for chapter_id in range(1, n_chapters + 1):
     chapter_text = csoup.find("div", {"id": "novel_honbun"}).text  # type: ignore
     chapter_title = csoup.find("p", {"class": "novel_subtitle"}).text  # type: ignore
 
-    chapter_path = f"{BOOK_NAME}/{chapter_title}"
+    chapter_path = os.path.join(book_path, chapter_title)
     with open(chapter_path, "w") as f:
         f.write(chapter_text)

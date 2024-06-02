@@ -6,14 +6,17 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
+DOWNLOAD_FOLDER = "downloads"
+
 
 def download_book_from_text_id(text_id: str, text_name: str, author_name: str) -> None:
     """The book id is found as `text_id=number` in the url."""
     if author_name:
-        path = f"{author_name}/{text_name}"
+        _path = os.path.join(author_name, text_name)
     else:
-        path = text_name
+        _path = text_name
 
+    path = os.path.join(DOWNLOAD_FOLDER, _path)
     os.makedirs(path, exist_ok=True)
 
     for page in range(1, 999):  # safety upper bound
@@ -27,8 +30,8 @@ def download_book_from_text_id(text_id: str, text_name: str, author_name: str) -
         page_text = page_text_res.text
         page_title = soup.find("div", {"class": "part-header"}).find("h3").text  # type: ignore
 
-        out_title = f"{path}/({page}) {page_title}"
-        with open(out_title, "w") as f:
+        out_page_title = f"({page}) {page_title}"
+        with open(os.path.join(path, out_page_title), "w") as f:
             f.write(page_text)
 
 
