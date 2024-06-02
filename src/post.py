@@ -3,48 +3,25 @@ import os
 
 import aiohttp
 from lingqhandler import LingqHandler
-from utils import colors, double_check, read_sorted_folders, timing  # type: ignore
+from utils import Colors, double_check, read_sorted_folders, timing  # type: ignore
 
-# TODO: merge .srt and .txt logic
-
-# The preprocessed split text.txt files should be in TEXTS_FOLDER
-# and the same goes for the .mp3 in AUDIOS_FOLDER
-# This assumes that they are paired in a way that zipping them makes sense.
-
-LANGUAGE_CODE = "ja"
-COURSE_ID = "537808"
-
-# Default folder: "split"
-TEXTS_FOLDER = "downloads/Japanese childhood/texts"
-# Default folder: "audios"
-# Set this to None if you want to post only text.
-AUDIOS_FOLDER = "downloads/Japanese childhood/audios"
-# Set this to None if you want to post only text.
-SRT_FOLDER = None
-
-# 1-idxed, 1 is the first lesson.
-FR_LESSON = 1
-TO_LESSON = 99  # Write an arbitrarily high number to post everything.
-
-# How to pair the files found in TEXTS_FOLDER and AUDIOS_FOLDER.
-# "zip": simple zip of files
-# "match_exact_titles": Group texts and audios with the same title.
-#   This will post texts if no corresponding audio is found,
-#   and ignore audios with no corresponding texts.
-PAIRING_STRATEGY = "match_exact_titles"
+SUPPORTED_BY_US_TEXT_EXTENSIONS = [".txt", ".srt"]
+SUPPORTED_BY_LINGQ_AUDIO_EXTENSIONS = [".mp3", ".m4a"]
 
 Pairings = list[tuple[str, str | None]]
 
 
 async def post_lesson(
     handler: LingqHandler,
-    text_filename: str | None = None,
+    course_id: str,
+    texts_folder: str,
+    text_filename: str,
+    audios_folder: str | None = None,
     audio_filename: str | None = None,
-    srt_filename: str | None = None,
 ) -> None:
     title = None
     data = {
-        "collection": COURSE_ID,
+        "collection": course_id,
         "save": "true",
         "description": "Uploaded with https://github.com/daxida/lingq",
     }
@@ -52,109 +29,223 @@ async def post_lesson(
     for key, value in data.items():
         fdata.add_field(key, value)
 
-    if text_filename:
-        assert TEXTS_FOLDER is not None
-        title = text_filename.replace(".txt", "")
-        file_path = os.path.join(TEXTS_FOLDER, text_filename)
-        fdata.add_field("title", title)
+    # Load text in fdata
+    text_filename_clean, text_extension = os.path.splitext(text_filename)
+    title = text_filename_clean
+    file_path = os.path.join(texts_folder, text_filename)
+    fdata.add_field("title", title)
+    if text_extension == ".txt":
         fdata.add_field("text", open(file_path, "r", encoding="utf-8").read())
-
-    if srt_filename:
-        assert SRT_FOLDER is not None
-        title = srt_filename.replace(".srt", "")
-        file_path = os.path.join(SRT_FOLDER, srt_filename)
+    elif text_extension == ".srt":
         srt_file = open(file_path, "r", encoding="utf-8").read()
-        fdata.add_field("title", title)
         fdata.add_field(
             "file", srt_file, filename="audio.srt", content_type="application/octet-stream"
         )
+    else:
+        raise NotImplementedError(f"Unsupported text extension: {text_extension}")
 
+    # (Optional) load audio in fdata
     if audio_filename:
-        assert AUDIOS_FOLDER is not None
-        file_path = os.path.join(AUDIOS_FOLDER, audio_filename)
+        assert audios_folder is not None
+        audio_extension = os.path.splitext(audio_filename)[1]
+        assert (
+            audio_extension in SUPPORTED_BY_LINGQ_AUDIO_EXTENSIONS
+        ), f"Unsupported by LingQ audio extension: {audio_extension}"
+        file_path = os.path.join(audios_folder, audio_filename)
         audio_file = open(file_path, "rb")
-        fdata.add_field("audio", audio_file, filename="audio.mp3", content_type="audio/mpeg")
+        fdata.add_field(
+            "audio", audio_file, filename=f"audio{audio_extension}", content_type="audio/mpeg"
+        )
 
-    await handler.post_from_multipart(fdata)
+    response = await handler.post_from_multipart(fdata)
     with_audio = "with audio " if audio_filename else ""
-    print(f"  {colors.OK}[OK]{colors.END} Posted lesson {with_audio}'{title}.txt'")
+    if response.status == 201:
+        print(f"  {Colors.OK}[OK]{Colors.END} Posted lesson {with_audio}'{title}{text_extension}'")
+    else:
+        print(
+            f"  {Colors.FAIL}[FAIL]{Colors.END} Failed to post lesson {with_audio}'{title}{text_extension}'"
+        )
 
 
-async def post_texts(handler: LingqHandler, texts: list[str]):
-    for text_filename in texts:
-        await post_lesson(handler, text_filename)
+def apply_pairing_strategy(strategy: str, texts: list[str], audios: list[str]) -> Pairings:
+    n_pairs = 0
 
-
-def pairing_strategy(strategy: str, texts: list[str], audios: list[str]) -> Pairings:
     if strategy == "zip":
         pairs = list(zip(texts, audios))
+        n_pairs = len(pairs)
         print(f"Found {len(pairs)} pairs of texts ({len(texts)}) / audio ({len(audios)}).")
     elif strategy == "match_exact_titles":
+        # Remove extensions for comparison
+        raw_texts_titles = [os.path.splitext(text_filename)[0] for text_filename in texts]
+        raw_audios_titles = [os.path.splitext(audio_filename)[0] for audio_filename in audios]
+        text_extension = os.path.splitext(texts[0])[1]
+        audio_extension = os.path.splitext(audios[0])[1]
+
         pairs: Pairings = list()
-        matching_audios = 0
-        for text_filename in texts:
+        for raw_text_filename in raw_texts_titles:
             audio_filename = None
-            matching_audio_filename = text_filename.replace(".txt", ".mp3").replace(".srt", ".mp3")
-            if matching_audio_filename in audios:
-                audio_filename = matching_audio_filename
-                matching_audios += 1
-            pairs.append((text_filename, audio_filename))
+            if raw_text_filename in raw_audios_titles:
+                audio_filename = f"{raw_text_filename}{audio_extension}"
+                n_pairs += 1
+            pairs.append((f"{raw_text_filename}{text_extension}", audio_filename))
+
+        info = ""
+        suggestion = ""
+        if n_pairs == 0:
+            info = f"{Colors.WARN}WARN{Colors.END}: "
+            suggestion = " Maybe try a different pairing strategy?"
         print(
-            f"Found {matching_audios} matching pairs of texts ({len(texts)}) / audio ({len(audios)})."
+            f"{info}Found {n_pairs} matching pairs of texts ({len(texts)}) / audio ({len(audios)}).{suggestion}"
         )
+
     else:
         raise NotImplementedError
+
+    print("Found the following pairing:")
+    for idx, (text, audio) in enumerate(pairs):
+        print(f"  ({idx}) {text} ==> {audio}")
 
     double_check()
 
     return pairs
 
 
-async def post_texts_and_audios(handler: LingqHandler, texts: list[str], audios: list[str]):
-    pairs = pairing_strategy(PAIRING_STRATEGY, texts, audios)
+async def post_texts(
+    handler: LingqHandler, course_id: str, texts: list[str], texts_folder: str
+) -> None:
+    for text_filename in texts:
+        await post_lesson(
+            handler, course_id, texts_folder=texts_folder, text_filename=text_filename
+        )
+
+
+async def post_texts_and_audios(
+    handler: LingqHandler,
+    course_id: str,
+    texts: list[str],
+    audios: list[str],
+    texts_folder: str,
+    audios_folder: str,
+    pairing_strategy: str,
+) -> None:
+    pairs = apply_pairing_strategy(pairing_strategy, texts, audios)
     for text_filename, audio_filename in pairs:
-        await post_lesson(handler, text_filename, audio_filename)
+        await post_lesson(
+            handler,
+            course_id,
+            texts_folder=texts_folder,
+            text_filename=text_filename,
+            audios_folder=audios_folder,
+            audio_filename=audio_filename,
+        )
 
 
-async def post_subtitles_and_audios(handler: LingqHandler, subs: list[str], audios: list[str]):
-    pairs = pairing_strategy(PAIRING_STRATEGY, subs, audios)
-    for srt_filename, audio_filename in pairs:
-        await post_lesson(handler, srt_filename=srt_filename, audio_filename=audio_filename)
-
-
-async def post():
-    async with LingqHandler(LANGUAGE_CODE) as handler:
-        url = f"https://www.lingq.com/en/learn/{LANGUAGE_CODE}/web/editor/courses/{COURSE_ID}"
+async def _post(
+    language_code: str,
+    course_id: str,
+    texts_folder: str,
+    audios_folder: str | None,
+    fr_lesson: int,
+    to_lesson: int,
+    pairing_strategy: str,
+) -> None:
+    async with LingqHandler(language_code) as handler:
+        url = f"https://www.lingq.com/en/learn/{language_code}/web/editor/courses/{course_id}"
         print(f"Starting upload at {url}")
 
-        if TEXTS_FOLDER:
-            texts = read_sorted_folders(TEXTS_FOLDER, mode="human")
-            texts = texts[FR_LESSON - 1 : TO_LESSON]
+        texts = read_sorted_folders(texts_folder, mode="human")
+        texts = texts[fr_lesson - 1 : to_lesson]
+        to_lesson = len(texts)
 
-            if AUDIOS_FOLDER:
-                audios = read_sorted_folders(AUDIOS_FOLDER, mode="human")
-                audios = audios[FR_LESSON - 1 : TO_LESSON]
-                print(f"Posting text and audio for lessons {FR_LESSON} to {TO_LESSON}...")
-                await post_texts_and_audios(handler, texts, audios)
-            else:
-                print(f"Posting text for lessons {FR_LESSON} to {TO_LESSON}...")
-                await post_texts(handler, texts)
-        elif SRT_FOLDER:
-            assert TEXTS_FOLDER is None
-            assert AUDIOS_FOLDER is not None
+        texts_extensions = [os.path.splitext(text)[1] for text in texts]
+        assert (
+            len(set(texts_extensions)) == 1
+        ), "All the texts must have the same extension (.txt, .srt)"
 
-            subs = read_sorted_folders(SRT_FOLDER, mode="human")
-            subs = subs[FR_LESSON - 1 : TO_LESSON]
-            audios = read_sorted_folders(AUDIOS_FOLDER, mode="human")
-            audios = audios[FR_LESSON - 1 : TO_LESSON]
-            print(f"Posting subtitles and audio for lessons {FR_LESSON} to {TO_LESSON}...")
-            await post_subtitles_and_audios(handler, subs, audios)
+        texts_extension = texts_extensions[0]
+        assert (
+            texts_extension in SUPPORTED_BY_US_TEXT_EXTENSIONS
+        ), f"Unsupported text extension: {texts_extension}"
+
+        print(f"Detected '{texts_extension}' extension.")
+
+        if audios_folder:
+            audios = read_sorted_folders(audios_folder, mode="human")
+            audios = audios[fr_lesson - 1 : to_lesson]
+            print(f"Posting text and audio for lessons {fr_lesson} to {to_lesson}...")
+            await post_texts_and_audios(
+                handler,
+                course_id,
+                texts,
+                audios,
+                texts_folder,
+                audios_folder,
+                pairing_strategy,
+            )
+        else:
+            if texts_extension == ".srt":
+                assert audios_folder is not None, "SRT files require audios."
+            print(f"Posting text for lessons {fr_lesson} to {to_lesson}...")
+            await post_texts(handler, course_id, texts, texts_folder)
 
 
 @timing
-def main():
-    asyncio.run(post())
+def post(
+    language_code: str,
+    course_id: str,
+    texts_folder: str,
+    audios_folder: str | None = None,
+    fr_lesson: int = 1,
+    to_lesson: int = 99,
+    pairing_strategy: str = "match_exact_titles",
+):
+    """
+    Posts preprocessed split text and audio files to a specified course.
+
+    The preprocessed split text (.txt or .srt) files should be in texts_folder,
+    and the audio (.mp3 or .m4a) files should be in audios_folder.
+
+    Args:
+        language_code (str): The language code of the course.
+        course_id (str): The ID of the course. This is the last number in the course URL.
+        texts_folder (str): The folder containing the preprocessed split text files.
+        audios_folder (str, optional): The folder containing the audio files.
+            Set this to None to post only text.
+            Defaults to None.
+        fr_lesson (int): The index of the first lesson to post (1-indexed).
+            Defaults to 1.
+        to_lesson (int): The index of the last lesson to post (1-indexed).
+            Set to a high number to post everything.
+            Defaults to 99.
+        pairing_strategy (str, optional): How to pair text and audio files.
+            Options are:
+            - "zip": Simple zip of files.
+            - "match_exact_titles": Group texts and audios with the same title.
+                This will post texts if no corresponding audio is found,
+                and ignore audios with no corresponding texts.
+            Defaults to "match_exact_titles".
+    """
+    asyncio.run(
+        _post(
+            language_code,
+            course_id,
+            texts_folder,
+            audios_folder,
+            fr_lesson,
+            to_lesson,
+            pairing_strategy,
+        )
+    )
 
 
 if __name__ == "__main__":
-    main()
+    # Defaults for manually running this script.
+    post(
+        language_code="ja",
+        course_id="537808",
+        texts_folder="downloads/srt/",  # "downloads/ja/日本語の森  - JPLT/texts",
+        audios_folder="downloads/wav/",  # "downloads/ja/日本語の森  - JPLT/audios",
+        fr_lesson=1,
+        to_lesson=2,
+        pairing_strategy="match_exact_titles",
+    )
