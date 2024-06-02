@@ -86,6 +86,10 @@ class LingqHandler:
         """Return a JSON with the lesson, from its url."""
         async with self.session.get(url, headers=self.config.headers) as response:
             lesson = await response.json()
+        if lesson.get("isLocked", "") == "TRANSCRIBE_AUDIO":
+            print(
+                f"{Colors.WARN}WARN{Colors.END} The lesson at {url} is still transcribing audio..."
+            )
 
         return lesson
 
@@ -134,12 +138,12 @@ class LingqHandler:
 
         if "lessons" not in collection:
             # I think this is mainly due to an issue with their garbage collection.
-            print(f"{Colors.WARN}WARN{Colors.END}: Ghost collection with id: {collection_id}")
+            print(f"{Colors.WARN}WARN{Colors.END} Ghost collection with id: {collection_id}")
             return None
 
         if not collection["lessons"]:
             editor_url = f"https://www.lingq.com/learn/{self.language_code}/web/editor/courses/"
-            msg = f"{Colors.WARN}WARN{Colors.END}: The collection {collection['title']} at {editor_url}{collection_id} has no lessons, (delete it?)"
+            msg = f"{Colors.WARN}WARN{Colors.END} The collection {collection['title']} at {editor_url}{collection_id} has no lessons, (delete it?)"
             print(msg)
 
         return collection
@@ -196,7 +200,7 @@ class LingqHandler:
 
         async with self.session.post(url, headers=self.config.headers, data=data) as response:
             if response.status == 409:
-                print("Already splitting.")
+                print(f"{Colors.WARN}WARN{Colors.END} Already splitting {lesson['title']}")
             elif response.status != 200:
                 await response_debug(response, "resplit_lesson", lesson)
         return response

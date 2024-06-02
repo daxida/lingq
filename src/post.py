@@ -92,7 +92,7 @@ def apply_pairing_strategy(strategy: str, texts: list[str], audios: list[str]) -
         info = ""
         suggestion = ""
         if n_pairs == 0:
-            info = f"{Colors.WARN}WARN{Colors.END}: "
+            info = f"{Colors.WARN}WARN{Colors.END} "
             suggestion = " Maybe try a different pairing strategy?"
         print(
             f"{info}Found {n_pairs} matching pairs of texts ({len(texts)}) / audio ({len(audios)}).{suggestion}"
