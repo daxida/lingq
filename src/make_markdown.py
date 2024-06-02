@@ -132,8 +132,10 @@ async def _make_markdown(
         double_check()
 
         extension_msg = "_no_views" if not include_views else ""
-        readme_folder = f"{out_folder}/markdowns/markdown_{select_courses}{extension_msg}"
-        courses_folder = f"{readme_folder}/courses"
+        readme_folder = os.path.join(
+            out_folder, "markdowns", f"markdown_{select_courses}{extension_msg}"
+        )
+        courses_folder = os.path.join(readme_folder, "courses")
         os.makedirs(os.path.join(courses_folder), exist_ok=True)
         write_readme(language_codes, readme_folder)
 
@@ -150,7 +152,7 @@ async def _make_markdown(
 
             sort_collections(collections_list)
 
-            out_folder_markdown = f"{courses_folder}/courses_{language_code}.md"
+            out_folder_markdown = os.path.join(courses_folder, f"courses_{language_code}.md")
             write_markdown(collections_list, out_folder_markdown, include_views)
             print(f"Created markdown for {language_code}!")
 
@@ -189,5 +191,5 @@ if __name__ == "__main__":
         download_all=False,
         select_courses="all",  # all, shared or mine
         include_views=False,
-        out_folder=".",
+        out_folder="downloads",
     )

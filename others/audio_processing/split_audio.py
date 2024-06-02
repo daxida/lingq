@@ -5,7 +5,6 @@
 import os
 import subprocess
 import sys
-from os import path
 
 inputfile = sys.argv[1]
 codec = '-acodec'
@@ -63,13 +62,13 @@ def GetVideoEnd():
     return subprocess.check_output(ffprobeCommand).strip()
 
 def CreateOutputFolder(folder_name):
-    if not path.exists(folder_name):
+    if not os.path.exists(folder_name):
         os.mkdir(folder_name)
 
 def ClearOutputFolder(folder_name):
     for file_name in os.listdir(folder_name):
-        file = path.join(folder_name, file_name)
-        if path.isfile(file):
+        file = os.path.join(folder_name, file_name)
+        if os.path.isfile(file):
             print('Deleting file:', file)
             os.remove(file)    
 

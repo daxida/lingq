@@ -37,10 +37,11 @@ async def _get_pictures(language_code: str, course_id: str, download_folder: str
         tasks = [get_picture(handler, lesson_json) for lesson_json in collection_json["lessons"]]
         pictures_and_titles = await asyncio.gather(*tasks)
 
-        collection_folder = f"{download_folder}/{collection_title}"
+        collection_folder = os.path.join(download_folder, language_code, collection_title)
         os.makedirs(collection_folder, exist_ok=True)
         for picture_title, picture_content in pictures_and_titles:
-            with open(f"{collection_folder}/{picture_title}.png", "wb") as f:
+            picture_path = os.path.join(collection_folder, f"{picture_title}.png")
+            with open(picture_path, "wb") as f:
                 f.write(picture_content)
 
 
@@ -52,4 +53,4 @@ def get_pictures(language_code: str, course_id: str, download_folder: str):
 
 if __name__ == "__main__":
     # Defaults for manually running this script.
-    get_pictures(language_code="ja", course_id="537808", download_folder=".")
+    get_pictures(language_code="ja", course_id="537808", download_folder="downloads")
