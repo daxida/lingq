@@ -12,7 +12,7 @@ import yt_dlp  # type: ignore
 from transcriber import Transcriber
 
 
-class colors:
+class Colors:
     # fmt: off
     FAIL = "\033[31m"    # RED
     OK   = "\033[32m"    # GREEN
@@ -38,7 +38,7 @@ def get_audio_with_subtitles(
 
 def download_audio(entry: Any, wav_path: str, format: str, skip_downloaded: bool) -> None:
     if skip_downloaded and os.path.exists(wav_path):
-        print(f"{colors.SKIP}[skip download: found audio]{colors.END} {entry['title']}")
+        print(f"{Colors.SKIP}[skip download: found audio]{Colors.END} {entry['title']}")
         return
 
     ydl_opts = {
@@ -59,7 +59,7 @@ def write_whisper_subtitles(
     entry: Any, whisper_model: str, srt_path: str, wav_path: str, skip_downloaded: bool
 ) -> None:
     if skip_downloaded and os.path.exists(srt_path):
-        print(f"{colors.SKIP}[skip transcription: found srt]{colors.END} {entry['title']}")
+        print(f"{Colors.SKIP}[skip transcription: found srt]{Colors.END} {entry['title']}")
         return
 
     transcriber = Transcriber(wav_path, srt_path, whisper_model)

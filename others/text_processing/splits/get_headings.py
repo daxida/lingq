@@ -1,8 +1,8 @@
 import re
 
 
-def createHeadings(text_path):
-    headings = []
+def create_headings(text_path: str) -> None:
+    headings: list[str] = []
     with open(text_path, "r") as t:
         for line in t.readlines():
             # REPLACE here with the suitable heading pattern
@@ -16,7 +16,7 @@ def createHeadings(text_path):
 
 def main():
     text_path = "text.txt"
-    createHeadings(text_path)
+    create_headings(text_path)
 
 
 if __name__ == "__main__":

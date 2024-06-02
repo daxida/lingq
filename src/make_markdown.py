@@ -4,14 +4,14 @@ from datetime import datetime
 
 from collection import Collection
 from lingqhandler import LingqHandler
-from utils import colors, double_check, timing  # type: ignore
+from utils import Colors, double_check, timing  # type: ignore
 
 
 def sanitize_title(title: str) -> str:
     return title.replace("|", "-").replace("[", "(").replace("]", ")")
 
 
-def write_README(language_codes: list[str], out_folder: str) -> None:
+def write_readme(language_codes: list[str], out_folder: str) -> None:
     """
     Writes an index-like README.md:
         * [Greek (el)](./courses/courses_el.md)
@@ -48,7 +48,7 @@ def write_markdown(
         md.write(f"|{separator}|\n")
 
         for c in collection_list:
-            view_count = "-" if not c.viewsCount else c.viewsCount
+            view_count = "-" if not c.views_count else c.views_count
             is_shared = "shared" if c.is_shared else "private"
             assert c.title is not None
             sanitized_title = sanitize_title(c.title)
@@ -92,16 +92,16 @@ async def get_collections(handler: LingqHandler, select_courses: str) -> list[Co
         # To not mess with the sorting later on. This only happens in very weird cases.
         if col.last_update is None:
             print(
-                f"[{idx}/{n_collections}] {colors.SKIP}SKIP{colors.END} {col.title} (last_update=None)"
+                f"[{idx}/{n_collections}] {Colors.SKIP}SKIP{Colors.END} {col.title} (last_update=None)"
             )
             continue
 
         # Ignore private collection if the shared_only flag is true
         if select_courses == "shared" and not col.is_shared:
-            print(f"[{idx}/{n_collections}] {colors.SKIP}SKIP{colors.END} {col.title} (NOT SHARED)")
+            print(f"[{idx}/{n_collections}] {Colors.SKIP}SKIP{Colors.END} {col.title} (NOT SHARED)")
             continue
 
-        print(f"[{idx}/{n_collections}] {colors.OK}OK{colors.END} {col.title}")
+        print(f"[{idx}/{n_collections}] {Colors.OK}OK{Colors.END} {col.title}")
 
         collections_list.append(col)
 
@@ -135,7 +135,7 @@ async def _make_markdown(
         readme_folder = f"{out_folder}/markdowns/markdown_{select_courses}{extension_msg}"
         courses_folder = f"{readme_folder}/courses"
         os.makedirs(os.path.join(courses_folder), exist_ok=True)
-        write_README(language_codes, readme_folder)
+        write_readme(language_codes, readme_folder)
 
         n_languages = len(language_codes)
         for idx, language_code in enumerate(language_codes, 1):
@@ -167,7 +167,8 @@ def make_markdown(
     Generates markdown files for specified languages and saves them to the specified folder.
 
     Args:
-        language_codes (list[str]): List of language codes to process. If `download_all` is True, this will be ignored.
+        language_codes (list[str]): List of language codes to process.
+            If `download_all` is True, this will be ignored.
         download_all (bool): If True, markdowns will be created for all available languages.
         select_courses (str): Determines which courses to include.
             - "shared" for only my imported and shared collections (ignore private)

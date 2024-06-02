@@ -111,12 +111,12 @@ def get_lessons(
     download_folder: str = ".",
 ):
     """
-    Downloads text and/or audio from a collection (course) given the language code and the course ID.
+    Downloads text and/or audio from a course given the language code and the course ID.
 
     Args:
-        language_code (str): The language code of the course (e.g., 'en' for English, 'es' for Spanish).
+        language_code (str): The language code of the course.
         course_id (str): The ID of the course. This is the last number in the course URL.
-        skip_already_downloaded (bool): If True, skips downloading lessons that have already been downloaded.
+        skip_already_downloaded (bool): If True, skip downloading already downloaded lessons.
         download_audio (bool): If True, downloads the audio files for the lessons.
         download_folder (str): The folder where the downloaded text and audio files will be saved.
 

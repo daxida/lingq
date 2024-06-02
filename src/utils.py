@@ -6,7 +6,7 @@ from functools import wraps
 from natsort import os_sorted
 
 
-class colors:
+class Colors:
     # fmt: off
     FAIL = "\033[31m"    # RED
     OK   = "\033[32m"    # GREEN
@@ -50,25 +50,25 @@ def sort_greek_words(word: str) -> tuple[float, ...]:
         return (float("inf"),)
 
     # fmt: off
-    ALPHABET: dict[str, int] = {
+    alphabet: dict[str, int] = {
         'α': 1, 'β': 2, 'γ': 3, 'δ': 4, 'ε': 5, 'ζ': 6, 'η': 7, 'θ': 8, 'ι': 9, 'κ': 10,
         'λ': 11, 'μ': 12, 'ν': 13, 'ξ': 14, 'ο': 15, 'π': 16, 'ρ': 17, 'σ': 18, 'τ': 19, 'υ': 20,
         'φ': 21, 'χ': 22, 'ψ': 23, 'ω': 24
     }
     # fmt: on
 
-    return tuple(ALPHABET.get(normalize_greek_word(char), float("inf")) for char in word)
+    return tuple(alphabet.get(normalize_greek_word(char), float("inf")) for char in word)
 
 
 def get_greek_sorting_fn():
     # This requires fine tuning depending of the entries' name format:
     # I was working with:
     # Ι'. Η μάχη -> 10
-    NUMERALS = "Α Β Γ Δ Ε ΣΤ Ζ Η Θ Ι ΙΑ ΙΒ ΙΓ ΙΔ ΙΕ ΙΣΤ ΙΖ".split()
-    ORDER = [f"{num}'" for num in NUMERALS]
+    numerals = "Α Β Γ Δ Ε ΣΤ Ζ Η Θ Ι ΙΑ ΙΒ ΙΓ ΙΔ ΙΕ ΙΣΤ ΙΖ".split()
+    order = [f"{num}'" for num in numerals]
 
     def sorting_fn(x: str) -> int:
-        return ORDER.index(x.split(".")[0])
+        return order.index(x.split(".")[0])
 
     return sorting_fn
 
@@ -110,7 +110,7 @@ def timing(f):
         ts = time.time()
         result = f(*args, **kw)
         te = time.time()
-        print(f"{colors.TIME}({f.__name__} {te-ts:2.2f}sec){colors.END}")
+        print(f"{Colors.TIME}({f.__name__} {te-ts:2.2f}sec){Colors.END}")
         return result
 
     return wrap

@@ -1,12 +1,10 @@
 import os
 
-
-def createFolderIfNotExist(folder_name):
-    if not os.path.exists(folder_name):
-        os.mkdir(folder_name)
+# Two level
+Separated = dict[str, dict[str, list[str]]]
 
 
-def clearFolder(path):
+def clear_folder(path: str) -> None:
     for file_name in os.listdir(path):
         file = path + file_name
         if os.path.isfile(file):
@@ -14,54 +12,52 @@ def clearFolder(path):
             os.remove(file)
 
 
-def separateByHeading(text, heading_list):
+def separate_by_heading(lines: list[str], heading_list: set[str]) -> dict[str, list[str]]:
     separated_data = {}
-    _buffer = []
+    buf = []
     heading = None
-    lines = len(text)
+    lines_len = len(lines)
 
-    for idx, line in enumerate(text):
+    for idx, line in enumerate(lines):
         if line.strip() in heading_list:
-            if _buffer and heading:
-                separated_data[heading] = _buffer
+            if buf and heading:
+                separated_data[heading] = buf
             heading = line.strip()
-            _buffer = []
+            buf = []
         else:
-            _buffer.append(line)
+            buf.append(line)
 
         # Dump buffer at the end of input
-        if idx + 1 == lines:
-            if _buffer:
-                separated_data[heading] = _buffer
+        if idx + 1 == lines_len:
+            if buf:
+                separated_data[heading] = buf
 
     return separated_data
 
 
-def separate(filename):
+def separate(filename: str) -> Separated:
     # fmt: off
-    H1 = {"ΜΕΡΟΣ ΠΡΩΤΟ", "ΔΕΥΤΕΡΟ ΜΕΡΟΣ", "ΤΡΙΤΟ ΜΕΡΟΣ", "ΤΕΤΑΡΤΟ ΜΕΡΟΣ"}
-    H2 = {
-        "I", "II", "III", "IV", "V", "VI", "VII", "VIII", 
+    h1 = {"ΜΕΡΟΣ ΠΡΩΤΟ", "ΔΕΥΤΕΡΟ ΜΕΡΟΣ", "ΤΡΙΤΟ ΜΕΡΟΣ", "ΤΕΤΑΡΤΟ ΜΕΡΟΣ"}
+    h2 = {
+        "I", "II", "III", "IV", "V", "VI", "VII", "VIII",
         "IX", "Χ", "X", "XI", "XII", "XIII", "XIV", "XV", "XVI"
     }
     # fmt: on
 
-    text = open(filename, "r").readlines()
+    text_lines = open(filename, "r").readlines()
 
     separated_data = {}
+    separated_data_h1 = separate_by_heading(text_lines, h1)
 
-    separated_data_H1 = separateByHeading(text, H1)
-
-    for part in separated_data_H1:
-        text_part = separated_data_H1[part]
-        separated_data_H2 = separateByHeading(text_part, H2)
-
-        separated_data[part] = separated_data_H2
+    for part in separated_data_h1:
+        part_lines = separated_data_h1[part]
+        separated_data_h2 = separate_by_heading(part_lines, h2)
+        separated_data[part] = separated_data_h2
 
     return separated_data
 
 
-def write(separated_data):
+def write(separated_data: Separated) -> None:
     for idx_p, part in enumerate(separated_data):
         chapters = separated_data[part]
 
@@ -76,27 +72,25 @@ def write(separated_data):
                     c.write(line)
 
 
-def testTitles(separated_data):
+def test_titles(separated_data: Separated) -> None:
     print(f"There are {len(separated_data)} parts")
-
     for part in separated_data:
         print(f"There are {len(separated_data[part])} chapters in {part}")
-
         for chapter in separated_data[part]:
             print(part, chapter)
 
 
 def main():
     folder_name = "split"
-    createFolderIfNotExist(folder_name)
+    os.makedirs(folder_name, exist_ok=True)
 
     path = f"/Users/rafa/Downloads/{folder_name}/"
-    clearFolder(path)
+    clear_folder(path)
 
     filename = "text.txt"
     separated_data = separate(filename)
 
-    # testTitles(separated_data)
+    # test_titles(separated_data)
 
     write(separated_data)
 

@@ -7,7 +7,7 @@ from aiohttp import ClientResponse, ClientSession
 from aiohttp_retry import ExponentialRetry, RetryClient
 from collection import Collection
 from dotenv import dotenv_values, find_dotenv
-from utils import colors
+from utils import Colors
 
 
 class Config:
@@ -21,14 +21,14 @@ class Config:
         self.headers = {"Authorization": f"Token {self.key}"}
 
 
-def E(my_json: Any):
+def err(my_json: Any):
     json.dump(my_json, sys.stdout, ensure_ascii=False, indent=2)
 
 
 async def response_debug(
     response: ClientResponse, function_name: str, lesson: Any | None = None
 ) -> None:
-    print(f"{colors.FAIL}Error in {function_name}{colors.END}")
+    print(f"{Colors.FAIL}Error in {function_name}{Colors.END}")
     if lesson is not None:
         print(f"For lesson: {lesson['title']}")
     print(f"Response code: {response.status}")
@@ -134,12 +134,12 @@ class LingqHandler:
 
         if "lessons" not in collection:
             # I think this is mainly due to an issue with their garbage collection.
-            print(f"{colors.WARN}WARN{colors.END}: Ghost collection with id: {collection_id}")
+            print(f"{Colors.WARN}WARN{Colors.END}: Ghost collection with id: {collection_id}")
             return None
 
         if not collection["lessons"]:
             editor_url = f"https://www.lingq.com/learn/{self.language_code}/web/editor/courses/"
-            msg = f"{colors.WARN}WARN{colors.END}: The collection {collection['title']} at {editor_url}{collection_id} has no lessons, (delete it?)"
+            msg = f"{Colors.WARN}WARN{Colors.END}: The collection {collection['title']} at {editor_url}{collection_id} has no lessons, (delete it?)"
             print(msg)
 
         return collection
