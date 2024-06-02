@@ -1,4 +1,4 @@
-from others.text_processing.fix_japanese.fix_itazura import *
+from etc.text_processing.fix_japanese.fix_itazura import *
 
 
 def test_fix_vertical_characters():

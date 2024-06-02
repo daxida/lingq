@@ -1,4 +1,4 @@
-from others.text_processing.fix_greek.fix_greek import fix
+from etc.text_processing.fix_greek.fix_greek import fix
 
 
 def test_latin_capitals():
