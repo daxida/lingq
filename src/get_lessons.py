@@ -14,7 +14,7 @@ def sanitize_title(title: str) -> str:
 
 
 async def get_lesson(
-    handler: LingqHandler, lesson_json: Any, idx: int, download_audio: bool
+    handler: LingqHandler, lesson_json: Any, idx: int, download_audio: bool, verbose: bool
 ) -> Lesson:
     title = lesson_json["title"]
     # title = f"{idx}.{lesson['title']}" # add indices
@@ -32,13 +32,18 @@ async def get_lesson(
         audio = None
 
     lesson: Lesson = (title, text, audio)
-    print(f"Downloaded lesson nº{idx}: {lesson_json['title']}")
+    if verbose:
+        print(f"Downloaded lesson nº{idx}: {lesson_json['title']}")
 
     return lesson
 
 
 def write_lessons(
-    language_code: str, collection_title: str, lessons: list[Lesson], download_folder: str
+    language_code: str,
+    collection_title: str,
+    lessons: list[Lesson],
+    download_folder: str,
+    verbose: bool,
 ) -> None:
     texts_folder = os.path.join(download_folder, language_code, collection_title, "texts")
     audios_folder = os.path.join(download_folder, language_code, collection_title, "audios")
@@ -58,7 +63,8 @@ def write_lessons(
         with open(txt_path, "w", encoding="utf-8") as text_file:
             text_file.write("\n".join(text))
 
-        print(f"Writing lesson nº{idx}: {title}")
+        if verbose:
+            print(f"Writing lesson nº{idx}: {title}")
 
 
 async def _get_lessons(
@@ -67,6 +73,7 @@ async def _get_lessons(
     skip_already_downloaded: bool,
     download_audio: bool,
     download_folder: str,
+    verbose: bool,
 ) -> None:
     async with LingqHandler(language_code) as handler:
         collection_json = await handler.get_collection_json_from_id(course_id)
@@ -74,9 +81,12 @@ async def _get_lessons(
         collection_title = collection_json["title"]
         lessons = collection_json["lessons"]
 
-        print(
-            f"Downloading: '{collection_title}' at https://www.lingq.com/learn/{language_code}/web/library/course/{course_id}"
+        at_url = (
+            f" at https://www.lingq.com/learn/{language_code}/web/library/course/{course_id}"
+            if verbose
+            else ""
         )
+        print(f"Downloading: '{collection_title}'{at_url}")
 
         texts_folder = os.path.join(download_folder, language_code, collection_title, "texts")
         if skip_already_downloaded and os.path.exists(texts_folder):
@@ -86,20 +96,19 @@ async def _get_lessons(
                 for lesson in lessons
                 if f"{sanitize_title(lesson['title'])}.txt" not in text_files
             ]
-            print(
-                f"Skipped {len(lessons) - len(filtered_lessons)} out of {len(lessons)} lessons that were already downloaded."
-            )
+            if verbose:
+                print(
+                    f"Skipped {len(lessons) - len(filtered_lessons)} out of {len(lessons)} lessons that were already downloaded."
+                )
             lessons = filtered_lessons
 
         tasks = [
-            get_lesson(handler, lesson_json, idx, download_audio)
+            get_lesson(handler, lesson_json, idx, download_audio, verbose)
             for idx, lesson_json in enumerate(lessons, 1)
         ]
         lessons = await asyncio.gather(*tasks)
 
-        write_lessons(language_code, collection_title, lessons, download_folder)
-
-        print("Finished download.")
+        write_lessons(language_code, collection_title, lessons, download_folder, verbose)
 
 
 @timing
@@ -108,7 +117,8 @@ def get_lessons(
     course_id: str,
     skip_already_downloaded: bool,
     download_audio: bool,
-    download_folder: str = ".",
+    download_folder: str,
+    verbose: bool,
 ):
     """
     Downloads text and/or audio from a course given the language code and the course ID.
@@ -124,7 +134,12 @@ def get_lessons(
     """
     asyncio.run(
         _get_lessons(
-            language_code, course_id, skip_already_downloaded, download_audio, download_folder
+            language_code,
+            course_id,
+            skip_already_downloaded,
+            download_audio,
+            download_folder,
+            verbose,
         )
     )
 
@@ -137,4 +152,5 @@ if __name__ == "__main__":
         skip_already_downloaded=False,
         download_audio=False,
         download_folder="downloads",
+        verbose=True,
     )
