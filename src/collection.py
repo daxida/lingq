@@ -16,6 +16,8 @@ TOEUROPEAN = {
 
 @dataclass
 class Collection:
+    """This collection object uses LingQ's API V2."""
+
     # fmt: off
     _id:            int = 0
     title:          str | None = None

@@ -1,2 +1,27 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lingq"
+version = "1.0.0"
+
+[project.scripts]
+lingq = "cli:cli"
+
 [tool.ruff]
 line-length = 100
+exclude = [
+    "others/audio_processing/split_audio.py",
+]
+
+[tool.ruff.lint.pycodestyle]
+max-doc-length = 100
+
+[tool.ruff.lint]
+preview = true
+select = [
+    "W",    # pycodestyle warning
+    "I",    # isort
+    "N",    # pep8-naming
+]
