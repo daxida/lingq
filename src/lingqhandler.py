@@ -14,8 +14,17 @@ class Config:
     def __init__(self):
         env_path = find_dotenv()
         if not env_path:
-            raise EnvironmentError("Could not find .env file.")
+            print("Error: could not find an .env file.")
+            print("Create an .env file and add the entry: APIKEY='YourLingQAPIKey'")
+            print("Exiting.")
+            sys.exit(1)
+
         config = dotenv_values(env_path)
+        if "APIKEY" not in config:
+            print("Error: the .env file does not contain the LingQ APIKEY.")
+            print("Inside the .env file add the entry: APIKEY='YourLingQAPIKey'")
+            print("Exiting.")
+            sys.exit(1)
 
         self.key = config["APIKEY"]
         self.headers = {"Authorization": f"Token {self.key}"}
