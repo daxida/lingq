@@ -31,11 +31,11 @@ Some examples:
 # Upload a playlist to a greek course.
 lingq postyt el 129129 "https://www.youtube.com/@awesomeyoutuber"
 
-# Bulk upload texts with audio to a german course.
-lingq post de 129129 "mybook/texts" --audios_folder "mybook/audios"
+# Bulk upload a book split by chapters.
+lingq post el 129139 "example/texts" -a "example/audios" --pairing_strategy zip
 
-# Timestamp an entire course.
-lingq timestamp es 129129
+# Timestamp an entire german course.
+lingq timestamp de 129129
 ```
 
 The full set of commands can be found with `lingq --help`. 
