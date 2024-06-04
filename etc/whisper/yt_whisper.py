@@ -24,20 +24,25 @@ class Colors:
 
 
 def get_audio_with_subtitles(
-    entry: Any, skip_downloaded: bool, download_folder: str, whisper_model: str
+    entry: Any,
+    skip_downloaded: bool,
+    download_folder: str,
+    whisper_model: str,
+    audio_format: str,
+    srt_folder: str,
+    audio_folder: str,
 ) -> None:
     title = entry["title"]
-    wav_path = f"{download_folder}/wav/{title}.wav"
-    srt_path = f"{download_folder}/srt/{title}.srt"
-    os.makedirs(f"{download_folder}/srt", exist_ok=True)
+    audio_path = os.path.join(download_folder, audio_folder, f"{title}.{audio_format}")
+    srt_path = os.path.join(download_folder, srt_folder, f"{title}.srt")
     entry["transcribed_by_whisper_srt_path"] = srt_path
 
-    download_audio(entry, wav_path, "wav", skip_downloaded)
-    write_whisper_subtitles(entry, whisper_model, srt_path, wav_path, skip_downloaded)
+    download_audio(entry, audio_path, audio_format, skip_downloaded)
+    write_whisper_subtitles(entry, whisper_model, srt_path, audio_path, skip_downloaded)
 
 
-def download_audio(entry: Any, wav_path: str, format: str, skip_downloaded: bool) -> None:
-    if skip_downloaded and os.path.exists(wav_path):
+def download_audio(entry: Any, audio_path: str, format: str, skip_downloaded: bool) -> None:
+    if skip_downloaded and os.path.exists(audio_path):
         print(f"{Colors.SKIP}[skip download: found audio]{Colors.END} {entry['title']}")
         return
 
@@ -48,7 +53,7 @@ def download_audio(entry: Any, wav_path: str, format: str, skip_downloaded: bool
                 "preferredcodec": format,
             }
         ],
-        "outtmpl": wav_path.split(".")[0],  # Remove the .format extension
+        "outtmpl": os.path.splitext(audio_path)[0],  # Remove the .format extension
     }
     ydl = yt_dlp.YoutubeDL(ydl_opts)
     video_url = f"https://www.youtube.com/watch?v={entry['id']}"
@@ -56,13 +61,13 @@ def download_audio(entry: Any, wav_path: str, format: str, skip_downloaded: bool
 
 
 def write_whisper_subtitles(
-    entry: Any, whisper_model: str, srt_path: str, wav_path: str, skip_downloaded: bool
+    entry: Any, whisper_model: str, srt_path: str, audio_path: str, skip_downloaded: bool
 ) -> None:
     if skip_downloaded and os.path.exists(srt_path):
         print(f"{Colors.SKIP}[skip transcription: found srt]{Colors.END} {entry['title']}")
         return
 
-    transcriber = Transcriber(wav_path, srt_path, whisper_model)
+    transcriber = Transcriber(audio_path, srt_path, whisper_model)
     transcriber.transcribe(entry)
 
 
@@ -77,7 +82,13 @@ def get_playlist(url: str, ydl_opts: dict[str, Any]) -> Any:
 
 
 def main(
-    playlist_url: str, skip_downloaded: bool, download_folder: str, whisper_model: str
+    playlist_url: str,
+    skip_downloaded: bool,
+    download_folder: str,
+    whisper_model: str,
+    audio_format: str,
+    srt_folder: str,
+    audio_folder: str,
 ) -> None:
     ydl_opts = {
         # Set title language "extractor_args": {"youtube": {"lang": ["zh-TW"]}},
@@ -92,8 +103,18 @@ def main(
 
     playlist_data = get_playlist(playlist_url, ydl_opts)
     entries = playlist_data["entries"]
+    os.makedirs(os.path.join(download_folder, srt_folder), exist_ok=True)
+
     for entry in entries:
-        get_audio_with_subtitles(entry, skip_downloaded, download_folder, whisper_model)
+        get_audio_with_subtitles(
+            entry,
+            skip_downloaded,
+            download_folder,
+            whisper_model,
+            audio_format,
+            srt_folder,
+            audio_folder,
+        )
 
 
 if __name__ == "__main__":
@@ -101,6 +122,9 @@ if __name__ == "__main__":
     main(
         playlist_url="https://www.youtube.com/...",
         skip_downloaded=True,
-        download_folder="downloads",
-        whisper_model="large",
+        download_folder="downloads/yt",
+        whisper_model="tiny",
+        audio_format="mp3",
+        srt_folder="texts",
+        audio_folder="audios",
     )

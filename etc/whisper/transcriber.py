@@ -26,7 +26,7 @@ class Transcriber:
                     f"{chunk}\n"
                     f"{format_timestamp(segment.start, always_include_hours=True)} --> "
                     f"{format_timestamp(segment.end, always_include_hours=True)}\n"
-                    f"{segment.text.strip().replace('-->', '->')}\n"
+                    f"{segment.text.strip().replace('-->', '->')}\n\n"
                 )
 
                 delta = round(segment.end - segment.start)
