@@ -5,8 +5,8 @@ from typing import Any
 
 from aiohttp import ClientResponse, ClientSession
 from aiohttp_retry import ExponentialRetry, RetryClient
-from collection import Collection
 from dotenv import dotenv_values, find_dotenv
+from models.collection import Collection
 from utils import Colors
 
 

@@ -2,8 +2,8 @@ import asyncio
 import os
 from datetime import datetime
 
-from collection import Collection
 from lingqhandler import LingqHandler
+from models.collection import Collection
 from utils import Colors, double_check, timing  # type: ignore
 
 
