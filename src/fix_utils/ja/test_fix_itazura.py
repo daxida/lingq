@@ -1,4 +1,7 @@
-from etc.text_processing.fix_japanese.fix_itazura import *
+from src.fix_utils.ja.fix_itazura import (
+    fix_paragraph_jumps,
+    fix_vertical_characters,
+)
 
 
 def test_fix_vertical_characters():

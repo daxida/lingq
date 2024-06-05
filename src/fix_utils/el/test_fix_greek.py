@@ -1,4 +1,4 @@
-from etc.text_processing.fix_greek.fix_greek import fix_latin_letters
+from src.fix_utils.el.fix_greek import fix_latin_letters
 
 
 def _test_latin_letters_helper(received: str, expected: str):
