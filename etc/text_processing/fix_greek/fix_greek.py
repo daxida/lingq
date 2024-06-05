@@ -21,8 +21,12 @@ def fix_problematic_chars(text: str) -> str:
     return text
 
 
-def fix_latin_capitals(text: str) -> str:
-    # Fixes capital letters that are actually latin (A for capital alpha)
+def is_english(word: str) -> bool:
+    return all(ord(ch) < 200 for ch in word)
+
+
+def fix_latin_letters(text: str) -> str:
+    """Fix latin letters inserted into greek words."""
 
     # ABCDEFGHIJKLMNOPQRSTUVWXYZ
     # ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ
@@ -31,7 +35,7 @@ def fix_latin_capitals(text: str) -> str:
     # AΆBEÉHIÍKMNOÓPTXY
 
     # fmt: off
-    latin_to_greek = {
+    latin_to_greek_upper = {
         "A": "Α", "Á": "Ά",
         "B": "Β",
         "E": "Ε", "É": "Έ",
@@ -46,11 +50,30 @@ def fix_latin_capitals(text: str) -> str:
         "X": "Χ",
         "Y": "Υ",
     }
+    latin_to_greek_lower = {
+        "o": "ο", "ó": "ό",
+        "u": "υ",
+        "v": "ν",
+    }
     # fmt: on
 
-    text = re.sub(r"[AÁBEÉHIÍKMNOÓPTXY](?=[Ά-Ͽ]+)", lambda m: latin_to_greek[m.group(0)], text)
+    latin_to_greek = {**latin_to_greek_upper, **latin_to_greek_lower}
+    latin_symbols_concerned = "".join(latin_to_greek.keys())
 
-    return text
+    fixed_words: list[str] = []
+    for word in text.split():
+        # If the word contains only latin letters, do not change it.
+        if is_english(word):
+            fixed_word = word
+        else:
+            fixed_word = re.sub(
+                rf"[{latin_symbols_concerned}]",
+                lambda m: latin_to_greek[m.group(0)],
+                word,
+            )
+        fixed_words.append(fixed_word)
+
+    return " ".join(fixed_words)
 
 
 def specific_deletions(text: str) -> str:
@@ -164,7 +187,7 @@ def write(filename: str, text: str):
 
 def fix(text: str) -> str:
     text = fix_problematic_chars(text)
-    text = fix_latin_capitals(text)
+    text = fix_latin_letters(text)
     text = specific_fixes(text)
 
     text = fix_textstring(text)
