@@ -26,6 +26,40 @@ def cli():
     """
 
 
+@cli.command("setup")
+@click.argument("apikey")
+def setup_cli(apikey: str) -> None:
+    """Creates or updates an .env file with your LingQ API key.
+
+    You can find you key here: https://www.lingq.com/accounts/apikey/
+    """
+    env_file = ".env"
+
+    if os.path.exists(env_file):
+        with open(env_file, "r") as file:
+            lines = file.readlines()
+
+        # Update the API_KEY if it exists, otherwise add a new line
+        with open(env_file, "w") as file:
+            api_key_found = False
+            for line in lines:
+                if line.startswith("APIKEY="):
+                    file.write(f"APIKEY={apikey}\n")
+                    api_key_found = True
+                else:
+                    file.write(line)
+
+            if not api_key_found:
+                file.write(f"APIKEY={apikey}\n")
+
+        print(f".env file has been updated.")
+    else:
+        with open(env_file, "w") as file:
+            file.write(f"APIKEY={apikey}\n")
+
+        print(f".env file has been created.")
+
+
 @cli.group()
 def get():
     """Get commands."""
