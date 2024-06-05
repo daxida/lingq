@@ -61,7 +61,7 @@ def fix_latin_letters(text: str) -> str:
     latin_symbols_concerned = "".join(latin_to_greek.keys())
 
     fixed_words: list[str] = []
-    for word in text.split():
+    for word in text.split(" "):
         # If the word contains only latin letters, do not change it.
         if is_english(word):
             fixed_word = word

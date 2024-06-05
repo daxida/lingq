@@ -31,6 +31,19 @@ def get():
     """Get commands."""
 
 
+@cli.command("fix")
+@click.argument("language_code")
+@click.argument("course_id")
+def fix_cli(language_code: str, course_id: str) -> None:
+    """Fix text for a course.
+
+    Only supports ja and el at the moment, even though it should work for every language.
+    """
+    from fix import fix
+
+    fix(language_code, course_id)
+
+
 @get.command("pictures")
 @click.argument("language_code")
 @click.argument("course_id")
