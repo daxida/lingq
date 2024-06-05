@@ -33,8 +33,8 @@ async def _patch_audios(
 
         for idx, (audio_path, lesson) in enumerate(zip(audios_path, lessons), 1):
             audio_path = os.path.join(audios_folder, audio_path)
-            audio_files = {"audio": open(audio_path, "rb")}
-            await handler.patch(lesson, audio_files)
+            audio_files = open(audio_path, "rb")
+            await handler.patch_audio_from_lesson_id(lesson["id"], audio_files)
             print(f"[{idx}/{len(lessons)}] Patched audio for: {lesson['title']}")
 
 

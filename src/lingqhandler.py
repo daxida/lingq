@@ -1,6 +1,7 @@
 import asyncio
 import json
 import sys
+from io import BufferedReader
 from typing import Any
 
 from aiohttp import ClientResponse, ClientSession
@@ -178,11 +179,23 @@ class LingqHandler:
         collection.add_data(collection_data)
         return collection
 
-    async def patch(self, lesson: Any, data: dict[str, Any]) -> ClientResponse:
-        url = f"{LingqHandler.API_URL_V3}{self.language_code}/lessons/{lesson['id']}/"
+    async def patch_audio_from_lesson_id(
+        self, lesson_id: str, audio_data: BufferedReader
+    ) -> ClientResponse:
+        url = f"{LingqHandler.API_URL_V3}{self.language_code}/lessons/{lesson_id}/"
+        data = {"audio": audio_data}
         async with self.session.patch(url, headers=self.config.headers, data=data) as response:
             if response.status != 200:
-                await response_debug(response, "patch", lesson)
+                await response_debug(response, "patch")
+        return response
+
+    async def patch_text_from_lesson_id(self, lesson_id: str, text_data: str) -> ClientResponse:
+        """Note that this is actually a post request that works like a patch one."""
+        url = f"{LingqHandler.API_URL_V3}{self.language_code}/lessons/{lesson_id}/resplit/"
+        data = {"text": text_data}
+        async with self.session.post(url, headers=self.config.headers, data=data) as response:
+            if response.status != 200:
+                await response_debug(response, "patch")
         return response
 
     async def generate_timestamps(self, lesson: Any) -> ClientResponse:
