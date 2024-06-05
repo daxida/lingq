@@ -1,3 +1,5 @@
+import os
+
 import click
 from generate_timestamps import generate_timestamps
 from get_courses import get_courses

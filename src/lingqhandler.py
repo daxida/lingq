@@ -52,9 +52,10 @@ async def response_debug(
 
 
 def check_for_valid_token_or_exit(response_json: Any) -> None:
-    if response_json.get("detail", "") == "Invalid token.":
-        print("Invalid APIKEY. Exiting.")
-        sys.exit(1)
+    if isinstance(response_json, dict) and "detail" in response_json:
+        if response_json["detail"] == "Invalid token.":
+            print("Invalid APIKEY. Exiting.")
+            sys.exit(1)
 
 
 class LingqHandler:
