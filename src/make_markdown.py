@@ -120,24 +120,21 @@ async def _make_markdown(
     include_views: bool,
     out_folder: str,
 ) -> None:
+    print(f"Making markdown for language(s): '{', '.join(language_codes)}'")
+    print(f"With courses selection: {select_courses}")
+    print(f"With include views: {include_views}")
+    print(f"At folder: {out_folder}")
+    double_check()
+
+    extension_msg = "_no_views" if not include_views else ""
+    readme_folder = os.path.join(
+        out_folder, "markdowns", f"markdown_{select_courses}{extension_msg}"
+    )
+    courses_folder = os.path.join(readme_folder, "courses")
+    os.makedirs(os.path.join(courses_folder), exist_ok=True)
+    write_readme(language_codes, readme_folder)
+
     async with LingqHandler("Filler") as handler:
-        if not language_codes:
-            language_codes = await handler.get_language_codes()
-
-        print(f"Making markdown for language(s): '{', '.join(language_codes)}'")
-        print(f"With courses selection: {select_courses}")
-        print(f"With include views: {include_views}")
-        print(f"At folder: {out_folder}")
-        double_check()
-
-        extension_msg = "_no_views" if not include_views else ""
-        readme_folder = os.path.join(
-            out_folder, "markdowns", f"markdown_{select_courses}{extension_msg}"
-        )
-        courses_folder = os.path.join(readme_folder, "courses")
-        os.makedirs(os.path.join(courses_folder), exist_ok=True)
-        write_readme(language_codes, readme_folder)
-
         n_languages = len(language_codes)
         for idx, language_code in enumerate(language_codes, 1):
             print(f"Starting download for {language_code} ({idx} of {n_languages})")
@@ -176,6 +173,8 @@ def make_markdown(
         include_views (bool): If True, includes the number of views in the markdown.
         out_folder (str): The output folder where the markdown files will be saved.
     """
+    if not language_codes:
+        language_codes = LingqHandler.get_all_user_languages_codes()
     asyncio.run(_make_markdown(language_codes, select_courses, include_views, out_folder))
 
 

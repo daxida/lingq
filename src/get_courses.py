@@ -37,12 +37,6 @@ async def _get_courses(
         await asyncio.sleep(sleep_time)
 
 
-async def _get_all_courses(download_audio: bool, sleep_time: int, download_folder: str) -> None:
-    async with LingqHandler("Filler") as handler:
-        language_codes = await handler.get_language_codes()
-        await _get_courses(language_codes, download_audio, sleep_time, download_folder)
-
-
 @timing
 def get_courses(
     language_codes: list[str], download_audio: bool, sleep_time: int, download_folder: str
@@ -63,11 +57,10 @@ def get_courses(
           (RARE) It can also be due to a 500 error: Internal server error.
           You should check the lesson itself to see if you can open it in the browser.
     """
-    # By default, if no language codes are given, get all the courses;
+    # If no language codes are given, use all languages.
     if not language_codes:
-        asyncio.run(_get_all_courses(download_audio, sleep_time, download_folder))
-    else:
-        asyncio.run(_get_courses(language_codes, download_audio, sleep_time, download_folder))
+        language_codes = LingqHandler.get_all_user_languages_codes()
+    asyncio.run(_get_courses(language_codes, download_audio, sleep_time, download_folder))
 
 
 if __name__ == "__main__":

@@ -82,14 +82,23 @@ class LingqHandler:
     async def __aexit__(self, exc_type, exc_value, tb):  # type: ignore
         await self.session.close()
 
-    async def get_language_codes(self) -> list[str]:
-        """Returns a list of language codes with known words"""
+    async def _get_all_user_languages(self) -> list[str]:
         url = f"{LingqHandler.API_URL_V2}languages"
         async with self.session.get(url, headers=self.config.headers) as response:
             languages = await response.json()
             codes = [lan["code"] for lan in languages if lan["knownWords"] > 0]
 
         return codes
+
+    @classmethod
+    def get_all_user_languages_codes(cls) -> list[str]:
+        """Returns a list of language codes with known words."""
+
+        async def _get_all_user_languages_tmp():
+            async with cls("Filler") as handler:
+                return await handler._get_all_user_languages()
+
+        return asyncio.run(_get_all_user_languages_tmp())
 
     async def get_lesson_from_url(self, url: str) -> Any:
         """Return a JSON with the lesson, from its url."""
