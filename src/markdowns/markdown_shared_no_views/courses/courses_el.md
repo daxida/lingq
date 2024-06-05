@@ -1,5 +1,5 @@
 |Status| |Title|Lessons|Created&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Updated&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|
-|------|-|-----|-------|--------------|--------------|
+|-|-|-|-|-|-|
 |shared|C1|[Youtube - Alpha Omega (History & Mythology)](https://www.lingq.com/en/learn/el/web/library/course/800621)|61|2021-02-28|2023-09-10
 |shared|C2|[Philosophy - Βιβλιοεμβριθής](https://www.lingq.com/en/learn/el/web/library/course/720356)|23|2020-10-29|2023-07-25
 |shared|C1|[Ο ΚΑΤΑΔΙΚΟΣ «ΖΕΚ-18376» π. Αρσένιος](https://www.lingq.com/en/learn/el/web/library/course/1289772)|24|2023-04-26|2023-06-28
@@ -15,7 +15,7 @@
 |shared|C2|[Ευριπίδης - Άλκηστις](https://www.lingq.com/en/learn/el/web/library/course/947257)|24|2021-10-28|2021-10-28
 |shared|B2|[Youtube - μικρές Συναντήσεις (Conversational)](https://www.lingq.com/en/learn/el/web/library/course/896194)|20|2021-08-08|2021-08-31
 |shared|C2|[Youtube -  Evlogon Athens (Pedagogy)](https://www.lingq.com/en/learn/el/web/library/course/881114)|10|2021-07-05|2021-07-24
-|shared|B1|[Τράπεζα κειμένων B1](https://www.lingq.com/en/learn/el/web/library/course/730129)|37|2020-11-14|2021-07-11
+|shared|B1|[Τράπεζα κειμένων B1](https://www.lingq.com/en/learn/el/web/library/course/730129)|36|2020-11-14|2021-07-11
 |shared|B2|[Youtube -  Γνωρίζοντας την Αττική](https://www.lingq.com/en/learn/el/web/library/course/848945)|39|2021-05-18|2021-06-29
 |shared|C1|[Coelho - Ο αλχημιστής (AudioBookWorms)](https://www.lingq.com/en/learn/el/web/library/course/852627)|15|2021-05-24|2021-06-27
 |shared|C2|[Tolkien - Τα Παιδιά του Χούριν](https://www.lingq.com/en/learn/el/web/library/course/791572)|35|2021-02-15|2021-04-29

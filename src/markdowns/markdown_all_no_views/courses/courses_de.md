@@ -1,5 +1,5 @@
 |Status| |Title|Lessons|Created&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Updated&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|
-|------|-|-----|-------|--------------|--------------|
+|-|-|-|-|-|-|
 |private|-|[Der Spiegel](https://www.lingq.com/en/learn/de/web/library/course/600154)|4|2020-04-11|2024-04-02
 |shared|A2|[LingQ Mini Stories](https://www.lingq.com/en/learn/de/web/library/course/276522)|63|2017-05-04|2023-09-07
 |shared|B2|[WIE WIR SPRACHEN LERNEN](https://www.lingq.com/en/learn/de/web/library/course/120846)|28|2013-08-02|2022-05-01

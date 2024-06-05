@@ -1,8 +1,13 @@
 |Status| |Title|Lessons|Created&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Updated&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|
-|------|-|-----|-------|--------------|--------------|
-|private|-|[Quick Imports](https://www.lingq.com/en/learn/ja/web/library/course/537808)|1|2024-04-20|2024-04-20
-|shared|B2|[4989 American Life Podcast](https://www.lingq.com/en/learn/ja/web/library/course/553965)|250|2020-01-14|2024-04-18
-|shared|C2|[Aozora Bunko Readings (4-5mins)](https://www.lingq.com/en/learn/ja/web/library/course/793510)|112|2021-02-18|2024-04-12
+|-|-|-|-|-|-|
+|private|-|[Quick Imports](https://www.lingq.com/en/learn/ja/web/library/course/537808)|1|2024-06-05|2024-06-05
+|private|-|[akanesenseijp.com](https://www.lingq.com/en/learn/ja/web/library/course/1742582)|3|2024-05-22|2024-06-03
+|private|-|[The Bite size Japanese Podcast](https://www.lingq.com/en/learn/ja/web/library/course/1745560)|4|2024-05-25|2024-06-03
+|shared|B2|[4989 American Life Podcast](https://www.lingq.com/en/learn/ja/web/library/course/553965)|256|2020-01-14|2024-05-29
+|shared|B1|[Japanese with Noriko: Season 3](https://www.lingq.com/en/learn/ja/web/library/course/1385295)|44|2023-08-18|2024-05-27
+|shared|B1|[Japanese with Noriko: Season 2](https://www.lingq.com/en/learn/ja/web/library/course/907301)|255|2021-08-28|2024-05-14
+|shared|C2|[Aozora Bunko Readings (4-5mins)](https://www.lingq.com/en/learn/ja/web/library/course/793510)|113|2021-02-18|2024-05-13
+|private|B2|[かがみの孤城](https://www.lingq.com/en/learn/ja/web/library/course/987877)|31|2024-05-02|2024-05-02
 |shared|B2|[Japanese childhood](https://www.lingq.com/en/learn/ja/web/library/course/1685526)|9|2024-04-08|2024-04-08
 |private|C1|[ノルウェイの森 - 村上春樹](https://www.lingq.com/en/learn/ja/web/library/course/1597235)|28|2024-02-02|2024-02-02
 |private|B1|[Youtube -  Miku Real Japanese](https://www.lingq.com/en/learn/ja/web/library/course/918677)|149|2021-01-01|2024-01-12
@@ -14,21 +19,16 @@
 |private|B2|[秒速5センチメートル (5 Centimeters per Second)](https://www.lingq.com/en/learn/ja/web/library/course/1031701)|2|2022-03-08|2022-03-08
 |private|-|[日本語の森  - Learn with songs](https://www.lingq.com/en/learn/ja/web/library/course/877121)|10|2021-01-19|2022-02-24
 |private|B2|[Youtube - Mayonaka (Horror)](https://www.lingq.com/en/learn/ja/web/library/course/1003917)|2|2022-01-22|2022-01-23
-|private|-|[Netflix - Others](https://www.lingq.com/en/learn/ja/web/library/course/1004173)|16|2021-12-24|2022-01-23
 |private|B1|[6 - Harry Potter](https://www.lingq.com/en/learn/ja/web/library/course/991617)|57|2022-01-03|2022-01-20
-|private|-|[Netflix - Ghibli](https://www.lingq.com/en/learn/ja/web/library/course/961236)|14|2021-11-16|2022-01-17
 |private|-|[Youtube - Sayuri (Conversation)(Formal)](https://www.lingq.com/en/learn/ja/web/library/course/998192)|19|2022-01-14|2022-01-15
 |private|B1|[Youtube - Sayuri (Conversation)(Casual)](https://www.lingq.com/en/learn/ja/web/library/course/994941)|30|2022-01-09|2022-01-10
 |shared|A2|[Youtube - Layla (Podcast)](https://www.lingq.com/en/learn/ja/web/library/course/990105)|10|2022-01-01|2022-01-07
-|private|B2|[かがみの孤城](https://www.lingq.com/en/learn/ja/web/library/course/987877)|7|2021-12-30|2021-12-30
 |private|-|[日本語の森 - JPLT (November)](https://www.lingq.com/en/learn/ja/web/library/course/951547)|14|2021-11-03|2021-12-18
 |private|B2|[5 - Harry Potter](https://www.lingq.com/en/learn/ja/web/library/course/864436)|106|2021-06-14|2021-12-14
 |private|-|[Netflix - Arcane](https://www.lingq.com/en/learn/ja/web/library/course/954155)|9|2021-11-07|2021-11-20
-|private|C1|[日本語の森 - VOCAB (N1)](https://www.lingq.com/en/learn/ja/web/library/course/957100)|2|2021-11-11|2021-11-14
 |private|C1|[1Q86 - Murakami](https://www.lingq.com/en/learn/ja/web/library/course/955695)|7|2021-11-09|2021-11-10
 |private|-|[イソップ寓話](https://www.lingq.com/en/learn/ja/web/library/course/948083)|312|2021-10-29|2021-11-09
 |private|B2|[日本語の森 - N2文法](https://www.lingq.com/en/learn/ja/web/library/course/953229)|18|2021-11-06|2021-11-06
-|private|-|[Imports - Wikipedia](https://www.lingq.com/en/learn/ja/web/library/course/766789)|8|2020-05-21|2021-10-28
 |shared|B1|[【怪談朗読】神社にまつわる怖い話・12話つめあわせ【女性朗読】Ghost stories read aloud](https://www.lingq.com/en/learn/ja/web/library/course/947186)|12|2021-10-28|2021-10-28
 |shared|B2|[Youtube - 3分でわかる](https://www.lingq.com/en/learn/ja/web/library/course/796377)|20|2021-02-22|2021-10-12
 |shared|B2|[Taeko Ohnuki - Sunshower (Music)](https://www.lingq.com/en/learn/ja/web/library/course/462636)|13|2019-05-05|2021-10-02
@@ -36,7 +36,7 @@
 |shared|C2|[NHK](https://www.lingq.com/en/learn/ja/web/library/course/864663)|54|2021-07-02|2021-08-30
 |shared|C2|[或る女 - 有島武郎（アクセス）](https://www.lingq.com/en/learn/ja/web/library/course/890748)|93|2021-07-30|2021-08-22
 |private|-|[Eriko Shima - Readings](https://www.lingq.com/en/learn/ja/web/library/course/902019)|3|2021-08-17|2021-08-19
-|shared|B1|[Japanese with Noriko: Season 1](https://www.lingq.com/en/learn/ja/web/library/course/887822)|356|2021-07-24|2021-08-11
+|shared|B1|[Japanese with Noriko: Season 1](https://www.lingq.com/en/learn/ja/web/library/course/887822)|355|2021-07-24|2021-08-11
 |private|C2|[銀河鐵道の夜 - 宮沢賢治 (アクセス)](https://www.lingq.com/en/learn/ja/web/library/course/807166)|13|2021-03-09|2021-08-06
 |shared|C1|[浦島太郎 - 楠山正雄](https://www.lingq.com/en/learn/ja/web/library/course/891529)|4|2021-07-31|2021-07-31
 |private|-|[Youtube - Music](https://www.lingq.com/en/learn/ja/web/library/course/771963)|21|2019-08-18|2021-07-31
@@ -71,12 +71,10 @@
 |shared|B1|[Japanese Questions and Answers](https://www.lingq.com/en/learn/ja/web/library/course/533732)|15|2019-12-14|2020-12-17
 |shared|B2|[盾の勇者成りがり02](https://www.lingq.com/en/learn/ja/web/library/course/469158)|28|2019-05-26|2020-10-30
 |shared|B2|[JLPT Stories N2](https://www.lingq.com/en/learn/ja/web/library/course/581507)|8|2020-03-10|2020-04-03
-|private|-|[Marc マルコによる福音書](https://www.lingq.com/en/learn/ja/web/library/course/583391)|16|2020-03-14|2020-03-30
 |shared|C1|[JLPT Stories N1](https://www.lingq.com/en/learn/ja/web/library/course/581533)|8|2020-03-10|2020-03-11
 |shared|B1|[NWE with Audio 2019](https://www.lingq.com/en/learn/ja/web/library/course/480858)|420|2019-06-07|2019-12-13
 |shared|B2|[HappyLifeStyle - Travelling advice for the Japanese - 人生を変える「海外旅行」のすすめ](https://www.lingq.com/en/learn/ja/web/library/course/429500)|13|2019-01-18|2019-04-07
 |shared|C1|[LibriVOX 04 - Japanese](https://www.lingq.com/en/learn/ja/web/library/course/446262)|12|2019-03-14|2019-04-02
-|shared|B1|[HappyLifeStyle - Tired of human relationship - 人間関係に疲れたときの30の言葉](https://www.lingq.com/en/learn/ja/web/library/course/443884)|30|2019-03-06|2019-03-28
 |shared|B1|[Conversational YouTube Videos](https://www.lingq.com/en/learn/ja/web/library/course/430050)|43|2019-01-19|2019-01-21
 |shared|B1|[Aozora Bunko imports](https://www.lingq.com/en/learn/ja/web/library/course/423773)|10|2019-01-03|2019-01-03
 |shared|C2|[この素晴らしい世界に祝福を！ あぁ、駄女神さま (KonoSuba)](https://www.lingq.com/en/learn/ja/web/library/course/419886)|23|2018-12-19|2018-12-31

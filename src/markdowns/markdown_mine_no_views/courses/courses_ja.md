@@ -1,28 +1,26 @@
 |Status| |Title|Lessons|Created&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Updated&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|
-|------|-|-----|-------|--------------|--------------|
-|private|-|[Quick Imports](https://www.lingq.com/en/learn/ja/web/library/course/537808)|1|2024-04-20|2024-04-20
-|shared|C2|[Aozora Bunko Readings (4-5mins)](https://www.lingq.com/en/learn/ja/web/library/course/793510)|112|2021-02-18|2024-04-12
+|-|-|-|-|-|-|
+|private|-|[Quick Imports](https://www.lingq.com/en/learn/ja/web/library/course/537808)|1|2024-06-05|2024-06-05
+|private|-|[akanesenseijp.com](https://www.lingq.com/en/learn/ja/web/library/course/1742582)|3|2024-05-22|2024-06-03
+|private|-|[The Bite size Japanese Podcast](https://www.lingq.com/en/learn/ja/web/library/course/1745560)|4|2024-05-25|2024-06-03
+|shared|C2|[Aozora Bunko Readings (4-5mins)](https://www.lingq.com/en/learn/ja/web/library/course/793510)|113|2021-02-18|2024-05-13
+|private|B2|[かがみの孤城](https://www.lingq.com/en/learn/ja/web/library/course/987877)|31|2024-05-02|2024-05-02
 |shared|B2|[Japanese childhood](https://www.lingq.com/en/learn/ja/web/library/course/1685526)|9|2024-04-08|2024-04-08
 |private|C1|[ノルウェイの森 - 村上春樹](https://www.lingq.com/en/learn/ja/web/library/course/1597235)|28|2024-02-02|2024-02-02
 |private|B1|[Youtube -  Miku Real Japanese](https://www.lingq.com/en/learn/ja/web/library/course/918677)|149|2021-01-01|2024-01-12
 |private|-|[Interesting imports](https://www.lingq.com/en/learn/ja/web/library/course/1209807)|7|2021-02-22|2023-03-09
 |private|-|[日本語の森  - Learn with songs](https://www.lingq.com/en/learn/ja/web/library/course/877121)|10|2021-01-19|2022-02-24
-|private|-|[Netflix - Others](https://www.lingq.com/en/learn/ja/web/library/course/1004173)|16|2021-12-24|2022-01-23
 |private|B2|[Youtube - Mayonaka (Horror)](https://www.lingq.com/en/learn/ja/web/library/course/1003917)|2|2022-01-22|2022-01-23
 |private|B1|[6 - Harry Potter](https://www.lingq.com/en/learn/ja/web/library/course/991617)|57|2022-01-03|2022-01-20
-|private|-|[Netflix - Ghibli](https://www.lingq.com/en/learn/ja/web/library/course/961236)|14|2021-11-16|2022-01-17
 |private|-|[Youtube - Sayuri (Conversation)(Formal)](https://www.lingq.com/en/learn/ja/web/library/course/998192)|19|2022-01-14|2022-01-15
 |private|B1|[Youtube - Sayuri (Conversation)(Casual)](https://www.lingq.com/en/learn/ja/web/library/course/994941)|30|2022-01-09|2022-01-10
 |shared|A2|[Youtube - Layla (Podcast)](https://www.lingq.com/en/learn/ja/web/library/course/990105)|10|2022-01-01|2022-01-07
-|private|B2|[かがみの孤城](https://www.lingq.com/en/learn/ja/web/library/course/987877)|7|2021-12-30|2021-12-30
 |private|-|[日本語の森 - JPLT (November)](https://www.lingq.com/en/learn/ja/web/library/course/951547)|14|2021-11-03|2021-12-18
 |private|B2|[5 - Harry Potter](https://www.lingq.com/en/learn/ja/web/library/course/864436)|106|2021-06-14|2021-12-14
 |private|-|[Netflix - Arcane](https://www.lingq.com/en/learn/ja/web/library/course/954155)|9|2021-11-07|2021-11-20
-|private|C1|[日本語の森 - VOCAB (N1)](https://www.lingq.com/en/learn/ja/web/library/course/957100)|2|2021-11-11|2021-11-14
 |private|C1|[1Q86 - Murakami](https://www.lingq.com/en/learn/ja/web/library/course/955695)|7|2021-11-09|2021-11-10
 |private|-|[イソップ寓話](https://www.lingq.com/en/learn/ja/web/library/course/948083)|312|2021-10-29|2021-11-09
 |private|B2|[日本語の森 - N2文法](https://www.lingq.com/en/learn/ja/web/library/course/953229)|18|2021-11-06|2021-11-06
-|private|-|[Imports - Wikipedia](https://www.lingq.com/en/learn/ja/web/library/course/766789)|8|2020-05-21|2021-10-28
 |shared|B2|[Youtube - 3分でわかる](https://www.lingq.com/en/learn/ja/web/library/course/796377)|20|2021-02-22|2021-10-12
 |shared|B2|[Taeko Ohnuki - Sunshower (Music)](https://www.lingq.com/en/learn/ja/web/library/course/462636)|13|2019-05-05|2021-10-02
 |private|-|[Youtube - Everything](https://www.lingq.com/en/learn/ja/web/library/course/759608)|34|2021-02-02|2021-09-22
@@ -57,4 +55,3 @@
 |private|-|[Youtube - 中田敦彦](https://www.lingq.com/en/learn/ja/web/library/course/787860)|11|2021-01-05|2021-02-11
 |private|-|[Music - Anime](https://www.lingq.com/en/learn/ja/web/library/course/772820)|13|2021-01-21|2021-01-29
 |private|B2|[きまぐれロボット -  星 新一](https://www.lingq.com/en/learn/ja/web/library/course/766311)|36|2021-01-10|2021-01-10
-|private|-|[Marc マルコによる福音書](https://www.lingq.com/en/learn/ja/web/library/course/583391)|16|2020-03-14|2020-03-30

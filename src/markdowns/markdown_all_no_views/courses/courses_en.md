@@ -1,13 +1,10 @@
 |Status| |Title|Lessons|Created&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Updated&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|
-|------|-|-----|-------|--------------|--------------|
+|-|-|-|-|-|-|
 |shared|A2|[LingQ Mini Stories - Canadian English](https://www.lingq.com/en/learn/en/web/library/course/271393)|63|2017-01-26|2023-09-23
-|private|-|[Youtube - Classical Music](https://www.lingq.com/en/learn/en/web/library/course/772977)|68|2021-01-21|2022-01-27
 |private|-|[A Christmas Carol - Dickens](https://www.lingq.com/en/learn/en/web/library/course/861755)|12|2021-06-09|2022-01-26
 |private|C2|[No longer human - Dazai](https://www.lingq.com/en/learn/en/web/library/course/829471)|18|2021-04-14|2022-01-25
-|private|-|[Youtube - Thejuicemedia](https://www.lingq.com/en/learn/en/web/library/course/771731)|51|2021-01-19|2021-12-21
 |private|-|[Netflix - Others](https://www.lingq.com/en/learn/en/web/library/course/962851)|5|2021-11-19|2021-11-19
 |shared|C2|[Poetry](https://www.lingq.com/en/learn/en/web/library/course/755921)|12|2020-12-26|2021-10-24
-|private|-|[Youtube - Patrick Boyle](https://www.lingq.com/en/learn/en/web/library/course/921053)|11|2021-04-05|2021-09-30
 |shared|C2|[Howl - Allen Ginsberg](https://www.lingq.com/en/learn/en/web/library/course/928496)|4|2021-09-30|2021-09-30
 |private|-|[Youtube - LetThemTalkTV](https://www.lingq.com/en/learn/en/web/library/course/832005)|20|2021-04-18|2021-09-17
 |private|-|[Brave New World](https://www.lingq.com/en/learn/en/web/library/course/901856)|3|2021-08-18|2021-08-18
@@ -24,6 +21,7 @@
 |private|C1|[Holes by Louis Sachar](https://www.lingq.com/en/learn/en/web/library/course/799967)|5|2021-02-27|2021-02-27
 |private|-|[Fixing the game - Roger L. Martin](https://www.lingq.com/en/learn/en/web/library/course/780155)|46|2021-01-31|2021-02-02
 |private|-|[Brown &co - Make it stick](https://www.lingq.com/en/learn/en/web/library/course/781529)|10|2021-02-02|2021-02-02
+|private|-|[Youtube - Thejuicemedia](https://www.lingq.com/en/learn/en/web/library/course/771731)|1|2021-01-22|2021-01-22
 |private|-|[The Guardian](https://www.lingq.com/en/learn/en/web/library/course/487904)|25|2019-07-27|2021-01-21
 |private|-|[THE PHILOSOPHY OF COMPOSITION](https://www.lingq.com/en/learn/en/web/library/course/713358)|3|2020-10-17|2020-10-17
 |shared|C2|[The Sign of the Four By Sir Arthur Conan Doyle](https://www.lingq.com/en/learn/en/web/library/course/636814)|17|2020-06-01|2020-06-01
