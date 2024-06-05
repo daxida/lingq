@@ -51,6 +51,12 @@ async def response_debug(
     # exit(0)
 
 
+def check_for_valid_token_or_exit(response_json: Any) -> None:
+    if response_json.get("detail", "") == "Invalid token.":
+        print("Invalid APIKEY. Exiting.")
+        sys.exit(1)
+
+
 class LingqHandler:
     """
     NOTE: A collection is a course in the API lingo. It is a group of lessons.
@@ -87,6 +93,7 @@ class LingqHandler:
         url = f"{LingqHandler.API_URL_V2}languages"
         async with self.session.get(url, headers=self.config.headers) as response:
             languages = await response.json()
+            check_for_valid_token_or_exit(languages)
             codes = [lan["code"] for lan in languages if lan["knownWords"] > 0]
 
         return codes
@@ -154,6 +161,7 @@ class LingqHandler:
 
         async with self.session.get(url, headers=self.config.headers) as response:
             collection = await response.json()
+            check_for_valid_token_or_exit(collection)
 
         if "lessons" not in collection:
             # I think this is mainly due to an issue with their garbage collection.
