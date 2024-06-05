@@ -22,6 +22,7 @@ async def _get_courses_for_language(
                 skip_already_downloaded=False,
                 download_audio=download_audio,
                 download_folder=download_folder,
+                write=True,
                 verbose=False,
             )
         await asyncio.sleep(sleep_time)

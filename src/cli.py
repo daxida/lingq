@@ -71,7 +71,13 @@ def get_lessons_cli(
     CAREFUL: This reorders your 'Continue studying' shelf.
     """
     get_lessons(
-        language_code, course_id, skip_already_downloaded, download_audio, out, verbose=True
+        language_code,
+        course_id,
+        skip_already_downloaded,
+        download_audio,
+        out,
+        write=True,
+        verbose=True,
     )
 
 

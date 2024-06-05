@@ -88,6 +88,7 @@ async def _get_lessons(
     skip_already_downloaded: bool,
     download_audio: bool,
     download_folder: str,
+    write: bool,
     verbose: bool,
 ) -> tuple[str, list[Lesson]]:
     async with LingqHandler(language_code) as handler:
@@ -124,6 +125,9 @@ async def _get_lessons(
         ]
         lessons = await asyncio.gather(*tasks)
 
+        if write:
+            write_lessons(language_code, collection_title, lessons, download_folder, verbose)
+
         return collection_title, lessons
 
 
@@ -134,6 +138,7 @@ def get_lessons(
     skip_already_downloaded: bool,
     download_audio: bool,
     download_folder: str,
+    write: bool,
     verbose: bool,
 ):
     """
@@ -155,10 +160,10 @@ def get_lessons(
             skip_already_downloaded,
             download_audio,
             download_folder,
+            write,
             verbose,
         )
     )
-    write_lessons(language_code, collection_title, lessons, download_folder, verbose)
 
 
 if __name__ == "__main__":
@@ -169,5 +174,6 @@ if __name__ == "__main__":
         skip_already_downloaded=False,
         download_audio=False,
         download_folder="downloads",
+        write=True,
         verbose=True,
     )
