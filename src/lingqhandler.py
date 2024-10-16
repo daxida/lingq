@@ -156,13 +156,15 @@ class LingqHandler:
         url = f"{LingqHandler.API_URL_V3}{self.language_code}/search/?shelf=my_lessons&type=collection&sortBy=recentlyOpened"
         return await self._get_collections_from_url(url)
 
-    async def get_collection_json_from_id(self, collection_id: str) -> Any | None:
-        """Return a JSON with the collection from a collection_id."""
-        url = f"{LingqHandler.API_URL_V2}{self.language_code}/collections/{collection_id}"
+    async def get_collection_json_from_id(self, collection_id: str) -> Any:
+        """Get a collection JSON with the collection, from a collection_id."""
+        url = f"{LingqHandler.API_URL_V2}/{self.language_code}/collections/{collection_id}/"
 
         async with self.session.get(url, headers=self.config.headers) as response:
             collection = await response.json()
             check_for_valid_token_or_exit(collection)
+
+        assert collection is not None, "Failed to get collection"
 
         if "lessons" not in collection:
             # I think this is mainly due to an issue with their garbage collection.
@@ -177,10 +179,8 @@ class LingqHandler:
         return collection
 
     async def get_collection_object_from_id(self, collection_id: str) -> Collection | None:
-        """Return a Collection object from a collection_id."""
+        """Get a custom collection Object from a collection_id."""
         collection_data = await self.get_collection_json_from_id(collection_id)
-        if collection_data is None:
-            return None
         if not collection_data["lessons"]:
             return None
         collection = Collection()

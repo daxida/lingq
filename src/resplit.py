@@ -17,7 +17,6 @@ async def resplit_japanese(handler: LingqHandler, lessons: list[Any]) -> None:
 async def _resplit(course_id: str) -> None:
     async with LingqHandler("ja") as handler:
         collection = await handler.get_collection_json_from_id(course_id)
-        assert collection is not None
         lesson_jsons = collection["lessons"]
         double_check(f"Resplitting course: {collection['title']}")
         urls = [lesson_json["url"] for lesson_json in lesson_jsons]

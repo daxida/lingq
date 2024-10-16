@@ -38,7 +38,6 @@ async def filter_playlist(
 
     if skip_uploaded:
         collection = await handler.get_collection_json_from_id(course_id)
-        assert collection is not None
         lessons = collection["lessons"]
         lessons_urls = [lesson["originalUrl"] for lesson in lessons]
         lessons_urls = set(lessons_urls)

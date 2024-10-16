@@ -10,8 +10,6 @@ async def _patch_audios(
 ) -> None:
     async with LingqHandler(language_code) as handler:
         collection = await handler.get_collection_json_from_id(course_id)
-        assert collection is not None
-
         lesson_jsons = collection["lessons"][from_lesson - 1 : to_lesson]
         double_check(
             f"Patching audio for course: {collection['title']} ({language_code}) (lessons {from_lesson} to {len(lesson_jsons)})"
