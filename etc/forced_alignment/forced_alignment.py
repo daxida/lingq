@@ -80,14 +80,15 @@ You don't have to follow this, it is mostly for self-reference. What I ended up 
     pip install .
 """
 
-import os
 import json
-import subprocess
 import logging
-from mutagen.mp3 import MP3
+import os
+import subprocess
 from dataclasses import dataclass
+
 from aeneas.executetask import ExecuteTask
 from aeneas.task import Task
+from mutagen.mp3 import MP3
 
 
 @dataclass

@@ -8,9 +8,9 @@ Uses GPT4All to prompt the questions.
 > pip install gpt4all
 """
 
+import argparse
 import os
 import subprocess
-import argparse
 
 from gpt4all import GPT4All
 
