@@ -52,10 +52,17 @@ async def response_debug(
 
 
 def check_for_valid_token_or_exit(response_json: Any) -> None:
-    if isinstance(response_json, dict) and "detail" in response_json:
-        if response_json["detail"] == "Invalid token.":
+    """Exits the program if the APIKEY is deemed invalid by the server."""
+    if isinstance(response_json, dict):
+        if response_json.get("detail", "") == "Invalid token.":
             print("Invalid APIKEY. Exiting.")
             sys.exit(1)
+    elif isinstance(response_json, list):
+        pass
+    else:
+        raise NotImplementedError(
+            f"Unsupported type in check_for_valid_token_or_exit: {type(response_json)}."
+        )
 
 
 class LingqHandler:
@@ -83,12 +90,15 @@ class LingqHandler:
         )
         self.session = retry_client
 
+    async def close(self):
+        await self.session.close()
+
     # Make the handler into an async context manager (for better debug messages)
     async def __aenter__(self):
         return self
 
-    async def __aexit__(self, exc_type, exc_value, tb):  # type: ignore
-        await self.session.close()
+    async def __aexit__(self, *_):
+        await self.close()
 
     async def _get_all_user_languages(self) -> list[str]:
         url = f"{LingqHandler.API_URL_V2}languages"
