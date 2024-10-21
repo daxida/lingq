@@ -153,13 +153,23 @@ class LingqHandler:
         return await asyncio.gather(*(self.get_lesson_from_url(url) for url in urls))
 
     async def get_audio_from_lesson(self, lesson: Any) -> bytes | None:
-        """Get the audio from a lesson. Return None if there is no audio."""
-        audio = None
-        if lesson["audio"]:
-            async with self.session.get(lesson["audio"]) as response:
-                audio = await response.read()
+        """
+        Get the audio from a lesson. Return None if there is no audio.
+        The key with the audio url is 'audio' in V2 and 'audioUrl' in V3.
+        """
+        if "audio" in lesson:
+            audio_url = lesson["audio"]
+        elif "audioUrl" in lesson:
+            audio_url = lesson["audioUrl"]
+        else:
+            raise KeyError("Lesson should have at least an 'audio' or 'audioUrl' key")
 
-        return audio
+        # There is a key but the lesson has no audio
+        if audio_url is None:
+            return None
+
+        async with self.session.get(audio_url) as response:
+            return await response.read()
 
     async def _get_collections_from_url(self, url: str) -> Any:
         async with self.session.get(url, headers=self.config.headers) as response:
