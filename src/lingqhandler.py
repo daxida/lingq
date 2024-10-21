@@ -272,6 +272,41 @@ class LingqHandler:
                 await response_debug(response, "generate_timestamps", lesson)
         return response
 
+    async def create_course(self, title: str, description: str = "") -> Any:
+        """
+        Create an empty course given its title and (optional) description.
+        Returns the response JSON, which contains an entry "id" for the course id.
+        This id can be used for further uploading through post methods.
+        """
+        return await self._create_course({"title": title, "description": description})
+
+    async def _create_course(self, data: Any) -> Any:
+        """
+        Create a course from a data payload.
+        Returns the response JSON, which contains an entry "id" for the course id.
+        This id can be used for further uploading through post methods.
+
+        In its simplest version, it can be called just with the course title:
+        handler.create_course({"title": "my_course_title"})
+
+        From: https://github.com/kaajjaak/LingQGPT/
+        """
+        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/collections/"
+        async with self.session.post(url, headers=self.config.headers, data=data) as response:
+            if response.status != 201:
+                await response_debug(response, "create_course")
+            return await response.json()
+
+    async def delete_course(self, course_id: str) -> None:
+        """
+        Crashes if the course is not succesfully deleted (it is succesfully deleted if
+        the response.status is 202) by entering response_debug.
+        """
+        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/collections/{course_id}"
+        async with self.session.delete(url, headers=self.config.headers) as response:
+            if response.status != 202:
+                await response_debug(response, "delete_course")
+
     async def post_from_multipart(self, data: Any) -> ClientResponse:
         url = f"{LingqHandler.API_URL_V3}/{self.language_code}/lessons/import/"
         async with self.session.post(url, headers=self.config.headers, data=data) as response:
