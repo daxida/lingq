@@ -130,7 +130,10 @@ class LingqHandler:
         return asyncio.run(_get_user_language_codes_tmp())
 
     async def get_lesson_from_url(self, url: str) -> Any:
-        """Return a JSON with the lesson, from its url."""
+        """
+        Get a lesson JSON, from its url.
+        Example url: https://www.lingq.com/api/v3/ja/lessons/34754329/
+        """
         async with self.session.get(url, headers=self.config.headers) as response:
             lesson = await response.json()
         if lesson.get("isLocked", "") == "TRANSCRIBE_AUDIO":
@@ -140,11 +143,14 @@ class LingqHandler:
 
         return lesson
 
-    async def get_lessons_from_urls(self, urls: list[str]) -> list[Any]:
-        tasks = [self.get_lesson_from_url(url) for url in urls]
-        lessons = await asyncio.gather(*tasks)
+    async def get_lesson_from_id(self, lesson_id: str) -> Any:
+        """Get a lesson JSON, from its id. Example id: 34754329"""
+        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/lessons/{lesson_id}/"
+        return await self.get_lesson_from_url(url)
 
-        return lessons
+    async def get_lessons_from_urls(self, urls: list[str]) -> list[Any]:
+        """Get a list of lesson JSONs, from their urls."""
+        return await asyncio.gather(*(self.get_lesson_from_url(url) for url in urls))
 
     async def get_audio_from_lesson(self, lesson: Any) -> bytes | None:
         """Get the audio from a lesson. Return None if there is no audio."""
