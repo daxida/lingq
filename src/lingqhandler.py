@@ -172,6 +172,12 @@ class LingqHandler:
             return await response.read()
 
     async def _get_collections_from_url(self, url: str) -> Any:
+        """
+        Get a collection JSON, from its url.
+        Example urls:
+            https://www.lingq.com/api/v3/ja/collections/537808
+            https://www.lingq.com/api/v3/ja/collections/my
+        """
         async with self.session.get(url, headers=self.config.headers) as response:
             collections = await response.json()
 
@@ -180,7 +186,10 @@ class LingqHandler:
         ), f"Error in processing the request at {url=}"
         assert collections["next"] is None, "We are missing some collections"
 
-        return collections["results"]
+        results = collections["results"]
+        assert results is not None
+
+        return results
 
     async def get_my_collections(self) -> Any:
         """
