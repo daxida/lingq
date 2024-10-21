@@ -77,8 +77,8 @@ class LingqHandler:
         session (RetryClient): A retry-enabled HTTP client session.
     """
 
-    API_URL_V2 = "https://www.lingq.com/api/v2/"
-    API_URL_V3 = "https://www.lingq.com/api/v3/"
+    API_URL_V2 = "https://www.lingq.com/api/v2"
+    API_URL_V3 = "https://www.lingq.com/api/v3"
 
     def __init__(self, language_code: str) -> None:
         self.language_code = language_code
@@ -100,24 +100,34 @@ class LingqHandler:
     async def __aexit__(self, *_):
         await self.close()
 
-    async def _get_all_user_languages(self) -> list[str]:
-        url = f"{LingqHandler.API_URL_V2}languages"
+    async def get_languages(self) -> Any:
+        """
+        Get a JSON of supported (or almost) languages by Lingq.
+        https://www.lingq.com/apidocs/api-2.0.html#get
+        """
+        url = f"{LingqHandler.API_URL_V2}/languages"
         async with self.session.get(url, headers=self.config.headers) as response:
-            languages = await response.json()
-            check_for_valid_token_or_exit(languages)
-            codes = [lan["code"] for lan in languages if lan["knownWords"] > 0]
+            languages_res = await response.json()
+            check_for_valid_token_or_exit(languages_res)
+        return languages_res
 
-        return codes
+    async def _get_user_language_codes(self) -> list[str]:
+        """Get a list of language codes with known words."""
+        languages_res = await self.get_languages()
+        return [lc["code"] for lc in languages_res if lc["knownWords"] > 0]
 
     @classmethod
-    def get_all_user_languages_codes(cls) -> list[str]:
-        """Returns a list of language codes with known words."""
+    def get_user_language_codes(cls) -> list[str]:
+        """
+        Get a list of language codes with known words.
+        This is a class method since it does not require initializing a language code.
+        """
 
-        async def _get_all_user_languages_tmp():
+        async def _get_user_language_codes_tmp():
             async with cls("Filler") as handler:
-                return await handler._get_all_user_languages()
+                return await handler._get_user_language_codes()
 
-        return asyncio.run(_get_all_user_languages_tmp())
+        return asyncio.run(_get_user_language_codes_tmp())
 
     async def get_lesson_from_url(self, url: str) -> Any:
         """Return a JSON with the lesson, from its url."""
@@ -157,13 +167,19 @@ class LingqHandler:
         return collections["results"]
 
     async def get_my_collections(self) -> Any:
-        """Return a JSON with all my imported collections."""
-        url = f"{LingqHandler.API_URL_V3}{self.language_code}/collections/my/"
+        """
+        Get a collection JSON with all my imported collections.
+        This does not include collections imported by other users.
+        """
+        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/collections/my/"
         return await self._get_collections_from_url(url)
 
     async def get_currently_studying_collections(self) -> Any:
-        """Return a JSON with all the studied collections (Continue Studying shelf)."""
-        url = f"{LingqHandler.API_URL_V3}{self.language_code}/search/?shelf=my_lessons&type=collection&sortBy=recentlyOpened"
+        """
+        Get a collection JSON with all the studied collections (Continue Studying shelf).
+        This includes collections imported by other users.
+        """
+        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/search/?shelf=my_lessons&type=collection&sortBy=recentlyOpened"
         return await self._get_collections_from_url(url)
 
     async def get_collection_json_from_id(self, collection_id: str) -> Any:
@@ -201,7 +217,8 @@ class LingqHandler:
     async def patch_audio_from_lesson_id(
         self, lesson_id: str, audio_data: BufferedReader
     ) -> ClientResponse:
-        url = f"{LingqHandler.API_URL_V3}{self.language_code}/lessons/{lesson_id}/"
+        """Patch (i.e. replace) the audio of a lesson."""
+        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/lessons/{lesson_id}/"
         data = {"audio": audio_data}
         async with self.session.patch(url, headers=self.config.headers, data=data) as response:
             if response.status != 200:
@@ -209,8 +226,9 @@ class LingqHandler:
         return response
 
     async def patch_text_from_lesson_id(self, lesson_id: str, text_data: str) -> ClientResponse:
-        """Note that this is actually a post request that works like a patch one."""
-        url = f"{LingqHandler.API_URL_V3}{self.language_code}/lessons/{lesson_id}/resplit/"
+        """Patch (i.e. replace) the text of a lesson.
+        Note that this is actually a post request that works like a patch one."""
+        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/lessons/{lesson_id}/resplit/"
         data = {"text": text_data}
         async with self.session.post(url, headers=self.config.headers, data=data) as response:
             if response.status != 200:
@@ -218,7 +236,8 @@ class LingqHandler:
         return response
 
     async def generate_timestamps(self, lesson: Any) -> ClientResponse:
-        url = f"{LingqHandler.API_URL_V3}{self.language_code}/lessons/{lesson['id']}/genaudio/"
+        """Post request to add timestamps to a lesson."""
+        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/lessons/{lesson['id']}/genaudio/"
         async with self.session.post(url, headers=self.config.headers) as response:
             if response.status == 409:
                 # Ok error. Happens if you try to generate timestamps
@@ -229,7 +248,7 @@ class LingqHandler:
         return response
 
     async def post_from_multipart(self, data: Any) -> ClientResponse:
-        url = f"{LingqHandler.API_URL_V3}{self.language_code}/lessons/import/"
+        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/lessons/import/"
         async with self.session.post(url, headers=self.config.headers, data=data) as response:
             if response.status == 524:
                 # Ok error. Happens if their servers are overloaded.
@@ -239,9 +258,11 @@ class LingqHandler:
         return response
 
     async def resplit_lesson(self, lesson: Any, method: str) -> ClientResponse:
-        """Resplit a Japanese lesson using the new splitting logic.
-        Cf: https://forum.lingq.com/t/refining-parsing-in-spaceless-languages-like-japanese-with-ai/179754/5"""
-        url = f"{LingqHandler.API_URL_V3}{self.language_code}/lessons/{lesson['id']}/resplit/"
+        """
+        Resplit a Japanese lesson using the new splitting logic.
+        Cf: https://forum.lingq.com/t/refining-parsing-in-spaceless-languages-like-japanese-with-ai/179754/5
+        """
+        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/lessons/{lesson['id']}/resplit/"
         data = {}
         if method == "ichimoe":
             data = {"method": "ichimoe"}

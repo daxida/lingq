@@ -174,7 +174,7 @@ def make_markdown(
         out_folder (str): The output folder where the markdown files will be saved.
     """
     if not language_codes:
-        language_codes = LingqHandler.get_all_user_languages_codes()
+        language_codes = LingqHandler.get_user_language_codes()
     asyncio.run(_make_markdown(language_codes, select_courses, include_views, out_folder))
 
 

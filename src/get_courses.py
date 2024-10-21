@@ -60,7 +60,7 @@ def get_courses(
     """
     # If no language codes are given, use all languages.
     if not language_codes:
-        language_codes = LingqHandler.get_all_user_languages_codes()
+        language_codes = LingqHandler.get_user_language_codes()
     asyncio.run(_get_courses(language_codes, download_audio, sleep_time, download_folder))
 
 
