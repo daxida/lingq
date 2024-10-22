@@ -11,6 +11,7 @@ from patch import patch_audios
 from post import post
 from post_yt_playlist import post_yt_playlist
 from resplit import resplit
+from show import show_my
 from sort_lessons import sort_lessons
 
 DEFAULT_OUT_PATH = "downloads"
@@ -62,11 +63,6 @@ def setup_cli(apikey: str) -> None:
         print(f".env file has been created.")
 
 
-@cli.group()
-def get():
-    """Get commands."""
-
-
 @cli.command("fix")
 @click.argument("language_code")
 @click.argument("course_id")
@@ -78,6 +74,23 @@ def fix_cli(language_code: str, course_id: str) -> None:
     from fix import fix
 
     fix(language_code, course_id)
+
+
+@cli.group()
+def show():
+    """Show commands."""
+
+
+@show.command("my")
+@click.argument("language_code")
+def show_my_cli(language_code: str) -> None:
+    """Show a list with my collections in the given language."""
+    show_my(language_code)
+
+
+@cli.group()
+def get():
+    """Get commands."""
 
 
 @get.command("pictures")
@@ -216,7 +229,7 @@ def patch():
 def patch_audios_cli(
     language_code: str, course_id: str, audios_folder: str, fr_lesson: int, to_lesson: int
 ) -> None:
-    """Patch commands."""
+    """Patch a course audio."""
     patch_audios(language_code, course_id, audios_folder, fr_lesson, to_lesson)
 
 
