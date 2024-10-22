@@ -3,17 +3,7 @@ import os
 from dataclasses import dataclass
 
 from lingqhandler import LingqHandler
-
-
-@dataclass
-class Lesson:
-    title: str
-    collection_title: str
-    url: str
-    id_: str
-    text: str
-    audio: bytes | None
-    timestamps: str | None
+from models.lesson import Lesson
 
 
 @dataclass
