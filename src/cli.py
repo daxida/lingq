@@ -14,6 +14,7 @@ from post_yt_playlist import post_yt_playlist
 from resplit import resplit
 from show import show_my
 from sort_lessons import sort_lessons
+from yomitan import yomitan
 
 DEFAULT_OUT_PATH = "downloads"
 DEFAULT_OUT_WORDS_PATH = os.path.join(DEFAULT_OUT_PATH, "lingqs")
@@ -116,6 +117,24 @@ def get_pictures_cli(language_code: str, course_id: str, out: str) -> None:
 def get_words_cli(language_codes: list[str], out: str) -> None:
     """Get words (LingQs)."""
     get_words(language_codes, out)
+
+
+@cli.command("yomitan")
+@click.argument("language-codes", nargs=-1)
+@click.option(
+    "--input",
+    "-i",
+    default=DEFAULT_OUT_WORDS_PATH,
+    show_default=True,
+    help="Input path to the JSON dump.",
+)
+def yomitan_cli(language_codes: list[str], input: str) -> None:
+    """
+    Make a Yomitan dictionary from a LingQ JSON dump generated through get_words.
+
+    If no language codes are given, use all languages.
+    """
+    yomitan(language_codes, input)
 
 
 @get.command("lessons")
