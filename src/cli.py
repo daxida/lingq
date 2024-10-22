@@ -93,13 +93,17 @@ def get_pictures_cli(language_code: str, course_id: str, out: str) -> None:
 @click.argument("language_code")
 @click.argument("course_id")
 @click.option("--skip_already_downloaded", is_flag=True, default=False, show_default=True)
-@click.option("--download_audio", is_flag=True, default=False)
+@click.option("--download_audio", is_flag=True, default=False, help="If set, also download audio.")
+@click.option(
+    "--download_timestamps", is_flag=True, default=False, help="If set, also download timestamps."
+)
 @click.option("--out", "-o", default=DEFAULT_OUT_PATH, show_default=True, help="Output path.")
 def get_lessons_cli(
     language_code: str,
     course_id: str,
     skip_already_downloaded: bool,
     download_audio: bool,
+    download_timestamps: bool,
     out: str,
 ) -> None:
     """Get every lesson from a course id.
@@ -111,6 +115,7 @@ def get_lessons_cli(
         course_id,
         skip_already_downloaded,
         download_audio,
+        download_timestamps,
         out,
         write=True,
         verbose=True,
@@ -121,11 +126,18 @@ def get_lessons_cli(
 @click.argument("language-codes", nargs=-1)
 @click.option("--download-audio", is_flag=True, default=False, help="If set, also download audio.")
 @click.option(
+    "--download_timestamps", is_flag=True, default=False, help="If set, also download timestamps."
+)
+@click.option(
     "--sleep-time", type=int, default=2, show_default=True, help="Time to wait between courses."
 )
 @click.option("--out", "-o", default=DEFAULT_OUT_PATH, show_default=True, help="Output path.")
 def get_courses_cli(
-    language_codes: list[str], download_audio: bool, sleep_time: int, out: str
+    language_codes: list[str],
+    download_audio: bool,
+    download_timestamps: bool,
+    sleep_time: int,
+    out: str,
 ) -> None:
     """Get every course from a list of languages.
 
@@ -133,7 +145,7 @@ def get_courses_cli(
 
     If no language codes are given, use all languages.
     """
-    get_courses(language_codes, download_audio, sleep_time, out)
+    get_courses(language_codes, download_audio, download_timestamps, sleep_time, out)
 
 
 @cli.command("post")

@@ -6,7 +6,11 @@ from utils import double_check, timing  # type: ignore
 
 
 async def _get_courses_for_language(
-    language_code: str, download_audio: bool, sleep_time: int, download_folder: str
+    language_code: str,
+    download_audio: bool,
+    download_timestamps: bool,
+    sleep_time: int,
+    download_folder: str,
 ) -> None:
     async with LingqHandler(language_code) as handler:
         # This is only for the courses ID, since in order to get the text we need
@@ -21,6 +25,7 @@ async def _get_courses_for_language(
                 collection_json["id"],
                 skip_already_downloaded=False,
                 download_audio=download_audio,
+                download_timestamps=download_timestamps,
                 download_folder=download_folder,
                 write=True,
                 verbose=False,
@@ -29,18 +34,28 @@ async def _get_courses_for_language(
 
 
 async def _get_courses(
-    language_codes: list[str], download_audio: bool, sleep_time: int, download_folder: str
+    language_codes: list[str],
+    download_audio: bool,
+    download_timestamps: bool,
+    sleep_time: int,
+    download_folder: str,
 ) -> None:
     print(f"Getting courses for languages: {', '.join(language_codes)}")
     double_check("CAREFUL: This reorders your 'Continue studying' shelf.")
     for language_code in language_codes:
-        await _get_courses_for_language(language_code, download_audio, sleep_time, download_folder)
+        await _get_courses_for_language(
+            language_code, download_audio, download_timestamps, sleep_time, download_folder
+        )
         await asyncio.sleep(sleep_time)
 
 
 @timing
 def get_courses(
-    language_codes: list[str], download_audio: bool, sleep_time: int, download_folder: str
+    language_codes: list[str],
+    download_audio: bool,
+    download_timestamps: bool,
+    sleep_time: int,
+    download_folder: str,
 ) -> None:
     """
     Get every course from a list of languages.
@@ -61,9 +76,19 @@ def get_courses(
     # If no language codes are given, use all languages.
     if not language_codes:
         language_codes = LingqHandler.get_user_language_codes()
-    asyncio.run(_get_courses(language_codes, download_audio, sleep_time, download_folder))
+    asyncio.run(
+        _get_courses(
+            language_codes, download_audio, download_timestamps, sleep_time, download_folder
+        )
+    )
 
 
 if __name__ == "__main__":
     # Defaults for manually running this script.
-    get_courses(language_codes=["ja"], download_audio=False, sleep_time=2, download_folder=".")
+    get_courses(
+        language_codes=["ja"],
+        download_audio=False,
+        download_timestamps=False,
+        sleep_time=2,
+        download_folder=".",
+    )
