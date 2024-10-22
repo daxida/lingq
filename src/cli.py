@@ -5,6 +5,7 @@ from generate_timestamps import generate_timestamps
 from get_courses import get_courses
 from get_lessons import get_lessons
 from get_pictures import get_pictures
+from get_words import get_words
 from library_overview import overview
 from make_markdown import make_markdown
 from patch import patch_audios
@@ -15,6 +16,7 @@ from show import show_my
 from sort_lessons import sort_lessons
 
 DEFAULT_OUT_PATH = "downloads"
+DEFAULT_OUT_WORDS_PATH = os.path.join(DEFAULT_OUT_PATH, "lingqs")
 DEFAULT_FROM_LESSON = 1
 DEFAULT_TO_LESSON = 100
 DEFAULT_AUDIOS_FOLDER = None
@@ -100,6 +102,20 @@ def get():
 def get_pictures_cli(language_code: str, course_id: str, out: str) -> None:
     """Get pictures."""
     get_pictures(language_code, course_id, out)
+
+
+@get.command("words")
+@click.argument("language-codes", nargs=-1)
+@click.option(
+    "--out",
+    "-o",
+    default=DEFAULT_OUT_WORDS_PATH,
+    show_default=True,
+    help="Output path.",
+)
+def get_words_cli(language_codes: list[str], out: str) -> None:
+    """Get words (LingQs)."""
+    get_words(language_codes, out)
 
 
 @get.command("lessons")
