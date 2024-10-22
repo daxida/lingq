@@ -4,7 +4,7 @@ import sys
 from io import BufferedReader
 from typing import Any
 
-from aiohttp import ClientResponse, ClientSession
+from aiohttp import ClientResponse, ClientSession, FormData
 from aiohttp_retry import ExponentialRetry, RetryClient
 from dotenv import dotenv_values, find_dotenv
 from models.collection import Collection
@@ -316,6 +316,31 @@ class LingqHandler:
             elif response.status != 201:
                 await response_debug(response, "post_from_multipart")
         return response
+
+    async def post_from_data_dict(self, data: dict[str, Any]) -> ClientResponse:
+        """Intended to be used with dictionaries:
+        data = {
+            "title": "tmp_title",
+            "text": "Hello, world!",
+            "status": "private",  # default
+            "level": 0,  # default
+            "collection": course_id,
+            "save": True,  # NOTE: This is needed!
+        }
+        """
+        needed_keys = ["title", "text", "collection"]
+        warning_keys = ["save"]
+        for key in needed_keys:
+            if key not in data:
+                raise ValueError(f"Error at post_from_data_dict: data has no {key=}")
+        for key in warning_keys:
+            if key not in data:
+                print(f"WARN: at post_from_data_dict: data has no {key=}")
+
+        fdata = FormData()
+        for key, value in data.items():
+            fdata.add_field(key, value)
+        return await self.post_from_multipart(fdata)
 
     async def resplit_lesson(self, lesson: Any, method: str) -> ClientResponse:
         """
