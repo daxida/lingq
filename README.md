@@ -2,7 +2,7 @@
 
 Command line utilities and scripts for interacting with [LingQ's](https://www.lingq.com/) API.
 
-You will need a LingQ API key. You can get from [here](https://www.lingq.com/en/accounts/apikey/).
+You will need a LingQ API key. You can get it from [here](https://www.lingq.com/en/accounts/apikey/).
 
 ## Installation
 
@@ -21,7 +21,7 @@ pip install .
 
 Finally, create an `.env` file in the root directory with the following format:
 ```
-APIKEY="your-lingq-api-key"
+APIKEY='yourLingqApiKey'
 ```
 
 ## How to use
@@ -80,3 +80,4 @@ python3 etc/scrape/japanese/sc_itazura.py
 - A miniminalist [script](https://github.com/paulywill/lingq_upload) to upload content to LingQ. May not be up to date.
 - A [script](https://github.com/justbrendo/lingq-yt) to upload youtube playlists to LingQ with Whisper generated subtitles.
 - For [splitting](https://gist.github.com/Ashwinning/a9677b5b3afa426667d979b36c019b04) downloaded audio from youtube.
+- Another API wrapper in [ruby](https://github.com/evizitei/lingq)

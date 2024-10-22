@@ -1,5 +1,4 @@
 import asyncio
-import json
 import sys
 from io import BufferedReader
 from typing import Any
@@ -29,10 +28,6 @@ class Config:
 
         self.key = config["APIKEY"]
         self.headers = {"Authorization": f"Token {self.key}"}
-
-
-def err(my_json: Any):
-    json.dump(my_json, sys.stdout, ensure_ascii=False, indent=2)
 
 
 async def response_debug(
