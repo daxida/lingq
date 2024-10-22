@@ -12,7 +12,8 @@ dependencies = [
     "click==8.1.7",
     "natsort==8.4.0",
     "python-dotenv==1.0.1",
-    "yt_dlp==2024.5.27"
+    "yt_dlp==2024.5.27",
+    "pydantic",
 ]
 
 [project.optional-dependencies]
