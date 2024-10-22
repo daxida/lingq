@@ -1,7 +1,19 @@
-from forced_alignment import TimedText, split_audio
+import pytest
+
+try:
+    import aeneas
+
+    AENEAS_AVAILABLE = True
+except ImportError:
+    AENEAS_AVAILABLE = False
 
 
 def test_simple():
+    if not AENEAS_AVAILABLE:
+        pytest.skip("Aeneas is not installed")
+
+    from forced_alignment import TimedText, split_audio
+
     fragments = [
         {
             "begin": "0.000",
