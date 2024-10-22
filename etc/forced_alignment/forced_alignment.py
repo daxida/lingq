@@ -66,18 +66,21 @@ Aeneas turns out to be sort of tricky to set up.
 You don't have to follow this, it is mostly for self-reference. What I ended up doing:
 
 - gh repo clone readbeyond/aeneas
+- cd aeneas
 - https://github.com/readbeyond/aeneas/issues/306#issuecomment-2212360050
     - At setup.py comment line 200: "from numpy.distutils import misc_util"
     - At setup.py replace line 208 with: "INCLUDE_DIRS = [get_include()]"
 - https://github.com/readbeyond/aeneas/pull/272
-    - Add their pyproject.toml
+    - Add their pyproject.toml, that is:
+    [build-system]
+    requires = ["setuptools", "wheel", "numpy>=1.9"]
 - Then, as they state in the guide:
-    cd aeneas
     pip install -r requirements.txt
     pip install setuptools
     python setup.py build_ext --inplace
     python aeneas_check_setup.py
     pip install .
+- You can now delete the aeneas repo.
 """
 
 import json
@@ -89,6 +92,12 @@ from dataclasses import dataclass
 from aeneas.executetask import ExecuteTask
 from aeneas.task import Task
 from mutagen.mp3 import MP3
+
+# TODO: format the original text so that the merged text is sentence-separated.
+#       Since aeneas will match the text chunks, this will make the timestamps
+#       be precise at sentence level.
+#       One has to be careful then at split_audio_by_preserving_chapters to match
+#       the correct sentence.
 
 
 @dataclass
@@ -121,14 +130,24 @@ for handler in logging.getLogger().handlers:
     handler.setFormatter(ColoredFormatter("%(levelname)s %(message)s"))
 
 
-def align_audio_to_text(audio_file, text_file, opath, language):
-    logging.info(f"Starting alignment for audio: {audio_file} and text: {text_file}")
+def align_audio_to_text(
+    audio_path: str,
+    text_path: str,
+    opath: str,
+    language: str,
+) -> None:
+    logging.info(f"Starting alignment for audio: {audio_path} and text: {text_path}")
 
     # Update the task configuration string to use the specified language
-    config_string = f"task_language={language}|is_text_type=plain|os_task_file_format=json"
+    config = [
+        f"task_language={language}",
+        "is_text_type=plain",
+        "os_task_file_format=json",
+    ]
+    config_string = "|".join(config)
     task = Task(config_string=config_string)
-    task.audio_file_path_absolute = audio_file
-    task.text_file_path_absolute = text_file
+    task.audio_file_path_absolute = audio_path
+    task.text_file_path_absolute = text_path
     task.sync_map_file_path_absolute = opath
 
     # Execute alignment task
