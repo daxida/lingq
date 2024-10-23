@@ -72,7 +72,7 @@ def get_words(language_codes: list[str], download_folder: str) -> None:
     If no language codes are given, use all languages.
     """
     if not language_codes:
-        language_codes = LingqHandler.get_user_languages_codes()
+        language_codes = LingqHandler.get_user_language_codes()
     print(f"Getting words for languages: {', '.join(language_codes)}")
     asyncio.run(_get_words(language_codes, download_folder))
 

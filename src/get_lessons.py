@@ -88,7 +88,7 @@ def get_lessons(
     download_folder: str,
     write: bool,
     verbose: bool,
-):
+) -> None:
     """
     Downloads text and/or audio from a course given the language code and the course ID.
 
@@ -101,7 +101,7 @@ def get_lessons(
 
     Creates a 'download' folder and saves the text/audio in 'text'/'audio' subfolders.
     """
-    collection_title, lessons = asyncio.run(
+    _collection_title, _lessons = asyncio.run(
         _get_lessons(
             language_code,
             course_id,

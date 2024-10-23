@@ -74,7 +74,7 @@ async def post_playlist_entry(
     # assert len(title) < 60  # Max allowed
     # url = entry["url"] # assumes "extract_flat": "in_playlist"
     url = entry["original_url" if download_audio else "url"]
-    data = {
+    data: dict[str, str] = {
         "title": title,
         "url": url,
         "collection": course_id,

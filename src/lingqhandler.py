@@ -49,7 +49,8 @@ async def response_debug(
 def check_for_valid_token_or_exit(response_json: Any) -> None:
     """Exits the program if the APIKEY is deemed invalid by the server."""
     if isinstance(response_json, dict):
-        if response_json.get("detail", "") == "Invalid token.":
+        detail = response_json.get("detail", "")  # type: ignore
+        if detail == "Invalid token.":
             print("Invalid APIKEY. Exiting.")
             sys.exit(1)
     elif isinstance(response_json, list):

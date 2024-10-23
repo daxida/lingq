@@ -25,6 +25,7 @@ async def _fix(language_code: str, course_id: str) -> None:
         course_id,
         skip_already_downloaded=False,
         download_audio=False,
+        download_timestamps=False,
         download_folder="",
         write=False,
         verbose=False,

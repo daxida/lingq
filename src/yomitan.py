@@ -26,7 +26,6 @@ from typing import Any
 from lingqhandler import LingqHandler
 from models.cards import Card
 
-
 # TODO: fix this type. Use pydantic if possible.
 YomitanDict = Any
 
