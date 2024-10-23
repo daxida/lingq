@@ -3,6 +3,7 @@
 
 import asyncio
 import csv
+from pathlib import Path
 from typing import Any
 
 from lingqhandler import LingqHandler
@@ -74,9 +75,9 @@ def process_json_entry(language_code: str, entry: Any) -> dict[str, str]:
 
 
 def write_to_csv(language_code: str, data_list: list[Any]) -> None:
-    output_filename = f"{language_code}_library.csv"
+    output_filename = Path(f"{language_code}_library.csv")
 
-    with open(output_filename, "w", newline="", encoding="utf-8") as csv_file:
+    with output_filename.open("w", newline="", encoding="utf-8") as csv_file:
         fieldnames = [
             "link",
             "title",

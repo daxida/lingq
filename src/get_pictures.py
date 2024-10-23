@@ -1,10 +1,12 @@
 import asyncio
-import os
 import re
+from pathlib import Path
 from typing import Any
 
 from lingqhandler import LingqHandler
-from utils import timing  # type: ignore
+from utils import timing
+
+# TODO: rename to images
 
 
 def get_title_from_lesson(lesson_json: Any) -> str:
@@ -28,7 +30,17 @@ async def get_picture(handler: LingqHandler, lesson_json: Any) -> tuple[str, Any
     return (picture_title, picture_content)
 
 
-async def _get_pictures(language_code: str, course_id: str, download_folder: str) -> None:
+def write_pictures(pictures_and_titles, collection_path: Path) -> None:
+    pictures_path = collection_path / "pictures"
+    Path.mkdir(pictures_path, parents=True, exist_ok=True)
+    for picture_title, picture_content in pictures_and_titles:
+        picture_path = pictures_path / f"{picture_title}.png"
+        with picture_path.open("wb") as f:
+            f.write(picture_content)
+    print(f"Wrote pictures at {pictures_path}")
+
+
+async def _get_pictures(language_code: str, course_id: str, opath: Path) -> None:
     async with LingqHandler(language_code) as handler:
         collection_json = await handler.get_collection_json_from_id(course_id)
         assert collection_json is not None
@@ -36,21 +48,16 @@ async def _get_pictures(language_code: str, course_id: str, download_folder: str
         print(f"Getting pictures for {collection_title} ({language_code})")
         tasks = [get_picture(handler, lesson_json) for lesson_json in collection_json["lessons"]]
         pictures_and_titles = await asyncio.gather(*tasks)
-
-        collection_folder = os.path.join(download_folder, language_code, collection_title)
-        os.makedirs(collection_folder, exist_ok=True)
-        for picture_title, picture_content in pictures_and_titles:
-            picture_path = os.path.join(collection_folder, f"{picture_title}.png")
-            with open(picture_path, "wb") as f:
-                f.write(picture_content)
+        collection_path = opath / language_code / collection_title
+        write_pictures(pictures_and_titles, collection_path)
 
 
 @timing
-def get_pictures(language_code: str, course_id: str, download_folder: str):
+def get_pictures(language_code: str, course_id: str, opath: Path):
     """Get all pictures from a course"""
-    asyncio.run(_get_pictures(language_code, course_id, download_folder))
+    asyncio.run(_get_pictures(language_code, course_id, opath))
 
 
 if __name__ == "__main__":
     # Defaults for manually running this script.
-    get_pictures(language_code="ja", course_id="537808", download_folder="downloads")
+    get_pictures(language_code="ja", course_id="537808", opath=Path("downloads"))

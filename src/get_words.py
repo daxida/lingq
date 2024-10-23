@@ -1,7 +1,7 @@
 import asyncio
 import json
-import os
 from math import ceil
+from pathlib import Path
 from typing import Any
 
 from lingqhandler import LingqHandler
@@ -50,23 +50,24 @@ async def _get_words_for_language(language_code: str, page_size: int = 500) -> W
         return dump
 
 
-def write_words_for_language(language_code: str, download_folder: str, dump: WordDump) -> None:
+def write_words_for_language(language_code: str, opath: Path, dump: WordDump) -> None:
     """Write the word dump for a specific language."""
-    dump_path = os.path.join(download_folder, language_code)
-    os.makedirs(dump_path, exist_ok=True)
-    lingq_json_path = os.path.join(dump_path, "lingqs.json")
-    with open(lingq_json_path, "w") as f:
+    dump_folder_path = opath / language_code
+    Path.mkdir(dump_folder_path, parents=True, exist_ok=True)
+    dump_path = dump_folder_path / "lingqs.json"
+    with dump_path.open("w") as f:
         json.dump(dump, f, ensure_ascii=False, indent=2)
+    print(f"Wrote words at {dump_path}")
 
 
-async def _get_words(language_codes: list[str], download_folder: str) -> None:
+async def _get_words(language_codes: list[str], opath: Path) -> None:
     for language_code in language_codes:
         dump = await _get_words_for_language(language_code)
-        write_words_for_language(language_code, download_folder, dump)
+        write_words_for_language(language_code, opath, dump)
 
 
 @timing
-def get_words(language_codes: list[str], download_folder: str) -> None:
+def get_words(language_codes: list[str], opath: Path) -> None:
     """
     Get my words (LingQs) from a language.
     If no language codes are given, use all languages.
@@ -74,12 +75,12 @@ def get_words(language_codes: list[str], download_folder: str) -> None:
     if not language_codes:
         language_codes = LingqHandler.get_user_language_codes()
     print(f"Getting words for languages: {', '.join(language_codes)}")
-    asyncio.run(_get_words(language_codes, download_folder))
+    asyncio.run(_get_words(language_codes, opath))
 
 
 if __name__ == "__main__":
     # Defaults for manually running this script.
     get_words(
-        language_codes=["de"],
-        download_folder="downloads/lingqs",
+        language_codes=["pt"],
+        opath=Path("downloads/lingqs"),
     )

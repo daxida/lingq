@@ -1,6 +1,6 @@
 import asyncio
-import os
 from dataclasses import dataclass
+from pathlib import Path
 
 from lingqhandler import LingqHandler
 from models.lesson import Lesson
@@ -98,32 +98,30 @@ async def get_lesson(
     return lesson
 
 
-def write_lesson(language_code: str, lesson: Lesson, download_folder: str) -> None:
-    texts_folder = os.path.join(download_folder, language_code, lesson.collection_title, "texts")
-    audios_folder = os.path.join(download_folder, language_code, lesson.collection_title, "audios")
-    timestamps_folder = os.path.join(
-        download_folder, language_code, lesson.collection_title, "timestamps"
-    )
+def write_lesson(language_code: str, lesson: Lesson, opath: Path) -> None:
+    texts_folder = opath / language_code / lesson.collection_title / "texts"
+    audios_folder = opath / language_code / lesson.collection_title / "audios"
+    timestamps_folder = opath / language_code / lesson.collection_title / "timestamps"
 
     # Write text
-    os.makedirs(texts_folder, exist_ok=True)
-    txt_path = os.path.join(texts_folder, f"{lesson.title}.txt")
-    with open(txt_path, "w", encoding="utf-8") as text_file:
+    Path.mkdir(texts_folder, parents=True, exist_ok=True)
+    text_path = texts_folder / f"{lesson.title}.txt"
+    with text_path.open("w", encoding="utf-8") as text_file:
         text_file.write(f"{lesson.title}\n")
         text_file.write(lesson.text)
 
     # Write audio if any
     if lesson.audio:
-        os.makedirs(audios_folder, exist_ok=True)
-        mp3_path = os.path.join(audios_folder, f"{lesson.title}.mp3")
-        with open(mp3_path, "wb") as audio_file:
+        Path.mkdir(audios_folder, parents=True, exist_ok=True)
+        mp3_path = audios_folder / f"{lesson.title}.mp3"
+        with mp3_path.open("wb") as audio_file:
             audio_file.write(lesson.audio)
 
     # Write timestamps if any
     if lesson.timestamps:
-        os.makedirs(timestamps_folder, exist_ok=True)
-        vtt_path = os.path.join(timestamps_folder, f"{lesson.title}.vtt")
-        with open(vtt_path, "w", encoding="utf-8") as vtt_file:
+        Path.mkdir(timestamps_folder, parents=True, exist_ok=True)
+        vtt_path = timestamps_folder / f"{lesson.title}.vtt"
+        with vtt_path.open("w", encoding="utf-8") as vtt_file:
             vtt_file.write(lesson.timestamps)
 
 
@@ -153,5 +151,5 @@ if __name__ == "__main__":
     write_lesson(
         language_code="el",
         lesson=lesson,
-        download_folder="downloads",
+        opath=Path("downloads"),
     )

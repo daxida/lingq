@@ -1,29 +1,26 @@
 import asyncio
 import os
+from pathlib import Path
 from typing import Any
 
 from get_lesson import Lesson, get_lesson, sanitize_title, write_lesson
 from lingqhandler import LingqHandler
-from utils import timing  # type: ignore
+from utils import timing
 
 
-def write_lessons(
-    language_code: str,
-    lessons: list[Lesson],
-    download_folder: str,
-    verbose: bool,
-) -> None:
+def write_lessons(language_code: str, lessons: list[Lesson], opath: Path, verbose: bool) -> None:
     for idx, lesson in enumerate(lessons, 1):
         if verbose:
             print(f"Writing lesson nº{idx}: {lesson.title}")
-        write_lesson(language_code, lesson, download_folder)
+        write_lesson(language_code, lesson, opath)
 
 
-def filter_already_downloaded(texts_folder: str, lessons: Any, verbose: bool) -> Any:
-    if not os.path.exists(texts_folder):
+def filter_already_downloaded(texts_path: Path, lessons: Any, verbose: bool) -> Any:
+    if not texts_path.exists():
         return lessons
 
-    text_files = os.listdir(texts_folder)
+    text_files = os.listdir(texts_path)
+    print(text_files)
     filtered_lessons = [
         lesson for lesson in lessons if f"{sanitize_title(lesson['title'])}.txt" not in text_files
     ]
@@ -40,7 +37,7 @@ async def _get_lessons(
     skip_already_downloaded: bool,
     download_audio: bool,
     download_timestamps: bool,
-    download_folder: str,
+    opath: Path,
     write: bool,
     verbose: bool,
 ) -> tuple[str, list[Lesson]]:
@@ -57,7 +54,7 @@ async def _get_lessons(
         print(f"Getting: '{collection_title}'{at_url}")
 
         if skip_already_downloaded:
-            texts_folder = os.path.join(download_folder, language_code, collection_title, "texts")
+            texts_folder = opath / language_code / collection_title / "texts"
             lessons = filter_already_downloaded(texts_folder, lessons, verbose)
 
         tasks = [
@@ -73,7 +70,7 @@ async def _get_lessons(
         lessons = await asyncio.gather(*tasks)
 
         if write:
-            write_lessons(language_code, lessons, download_folder, verbose)
+            write_lessons(language_code, lessons, opath, verbose)
 
         return collection_title, lessons
 
@@ -85,7 +82,7 @@ def get_lessons(
     skip_already_downloaded: bool,
     download_audio: bool,
     download_timestamps: bool,
-    download_folder: str,
+    opath: Path,
     write: bool,
     verbose: bool,
 ) -> None:
@@ -97,18 +94,18 @@ def get_lessons(
         course_id (str): The ID of the course. This is the last number in the course URL.
         skip_already_downloaded (bool): If True, skip downloading already downloaded lessons.
         download_audio (bool): If True, downloads the audio files for the lessons.
-        download_folder (str): The folder where the downloaded text and audio files will be saved.
+        opath (Path): Path to the folder where the downloaded text and audio files will be saved.
 
     Creates a 'download' folder and saves the text/audio in 'text'/'audio' subfolders.
     """
-    _collection_title, _lessons = asyncio.run(
+    asyncio.run(
         _get_lessons(
             language_code,
             course_id,
             skip_already_downloaded,
             download_audio,
             download_timestamps,
-            download_folder,
+            opath,
             write,
             verbose,
         )
@@ -123,7 +120,7 @@ if __name__ == "__main__":
         skip_already_downloaded=False,
         download_audio=True,
         download_timestamps=True,
-        download_folder="downloads",
+        opath=Path("downloads"),
         write=True,
         verbose=True,
     )

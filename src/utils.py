@@ -1,7 +1,7 @@
-import os
 import time
 import unicodedata
 from functools import wraps
+from pathlib import Path
 from typing import Any, Callable, TypeVar
 
 import roman  # type: ignore
@@ -78,7 +78,7 @@ def roman_sorting_fn(x: str) -> int:
     return roman.fromRoman((x.split()[1]).split(".")[0])  # type: ignore
 
 
-def read_sorted_folders(folder: str, mode: str) -> list[str]:
+def read_sorted_subfolders(folder: Path, mode: str) -> list[Path]:
     """Supports human (natsort), roman (I < V) and greek (Β < Γ) sorting"""
     if mode == "human":
         sorting_fn = os_sorted
@@ -89,12 +89,8 @@ def read_sorted_folders(folder: str, mode: str) -> list[str]:
     else:
         raise NotImplementedError("Unsupported mode in read_folder")
 
-    subfolders = [
-        sf
-        for sf in os.listdir(folder)
-        if os.path.isfile(os.path.join(folder, sf)) and not sf.startswith(".")
-    ]
-    subfolders.sort(sorting_fn)  # type: ignore
+    subfolders = [sf for sf in folder.iterdir() if not sf.name.startswith(".")]
+    subfolders.sort(key=lambda x: sorting_fn(x.name))
 
     return subfolders
 

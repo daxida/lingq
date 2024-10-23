@@ -1,4 +1,5 @@
 import asyncio
+from pathlib import Path
 
 from get_lessons import _get_lessons
 from lingqhandler import LingqHandler
@@ -10,7 +11,7 @@ async def _get_courses_for_language(
     download_audio: bool,
     download_timestamps: bool,
     sleep_time: int,
-    download_folder: str,
+    opath: Path,
 ) -> None:
     async with LingqHandler(language_code) as handler:
         # This is only for the courses ID, since in order to get the text we need
@@ -26,7 +27,7 @@ async def _get_courses_for_language(
                 skip_already_downloaded=False,
                 download_audio=download_audio,
                 download_timestamps=download_timestamps,
-                download_folder=download_folder,
+                opath=opath,
                 write=True,
                 verbose=False,
             )
@@ -38,13 +39,13 @@ async def _get_courses(
     download_audio: bool,
     download_timestamps: bool,
     sleep_time: int,
-    download_folder: str,
+    opath: Path,
 ) -> None:
     print(f"Getting courses for languages: {', '.join(language_codes)}")
     double_check("CAREFUL: This reorders your 'Continue studying' shelf.")
     for language_code in language_codes:
         await _get_courses_for_language(
-            language_code, download_audio, download_timestamps, sleep_time, download_folder
+            language_code, download_audio, download_timestamps, sleep_time, opath
         )
         await asyncio.sleep(sleep_time)
 
@@ -55,7 +56,7 @@ def get_courses(
     download_audio: bool,
     download_timestamps: bool,
     sleep_time: int,
-    download_folder: str,
+    opath: Path,
 ) -> None:
     """
     Get every course from a list of languages.
@@ -77,9 +78,7 @@ def get_courses(
     if not language_codes:
         language_codes = LingqHandler.get_user_language_codes()
     asyncio.run(
-        _get_courses(
-            language_codes, download_audio, download_timestamps, sleep_time, download_folder
-        )
+        _get_courses(language_codes, download_audio, download_timestamps, sleep_time, opath)
     )
 
 
@@ -90,5 +89,5 @@ if __name__ == "__main__":
         download_audio=False,
         download_timestamps=False,
         sleep_time=2,
-        download_folder=".",
+        opath=Path(),
     )

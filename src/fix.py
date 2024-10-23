@@ -1,4 +1,5 @@
 import asyncio
+from pathlib import Path
 
 from fix_utils.el.fix_greek import fix_latin_letters
 from fix_utils.ja.fix_japanese import fix_youtube_newlines
@@ -26,7 +27,7 @@ async def _fix(language_code: str, course_id: str) -> None:
         skip_already_downloaded=False,
         download_audio=False,
         download_timestamps=False,
-        download_folder="",
+        opath=Path(),
         write=False,
         verbose=False,
     )
