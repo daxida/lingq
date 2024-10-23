@@ -1,5 +1,6 @@
 import asyncio
 import logging
+from pathlib import Path
 
 import aiohttp
 from deepdiff import DeepDiff
@@ -86,7 +87,7 @@ async def _test_pipeline(language_code):
         fdata = aiohttp.FormData()
         for key, value in data.items():
             fdata.add_field(key, value)
-        mock_audio = open("tests/10-seconds-of-silence.mp3", "rb")
+        mock_audio = Path("tests/fixtures/audios/10-seconds-of-silence.mp3").open("rb")
         fdata.add_field("audio", mock_audio, filename="audio.mp3", content_type="audio/mpeg")
         post_res = await handler.post_from_multipart(fdata)
 
