@@ -3,6 +3,7 @@ import logging
 
 import aiohttp
 from deepdiff import DeepDiff
+
 from lingqhandler import LingqHandler
 
 logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")

@@ -2,8 +2,9 @@ import asyncio
 from typing import Any
 
 import yt_dlp  # type: ignore
+
 from lingqhandler import LingqHandler
-from utils import Colors, timing  # type: ignore
+from utils import Colors, timing
 
 # Until we find something better
 Playlist = list[Any]
@@ -26,7 +27,7 @@ async def filter_playlist(
     initial_size = len(playlist)
 
     if download_audio:
-        filtered_playlist: Playlist = list()
+        filtered_playlist: Playlist = []
         for entry in playlist:
             title = entry["title"]
             if skip_without_cc and not has_closed_captions(handler.language_code, entry):
@@ -42,7 +43,7 @@ async def filter_playlist(
         lessons_urls = [lesson["originalUrl"] for lesson in lessons]
         lessons_urls = set(lessons_urls)
 
-        filtered_playlist = list()
+        filtered_playlist = []
         for entry in playlist:
             title = entry["title"]
             url = entry["original_url" if download_audio else "url"]

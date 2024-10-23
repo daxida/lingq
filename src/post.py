@@ -2,8 +2,9 @@ import asyncio
 import os
 
 import aiohttp
+
 from lingqhandler import LingqHandler
-from utils import Colors, double_check, read_sorted_folders, timing  # type: ignore
+from utils import Colors, double_check, read_sorted_folders, timing
 
 SUPPORTED_BY_US_TEXT_EXTENSIONS = [".txt", ".srt"]
 SUPPORTED_BY_LINGQ_AUDIO_EXTENSIONS = [".mp3", ".m4a"]
@@ -81,7 +82,7 @@ def apply_pairing_strategy(strategy: str, texts: list[str], audios: list[str]) -
         text_extension = os.path.splitext(texts[0])[1]
         audio_extension = os.path.splitext(audios[0])[1]
 
-        pairs: Pairings = list()
+        pairs: Pairings = []
         for raw_text_filename in raw_texts_titles:
             audio_filename = None
             if raw_text_filename in raw_audios_titles:

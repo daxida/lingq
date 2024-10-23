@@ -1,6 +1,7 @@
 from unittest import mock
 
 import pytest
+
 from lingqhandler import check_for_valid_token_or_exit
 
 

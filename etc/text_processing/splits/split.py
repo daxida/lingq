@@ -9,15 +9,17 @@ IN_FILE = "norwegian_wood.txt"
 # etc
 HEADINGS_FOLDER = "headings.txt"
 
+SplitData = dict[str, list[str]]
 
-def split_by_headings(lines: list[str], headings: list[str]) -> dict:
+
+def split_by_headings(lines: list[str], headings: list[str]) -> SplitData:
     """
     Returns a dictionary where:
     - A key is the name of a chapter (=heading)
     - A value is a list of strings each representing a line of the chapter
     """
-    split_data = dict()
-    buf = list()
+    split_data: SplitData = {}
+    buf = []
     heading = None
     amt_lines = len(lines)
 
@@ -32,12 +34,13 @@ def split_by_headings(lines: list[str], headings: list[str]) -> dict:
 
         # Dump buffer at the end of input.
         if idx + 1 == amt_lines and buf:
+            assert heading is not None
             split_data[heading] = buf
 
     return split_data
 
 
-def write(split_data: dict, headings: list[str]) -> None:
+def write(split_data: SplitData, headings: list[str]) -> None:
     """In case of not found chapters, it writes a ?? file for easier fixing"""
     for idx_p, heading in enumerate(headings, 1):
         prefix = f"{OUT_FOLDER}/{idx_p:02d}. "
@@ -51,7 +54,7 @@ def write(split_data: dict, headings: list[str]) -> None:
                 f.write("NONE")
 
 
-def test_titles(split_data: dict, headings: list[str]) -> int:
+def test_titles(split_data: SplitData, headings: list[str]) -> int:
     """Tests that every chapter in the heading list is correctly found"""
     print(f"{len(split_data)} chapters were found:")
 
@@ -74,7 +77,7 @@ def test_titles(split_data: dict, headings: list[str]) -> int:
         return 1
 
 
-def main():
+def main() -> None:
     # Create OUT_FOLDER if it doesn't exist.
     if not os.path.exists(OUT_FOLDER):
         os.mkdir(OUT_FOLDER)

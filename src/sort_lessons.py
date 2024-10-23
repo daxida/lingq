@@ -55,7 +55,7 @@ def longest_increasing_subsequence(lst: list[int]) -> list[int]:
     max_sz = max(dp)
     solutions = [idx for idx in range(len(dp)) if dp[idx] == max_sz]
 
-    res: list[int] = list()
+    res: list[int] = []
     pos = solutions[0]
     while pos != -1:
         res.append(lst[pos])
@@ -70,7 +70,7 @@ def get_patch_requests_order_for_ids(
     """This is just a possible solution to the problem. Maybe there is a simpler
     approach that equally finds some requests needed to sort the lessons."""
     fix_members = [0] + [elt for elt in lessons_ids if elt not in to_reorder]
-    requests_with_ids: list[tuple[int, int]] = list()
+    requests_with_ids: list[tuple[int, int]] = []
 
     for lesson_id in to_reorder:
         first_bigger_fix_member_idx = len(fix_members)
@@ -101,7 +101,7 @@ def get_patch_requests_order(lessons: list[Any]) -> list[tuple[Any, int]]:
     Uses a longest increasing subsequence to identify the lessons that should
     not be moved around, then computes some possible requests that sort the lessons."""
     sorted_lessons = sorted(lessons, key=sorting_function)
-    sorted_idxs: dict[str, int] = dict()
+    sorted_idxs: dict[str, int] = {}
     for idx, sorted_lesson in enumerate(sorted_lessons, 1):
         sorted_idxs[sorted_lesson["title"]] = idx
     lessons_ids_mapping: dict[int, Any] = {

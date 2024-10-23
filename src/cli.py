@@ -1,6 +1,7 @@
 import os
 
 import click
+
 from generate_timestamps import generate_timestamps
 from get_courses import get_courses
 from get_lessons import get_lessons
