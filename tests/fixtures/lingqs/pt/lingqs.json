@@ -1,0 +1,255 @@
+[
+    {
+        "pk": 153979168,
+        "term": "tolo",
+        "fragment": "...comercial, de um capricho tolo que só poderia irritar...",
+        "importance": 1,
+        "status": 0,
+        "notes": "",
+        "audio": null,
+        "words": [
+            "tolo"
+        ],
+        "tags": [
+            "verbo",
+            "presente",
+            "eu",
+            "tolar"
+        ],
+        "hints": [
+            {
+                "id": 280349,
+                "locale": "en",
+                "text": "fool",
+                "term": "tolo",
+                "popularity": 272,
+                "is_google_translate": true,
+                "flagged": false
+            }
+        ],
+        "transliteration": {
+            "readings": {}
+        },
+        "g_tags": [
+            "Adjective",
+            "Noun",
+            "Verb",
+            "eu",
+            "presente",
+            "tolar"
+        ],
+        "word_tags": [
+            "Verb",
+            "presente",
+            "eu",
+            "tolar",
+            "Adjective",
+            "Noun"
+        ],
+        "readings": {
+            "readings": {}
+        },
+        "writings": [
+            "tolo"
+        ]
+    },
+    {
+        "pk": 219463394,
+        "term": "lixo",
+        "fragment": "O lixo, amontoado no chão.",
+        "importance": 2,
+        "status": 0,
+        "notes": "",
+        "audio": null,
+        "words": [
+            "lixo"
+        ],
+        "tags": [
+            "verbo",
+            "presente",
+            "eu",
+            "lixar"
+        ],
+        "hints": [
+            {
+                "id": 14194056,
+                "locale": "en",
+                "text": "trash",
+                "term": "lixo",
+                "popularity": 25,
+                "is_google_translate": true,
+                "flagged": false
+            }
+        ],
+        "transliteration": {
+            "readings": {}
+        },
+        "g_tags": [
+            "Adverb",
+            "Noun",
+            "Verb",
+            "eu",
+            "lixar",
+            "presente"
+        ],
+        "word_tags": [
+            "Verb",
+            "presente",
+            "eu",
+            "lixar",
+            "Adverb",
+            "Noun"
+        ],
+        "readings": {
+            "readings": {}
+        },
+        "writings": [
+            "lixo"
+        ]
+    },
+    {
+        "pk": 153979179,
+        "term": "desabafo",
+        "fragment": "...O artigo seria um desabafo menos do brio que...",
+        "importance": 0,
+        "status": 0,
+        "notes": "",
+        "audio": null,
+        "words": [
+            "desabafo"
+        ],
+        "tags": [
+            "verbo",
+            "presente",
+            "eu",
+            "desabafar"
+        ],
+        "hints": [
+            {
+                "id": 1020963,
+                "locale": "en",
+                "text": "confession",
+                "term": "desabafo",
+                "popularity": 161,
+                "is_google_translate": false,
+                "flagged": false
+            }
+        ],
+        "transliteration": {
+            "readings": {}
+        },
+        "g_tags": [
+            "Noun",
+            "Verb",
+            "desabafar",
+            "eu",
+            "presente"
+        ],
+        "word_tags": [
+            "Verb",
+            "presente",
+            "eu",
+            "desabafar",
+            "Noun"
+        ],
+        "readings": {
+            "readings": {}
+        },
+        "writings": [
+            "desabafo"
+        ]
+    },
+    {
+        "pk": 219287224,
+        "term": "loja",
+        "fragment": "…lembra dos mosquitos na loja de sucos, nem das…",
+        "importance": 3,
+        "status": 0,
+        "notes": "",
+        "audio": null,
+        "words": [
+            "loja"
+        ],
+        "tags": [],
+        "hints": [
+            {
+                "id": 174473,
+                "locale": "en",
+                "text": "shop, store",
+                "term": "loja",
+                "popularity": 2349,
+                "is_google_translate": false,
+                "flagged": false
+            }
+        ],
+        "transliteration": {
+            "readings": {}
+        },
+        "g_tags": [
+            "Noun"
+        ],
+        "word_tags": [
+            "Noun"
+        ],
+        "readings": {
+            "readings": {}
+        },
+        "writings": [
+            "loja"
+        ]
+    },
+    {
+        "pk": 219287248,
+        "term": "quente",
+        "fragment": "…Está quente, muito quente- reclamou Martins mudando de…",
+        "importance": 2,
+        "status": 0,
+        "notes": "",
+        "audio": null,
+        "words": [
+            "quente"
+        ],
+        "tags": [
+            "verbo",
+            "eu",
+            "quentar",
+            "conjuntivo/subjuntivo presente"
+        ],
+        "hints": [
+            {
+                "id": 225010,
+                "locale": "en",
+                "text": "warm, hot",
+                "term": "quente",
+                "popularity": 1565,
+                "is_google_translate": false,
+                "flagged": false
+            }
+        ],
+        "transliteration": {
+            "readings": {}
+        },
+        "g_tags": [
+            "Adjective",
+            "Noun",
+            "Verb",
+            "conjuntivo/subjuntivo presente",
+            "eu",
+            "quentar"
+        ],
+        "word_tags": [
+            "Verb",
+            "eu",
+            "conjuntivo/subjuntivo presente",
+            "quentar",
+            "Adjective",
+            "Noun"
+        ],
+        "readings": {
+            "readings": {}
+        },
+        "writings": [
+            "quente"
+        ]
+    }
+]
