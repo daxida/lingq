@@ -22,7 +22,7 @@ etc = [
     "beautifulsoup4==4.12.3",
     "faster_whisper==1.0.2",
     "requests==2.32.3",
-    "ruff==0.4.7",
+    "ruff==0.7.0",
     "tqdm==4.66.4",
     "gpt4All",
 ]
@@ -37,6 +37,7 @@ lingq = "cli:cli"
 
 [tool.ruff]
 line-length = 100
+output-format = "concise"
 exclude = [
     "etc/audio_processing/split_audio.py",
 ]
@@ -52,4 +53,5 @@ select = [
     "N",    # pep8-naming
     "F",    # Pyflakes rules
     "C",    # flake8-complexity
+    "PTH",  # Paths
 ]
