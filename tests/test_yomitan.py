@@ -14,15 +14,13 @@ def _rewrite_json_with_first_n_entries(json_file_path: Path, n: int = 5) -> None
 
 def test_yomitan():
     """Simply test that the yomitan function does not crash."""
-    # TODO: only use path
-    fixture_path_str = "tests/fixtures/lingqs"
-    fixture_path = Path(fixture_path_str)
+    fixture_path = Path("tests/fixtures/lingqs")
     assert (fixture_path / "pt").exists()
 
     zip_file_path = fixture_path / "pt" / "lingqs-pt.zip"
     assert not zip_file_path.exists()
 
-    yomitan(["pt"], fixture_path_str)
+    yomitan(["pt"], fixture_path)
     assert zip_file_path.exists()
 
     zip_file_path.unlink()

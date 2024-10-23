@@ -17,10 +17,10 @@ What to do once you managed to create a yomitan dictionary:
 
 import io
 import json
-import os
 import sys
 import zipfile
 from datetime import datetime
+from pathlib import Path
 from typing import Any
 
 from lingqhandler import LingqHandler
@@ -133,20 +133,20 @@ def words_to_yomitan_simple(words: list[Card]) -> YomitanDict:
     return yomitan_dict
 
 
-def _into_yomitan_for_language(language_code: str, dump_path: str) -> None:
+def _into_yomitan_for_language(dump_path: Path) -> None:
     """Read and convert the JSON obtained from LingQ."""
     # TODO: split the dict into manageable jsons
     # TODO: make a different entry per hint
 
     # Look for the dump
-    lingq_json_path = os.path.join(dump_path, "lingqs.json")
-    if not os.path.exists(lingq_json_path):
+    lingq_json_path = dump_path / "lingqs.json"
+    if not lingq_json_path.exists():
         print(f"Could not find the dump at {lingq_json_path}")
         print("Exiting.")
         sys.exit(1)
 
     # Load the dump
-    with open(lingq_json_path, "r", encoding="utf-8") as f:
+    with lingq_json_path.open("r", encoding="utf-8") as f:
         words = json.load(f)
         words = [Card.model_validate(word) for word in words]
 
@@ -156,7 +156,7 @@ def _into_yomitan_for_language(language_code: str, dump_path: str) -> None:
     return yomitan_dict
 
 
-def write_yomitan_dict(language_code: str, out_path: str, yomitan_dict: YomitanDict) -> None:
+def write_yomitan_dict(language_code: str, out_path: Path, yomitan_dict: YomitanDict) -> None:
     """Write the zipped yomitan dict."""
     zip_buffer = io.BytesIO()
     with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED, allowZip64=True) as zipf:
@@ -167,28 +167,28 @@ def write_yomitan_dict(language_code: str, out_path: str, yomitan_dict: YomitanD
         # TODO: I'm not sure what is the correct size to split
         zipf.writestr("term_bank_1.json", json.dumps(yomitan_dict, indent=2, ensure_ascii=False))
 
-    with open(out_path, "wb") as f:
+    with out_path.open("wb") as f:
         f.write(zip_buffer.getvalue())
 
 
-def _into_yomitan(language_codes: list[str], download_folder: str) -> None:
+def _into_yomitan(language_codes: list[str], download_folder: Path) -> None:
     for language_code in language_codes:
-        dump_path = os.path.join(download_folder, language_code)
-        yomitan_dict = _into_yomitan_for_language(language_code, dump_path)
-        out_path = os.path.join(dump_path, f"lingqs-{language_code}.zip")
+        dump_path = download_folder / language_code
+        yomitan_dict = _into_yomitan_for_language(dump_path)
+        out_path = dump_path / f"lingqs-{language_code}.zip"
         write_yomitan_dict(language_code, out_path, yomitan_dict)
         print(f"Finished dictionary for {language_code}.")
         print(f"It can be found at: {out_path}")
 
 
-def yomitan(language_codes: list[str], download_folder: str) -> None:
+def yomitan(language_codes: list[str], download_folder: Path) -> None:
     """
     Make a Yomitan dictionary from a LingQ JSON dump generated through get_words.
 
     If no language codes are given, use all languages.
     """
     if not language_codes:
-        language_codes = LingqHandler.get_all_user_languages_codes()
+        language_codes = LingqHandler.get_user_language_codes()
     _into_yomitan(language_codes, download_folder)
 
 
@@ -196,5 +196,5 @@ if __name__ == "__main__":
     # Defaults for manually running this script.
     yomitan(
         language_codes=["el"],
-        download_folder="downloads/lingqs",
+        download_folder=Path("downloads/lingqs"),
     )
