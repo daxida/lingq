@@ -2,7 +2,9 @@ import os
 import time
 import unicodedata
 from functools import wraps
+from typing import Any, Callable, TypeVar
 
+import roman  # type: ignore
 from natsort import os_sorted
 
 
@@ -60,30 +62,20 @@ def sort_greek_words(word: str) -> tuple[float, ...]:
     return tuple(alphabet.get(normalize_greek_word(char), float("inf")) for char in word)
 
 
-def get_greek_sorting_fn():
+def greek_sorting_fn(x: str) -> int:
     # This requires fine tuning depending of the entries' name format:
     # I was working with:
     # Ι'. Η μάχη -> 10
     numerals = "Α Β Γ Δ Ε ΣΤ Ζ Η Θ Ι ΙΑ ΙΒ ΙΓ ΙΔ ΙΕ ΙΣΤ ΙΖ".split()
     order = [f"{num}'" for num in numerals]
-
-    def sorting_fn(x: str) -> int:
-        return order.index(x.split(".")[0])
-
-    return sorting_fn
+    return order.index(x.split(".")[0])
 
 
-def get_roman_sorting_fn():
+def roman_sorting_fn(x: str) -> int:
     # This requires fine tuning depending of the entries' name format:
     # I was working with:
     # Chapitre X.mp3 -> X
-    # NOTE: requires pip install roman
-    import roman
-
-    def sorting_fn(x: str) -> int:
-        return roman.fromRoman((x.split()[1]).split(".")[0])
-
-    return sorting_fn
+    return roman.fromRoman((x.split()[1]).split(".")[0])  # type: ignore
 
 
 def read_sorted_folders(folder: str, mode: str) -> list[str]:
@@ -91,22 +83,28 @@ def read_sorted_folders(folder: str, mode: str) -> list[str]:
     if mode == "human":
         sorting_fn = os_sorted
     elif mode == "greek":
-        sorting_fn = get_greek_sorting_fn()
+        sorting_fn = greek_sorting_fn
     elif mode == "roman":
-        sorting_fn = get_roman_sorting_fn()
+        sorting_fn = roman_sorting_fn
     else:
         raise NotImplementedError("Unsupported mode in read_folder")
 
-    return [
-        f
-        for f in sorting_fn(os.listdir(folder))
-        if os.path.isfile(os.path.join(folder, f)) and not f.startswith(".")
+    subfolders = [
+        sf
+        for sf in os.listdir(folder)
+        if os.path.isfile(os.path.join(folder, sf)) and not sf.startswith(".")
     ]
+    subfolders.sort(sorting_fn)  # type: ignore
+
+    return subfolders
 
 
-def timing(f):
+R = TypeVar("R")
+
+
+def timing(f: Callable[..., R]) -> Callable[..., R]:
     @wraps(f)
-    def wrap(*args, **kw):
+    def wrap(*args: Any, **kw: Any) -> R:
         ts = time.time()
         result = f(*args, **kw)
         te = time.time()
