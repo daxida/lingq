@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 import click
 
@@ -17,8 +18,8 @@ from show import show_my
 from sort_lessons import sort_lessons
 from yomitan import yomitan
 
-DEFAULT_OUT_PATH = "downloads"
-DEFAULT_OUT_WORDS_PATH = os.path.join(DEFAULT_OUT_PATH, "lingqs")
+DEFAULT_OUT_PATH = Path("downloads")
+DEFAULT_OUT_WORDS_PATH = DEFAULT_OUT_PATH / "lingqs"
 DEFAULT_FROM_LESSON = 1
 DEFAULT_TO_LESSON = 100
 DEFAULT_AUDIOS_FOLDER = None
@@ -298,12 +299,19 @@ def resplit_ja_cli(course_id: str) -> None:
     show_default=True,
     help="Include the number of views in the markdown.",
 )
-@click.option("--out", "-o", default=DEFAULT_OUT_PATH, show_default=True, help="Output path.")
+@click.option(
+    "--out",
+    "-o",
+    default=DEFAULT_OUT_PATH,
+    show_default=True,
+    type=click.Path(exists=True, path_type=Path),
+    help="Output path.",
+)
 def markdown_cli(
     language_codes: list[str],
     select_courses: str,
     include_views: bool,
-    out: str,
+    out: Path,
 ) -> None:
     """Generate markdown files for the given language codes.
 

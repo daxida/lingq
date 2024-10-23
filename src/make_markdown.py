@@ -1,17 +1,17 @@
 import asyncio
-import os
 from datetime import datetime
+from pathlib import Path
 
 from lingqhandler import LingqHandler
 from models.collection import Collection
-from utils import Colors, double_check, timing  # type: ignore
+from utils import Colors, double_check, timing
 
 
 def sanitize_title(title: str) -> str:
     return title.replace("|", "-").replace("[", "(").replace("]", ")")
 
 
-def write_readme(language_codes: list[str], out_folder: str) -> None:
+def write_readme(language_codes: list[str], out_folder: Path) -> None:
     """
     Writes an index-like README.md:
         * [Greek (el)](./courses/courses_el.md)
@@ -20,51 +20,63 @@ def write_readme(language_codes: list[str], out_folder: str) -> None:
         etc.
     """
 
-    with open(f"{out_folder}/README.md", "w", encoding="utf-8") as f:
+    readme_path = out_folder / "README.md"
+    with readme_path.open("w", encoding="utf-8") as f:
         for language_code in language_codes:
             f.write(f"* [{language_code}](./courses/courses_{language_code}.md)\n")
 
 
-def write_markdown(
-    collection_list: list[Collection], out_folder_markdown: str, include_views: bool
-) -> None:
-    with open(out_folder_markdown, "w", encoding="utf-8") as md:
-        # Header
-        fixing_date_width = "&nbsp;" * 6  # Ugly but works
-        columns = [
-            "Status",
-            " ",
-            "Title",
-            "Views" if include_views else "",
-            "Lessons",
-            f"Created{fixing_date_width}",
-            f"Updated{fixing_date_width}",
+def format_markdown(collection_list: list[Collection], include_views: bool) -> str:
+    """Convert a list of Collection objects to markdown format."""
+    # Header
+    fixing_date_width = "&nbsp;" * 6  # Ugly but works
+    columns = [
+        "Status",
+        " ",
+        "Title",
+        "Views" if include_views else "",
+        "Lessons",
+        f"Created{fixing_date_width}",
+        f"Updated{fixing_date_width}",
+    ]
+    header = "|".join(columns)
+    header = header.replace("||", "|")
+    n_columns = len(columns) if include_views else len(columns) - 1
+    separator = "|".join(["-"] * n_columns)
+
+    # Start building the markdown content
+    markdown_lines = []
+    markdown_lines.append(f"|{header}|\n")
+    markdown_lines.append(f"|{separator}|\n")
+
+    # Process each collection
+    for c in collection_list:
+        view_count = "-" if not c.views_count else c.views_count
+        is_shared = "shared" if c.is_shared else "private"
+        assert c.title is not None
+        sanitized_title = sanitize_title(c.title)
+        line_elements = [
+            is_shared,
+            c.level,
+            f"[{sanitized_title}]({c.course_url})",
+            view_count if include_views else "",
+            c.amount_lessons,
+            c.first_update,
+            c.last_update,
         ]
-        header = "|".join(columns)
-        header = header.replace("||", "|")
-        n_columns = len(columns) if include_views else len(columns) - 1
-        separator = "|".join(["-"] * n_columns)
-        md.write(f"|{header}|\n")
-        md.write(f"|{separator}|\n")
+        line = "|" + "|".join(map(str, line_elements)) + "\n"
+        line = line.replace("||", "|")
+        markdown_lines.append(line)
 
-        for c in collection_list:
-            view_count = "-" if not c.views_count else c.views_count
-            is_shared = "shared" if c.is_shared else "private"
-            assert c.title is not None
-            sanitized_title = sanitize_title(c.title)
-            line_elements = [
-                is_shared,
-                c.level,
-                f"[{sanitized_title}]({c.course_url})",
-                view_count if include_views else "",
-                c.amount_lessons,
-                c.first_update,
-                c.last_update,
-            ]
-            line = "|" + "|".join(map(str, line_elements)) + "\n"
-            line = line.replace("||", "|")
+    return "".join(markdown_lines)
 
-            md.write(line)
+
+def write_markdown(
+    collection_list: list[Collection], out_folder_markdown: Path, include_views: bool
+) -> None:
+    with out_folder_markdown.open("w", encoding="utf-8") as f:
+        markdown = format_markdown(collection_list, include_views)
+        f.write(markdown)
 
 
 async def get_collections(handler: LingqHandler, select_courses: str) -> list[Collection]:
@@ -118,7 +130,7 @@ async def _make_markdown(
     language_codes: list[str],
     select_courses: str,
     include_views: bool,
-    out_folder: str,
+    out_folder: Path,
 ) -> None:
     print(f"Making markdown for language(s): '{', '.join(language_codes)}'")
     print(f"With courses selection: {select_courses}")
@@ -127,11 +139,9 @@ async def _make_markdown(
     double_check()
 
     extension_msg = "_no_views" if not include_views else ""
-    readme_folder = os.path.join(
-        out_folder, "markdowns", f"markdown_{select_courses}{extension_msg}"
-    )
-    courses_folder = os.path.join(readme_folder, "courses")
-    os.makedirs(os.path.join(courses_folder), exist_ok=True)
+    readme_folder = out_folder / "markdowns" / f"markdown_{select_courses}{extension_msg}"
+    courses_folder = readme_folder / "courses"
+    Path.mkdir(courses_folder, parents=True, exist_ok=True)
     write_readme(language_codes, readme_folder)
 
     async with LingqHandler("Filler") as handler:
@@ -148,7 +158,7 @@ async def _make_markdown(
 
             sort_collections(collections_list)
 
-            out_folder_markdown = os.path.join(courses_folder, f"courses_{language_code}.md")
+            out_folder_markdown = courses_folder / f"courses_{language_code}.md"
             write_markdown(collections_list, out_folder_markdown, include_views)
             print(f"Created markdown for {language_code}!")
 
@@ -158,7 +168,7 @@ def make_markdown(
     language_codes: list[str],
     select_courses: str,
     include_views: bool,
-    out_folder: str,
+    out_folder: Path,
 ) -> None:
     """
     Generate markdown files for the given language codes.
@@ -184,5 +194,5 @@ if __name__ == "__main__":
         language_codes=["fr"],
         select_courses="all",  # all, shared or mine
         include_views=False,
-        out_folder="downloads",
+        out_folder=Path("downloads"),
     )
