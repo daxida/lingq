@@ -1,13 +1,16 @@
 import asyncio
-import os
+from pathlib import Path
 
 from lingqhandler import LingqHandler
-from utils import double_check, read_sorted_folders, timing  # type: ignore
+from utils import double_check, read_sorted_subfolders, timing
 
 
 async def _patch_audios(
-    language_code: str, course_id: str, audios_folder: str, from_lesson: int, to_lesson: int
+    language_code: str, course_id: str, audios_folder: Path, from_lesson: int, to_lesson: int
 ) -> None:
+    audios_path = read_sorted_subfolders(audios_folder, mode="human")
+    print(f"Found {len(audios_path)} audio(s) at path")
+
     async with LingqHandler(language_code) as handler:
         collection = await handler.get_collection_json_from_id(course_id)
         lesson_jsons = collection["lessons"][from_lesson - 1 : to_lesson]
@@ -17,8 +20,6 @@ async def _patch_audios(
 
         urls = [lesson_json["url"] for lesson_json in lesson_jsons]
         lessons = await handler.get_lessons_from_urls(urls)
-
-        audios_path = read_sorted_folders(audios_folder, mode="human")
 
         # Patch everything with the same audio in case of a single audio path.
         if len(audios_path) == 1:
@@ -30,15 +31,14 @@ async def _patch_audios(
         double_check()
 
         for idx, (audio_path, lesson) in enumerate(zip(audios_path, lessons), 1):
-            audio_path = os.path.join(audios_folder, audio_path)
-            audio_files = open(audio_path, "rb")
+            audio_files = audio_path.open("rb")
             await handler.patch_audio_from_lesson_id(lesson["id"], audio_files)
             print(f"[{idx}/{len(lessons)}] Patched audio for: {lesson['title']}")
 
 
 @timing
 def patch_audios(
-    language_code: str, course_id: str, audios_folder: str, from_lesson: int, to_lesson: int
+    language_code: str, course_id: str, audios_folder: Path, from_lesson: int, to_lesson: int
 ) -> None:
     # This deals with overwriting of existing lessons / collections.
     # The main usecase is to add audio to an already uploaded book where some
@@ -53,7 +53,7 @@ if __name__ == "__main__":
     patch_audios(
         language_code="ja",
         course_id="537808",
-        audios_folder="src/audios",
+        audios_folder=Path("downloads/ja/Quick Imports/audios"),
         from_lesson=1,
         to_lesson=99,
     )
