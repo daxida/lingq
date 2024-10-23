@@ -14,6 +14,7 @@ dependencies = [
     "python-dotenv==1.0.1",
     "yt_dlp==2024.5.27",
     "pydantic",
+    "roman==4.2",
 ]
 
 [project.optional-dependencies]
@@ -21,7 +22,6 @@ etc = [
     "beautifulsoup4==4.12.3",
     "faster_whisper==1.0.2",
     "requests==2.32.3",
-    "roman==4.2",
     "ruff==0.4.7",
     "tqdm==4.66.4",
     "gpt4All",
