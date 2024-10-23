@@ -38,7 +38,7 @@ lingq = "cli:cli"
 [tool.ruff]
 line-length = 100
 exclude = [
-    "others/audio_processing/split_audio.py",
+    "etc/audio_processing/split_audio.py",
 ]
 
 [tool.ruff.lint.pycodestyle]
@@ -50,4 +50,5 @@ select = [
     "W",    # pycodestyle warning
     "I",    # isort
     "N",    # pep8-naming
+    "F",    # Pyflakes rules
 ]

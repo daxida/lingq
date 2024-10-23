@@ -142,7 +142,7 @@ def _into_yomitan_for_language(language_code: str, dump_path: str) -> None:
     lingq_json_path = os.path.join(dump_path, "lingqs.json")
     if not os.path.exists(lingq_json_path):
         print(f"Could not find the dump at {lingq_json_path}")
-        print(f"Exiting.")
+        print("Exiting.")
         sys.exit(1)
 
     # Load the dump

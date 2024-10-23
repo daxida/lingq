@@ -383,7 +383,7 @@ def process_files(language, files_dir, cut_at_seconds=0.0, n_sections=0):
     os.makedirs(os.path.join(output_dir, "texts"), exist_ok=True)
 
     # Align audio with text using the specified language
-    output_json = os.path.join(output_dir, f"syncmap.json")
+    output_json = os.path.join(output_dir, "syncmap.json")
     align_audio_to_text(merged_audio_file, merged_text_file, output_json, language)
 
     # Split the audio based on the sync map

@@ -1,15 +1,10 @@
+from importlib.util import find_spec
+
 import pytest
-
-try:
-    import aeneas
-
-    AENEAS_AVAILABLE = True
-except ImportError:
-    AENEAS_AVAILABLE = False
 
 
 def test_simple():
-    if not AENEAS_AVAILABLE:
+    if find_spec("aeneas") is None:
         pytest.skip("Aeneas is not installed")
 
     from forced_alignment import TimedText, split_audio

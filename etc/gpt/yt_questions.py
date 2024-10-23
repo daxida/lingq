@@ -40,7 +40,7 @@ def download_subtitles(video_url, lang="ja"):
         return subtitle_file
     except Exception as e:
         print(f"Error downloading subtitles: {e}")
-        print(f"Do you have yt-dlp installed?")
+        print("Do you have yt-dlp installed?")
 
 
 def clean_subtitles(subtitle_file):

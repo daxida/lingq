@@ -58,12 +58,12 @@ def setup_cli(apikey: str) -> None:
             if not api_key_found:
                 file.write(f"APIKEY={apikey}\n")
 
-        print(f".env file has been updated.")
+        print(".env file has been updated.")
     else:
         with open(env_file, "w") as file:
             file.write(f"APIKEY={apikey}\n")
 
-        print(f".env file has been created.")
+        print(".env file has been created.")
 
 
 @cli.command("fix")
