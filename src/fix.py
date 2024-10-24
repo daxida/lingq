@@ -3,7 +3,7 @@ from pathlib import Path
 
 from fix_utils.el.fix_greek import fix_latin_letters
 from fix_utils.ja.fix_japanese import fix_youtube_newlines
-from get_lessons import _get_lessons
+from get_lessons import get_lessons_async
 from lingqhandler import LingqHandler
 
 
@@ -20,8 +20,8 @@ def transformation_fn(language_code: str, text: str) -> str:
             raise NotImplementedError
 
 
-async def _fix(language_code: str, course_id: str) -> None:
-    _, lessons = await _get_lessons(
+async def fix_async(language_code: str, course_id: str) -> None:
+    _, lessons = await get_lessons_async(
         language_code,
         course_id,
         skip_already_downloaded=False,
@@ -38,7 +38,7 @@ async def _fix(language_code: str, course_id: str) -> None:
 
 
 def fix(language_code: str, course_id: str) -> None:
-    asyncio.run(_fix(language_code, course_id))
+    asyncio.run(fix_async(language_code, course_id))
 
 
 if __name__ == "__main__":

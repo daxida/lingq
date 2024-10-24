@@ -126,7 +126,7 @@ def sort_collections(collections: list[Collection]) -> None:
     collections.sort(key=lambda x: datetime.strptime(x.last_update, "%Y-%m-%d"), reverse=True)  # type: ignore
 
 
-async def _make_markdown(
+async def make_markdown_async(
     language_codes: list[str],
     select_courses: str,
     include_views: bool,
@@ -185,7 +185,7 @@ def make_markdown(
     """
     if not language_codes:
         language_codes = LingqHandler.get_user_language_codes()
-    asyncio.run(_make_markdown(language_codes, select_courses, include_views, out_folder))
+    asyncio.run(make_markdown_async(language_codes, select_courses, include_views, out_folder))
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ from pathlib import Path
 from yomitan import yomitan
 
 
-def _rewrite_json_with_first_n_entries(json_file_path: Path, n: int = 5) -> None:
+def rewrite_json_with_first_n_entries(json_file_path: Path, n: int = 5) -> None:
     with json_file_path.open("r", encoding="utf-8") as f:
         data = json.load(f)
         first_ten_entries = data[:n]
@@ -30,4 +30,4 @@ def test_yomitan():
 if __name__ == "__main__":
     # Generate fixture
     json_file = Path("downloads/lingqs/pt/lingqs.json")
-    _rewrite_json_with_first_n_entries(json_file)
+    rewrite_json_with_first_n_entries(json_file)

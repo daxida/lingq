@@ -1,12 +1,12 @@
 import asyncio
 from pathlib import Path
 
-from get_lessons import _get_lessons
+from get_lessons import get_lessons_async
 from lingqhandler import LingqHandler
-from utils import double_check, timing  # type: ignore
+from utils import double_check, timing
 
 
-async def _get_courses_for_language(
+async def get_courses_for_language_async(
     language_code: str,
     download_audio: bool,
     download_timestamps: bool,
@@ -21,7 +21,7 @@ async def _get_courses_for_language(
 
         # Async fetching of courses is too fast for the API...
         for collection_json in collections_json:
-            await _get_lessons(
+            await get_lessons_async(
                 language_code,
                 collection_json["id"],
                 skip_already_downloaded=False,
@@ -34,7 +34,7 @@ async def _get_courses_for_language(
         await asyncio.sleep(sleep_time)
 
 
-async def _get_courses(
+async def get_courses_async(
     language_codes: list[str],
     download_audio: bool,
     download_timestamps: bool,
@@ -44,7 +44,7 @@ async def _get_courses(
     print(f"Getting courses for languages: {', '.join(language_codes)}")
     double_check("CAREFUL: This reorders your 'Continue studying' shelf.")
     for language_code in language_codes:
-        await _get_courses_for_language(
+        await get_courses_for_language_async(
             language_code, download_audio, download_timestamps, sleep_time, opath
         )
         await asyncio.sleep(sleep_time)
@@ -78,7 +78,7 @@ def get_courses(
     if not language_codes:
         language_codes = LingqHandler.get_user_language_codes()
     asyncio.run(
-        _get_courses(language_codes, download_audio, download_timestamps, sleep_time, opath)
+        get_courses_async(language_codes, download_audio, download_timestamps, sleep_time, opath)
     )
 
 

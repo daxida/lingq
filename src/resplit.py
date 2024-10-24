@@ -2,7 +2,7 @@ import asyncio
 from typing import Any
 
 from lingqhandler import LingqHandler
-from utils import double_check, timing  # type: ignore
+from utils import double_check, timing
 
 
 async def resplit_japanese(handler: LingqHandler, lessons: list[Any]) -> None:
@@ -14,7 +14,7 @@ async def resplit_japanese(handler: LingqHandler, lessons: list[Any]) -> None:
     await asyncio.gather(*tasks)
 
 
-async def _resplit(course_id: str) -> None:
+async def resplit_async(course_id: str) -> None:
     async with LingqHandler("ja") as handler:
         collection = await handler.get_collection_json_from_id(course_id)
         lesson_jsons = collection["lessons"]
@@ -26,7 +26,7 @@ async def _resplit(course_id: str) -> None:
 
 @timing
 def resplit(course_id: str) -> None:
-    asyncio.run(_resplit(course_id))
+    asyncio.run(resplit_async(course_id))
 
 
 if __name__ == "__main__":

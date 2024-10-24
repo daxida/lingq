@@ -120,11 +120,11 @@ class LingqHandler:
         This is a class method since it does not require initializing a language code.
         """
 
-        async def _get_user_language_codes_tmp():
+        async def get_user_language_codes_tmp():
             async with cls("Filler") as handler:
                 return await handler._get_user_language_codes()
 
-        return asyncio.run(_get_user_language_codes_tmp())
+        return asyncio.run(get_user_language_codes_tmp())
 
     async def get_lesson_from_url(self, url: str) -> Any:
         """
@@ -168,7 +168,7 @@ class LingqHandler:
         async with self.session.get(audio_url) as response:
             return await response.read()
 
-    async def _get_collections_from_url(self, url: str) -> Any:
+    async def get_collections_from_url(self, url: str) -> Any:
         """
         Get a collection JSON, from its url.
         Example urls:
@@ -194,7 +194,7 @@ class LingqHandler:
         This does not include collections imported by other users.
         """
         url = f"{LingqHandler.API_URL_V3}/{self.language_code}/collections/my/"
-        return await self._get_collections_from_url(url)
+        return await self.get_collections_from_url(url)
 
     async def get_currently_studying_collections(self) -> Any:
         """
@@ -202,7 +202,7 @@ class LingqHandler:
         This includes collections imported by other users.
         """
         url = f"{LingqHandler.API_URL_V3}/{self.language_code}/search/?shelf=my_lessons&type=collection&sortBy=recentlyOpened"
-        return await self._get_collections_from_url(url)
+        return await self.get_collections_from_url(url)
 
     async def get_collection_json_from_id(self, collection_id: str) -> Any:
         """Get a collection JSON with the collection, from a collection_id."""

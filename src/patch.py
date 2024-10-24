@@ -5,7 +5,7 @@ from lingqhandler import LingqHandler
 from utils import double_check, read_sorted_subfolders, timing
 
 
-async def _patch_audios(
+async def patch_audios_async(
     language_code: str, course_id: str, audios_folder: Path, from_lesson: int, to_lesson: int
 ) -> None:
     audios_path = read_sorted_subfolders(audios_folder, mode="human")
@@ -45,7 +45,7 @@ def patch_audios(
     # editing has already be done, and we wouldn't want to upload the text again.
 
     # The blank audios were found here: https://github.com/anars/blank-audio.
-    asyncio.run(_patch_audios(language_code, course_id, audios_folder, from_lesson, to_lesson))
+    asyncio.run(patch_audios_async(language_code, course_id, audios_folder, from_lesson, to_lesson))
 
 
 if __name__ == "__main__":

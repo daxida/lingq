@@ -12,7 +12,7 @@ from utils import timing
 WordDump = list[dict[str, Any]]
 
 
-async def _get_words_for_language(language_code: str, page_size: int = 500) -> WordDump:
+async def get_words_for_language_async(language_code: str, page_size: int = 500) -> WordDump:
     """
     Get all LingQs for the given language.
 
@@ -60,9 +60,9 @@ def write_words_for_language(language_code: str, opath: Path, dump: WordDump) ->
     print(f"Wrote words at {dump_path}")
 
 
-async def _get_words(language_codes: list[str], opath: Path) -> None:
+async def get_words_async(language_codes: list[str], opath: Path) -> None:
     for language_code in language_codes:
-        dump = await _get_words_for_language(language_code)
+        dump = await get_words_for_language_async(language_code)
         write_words_for_language(language_code, opath, dump)
 
 
@@ -75,7 +75,7 @@ def get_words(language_codes: list[str], opath: Path) -> None:
     if not language_codes:
         language_codes = LingqHandler.get_user_language_codes()
     print(f"Getting words for languages: {', '.join(language_codes)}")
-    asyncio.run(_get_words(language_codes, opath))
+    asyncio.run(get_words_async(language_codes, opath))
 
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 from typing import Any
 
-from get_lesson import Lesson, get_lesson, sanitize_title, write_lesson
+from get_lesson import Lesson, get_lesson_async, sanitize_title, write_lesson
 from lingqhandler import LingqHandler
 from utils import timing
 
@@ -31,7 +31,7 @@ def filter_already_downloaded(texts_path: Path, lessons: Any, verbose: bool) -> 
     return filtered_lessons
 
 
-async def _get_lessons(
+async def get_lessons_async(
     language_code: str,
     course_id: str,
     skip_already_downloaded: bool,
@@ -58,7 +58,7 @@ async def _get_lessons(
             lessons = filter_already_downloaded(texts_folder, lessons, verbose)
 
         tasks = [
-            get_lesson(
+            get_lesson_async(
                 handler,
                 lesson_json["id"],
                 download_audio,
@@ -99,7 +99,7 @@ def get_lessons(
     Creates a 'download' folder and saves the text/audio in 'text'/'audio' subfolders.
     """
     asyncio.run(
-        _get_lessons(
+        get_lessons_async(
             language_code,
             course_id,
             skip_already_downloaded,

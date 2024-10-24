@@ -129,7 +129,7 @@ def get_playlist(url: str, ydl_opts: dict[str, Any]) -> Any:
         return sanitized
 
 
-async def _post_yt_playlist(
+async def post_yt_playlist_async(
     language_code: str,
     course_id: str,
     playlist_url: str,
@@ -191,7 +191,7 @@ def post_yt_playlist(
             Requires download_audio to be true in order to get the necessary information.
     """
     asyncio.run(
-        _post_yt_playlist(
+        post_yt_playlist_async(
             language_code,
             course_id,
             playlist_url,

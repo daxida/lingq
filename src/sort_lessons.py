@@ -120,7 +120,7 @@ def get_patch_requests_order(lessons: list[Any]) -> list[tuple[Any, int]]:
     return requests
 
 
-async def _sort_lessons(language_code: str, course_id: str):
+async def sort_lessons_async(language_code: str, course_id: str):
     async with LingqHandler(language_code) as handler:
         collection_json = await handler.get_collection_json_from_id(course_id)
         assert collection_json is not None
@@ -142,7 +142,7 @@ async def _sort_lessons(language_code: str, course_id: str):
 
 @timing
 def sort_lessons(language_code: str, course_id: str) -> None:
-    asyncio.run(_sort_lessons(language_code, course_id))
+    asyncio.run(sort_lessons_async(language_code, course_id))
 
 
 if __name__ == "__main__":

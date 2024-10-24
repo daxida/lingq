@@ -48,7 +48,7 @@ def get_vtt_timestamps(ptokens: list[list[Token]]) -> str:
     return "\n".join(vtt_lines)
 
 
-async def get_lesson(
+async def get_lesson_async(
     handler: LingqHandler,
     lesson_id: str,
     download_audio: bool,
@@ -127,7 +127,7 @@ def write_lesson(language_code: str, lesson: Lesson, opath: Path) -> None:
 
 if __name__ == "__main__":
     # Test getting a single lesson
-    async def _get_lesson_tmp(
+    async def get_lesson_async_tmp(
         language_code: str,
         lesson_id: str,
         download_audio: bool,
@@ -135,12 +135,12 @@ if __name__ == "__main__":
         verbose: bool,
     ):
         async with LingqHandler(language_code) as handler:
-            return await get_lesson(
+            return await get_lesson_async(
                 handler, lesson_id, download_audio, download_timestamps, verbose
             )
 
     lesson = asyncio.run(
-        _get_lesson_tmp(
+        get_lesson_async_tmp(
             language_code="el",
             lesson_id="5897069",
             download_audio=True,

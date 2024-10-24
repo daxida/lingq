@@ -128,7 +128,7 @@ async def post_texts_and_audios(
         )
 
 
-async def _post(
+async def post_async(
     language_code: str,
     course_id: str,
     texts_folder: Path,
@@ -210,7 +210,7 @@ def post(
             Defaults to "match_exact_titles".
     """
     asyncio.run(
-        _post(
+        post_async(
             language_code,
             course_id,
             texts_folder,

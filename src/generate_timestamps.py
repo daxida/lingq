@@ -24,7 +24,7 @@ async def filter_already_timestamped(handler: LingqHandler, lessons: list[Any]) 
     return [lesson for lesson in lessons if not lesson["is_timestamped"]]
 
 
-async def _generate_timestamps(
+async def generate_timestamps_async(
     language_code: str, course_id: str, skip_already_timestamped: bool
 ) -> None:
     async with LingqHandler(language_code) as handler:
@@ -43,7 +43,7 @@ async def _generate_timestamps(
 
 
 def generate_timestamps(language_code: str, course_id: str, skip_already_timestamped: bool):
-    asyncio.run(_generate_timestamps(language_code, course_id, skip_already_timestamped))
+    asyncio.run(generate_timestamps_async(language_code, course_id, skip_already_timestamped))
 
 
 if __name__ == "__main__":

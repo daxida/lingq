@@ -40,7 +40,7 @@ def write_pictures(pictures_and_titles, collection_path: Path) -> None:
     print(f"Wrote pictures at {pictures_path}")
 
 
-async def _get_pictures(language_code: str, course_id: str, opath: Path) -> None:
+async def get_pictures_async(language_code: str, course_id: str, opath: Path) -> None:
     async with LingqHandler(language_code) as handler:
         collection_json = await handler.get_collection_json_from_id(course_id)
         assert collection_json is not None
@@ -55,7 +55,7 @@ async def _get_pictures(language_code: str, course_id: str, opath: Path) -> None
 @timing
 def get_pictures(language_code: str, course_id: str, opath: Path):
     """Get all pictures from a course"""
-    asyncio.run(_get_pictures(language_code, course_id, opath))
+    asyncio.run(get_pictures_async(language_code, course_id, opath))
 
 
 if __name__ == "__main__":
