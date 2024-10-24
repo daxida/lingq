@@ -85,9 +85,9 @@ You don't have to follow this, it is mostly for self-reference. What I ended up 
 
 import json
 import logging
-import os
 import subprocess
 from dataclasses import dataclass
+from pathlib import Path
 
 from aeneas.executetask import ExecuteTask
 from aeneas.task import Task
@@ -131,9 +131,9 @@ for handler in logging.getLogger().handlers:
 
 
 def align_audio_to_text(
-    audio_path: str,
-    text_path: str,
-    opath: str,
+    audio_path: Path,
+    text_path: Path,
+    opath: Path,
     language: str,
 ) -> None:
     logging.info(f"Starting alignment for audio: {audio_path} and text: {text_path}")
@@ -157,16 +157,14 @@ def align_audio_to_text(
     logging.debug(f"Alignment task completed. Sync map file saved to: {opath}")
 
 
-def get_sorted_file_paths(files_dir, extension):
+def get_sorted_file_paths(files_dir: Path, extension: str) -> list[Path]:
     file_paths = [
-        os.path.join(files_dir, fp)
-        for fp in os.listdir(files_dir)
-        if fp.endswith(extension) and "merged" not in fp
+        fp for fp in files_dir.iterdir() if fp.suffix == extension and "merged" not in fp.name
     ]
     return sorted(file_paths)
 
 
-def get_mp3_length(file_path):
+def get_mp3_length(file_path: Path):
     return MP3(file_path).info.length
 
 
@@ -296,38 +294,40 @@ def split_audio_by_time(fragments, cut_at_seconds):
     return timed_texts
 
 
-def write_timed_texts(timed_texts, audio_file, output_dir):
+def write_timed_texts(timed_texts, audio_file, output_dir: Path) -> None:
     logging.info("Writting timed texts")
     for idx, tt in enumerate(timed_texts, 1):
-        output_audio_path = f"{output_dir}/audios/audio{idx}.mp3"
-        ffmpeg_split(audio_file, tt.begin, tt.end, output_audio_path)
-        output_text_path = f"{output_dir}/texts/text{idx}.txt"
-        with open(output_text_path, "w") as f:
+        opath_audio = f"{output_dir}/audios/audio{idx}.mp3"
+        ffmpeg_split(audio_file, tt.begin, tt.end, opath_audio)
+        opath_text = output_dir / "texts" / f"text{idx}.txt"
+        with opath_text.open("w") as f:
             f.write(tt.text)
 
 
-def merge_text_files(text_dir, merged_text_file):
+def merge_text_files(merged_text_file: Path) -> None:
     """Merge all text files into a single one."""
+    text_dir = merged_text_file.parent
     text_files = get_sorted_file_paths(text_dir, ".txt")
     logging.debug(f"Text files: {text_files}")
 
-    with open(merged_text_file, "w", encoding="utf-8") as merged_file:
+    with merged_text_file.open("w", encoding="utf-8") as merged_file:
         for text_file_path in text_files:
-            with open(text_file_path, "r", encoding="utf-8") as tf:
+            with text_file_path.open("r", encoding="utf-8") as tf:
                 content = tf.read()
                 merged_file.write(content)
                 # merged_file.write("\n")
 
 
-def merge_audio_files(audio_dir, merged_audio_file):
+def merge_audio_files(merged_audio_file: Path) -> None:
     """Merge all audio files into a single one."""
+    audio_dir = merged_audio_file.parent
     audio_files = get_sorted_file_paths(audio_dir, ".mp3")
-    audio_files = [af.split("/")[-1] for af in audio_files]
+    audio_files = [af.name for af in audio_files]
     logging.debug(f"Audio files: {audio_files}")
 
     # Create a temporary file list for ffmpeg input
-    temp_file_list = os.path.join(audio_dir, "mp3_files_to_merge.txt")
-    with open(temp_file_list, "w", encoding="utf-8") as f:
+    temp_file_list = audio_dir / "mp3_files_to_merge.txt"
+    with temp_file_list.open("w", encoding="utf-8") as f:
         for audio_file_name in audio_files:
             f.write(f"file '{audio_file_name}'\n")
 
@@ -346,24 +346,29 @@ def merge_audio_files(audio_dir, merged_audio_file):
     )
     # fmt: on
 
-    if not os.path.exists(merged_audio_file):
+    if not merged_audio_file.exists():
         logging.error(f"[merge_audio_files] Could not find the merged file: {merged_audio_file}")
         exit(1)
 
     # Clean up temporary file list
-    os.remove(temp_file_list)
+    Path.unlink(temp_file_list)
 
 
-def process_files(language, files_dir, cut_at_seconds=0.0, n_sections=0):
+def process_files(
+    language: str,
+    files_dir: Path,
+    cut_at_seconds=0.0,
+    n_sections=0,
+) -> None:
     # Setup input file structure
-    audio_dir = os.path.join(files_dir, "audios")
-    text_dir = os.path.join(files_dir, "texts")
+    audio_dir = files_dir / "audios"
+    text_dir = files_dir / "texts"
 
     # Merge text and audio
-    merged_text_file = os.path.join(text_dir, "text_merged.txt")
-    merge_text_files(text_dir, merged_text_file)
-    merged_audio_file = os.path.join(audio_dir, "audio_merged.mp3")
-    merge_audio_files(audio_dir, merged_audio_file)
+    merged_text_file = text_dir / "text_merged.txt"
+    merge_text_files(merged_text_file)
+    merged_audio_file = audio_dir / "audio_merged.mp3"
+    merge_audio_files(merged_audio_file)
 
     # If given a number of sections, overwrite cut_at_seconds.
     # Crashes if cut_at_seconds is not its default value of 0.
@@ -376,21 +381,21 @@ def process_files(language, files_dir, cut_at_seconds=0.0, n_sections=0):
 
     # Setup output file structure
     if cut_at_seconds > 0:
-        output_dir = os.path.join(files_dir, f"output_by_time_{cut_at_seconds}")
+        output_dir = files_dir / f"output_by_time_{cut_at_seconds}"
     else:
-        output_dir = os.path.join(files_dir, "output")
-    os.makedirs(os.path.join(output_dir, "audios"), exist_ok=True)
-    os.makedirs(os.path.join(output_dir, "texts"), exist_ok=True)
+        output_dir = files_dir / "output"
+    Path.mkdir(output_dir / "audios", parents=True, exist_ok=True)
+    Path.mkdir(output_dir / "texts", parents=True, exist_ok=True)
 
     # Align audio with text using the specified language
-    output_json = os.path.join(output_dir, "syncmap.json")
+    output_json = output_dir / "syncmap.json"
     align_audio_to_text(merged_audio_file, merged_text_file, output_json, language)
 
     # Split the audio based on the sync map
-    fragments = json.load(open(output_json, "r"))["fragments"]
+    fragments = json.load(output_json.open("r"))["fragments"]
     text_files_paths = get_sorted_file_paths(text_dir, ".txt")
     text_files = [
-        open(fp, "r", encoding="utf-8").read().strip().splitlines() for fp in text_files_paths
+        fp.open("r", encoding="utf-8").read().strip().splitlines() for fp in text_files_paths
     ]
     # For making tests
     # logging.debug(f"{fragments=}")
@@ -403,7 +408,7 @@ def process_files(language, files_dir, cut_at_seconds=0.0, n_sections=0):
     # Remove merged files
     logging.info("Removing merged files")
     for file in (merged_text_file, merged_audio_file):
-        os.remove(file)
+        Path.unlink(file)
 
 
 if __name__ == "__main__":
@@ -412,7 +417,7 @@ if __name__ == "__main__":
     # TODO: make it work for japanese!
     process_files(
         language="ell",
-        files_dir="test_el_1m_3t_2a",
+        files_dir=Path("test_el_1m_3t_2a"),
         cut_at_seconds=10,
         # n_sections=20,
     )

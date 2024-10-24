@@ -1,4 +1,5 @@
 import re
+from pathlib import Path
 from typing import Match
 
 # TODO: Make a test every time I use this script to fix a book.
@@ -179,8 +180,9 @@ def fix_textlines(line: str) -> str:
     return line
 
 
-def write(filename: str, text: str):
-    with open(f"fix_{filename}", "w") as out:
+def write(filepath: Path, text: str):
+    opath = Path(f"fix_{filepath}")
+    with opath.open("w") as out:
         for line in text.split("\n"):
             out.write(f"{line}\n")
 
@@ -200,11 +202,12 @@ def fix(text: str) -> str:
 
 
 def main():
-    with open(filename, "r") as file:
+    filepath = Path(filename)
+    with filepath.open("r") as file:
         text = file.read()
         text = fix(text)
 
-    write(filename, text)
+    write(filepath, text)
 
 
 if __name__ == "__main__":

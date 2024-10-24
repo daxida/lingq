@@ -1,12 +1,12 @@
 """Scrape a book from https://itazuranekoyomi.neocities.org/library/shousetu/shouall"""
 
-import os
+from pathlib import Path
 from typing import Any
 
 import requests
 from bs4 import BeautifulSoup
 
-DOWNLOAD_FOLDER = "downloads"
+DOWNLOAD_FOLDER = Path("downloads")
 
 BOOK_ID = "satu000987/satu000987"
 BOOK_NAME = "かがみの孤城"  # name for the out_folder
@@ -36,8 +36,8 @@ def remove_ruby(section: Any) -> Any:
         element.string = element.get_text(strip=True)
 
 
-book_path = os.path.join(DOWNLOAD_FOLDER, BOOK_NAME)
-os.makedirs(book_path, exist_ok=True)
+book_path = DOWNLOAD_FOLDER / BOOK_NAME
+Path.mkdir(book_path, parents=True, exist_ok=True)
 
 res = None
 for mirror in range(1, 4):
@@ -59,6 +59,6 @@ for idx, chapter in enumerate(chapters, 1):
     chapter_title = str(idx)
     chapter_text = chapter.text.strip()
 
-    chapter_path = os.path.join(book_path, chapter_title)
-    with open(chapter_path, "w") as f:
+    chapter_path = book_path / chapter_title
+    with chapter_path.open("w") as f:
         f.write(chapter_text)

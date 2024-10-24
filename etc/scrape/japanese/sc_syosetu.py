@@ -1,11 +1,11 @@
 """Scrape a book from https://ncode.syosetu.com/"""
 
-import os
+from pathlib import Path
 
 import requests
 from bs4 import BeautifulSoup
 
-DOWNLOAD_FOLDER = "downloads"
+DOWNLOAD_FOLDER = Path("downloads")
 
 BOOK_ID = "n9636x"  # get this from the url
 BOOK_NAME = "syosetu"  # name for the out_folder
@@ -22,8 +22,8 @@ FAKE_BROWSER_HEADERS = {
     "upgrade-insecure-requests": "1",
 }
 
-book_path = os.path.join(DOWNLOAD_FOLDER, BOOK_NAME)
-os.makedirs(book_path, exist_ok=True)
+book_path = DOWNLOAD_FOLDER / BOOK_NAME
+Path.mkdir(book_path, parents=True, exist_ok=True)
 
 url = f"https://ncode.syosetu.com/{BOOK_ID}/"
 res = requests.get(url, headers=FAKE_BROWSER_HEADERS)
@@ -38,6 +38,6 @@ for chapter_id in range(1, n_chapters + 1):
     chapter_text = csoup.find("div", {"id": "novel_honbun"}).text  # type: ignore
     chapter_title = csoup.find("p", {"class": "novel_subtitle"}).text  # type: ignore
 
-    chapter_path = os.path.join(book_path, chapter_title)
-    with open(chapter_path, "w") as f:
+    chapter_path = book_path / chapter_title
+    with chapter_path.open("w") as f:
         f.write(chapter_text)

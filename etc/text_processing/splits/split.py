@@ -1,13 +1,13 @@
-import os
+from pathlib import Path
 
-OUT_FOLDER = "split"
-IN_FILE = "norwegian_wood.txt"
+OUT_FOLDER = Path("split")
+IN_FILE = Path("norwegian_wood.txt")
 
 # Headings folder. The expected format is a list of chapter (=headings) separators, f.e:
 # Chapter 1
 # Chapter 2
 # etc
-HEADINGS_FOLDER = "headings.txt"
+HEADINGS_FOLDER = Path("headings.txt")
 
 SplitData = dict[str, list[str]]
 
@@ -43,14 +43,14 @@ def split_by_headings(lines: list[str], headings: list[str]) -> SplitData:
 def write(split_data: SplitData, headings: list[str]) -> None:
     """In case of not found chapters, it writes a ?? file for easier fixing"""
     for idx_p, heading in enumerate(headings, 1):
-        prefix = f"{OUT_FOLDER}/{idx_p:02d}. "
-
         if heading in split_data.keys():
-            with open(f"{prefix}{heading}.txt", "w") as f:
+            opath = OUT_FOLDER / f"{idx_p:02d}. {heading}.txt"
+            with opath.open("w") as f:
                 for line in split_data[heading]:
                     f.write(line)
         else:
-            with open(f"{prefix}?????????.txt", "w") as f:
+            opath = OUT_FOLDER / f"{idx_p:02d}. ?????????.txt"
+            with opath.open("w") as f:
                 f.write("NONE")
 
 
@@ -78,22 +78,19 @@ def test_titles(split_data: SplitData, headings: list[str]) -> int:
 
 
 def main() -> None:
-    # Create OUT_FOLDER if it doesn't exist.
-    if not os.path.exists(OUT_FOLDER):
-        os.mkdir(OUT_FOLDER)
+    Path.mkdir(OUT_FOLDER, parents=True, exist_ok=True)
 
     # Delete the contents of OUT_FOLDER if any.
     print(f"Deleting old files (if any) at this path: {OUT_FOLDER}")
-    for file_name in os.listdir(OUT_FOLDER):
-        file = f"{OUT_FOLDER}/{file_name}"
-        if os.path.isfile(file):
-            os.remove(file)
+    for file in OUT_FOLDER.iterdir():
+        if file.is_file():
+            file.unlink()
 
     # Read the text from the given input folders.
-    with open(HEADINGS_FOLDER, "r") as f:
+    with HEADINGS_FOLDER.open("r") as f:
         # Ensure no trailing empty heading
         headings = [heading.strip() for heading in f.readlines()]
-    with open(IN_FILE, "r") as f:
+    with IN_FILE.open("r") as f:
         lines = f.readlines()
 
     split_data = split_by_headings(lines, headings)

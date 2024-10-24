@@ -1,9 +1,10 @@
 import re
+from pathlib import Path
 
 
-def create_headings(text_path: str) -> None:
+def create_headings(filepath: Path) -> None:
     headings: list[str] = []
-    with open(text_path, "r") as t:
+    with filepath.open("r") as t:
         for line in t.readlines():
             # REPLACE here with the suitable heading pattern
             heading = re.findall(r"[XVI]+ .*[a-zA-Z]\n", line)
@@ -15,8 +16,9 @@ def create_headings(text_path: str) -> None:
 
 
 def main():
-    text_path = "text.txt"
-    create_headings(text_path)
+    filename = "text.txt"
+    filepath = Path(filename)
+    create_headings(filepath)
 
 
 if __name__ == "__main__":

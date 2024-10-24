@@ -1,9 +1,9 @@
 # Fixes some issues with itazura (vertical writing)
 
-import os
 import re
+from pathlib import Path
 
-FOLDER_PATH = "src/かがみの孤城"
+FOLDER_PATH = Path("src/かがみの孤城")
 
 
 def fix_vertical_characters(text: str) -> str:
@@ -47,18 +47,18 @@ def fix(text: str) -> str:
     return text
 
 
-def process_file(file_path: str):
-    with open(file_path, "r") as file:
+def process_file(file_path: Path):
+    with file_path.open("r") as file:
         text = file.read()
         text = fix(text)
     extension = ""  # Fill this with some string to not overwrite the original
-    with open(f"{file_path}{extension}", "w") as out:
+    opath = file_path.with_stem(file_path.stem + extension)
+    with opath.open("w") as out:
         out.write(text)
 
 
 def main():
-    for file_name in os.listdir(FOLDER_PATH):
-        file_path = os.path.join(FOLDER_PATH, file_name)
+    for file_path in FOLDER_PATH.iterdir():
         process_file(file_path)
 
 

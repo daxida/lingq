@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Any
 
 import faster_whisper  # type: ignore
@@ -5,7 +6,7 @@ from tqdm import tqdm
 
 
 class Transcriber:
-    def __init__(self, wav_path: str, srt_path: str, model_name: str) -> None:
+    def __init__(self, wav_path: Path, srt_path: Path, model_name: str) -> None:
         self.wav_path = wav_path
         self.srt_path = srt_path
         self.model = faster_whisper.WhisperModel(
@@ -20,7 +21,7 @@ class Transcriber:
 
         pbar = tqdm(total=entry["duration"], desc="Transcribing")
 
-        with open(self.srt_path, "w", encoding="utf-8") as srt:
+        with self.srt_path.open("w", encoding="utf-8") as srt:
             for chunk, segment in enumerate(segments, start=1):
                 srt.write(
                     f"{chunk}\n"

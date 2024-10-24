@@ -1,23 +1,23 @@
 """Scrape a book from https://www.greek-language.gr/"""
 
-import os
 import re
+from pathlib import Path
 
 import requests
 from bs4 import BeautifulSoup
 
-DOWNLOAD_FOLDER = "downloads"
+DOWNLOAD_FOLDER = Path("downloads")
 
 
 def download_book_from_text_id(text_id: str, text_name: str, author_name: str) -> None:
     """The book id is found as `text_id=number` in the url."""
     if author_name:
-        _path = os.path.join(author_name, text_name)
+        _path = Path(author_name) / text_name
     else:
-        _path = text_name
+        _path = Path(text_name)
 
-    path = os.path.join(DOWNLOAD_FOLDER, _path)
-    os.makedirs(path, exist_ok=True)
+    path = DOWNLOAD_FOLDER / _path
+    Path.mkdir(path, parents=True, exist_ok=True)
 
     for page in range(1, 999):  # safety upper bound
         url = f"https://www.greek-language.gr/digitalResources/ancient_greek/library/browse.html?text_id={text_id}&page={page}"
@@ -31,7 +31,8 @@ def download_book_from_text_id(text_id: str, text_name: str, author_name: str) -
         page_title = soup.find("div", {"class": "part-header"}).find("h3").text  # type: ignore
 
         out_page_title = f"({page}) {page_title}"
-        with open(os.path.join(path, out_page_title), "w") as f:
+        opath = path / out_page_title
+        with opath.open("w") as f:
             f.write(page_text)
 
 

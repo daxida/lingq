@@ -9,14 +9,14 @@ Uses GPT4All to prompt the questions.
 """
 
 import argparse
-import os
 import subprocess
+from pathlib import Path
 
 from gpt4all import GPT4All
 
 
 # Function to download YouTube subtitles using yt-dlp
-def download_subtitles(video_url, lang="ja"):
+def download_subtitles(video_url: str, lang="ja") -> Path | None:
     """Download YouTube's video's subtitles using yt-dlp"""
     print(f"[yt-dlp] Downloading subtitles for: {video_url}")
     # fmt: off
@@ -36,16 +36,16 @@ def download_subtitles(video_url, lang="ja"):
         subprocess.run(command, check=True)
         print("[yt-dlp] Successfully downloaded subtitles")
         # Find the subtitle file
-        subtitle_file = next(f for f in os.listdir() if f.endswith(".vtt"))
-        return subtitle_file
+        subtitles_path = next(f for f in Path().iterdir() if f.suffix == ".vtt")
+        return subtitles_path
     except Exception as e:
         print(f"Error downloading subtitles: {e}")
         print("Do you have yt-dlp installed?")
 
 
-def clean_subtitles(subtitle_file):
+def clean_subtitles(subtitles_path: Path) -> str:
     """Clean .vtt subtitle files (remove timestamps, metadata)"""
-    with open(subtitle_file, "r", encoding="utf-8") as file:
+    with subtitles_path.open("r", encoding="utf-8") as file:
         lines = file.readlines()
 
     clean_lines = []
@@ -70,13 +70,13 @@ def generate_questions(subtitle_text, num_questions):
 
 def main(video_url, n_questions):
     # Step 1: Download subtitles
-    subtitle_file = download_subtitles(video_url)
-    if not subtitle_file:
+    subtitles_path = download_subtitles(video_url)
+    if subtitles_path is None:
         print("Subtitle download failed.")
         return
 
     # Step 2: Clean subtitle file
-    subtitle_text = clean_subtitles(subtitle_file)
+    subtitle_text = clean_subtitles(subtitles_path)
     if not subtitle_text:
         print("No subtitles found.")
         return
@@ -87,7 +87,7 @@ def main(video_url, n_questions):
     print(questions)
 
     # Clean up subtitle file
-    os.remove(subtitle_file)
+    Path.unlink(subtitles_path)
 
 
 def parse_args():

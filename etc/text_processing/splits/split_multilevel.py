@@ -1,15 +1,14 @@
-import os
+from pathlib import Path
 
 # Two level
 Separated = dict[str, dict[str, list[str]]]
 
 
-def clear_folder(path: str) -> None:
-    for file_name in os.listdir(path):
-        file = path + file_name
-        if os.path.isfile(file):
+def clear_folder(path: Path) -> None:
+    for file in path.iterdir():
+        if file.is_file():
             print("Deleting file:", file)
-            os.remove(file)
+            file.unlink()
 
 
 def separate_by_heading(lines: list[str], heading_list: set[str]) -> dict[str, list[str]]:
@@ -35,7 +34,7 @@ def separate_by_heading(lines: list[str], heading_list: set[str]) -> dict[str, l
     return separated_data
 
 
-def separate(filename: str) -> Separated:
+def separate(filepath: Path) -> Separated:
     # fmt: off
     h1 = {"ΜΕΡΟΣ ΠΡΩΤΟ", "ΔΕΥΤΕΡΟ ΜΕΡΟΣ", "ΤΡΙΤΟ ΜΕΡΟΣ", "ΤΕΤΑΡΤΟ ΜΕΡΟΣ"}
     h2 = {
@@ -44,7 +43,7 @@ def separate(filename: str) -> Separated:
     }
     # fmt: on
 
-    text_lines = open(filename, "r").readlines()
+    text_lines = filepath.open("r").readlines()
 
     separated_data = {}
     separated_data_h1 = separate_by_heading(text_lines, h1)
@@ -57,7 +56,7 @@ def separate(filename: str) -> Separated:
     return separated_data
 
 
-def write(separated_data: Separated) -> None:
+def write(folder_path: Path, separated_data: Separated) -> None:
     for idx_p, part in enumerate(separated_data):
         chapters = separated_data[part]
 
@@ -67,7 +66,8 @@ def write(separated_data: Separated) -> None:
             else:
                 title = f"{idx_p + 1} {part}"
 
-            with open(f"split/{title}.txt", "w") as c:
+            opath = folder_path / f"{title}.txt"
+            with opath.open("w") as c:
                 for line in chapters[chapter]:
                     c.write(line)
 
@@ -81,18 +81,18 @@ def test_titles(separated_data: Separated) -> None:
 
 
 def main():
-    folder_name = "split"
-    os.makedirs(folder_name, exist_ok=True)
+    folder_path = Path("split")
+    Path.mkdir(folder_path, exist_ok=True)
 
-    path = f"/Users/rafa/Downloads/{folder_name}/"
+    path = Path("/Users/rafa/Downloads") / folder_path
     clear_folder(path)
 
-    filename = "text.txt"
-    separated_data = separate(filename)
+    filepath = Path("text.txt")
+    separated_data = separate(filepath)
 
     # test_titles(separated_data)
 
-    write(separated_data)
+    write(folder_path, separated_data)
 
 
 if __name__ == "__main__":
