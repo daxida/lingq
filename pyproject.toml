@@ -55,3 +55,7 @@ select = [
     "C",    # flake8-complexity
     "PTH",  # Paths
 ]
+
+[tool.mypy]
+explicit_package_bases = true
+ignore_missing_imports = true

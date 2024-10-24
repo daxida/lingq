@@ -17,8 +17,8 @@ def fix_vertical_characters(text: str) -> str:
         "﹄": "』",
     }
 
-    trans_dict = {ord(k): ord(v) for k, v in trans_dict.items()}
-    translation_table = str.maketrans(trans_dict)
+    translation_dict = {ord(k): ord(v) for k, v in trans_dict.items()}
+    translation_table = str.maketrans(translation_dict)
 
     return text.translate(translation_table)
 

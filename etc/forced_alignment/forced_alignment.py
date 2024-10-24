@@ -164,7 +164,7 @@ def get_sorted_file_paths(files_dir: Path, extension: str) -> list[Path]:
     return sorted(file_paths)
 
 
-def get_mp3_length(file_path: Path):
+def get_mp3_length(file_path: Path) -> float:
     return MP3(file_path).info.length
 
 
@@ -321,8 +321,8 @@ def merge_text_files(merged_text_file: Path) -> None:
 def merge_audio_files(merged_audio_file: Path) -> None:
     """Merge all audio files into a single one."""
     audio_dir = merged_audio_file.parent
-    audio_files = get_sorted_file_paths(audio_dir, ".mp3")
-    audio_files = [af.name for af in audio_files]
+    _audio_files = get_sorted_file_paths(audio_dir, ".mp3")
+    audio_files = [af.name for af in _audio_files]
     logging.debug(f"Audio files: {audio_files}")
 
     # Create a temporary file list for ffmpeg input

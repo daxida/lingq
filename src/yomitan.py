@@ -133,7 +133,7 @@ def words_to_yomitan_simple(words: list[Card]) -> YomitanDict:
     return yomitan_dict
 
 
-def _into_yomitan_for_language(dump_path: Path) -> None:
+def _into_yomitan_for_language(dump_path: Path) -> YomitanDict:
     """Read and convert the JSON obtained from LingQ."""
     # TODO: split the dict into manageable jsons
     # TODO: make a different entry per hint

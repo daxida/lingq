@@ -41,13 +41,13 @@ async def filter_playlist(
         collection = await handler.get_collection_json_from_id(course_id)
         lessons = collection["lessons"]
         lessons_urls = [lesson["originalUrl"] for lesson in lessons]
-        lessons_urls = set(lessons_urls)
+        unique_lessons_urls = set(lessons_urls)
 
         filtered_playlist = []
         for entry in playlist:
             title = entry["title"]
             url = entry["original_url" if download_audio else "url"]
-            if url not in lessons_urls:
+            if url not in unique_lessons_urls:
                 filtered_playlist.append(entry)
             else:
                 print(f"{Colors.SKIP}[skip: already uploaded]{Colors.END} {title}")

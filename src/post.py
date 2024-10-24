@@ -66,6 +66,7 @@ async def post_lesson(
 
 
 def apply_pairing_strategy(strategy: str, texts: list[Path], audios: list[Path]) -> Pairings:
+    pairs: Pairings
     n_pairs = 0
 
     if strategy == "zip":
@@ -73,7 +74,7 @@ def apply_pairing_strategy(strategy: str, texts: list[Path], audios: list[Path])
         n_pairs = len(pairs)
         print(f"Found {n_pairs} pairs of texts ({len(texts)}) / audio ({len(audios)}).")
     elif strategy == "match_exact_titles":
-        pairs: Pairings = []
+        pairs = []
         for text_path in texts:
             matching_audio_path = None
             for audio_path in audios:

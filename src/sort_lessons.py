@@ -19,10 +19,10 @@ def sort_by_reverse_split_numbers(lesson: Any) -> tuple[float, ...]:
     # 1:1 < 2:1 < 1:2 < 2:2 (the section number goes first).
     title = lesson["title"]
     if ":" not in title:
-        return (int(title), float("inf"))
+        return (float(title), float("inf"))
     else:
         section_num, title = title.split(": ")
-        return (int(title), int(section_num))
+        return (float(title), float(section_num))
 
 
 def sort_by_versioned_numbers(lesson: Any) -> tuple[float, ...]:
@@ -32,7 +32,7 @@ def sort_by_versioned_numbers(lesson: Any) -> tuple[float, ...]:
     if m:
         trimmed = m[0].strip(".")
         nums = trimmed.split(".")
-        starting_numbers = tuple(int(num) for num in nums)
+        starting_numbers = tuple(float(num) for num in nums)
     else:
         starting_numbers = (float("inf"),)
     return starting_numbers + (title,)

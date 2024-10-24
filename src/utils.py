@@ -80,6 +80,7 @@ def roman_sorting_fn(x: str) -> int:
 
 def read_sorted_subfolders(folder: Path, mode: str) -> list[Path]:
     """Supports human (natsort), roman (I < V) and greek (Β < Γ) sorting"""
+    sorting_fn: Callable[[str], Any]
     if mode == "human":
         sorting_fn = os_sorted
     elif mode == "greek":
