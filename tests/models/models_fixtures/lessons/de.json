@@ -1,0 +1,1836 @@
+{
+    "id": 35536,
+    "contentId": 35536,
+    "collectionId": 29015,
+    "collectionTitle": "Who is She?",
+    "url": "https://www.lingq.com/api/v3/de/lessons/35536/",
+    "originalUrl": null,
+    "imageUrl": "https://static.lingq.com/media/resources/contents/images/2021/10/01/1633047768_233fe1da.jpg",
+    "originalImageUrl": "https://static.lingq.com/media/resources/contents/images/2021/10/01/1633047768_233fe1da-orig.jpg",
+    "providerImageUrl": "https://static.lingq.com/media/resources/providers/2024/09/11/images/LingQ_-featured.png_kwtdLNd.png",
+    "title": "1 - Sch\u00f6n dich zu treffen",
+    "description": "A girl introduces herself and asks a man his name.",
+    "duration": 24,
+    "audioUrl": "https://s3.amazonaws.com/media.lingq.com/resources/contents/audionorm/1_01.b0804c46226d.mp3",
+    "audioPending": false,
+    "giveRoseUrl": "/api/v3/de/lessons/35536/give_rose/",
+    "wordCount": 42,
+    "uniqueWordCount": 27,
+    "pubDate": "2008-06-21",
+    "sharedDate": null,
+    "sharedById": 29651,
+    "sharedByName": "LingQ_Support",
+    "sharedByRole": "editor",
+    "external_type": null,
+    "type": "lesson",
+    "status": "P",
+    "pos": 1,
+    "price": 0,
+    "opened": true,
+    "completed": true,
+    "percentCompleted": 100.0,
+    "newWordsCount": 0,
+    "difficulty": 0.0,
+    "providerName": "LingQ",
+    "providerDescription": "",
+    "lastRoseReceived": "2024-10-18T15:53:22.294621",
+    "lessonRating": 19.0,
+    "lessonVotes": 6,
+    "audioRating": 22.0,
+    "audioVotes": 6,
+    "rosesCount": 428,
+    "isFavorite": false,
+    "isOverLimit": false,
+    "level": "Beginner 1",
+    "tags": [
+        "books",
+        "language"
+    ],
+    "providerUrl": "",
+    "readTimes": 2.880952380952381,
+    "listenTimes": 0.0,
+    "roseGiven": false,
+    "openDate": null,
+    "viewsCount": 12015,
+    "isProtected": 1,
+    "scheduledForDeletion": false,
+    "metadata": null,
+    "classicUrl": null,
+    "collection": {
+        "id": 29015,
+        "type": "collection",
+        "title": "Who is She?",
+        "status": "shared",
+        "source": null,
+        "isTaken": null,
+        "imageUrl": "https://static.lingq.com/media/resources/collections/images/2021/10/13/1634148441_57d0bc9a.jpg",
+        "audioPending": false,
+        "originalImageUrl": "https://static.lingq.com/media/resources/collections/images/2021/10/13/1634148441_57d0bc9a-orig.jpg",
+        "providerImageUrl": "https://static.lingq.com/media/resources/providers/2024/09/11/images/LingQ_-featured.png_kwtdLNd.png",
+        "sharedByImageUrl": "https://static.lingq.com/media/resources/photo/1669846878_7a1f4acf.webp",
+        "providerId": 5834,
+        "providerName": "LingQ",
+        "sharedById": 29651,
+        "sharedByName": "LingQ_Support",
+        "sharedByRole": "editor",
+        "description": "A simple story in 26 parts. A good place to start your studies. It is a good idea to listen many times to each item.",
+        "isFeatured": false,
+        "isLocked": null,
+        "lessonsCount": 26,
+        "newWordsCount": 228,
+        "difficulty": 29.01,
+        "rosesCount": 268,
+        "viewsCount": 0,
+        "duration": 1606,
+        "progress": null,
+        "metadata": null,
+        "folders": [],
+        "accent": null,
+        "level": "Beginner 1",
+        "price": 0,
+        "date": "2008-06-21",
+        "tags": [
+            "gespr\u00e4che und interviews",
+            "language",
+            "germany",
+            "1. beginner i",
+            "dialogues",
+            "storytelling",
+            "lingq",
+            "books"
+        ],
+        "url": "/api/v3/de/collections/29015/"
+    },
+    "folders": [],
+    "isLegacy": false,
+    "simplifiedTo": null,
+    "simplifiedBy": null,
+    "tokenizedText": [
+        [
+            {
+                "tokens": [
+                    {
+                        "text": "Hallo",
+                        "translation": {
+                            "en": "Hello",
+                            "hu": "szia"
+                        },
+                        "indexInSentence": 1,
+                        "index": 1,
+                        "wordId": 535248
+                    },
+                    {
+                        "punct": ","
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "wie",
+                        "translation": {
+                            "en": "how",
+                            "hu": "hogyan"
+                        },
+                        "indexInSentence": 2,
+                        "index": 2,
+                        "wordId": 501659
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "kann",
+                        "translation": {
+                            "en": "can",
+                            "hu": "tud"
+                        },
+                        "indexInSentence": 3,
+                        "index": 3,
+                        "wordId": 502021
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "ich",
+                        "translation": {
+                            "en": "I",
+                            "hu": "\u00e9n"
+                        },
+                        "indexInSentence": 4,
+                        "index": 4,
+                        "wordId": 501630
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "dir",
+                        "translation": {
+                            "en": "you",
+                            "hu": "neked"
+                        },
+                        "indexInSentence": 5,
+                        "index": 5,
+                        "wordId": 505978
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "helfen",
+                        "translation": {
+                            "en": "help",
+                            "hu": "seg\u00edteni"
+                        },
+                        "indexInSentence": 6,
+                        "index": 6,
+                        "wordId": 517256
+                    },
+                    {
+                        "punct": "?"
+                    }
+                ],
+                "text": "Hallo, wie kann ich dir helfen?",
+                "normalizedText": "hallo wie kann ich dir helfen",
+                "index": 1,
+                "timestamp": [
+                    2.0,
+                    5.0
+                ]
+            }
+        ],
+        [
+            {
+                "tokens": [
+                    {
+                        "text": "Hallo",
+                        "translation": {
+                            "en": "Hello",
+                            "hu": "Hell\u00f3"
+                        },
+                        "indexInSentence": 1,
+                        "index": 7,
+                        "wordId": 535248
+                    },
+                    {
+                        "punct": ","
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "mein",
+                        "translation": {
+                            "en": "my"
+                        },
+                        "indexInSentence": 2,
+                        "index": 8,
+                        "wordId": 504672
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "Name",
+                        "translation": {
+                            "en": "name",
+                            "hu": "nevem"
+                        },
+                        "indexInSentence": 3,
+                        "index": 9,
+                        "wordId": 534973
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "ist",
+                        "translation": {
+                            "en": "is"
+                        },
+                        "indexInSentence": 4,
+                        "index": 10,
+                        "wordId": 501650
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "Maria",
+                        "translation": {
+                            "en": "Maria",
+                            "hu": "M\u00e1ria"
+                        },
+                        "indexInSentence": 5,
+                        "index": 11,
+                        "wordId": 587609
+                    },
+                    {
+                        "punct": "."
+                    }
+                ],
+                "text": "Hallo, mein Name ist Maria.",
+                "normalizedText": "hallo mein name ist maria",
+                "index": 2,
+                "timestamp": [
+                    5.5,
+                    8.0
+                ]
+            }
+        ],
+        [
+            {
+                "tokens": [
+                    {
+                        "text": "Sch\u00f6n",
+                        "translation": {
+                            "en": "Nice",
+                            "hu": "j\u00f3"
+                        },
+                        "indexInSentence": 1,
+                        "index": 12,
+                        "wordId": 501784
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "dich",
+                        "translation": {
+                            "en": "you",
+                            "hu": "t\u00e9ged"
+                        },
+                        "indexInSentence": 2,
+                        "index": 13,
+                        "wordId": 506149
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "zu",
+                        "translation": {
+                            "en": "to",
+                            "hu": "meg"
+                        },
+                        "indexInSentence": 3,
+                        "index": 14,
+                        "wordId": 501625
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "treffen",
+                        "translation": {
+                            "en": "meet",
+                            "es": "ver",
+                            "hu": "tal\u00e1lkozni"
+                        },
+                        "indexInSentence": 4,
+                        "index": 15,
+                        "wordId": 509886
+                    },
+                    {
+                        "punct": "."
+                    }
+                ],
+                "text": "Sch\u00f6n dich zu treffen.",
+                "normalizedText": "sch\u00f6n dich zu treffen",
+                "index": 3,
+                "timestamp": [
+                    8.0,
+                    10.0
+                ]
+            }
+        ],
+        [
+            {
+                "tokens": [
+                    {
+                        "text": "Ganz",
+                        "translation": {
+                            "en": "entirely",
+                            "hu": "ganz"
+                        },
+                        "indexInSentence": 1,
+                        "index": 16,
+                        "wordId": 501730
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "meinerseits",
+                        "translation": {
+                            "fa": "\u0627\u0632 \u0637\u0631\u0641 \u0645\u0646",
+                            "en": "on my part",
+                            "es": "de mi parte",
+                            "hu": "r\u00e9szemr\u0151l"
+                        },
+                        "indexInSentence": 2,
+                        "index": 17,
+                        "wordId": 701878
+                    },
+                    {
+                        "punct": ","
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "ich",
+                        "translation": {
+                            "en": "I",
+                            "hu": "\u00e9n"
+                        },
+                        "indexInSentence": 3,
+                        "index": 18,
+                        "wordId": 501630
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "freue",
+                        "translation": {
+                            "en": "am happy",
+                            "hu": "\u00f6r\u00fcl\u00f6k"
+                        },
+                        "indexInSentence": 4,
+                        "index": 19,
+                        "wordId": 534429
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "mich",
+                        "translation": {
+                            "en": "myself"
+                        },
+                        "indexInSentence": 5,
+                        "index": 20,
+                        "wordId": 501680
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "auch",
+                        "translation": {
+                            "en": "also"
+                        },
+                        "indexInSentence": 6,
+                        "index": 21,
+                        "wordId": 501639
+                    },
+                    {
+                        "punct": ","
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "dich",
+                        "translation": {
+                            "en": "you"
+                        },
+                        "indexInSentence": 7,
+                        "index": 22,
+                        "wordId": 506149
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "zu",
+                        "translation": {
+                            "en": "to"
+                        },
+                        "indexInSentence": 8,
+                        "index": 23,
+                        "wordId": 501625
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "treffen",
+                        "translation": {
+                            "en": "meet"
+                        },
+                        "indexInSentence": 9,
+                        "index": 24,
+                        "wordId": 509886
+                    },
+                    {
+                        "punct": "."
+                    }
+                ],
+                "text": "Ganz meinerseits, ich freue mich auch, dich zu treffen.",
+                "normalizedText": "ganz meinerseits ich freue mich auch dich zu treffen",
+                "index": 4,
+                "timestamp": [
+                    10.0,
+                    14.0
+                ]
+            }
+        ],
+        [
+            {
+                "tokens": [
+                    {
+                        "text": "Und",
+                        "translation": {
+                            "en": "And",
+                            "hu": "\u00e9s"
+                        },
+                        "indexInSentence": 1,
+                        "index": 25,
+                        "wordId": 501652
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "wie",
+                        "translation": {
+                            "en": "how",
+                            "hu": "hogyan"
+                        },
+                        "indexInSentence": 2,
+                        "index": 26,
+                        "wordId": 501659
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "hei\u00dft",
+                        "translation": {
+                            "en": "is called",
+                            "hu": "h\u00edvj\u00e1k"
+                        },
+                        "indexInSentence": 3,
+                        "index": 27,
+                        "wordId": 501756
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "deine",
+                        "translation": {
+                            "en": "your",
+                            "es": "tu",
+                            "hu": "a te"
+                        },
+                        "indexInSentence": 4,
+                        "index": 28,
+                        "wordId": 535086
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "Freundin",
+                        "translation": {
+                            "en": "girlfriend",
+                            "es": "amiga",
+                            "hu": "bar\u00e1tn\u0151d"
+                        },
+                        "indexInSentence": 5,
+                        "index": 29,
+                        "wordId": 504594
+                    },
+                    {
+                        "punct": "?"
+                    }
+                ],
+                "text": "Und wie hei\u00dft deine Freundin?",
+                "normalizedText": "und wie hei\u00dft deine freundin",
+                "index": 5,
+                "timestamp": [
+                    14.0,
+                    16.0
+                ]
+            }
+        ],
+        [
+            {
+                "tokens": [
+                    {
+                        "text": "Meine",
+                        "translation": {
+                            "en": "My",
+                            "it": "la mia",
+                            "hu": "a bar\u00e1tn\u0151m"
+                        },
+                        "indexInSentence": 1,
+                        "index": 30,
+                        "wordId": 501727
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "Freundin",
+                        "translation": {
+                            "en": "friend"
+                        },
+                        "indexInSentence": 2,
+                        "index": 31,
+                        "wordId": 504594
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "hei\u00dft",
+                        "translation": {
+                            "en": "is called"
+                        },
+                        "indexInSentence": 3,
+                        "index": 32,
+                        "wordId": 501756
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "Sabine",
+                        "translation": {
+                            "en": "Sabine",
+                            "es": "Sabine"
+                        },
+                        "indexInSentence": 4,
+                        "index": 33,
+                        "wordId": 950774
+                    },
+                    {
+                        "punct": "."
+                    }
+                ],
+                "text": "Meine Freundin hei\u00dft Sabine.",
+                "normalizedText": "meine freundin hei\u00dft sabine",
+                "index": 6,
+                "timestamp": [
+                    16.0,
+                    18.5
+                ]
+            }
+        ],
+        [
+            {
+                "tokens": [
+                    {
+                        "text": "Hallo",
+                        "translation": {
+                            "en": "Hello"
+                        },
+                        "indexInSentence": 1,
+                        "index": 34,
+                        "wordId": 535248
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "Maria",
+                        "translation": {
+                            "en": "Maria"
+                        },
+                        "indexInSentence": 2,
+                        "index": 35,
+                        "wordId": 587609
+                    },
+                    {
+                        "punct": "."
+                    }
+                ],
+                "text": "Hallo Maria.",
+                "normalizedText": "hallo maria",
+                "index": 7,
+                "timestamp": [
+                    18.5,
+                    20.0
+                ]
+            }
+        ],
+        [
+            {
+                "tokens": [
+                    {
+                        "text": "Hallo",
+                        "translation": {
+                            "en": "Hello"
+                        },
+                        "indexInSentence": 1,
+                        "index": 36,
+                        "wordId": 535248
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "Sabine",
+                        "translation": {
+                            "en": "Sabine"
+                        },
+                        "indexInSentence": 2,
+                        "index": 37,
+                        "wordId": 950774
+                    },
+                    {
+                        "punct": "."
+                    }
+                ],
+                "text": "Hallo Sabine.",
+                "normalizedText": "hallo sabine",
+                "index": 8,
+                "timestamp": [
+                    20.0,
+                    20.9
+                ]
+            }
+        ],
+        [
+            {
+                "tokens": [
+                    {
+                        "text": "Sch\u00f6n",
+                        "translation": {
+                            "en": "Nice"
+                        },
+                        "indexInSentence": 1,
+                        "index": 38,
+                        "wordId": 501784
+                    },
+                    {
+                        "punct": ","
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "euch",
+                        "translation": {
+                            "en": "you",
+                            "es": "a ustedes"
+                        },
+                        "indexInSentence": 2,
+                        "index": 39,
+                        "wordId": 506127
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "beide",
+                        "translation": {
+                            "en": "both",
+                            "hu": "mindkett\u0151t\u00f6ket"
+                        },
+                        "indexInSentence": 3,
+                        "index": 40,
+                        "wordId": 502048
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "zu",
+                        "translation": {
+                            "en": "to"
+                        },
+                        "indexInSentence": 4,
+                        "index": 41,
+                        "wordId": 501625
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "treffen",
+                        "translation": {
+                            "fa": "\u062f\u06cc\u062f\u0646",
+                            "en": "meet"
+                        },
+                        "indexInSentence": 5,
+                        "index": 42,
+                        "wordId": 509886
+                    },
+                    {
+                        "punct": "."
+                    }
+                ],
+                "text": "Sch\u00f6n, euch beide zu treffen.",
+                "normalizedText": "sch\u00f6n euch beide zu treffen",
+                "index": 9,
+                "timestamp": [
+                    21.1,
+                    23.9
+                ]
+            }
+        ]
+    ],
+    "isLocked": null,
+    "sharedByImageUrl": "https://static.lingq.com/media/resources/photo/1669846878_7a1f4acf.webp",
+    "sharedByIsFriend": true,
+    "promotedCourse": null,
+    "lastOpenTime": "2024-10-25T21:49:31.604714",
+    "printUrl": "/en/learn/de/workdesk/item/46002970/print/",
+    "canEdit": false,
+    "canEditSentence": false,
+    "bookmark": {
+        "wordIndex": 30,
+        "completedWordIndex": null,
+        "audioPosition": 0.0,
+        "client": "iOS",
+        "timestamp": "2022-01-17T01:43:27.705471",
+        "languageTimestamp": "2024-10-22T11:08:34.757566"
+    },
+    "nextLessonId": 35537,
+    "previousLessonId": null,
+    "previousLesson": null,
+    "nextLesson": {
+        "price": 0,
+        "collectionTitle": "Who is She?",
+        "isTaken": false,
+        "sharedById": 29651,
+        "status": "P",
+        "title": "2 - Ich suche meinen Bruder",
+        "image": "https://static.lingq.com/media/resources/contents/images/2021/10/01/1633047788_344a96af-orig.jpg",
+        "id": 35537
+    },
+    "translation": {
+        "method": "mixed",
+        "language": "en",
+        "sentences": [
+            "Hello, how can I help you?",
+            "Hello, my name is Maria.",
+            "Nice to meet you.",
+            "same here, Glad to meet you too.",
+            "And what's your friend's name?",
+            "My friend's name is Sabine.",
+            "Hello Maria.",
+            "Hello Sabine.",
+            "Nice to meet both of you."
+        ]
+    },
+    "videoUrl": null,
+    "cards": {
+        "151115267": {
+            "status": 0,
+            "writings": [
+                "treffen"
+            ],
+            "tags": [
+                "verb",
+                "pr\u00e4sens",
+                "wir",
+                "eintreffen"
+            ],
+            "importance": 3,
+            "extended_status": null,
+            "gTags": [
+                "Noun",
+                "Verb",
+                "eintreffen",
+                "pr\u00e4sens",
+                "verb",
+                "wir"
+            ],
+            "words": [
+                "treffen"
+            ],
+            "hints": [
+                {
+                    "flagged": false,
+                    "locale": "en",
+                    "term_id": 310797,
+                    "is_google_translate": false,
+                    "popularity": 6,
+                    "approved": false,
+                    "detected_locale": "en",
+                    "creator_id": 141111,
+                    "text": "meet, hit, strike, meet with",
+                    "id": 21713102,
+                    "word_id": 509886
+                }
+            ],
+            "term": "treffen",
+            "transliteration": {},
+            "srs_due_date": "2020-08-31T17:54:14.530290",
+            "notes": "meet\ntreffen, erf\u00fcllen, entsprechen\nhit\ntreffen, schlagen, hauen",
+            "fragment": "...m\u00fcssen Sie an gesch\u00e4ftlichen Treffen mit einer Fremdsprache teilnehmen.",
+            "pk": 151115267
+        },
+        "306610262": {
+            "status": 0,
+            "writings": [
+                "meinerseits"
+            ],
+            "importance": 0,
+            "extended_status": null,
+            "gTags": [
+                "Adjective"
+            ],
+            "words": [
+                "meinerseits"
+            ],
+            "hints": [
+                {
+                    "flagged": false,
+                    "locale": "en",
+                    "term_id": 198316,
+                    "is_google_translate": false,
+                    "popularity": 3595,
+                    "approved": true,
+                    "detected_locale": null,
+                    "creator_id": null,
+                    "text": "on my part, for my part",
+                    "id": 181715,
+                    "word_id": 701878
+                }
+            ],
+            "term": "meinerseits",
+            "transliteration": {},
+            "srs_due_date": "2022-01-18T01:43:26.418400",
+            "notes": "",
+            "fragment": "Ganz meinerseits ich freue mich auch",
+            "pk": 306610262
+        }
+    },
+    "cardsCount": 2,
+    "words": {
+        "502021": {
+            "importance": 3,
+            "text": "kann",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "can; may",
+                    "is_google_translate": false,
+                    "popularity": 3845,
+                    "flagged": false,
+                    "id": 162355
+                },
+                {
+                    "locale": "en",
+                    "text": "\"can",
+                    "is_google_translate": true,
+                    "popularity": 70,
+                    "flagged": false,
+                    "id": 33122855
+                },
+                {
+                    "locale": "en",
+                    "text": "can, may, know, be able to",
+                    "is_google_translate": false,
+                    "popularity": 34,
+                    "flagged": false,
+                    "id": 22070051
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Verb",
+                "ich",
+                "pr\u00e4sens",
+                "fortk\u00f6nnen",
+                "k\u00f6nnen",
+                "Noun"
+            ]
+        },
+        "501639": {
+            "importance": 3,
+            "text": "auch",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "[adv] also, too, as well",
+                    "is_google_translate": false,
+                    "popularity": 844672,
+                    "flagged": true,
+                    "id": 12427324
+                },
+                {
+                    "locale": "en",
+                    "text": "also",
+                    "is_google_translate": true,
+                    "popularity": 868,
+                    "flagged": true,
+                    "id": 11087267
+                },
+                {
+                    "locale": "en",
+                    "text": "as well as",
+                    "is_google_translate": false,
+                    "popularity": 130,
+                    "flagged": true,
+                    "id": 14222945
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Adverb",
+                "Noun"
+            ]
+        },
+        "517256": {
+            "importance": 3,
+            "text": "helfen",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "help",
+                    "is_google_translate": true,
+                    "popularity": 459223,
+                    "flagged": false,
+                    "id": 142525
+                },
+                {
+                    "locale": "en",
+                    "text": "to help",
+                    "is_google_translate": false,
+                    "popularity": 371,
+                    "flagged": true,
+                    "id": 142529
+                },
+                {
+                    "locale": "en",
+                    "text": "(+dat.) to help",
+                    "is_google_translate": false,
+                    "popularity": 81,
+                    "flagged": false,
+                    "id": 17265327
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Verb",
+                "pr\u00e4sens",
+                "wir",
+                "abhelfen",
+                "aushelfen",
+                "mithelfen",
+                "nachhelfen",
+                "weiterhelfen",
+                "Adjective",
+                "Noun"
+            ]
+        },
+        "506127": {
+            "importance": 3,
+            "text": "euch",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "you guys, you all",
+                    "is_google_translate": false,
+                    "popularity": 11287,
+                    "flagged": false,
+                    "id": 15123238
+                },
+                {
+                    "locale": "en",
+                    "text": "you",
+                    "is_google_translate": false,
+                    "popularity": 6453,
+                    "flagged": false,
+                    "id": 866028
+                },
+                {
+                    "locale": "en",
+                    "text": "YOU",
+                    "is_google_translate": true,
+                    "popularity": 186,
+                    "flagged": false,
+                    "id": 16027360
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Pronoun",
+                "Noun"
+            ]
+        },
+        "501650": {
+            "importance": 3,
+            "text": "ist",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "v: he/she/it is",
+                    "is_google_translate": false,
+                    "popularity": 5008,
+                    "flagged": false,
+                    "id": 26753858
+                },
+                {
+                    "locale": "en",
+                    "text": "is",
+                    "is_google_translate": true,
+                    "popularity": 3717,
+                    "flagged": false,
+                    "id": 6554893
+                },
+                {
+                    "locale": "en",
+                    "text": "[v] it is (sein)",
+                    "is_google_translate": false,
+                    "popularity": 201,
+                    "flagged": false,
+                    "id": 16861032
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Verb",
+                "pr\u00e4sens",
+                "er/sie/es",
+                "sein",
+                "Adjective",
+                "Noun"
+            ]
+        },
+        "501652": {
+            "importance": 3,
+            "text": "und",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "And",
+                    "is_google_translate": true,
+                    "popularity": 397497,
+                    "flagged": true,
+                    "id": 5448765
+                },
+                {
+                    "locale": "en",
+                    "text": "and",
+                    "is_google_translate": false,
+                    "popularity": 1192,
+                    "flagged": false,
+                    "id": 121070594
+                },
+                {
+                    "locale": "en",
+                    "text": "and; plus",
+                    "is_google_translate": false,
+                    "popularity": 213,
+                    "flagged": false,
+                    "id": 23914213
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Adverb",
+                "Noun"
+            ]
+        },
+        "501784": {
+            "importance": 3,
+            "text": "sch\u00f6n",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "nice, pretty, good",
+                    "is_google_translate": false,
+                    "popularity": 4623,
+                    "flagged": true,
+                    "id": 1343415
+                },
+                {
+                    "locale": "en",
+                    "text": "nice",
+                    "is_google_translate": false,
+                    "popularity": 214,
+                    "flagged": true,
+                    "id": 246376
+                },
+                {
+                    "locale": "en",
+                    "text": "\"beautiful\"",
+                    "is_google_translate": true,
+                    "popularity": 176,
+                    "flagged": false,
+                    "id": 32930655
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Adjective",
+                "Adverb"
+            ]
+        },
+        "501659": {
+            "importance": 3,
+            "text": "wie",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "how | as",
+                    "is_google_translate": false,
+                    "popularity": 2872,
+                    "flagged": false,
+                    "id": 98270178
+                },
+                {
+                    "locale": "en",
+                    "text": "As, such as, like",
+                    "is_google_translate": false,
+                    "popularity": 481,
+                    "flagged": false,
+                    "id": 42873720
+                },
+                {
+                    "locale": "en",
+                    "text": "how",
+                    "is_google_translate": false,
+                    "popularity": 337,
+                    "flagged": false,
+                    "id": 136103655
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Adverb",
+                "Preposition"
+            ]
+        },
+        "534429": {
+            "importance": 2,
+            "text": "freue",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "glad",
+                    "is_google_translate": false,
+                    "popularity": 1421,
+                    "flagged": false,
+                    "id": 125483
+                },
+                {
+                    "locale": "en",
+                    "text": "(i) am happy, delighted, looking forward to",
+                    "is_google_translate": false,
+                    "popularity": 344,
+                    "flagged": false,
+                    "id": 27764200
+                },
+                {
+                    "locale": "en",
+                    "text": "am happy",
+                    "is_google_translate": true,
+                    "popularity": 229,
+                    "flagged": false,
+                    "id": 91105107
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Verb",
+                "ich",
+                "pr\u00e4sens",
+                "freuen",
+                "Noun"
+            ]
+        },
+        "502048": {
+            "importance": 3,
+            "text": "beide",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "both, one and the other, the two of them",
+                    "is_google_translate": false,
+                    "popularity": 1455,
+                    "flagged": false,
+                    "id": 15112845
+                },
+                {
+                    "locale": "en",
+                    "text": "both, either, both of them",
+                    "is_google_translate": false,
+                    "popularity": 236,
+                    "flagged": false,
+                    "id": 39895794
+                },
+                {
+                    "locale": "en",
+                    "text": "both",
+                    "is_google_translate": true,
+                    "popularity": 215,
+                    "flagged": false,
+                    "id": 39214
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Adjective",
+                "Pronoun"
+            ]
+        },
+        "506149": {
+            "importance": 3,
+            "text": "dich",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "you",
+                    "is_google_translate": true,
+                    "popularity": 11768,
+                    "flagged": false,
+                    "id": 85529
+                },
+                {
+                    "locale": "en",
+                    "text": "You [as the Direct object]",
+                    "is_google_translate": false,
+                    "popularity": 1384,
+                    "flagged": false,
+                    "id": 32299836
+                },
+                {
+                    "locale": "en",
+                    "text": "you (dir obj)",
+                    "is_google_translate": false,
+                    "popularity": 246,
+                    "flagged": false,
+                    "id": 29057858
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Pronoun",
+                "Noun"
+            ]
+        },
+        "535086": {
+            "importance": 3,
+            "text": "deine",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "your",
+                    "is_google_translate": false,
+                    "popularity": 5360,
+                    "flagged": false,
+                    "id": 78698
+                },
+                {
+                    "locale": "en",
+                    "text": "your (informal)",
+                    "is_google_translate": false,
+                    "popularity": 382,
+                    "flagged": false,
+                    "id": 18520605
+                },
+                {
+                    "locale": "en",
+                    "text": "your (nom/acc fem or pl)",
+                    "is_google_translate": false,
+                    "popularity": 84,
+                    "flagged": false,
+                    "id": 47942700
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Pronoun",
+                "Noun"
+            ]
+        },
+        "501680": {
+            "importance": 3,
+            "text": "mich",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "me (ich - Accusative)",
+                    "is_google_translate": false,
+                    "popularity": 1889,
+                    "flagged": false,
+                    "id": 25341141
+                },
+                {
+                    "locale": "en",
+                    "text": "me (ich acc.)",
+                    "is_google_translate": false,
+                    "popularity": 114,
+                    "flagged": true,
+                    "id": 97537056
+                },
+                {
+                    "locale": "en",
+                    "text": "me",
+                    "is_google_translate": false,
+                    "popularity": 106,
+                    "flagged": false,
+                    "id": 124397072
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Pronoun",
+                "Noun"
+            ]
+        },
+        "701878": {
+            "importance": 0,
+            "text": "meinerseits",
+            "cardId": 306610262,
+            "status": "card",
+            "tags": [
+                "Adjective"
+            ]
+        },
+        "534973": {
+            "importance": 3,
+            "text": "name",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "name (der)",
+                    "is_google_translate": false,
+                    "popularity": 1871,
+                    "flagged": false,
+                    "id": 30775603
+                },
+                {
+                    "locale": "en",
+                    "text": "name",
+                    "is_google_translate": false,
+                    "popularity": 187,
+                    "flagged": true,
+                    "id": 7397249
+                },
+                {
+                    "locale": "en",
+                    "text": "(der) name",
+                    "is_google_translate": false,
+                    "popularity": 59,
+                    "flagged": true,
+                    "id": 5312914
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Noun"
+            ]
+        },
+        "509886": {
+            "importance": 3,
+            "text": "treffen",
+            "cardId": 151115267,
+            "status": "card",
+            "tags": [
+                "Verb",
+                "pr\u00e4sens",
+                "wir",
+                "eintreffen",
+                "Noun"
+            ]
+        },
+        "535248": {
+            "importance": 3,
+            "text": "hallo",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "Hi",
+                    "is_google_translate": true,
+                    "popularity": 10153,
+                    "flagged": false,
+                    "id": 7823339
+                },
+                {
+                    "locale": "en",
+                    "text": "hello",
+                    "is_google_translate": false,
+                    "popularity": 1750,
+                    "flagged": true,
+                    "id": 6629157
+                },
+                {
+                    "locale": "en",
+                    "text": "Hello",
+                    "is_google_translate": true,
+                    "popularity": 281,
+                    "flagged": false,
+                    "id": 91806047
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Adverb",
+                "Noun"
+            ]
+        },
+        "587609": {
+            "importance": 2,
+            "text": "maria",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "n. female first name (form of Mary)",
+                    "is_google_translate": false,
+                    "popularity": 949,
+                    "flagged": false,
+                    "id": 7975295
+                },
+                {
+                    "locale": "en",
+                    "text": "Mary",
+                    "is_google_translate": true,
+                    "popularity": 170,
+                    "flagged": false,
+                    "id": 7702261
+                },
+                {
+                    "locale": "en",
+                    "text": "Maria",
+                    "is_google_translate": true,
+                    "popularity": 65,
+                    "flagged": false,
+                    "id": 2318375
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Noun"
+            ]
+        },
+        "501727": {
+            "importance": 3,
+            "text": "meine",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "my",
+                    "is_google_translate": false,
+                    "popularity": 262284,
+                    "flagged": false,
+                    "id": 10568140
+                },
+                {
+                    "locale": "en",
+                    "text": "my\u2026",
+                    "is_google_translate": true,
+                    "popularity": 790,
+                    "flagged": false,
+                    "id": 15569608
+                },
+                {
+                    "locale": "en",
+                    "text": "My",
+                    "is_google_translate": true,
+                    "popularity": 135,
+                    "flagged": true,
+                    "id": 6287132
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Verb",
+                "ich",
+                "pr\u00e4sens",
+                "meinen",
+                "Pronoun",
+                "Noun"
+            ]
+        },
+        "504672": {
+            "importance": 3,
+            "text": "mein",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "my, mine.  (m)",
+                    "is_google_translate": false,
+                    "popularity": 550,
+                    "flagged": false,
+                    "id": 98136145
+                },
+                {
+                    "locale": "en",
+                    "text": "my",
+                    "is_google_translate": true,
+                    "popularity": 182,
+                    "flagged": false,
+                    "id": 15796786
+                },
+                {
+                    "locale": "en",
+                    "text": "my, mine (m)",
+                    "is_google_translate": false,
+                    "popularity": 53,
+                    "flagged": false,
+                    "id": 23178132
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Pronoun",
+                "Noun"
+            ]
+        },
+        "501730": {
+            "importance": 3,
+            "text": "ganz",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "all",
+                    "is_google_translate": false,
+                    "popularity": 6506,
+                    "flagged": false,
+                    "id": 2071050
+                },
+                {
+                    "locale": "en",
+                    "text": "quite, very, all",
+                    "is_google_translate": false,
+                    "popularity": 2406,
+                    "flagged": false,
+                    "id": 138616281
+                },
+                {
+                    "locale": "en",
+                    "text": "completely",
+                    "is_google_translate": false,
+                    "popularity": 690,
+                    "flagged": false,
+                    "id": 128041
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Adjective",
+                "Adverb"
+            ]
+        },
+        "504594": {
+            "importance": 2,
+            "text": "freundin",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "girlfriend",
+                    "is_google_translate": false,
+                    "popularity": 220712,
+                    "flagged": false,
+                    "id": 125499
+                },
+                {
+                    "locale": "en",
+                    "text": "lady friend, female friend",
+                    "is_google_translate": false,
+                    "popularity": 1681,
+                    "flagged": true,
+                    "id": 15087329
+                },
+                {
+                    "locale": "en",
+                    "text": "friend",
+                    "is_google_translate": true,
+                    "popularity": 181,
+                    "flagged": true,
+                    "id": 2527540
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Noun"
+            ]
+        },
+        "950774": {
+            "importance": 1,
+            "text": "sabine",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "name",
+                    "is_google_translate": false,
+                    "popularity": 277,
+                    "flagged": true,
+                    "id": 2146119
+                },
+                {
+                    "locale": "en",
+                    "text": "Sabine",
+                    "is_google_translate": false,
+                    "popularity": 88,
+                    "flagged": false,
+                    "id": 3811095
+                },
+                {
+                    "locale": "en",
+                    "text": "Sabine (name)",
+                    "is_google_translate": false,
+                    "popularity": 16,
+                    "flagged": false,
+                    "id": 110514431
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Noun"
+            ]
+        },
+        "501625": {
+            "importance": 3,
+            "text": "zu",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "to, at, for, too",
+                    "is_google_translate": false,
+                    "popularity": 829,
+                    "flagged": false,
+                    "id": 99416162
+                },
+                {
+                    "locale": "en",
+                    "text": "meet | to",
+                    "is_google_translate": true,
+                    "popularity": 465,
+                    "flagged": false,
+                    "id": 15573663
+                },
+                {
+                    "locale": "en",
+                    "text": "to",
+                    "is_google_translate": true,
+                    "popularity": 424,
+                    "flagged": false,
+                    "id": 1125856
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Adverb",
+                "Preposition"
+            ]
+        },
+        "505978": {
+            "importance": 3,
+            "text": "dir",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "to you; yourself",
+                    "is_google_translate": false,
+                    "popularity": 7256,
+                    "flagged": true,
+                    "id": 7274949
+                },
+                {
+                    "locale": "en",
+                    "text": "direct",
+                    "is_google_translate": false,
+                    "popularity": 360,
+                    "flagged": true,
+                    "id": 87162
+                },
+                {
+                    "locale": "en",
+                    "text": "you",
+                    "is_google_translate": false,
+                    "popularity": 290,
+                    "flagged": true,
+                    "id": 7407843
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Pronoun",
+                "Noun"
+            ]
+        },
+        "501756": {
+            "importance": 3,
+            "text": "hei\u00dft",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "v: he/she/it/you is called",
+                    "is_google_translate": false,
+                    "popularity": 1990,
+                    "flagged": false,
+                    "id": 26876238
+                },
+                {
+                    "locale": "en",
+                    "text": "asking for name",
+                    "is_google_translate": false,
+                    "popularity": 340,
+                    "flagged": false,
+                    "id": 15086786
+                },
+                {
+                    "locale": "en",
+                    "text": "means",
+                    "is_google_translate": false,
+                    "popularity": 180,
+                    "flagged": false,
+                    "id": 142381
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Verb",
+                "pr\u00e4sens",
+                "du",
+                "hei\u00dfen",
+                "heissen",
+                "Adjective",
+                "Noun"
+            ]
+        },
+        "501630": {
+            "importance": 3,
+            "text": "ich",
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "I (pron)",
+                    "is_google_translate": false,
+                    "popularity": 1238,
+                    "flagged": false,
+                    "id": 99487613
+                },
+                {
+                    "locale": "en",
+                    "text": "I",
+                    "is_google_translate": true,
+                    "popularity": 343,
+                    "flagged": true,
+                    "id": 7403857
+                },
+                {
+                    "locale": "en",
+                    "text": "I, self, me; ego",
+                    "is_google_translate": false,
+                    "popularity": 99,
+                    "flagged": false,
+                    "id": 29913536
+                }
+            ],
+            "status": "known",
+            "tags": [
+                "Verb",
+                "ich",
+                "indikativ",
+                "pr\u00e4teritum",
+                "eichen",
+                "Pronoun",
+                "Noun"
+            ]
+        }
+    }
+}

@@ -1,0 +1,1692 @@
+{
+    "id": 34955431,
+    "contentId": 34955431,
+    "collectionId": 537808,
+    "collectionTitle": "Quick Imports",
+    "url": "https://www.lingq.com/api/v3/ja/lessons/34955431/",
+    "originalUrl": null,
+    "imageUrl": "https://static.lingq.com/media/resources/collections/images/2022/01/01/8afc59be81_0zfRXCa.png",
+    "originalImageUrl": "https://static.lingq.com/media/resources/collections/images/2022/01/01/8afc59be81_0zfRXCa-orig.png",
+    "providerImageUrl": "https://static.lingq.com/media/resources/photo/1596440470.png",
+    "title": "blablab",
+    "description": "",
+    "duration": 192,
+    "audioUrl": "https://s3.amazonaws.com/media.lingq.com/resources/contents/audionorm/tmp.e0a0342cd953.mp3",
+    "audioPending": false,
+    "giveRoseUrl": "/api/v3/ja/lessons/34955431/give_rose/",
+    "wordCount": 29,
+    "uniqueWordCount": 26,
+    "pubDate": "2024-10-23",
+    "sharedDate": null,
+    "sharedById": 1824368,
+    "sharedByName": "rafarafa",
+    "sharedByRole": "librarian",
+    "external_type": null,
+    "type": "lesson",
+    "status": "D",
+    "pos": 1,
+    "price": 0,
+    "opened": true,
+    "completed": false,
+    "percentCompleted": 0.0,
+    "newWordsCount": 2,
+    "difficulty": 7.69,
+    "providerName": null,
+    "providerDescription": null,
+    "lastRoseReceived": null,
+    "lessonRating": 0.0,
+    "lessonVotes": 0,
+    "audioRating": 0.0,
+    "audioVotes": 0,
+    "rosesCount": 0,
+    "isFavorite": false,
+    "isOverLimit": null,
+    "level": null,
+    "tags": [],
+    "providerUrl": null,
+    "readTimes": 0.0,
+    "listenTimes": 0.0,
+    "roseGiven": false,
+    "openDate": null,
+    "viewsCount": 1,
+    "isProtected": 0,
+    "scheduledForDeletion": false,
+    "metadata": {
+        "splitting_method": "reformat+chatgpt",
+        "import_method": "Audio"
+    },
+    "classicUrl": null,
+    "collection": {
+        "id": 537808,
+        "type": "collection",
+        "title": "Quick Imports",
+        "status": "private",
+        "source": null,
+        "isTaken": null,
+        "imageUrl": "https://static.lingq.com/media/resources/collections/images/2022/01/01/8afc59be81_0zfRXCa.png",
+        "audioPending": false,
+        "originalImageUrl": "https://static.lingq.com/media/resources/collections/images/2022/01/01/8afc59be81_0zfRXCa-orig.png",
+        "providerImageUrl": null,
+        "sharedByImageUrl": "https://static.lingq.com/media/resources/photo/1596440470.png",
+        "providerId": null,
+        "providerName": null,
+        "sharedById": 1824368,
+        "sharedByName": "rafarafa",
+        "sharedByRole": "librarian",
+        "description": "",
+        "isFeatured": null,
+        "isLocked": null,
+        "lessonsCount": 5,
+        "newWordsCount": 5,
+        "difficulty": 0.89,
+        "rosesCount": 0,
+        "viewsCount": 0,
+        "duration": 768,
+        "progress": null,
+        "metadata": null,
+        "folders": [],
+        "accent": null,
+        "level": "No Knowledge",
+        "price": 0,
+        "date": "2019-12-07",
+        "tags": [],
+        "url": "/api/v3/ja/collections/537808/"
+    },
+    "folders": [],
+    "isLegacy": false,
+    "simplifiedTo": null,
+    "simplifiedBy": null,
+    "tokenizedText": [
+        [
+            {
+                "tokens": [
+                    {
+                        "indexInSentence": 1,
+                        "transliteration": {
+                            "hiragana": "\u307f\u306a\u3055\u3093",
+                            "romaji": "minasan"
+                        },
+                        "index": 1,
+                        "text": "\u307f\u306a\u3055\u3093",
+                        "wordId": 568012,
+                        "translation": {
+                            "en": "everyone"
+                        }
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "punct": "\u3001"
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "indexInSentence": 2,
+                        "transliteration": {
+                            "hiragana": "\u3053\u3093\u306b\u3061\u306f",
+                            "romaji": "konnichiwa"
+                        },
+                        "index": 2,
+                        "text": "\u3053\u3093\u306b\u3061\u306f",
+                        "wordId": 568011,
+                        "translation": {
+                            "en": "hello"
+                        }
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "punct": "\u3002"
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "\u307f\u306a\u3055\u3093",
+                        "indexInSentence": 3,
+                        "transliteration": {
+                            "hiragana": "",
+                            "romaji": "minasan"
+                        },
+                        "index": 3,
+                        "wordId": 568012
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "punct": "\u3001"
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "indexInSentence": 4,
+                        "transliteration": {
+                            "hiragana": "\u3068\u3063\u3066\u3082",
+                            "romaji": "tottemo"
+                        },
+                        "index": 4,
+                        "text": "\u3068\u3063\u3066\u3082",
+                        "wordId": 882824,
+                        "translation": {
+                            "en": "very"
+                        }
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "indexInSentence": 5,
+                        "transliteration": {
+                            "hiragana": "\u30b8\u30e7\u30fc\u30bb\u30c3\u30c6\u30a3",
+                            "romaji": "joosettei"
+                        },
+                        "index": 5,
+                        "text": "\u30b8\u30e7\u30fc\u30bb\u30c3\u30c6\u30a3",
+                        "wordId": 139678432,
+                        "translation": {
+                            "en": "Josetti"
+                        }
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "\u306a",
+                        "indexInSentence": 6,
+                        "transliteration": {
+                            "hiragana": "",
+                            "romaji": "na"
+                        },
+                        "index": 6,
+                        "wordId": 687049
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "\u3093",
+                        "indexInSentence": 7,
+                        "transliteration": {
+                            "hiragana": "",
+                            "romaji": "n"
+                        },
+                        "index": 7,
+                        "wordId": 690879
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "\u3067\u3059",
+                        "indexInSentence": 8,
+                        "transliteration": {
+                            "hiragana": "",
+                            "romaji": "desu"
+                        },
+                        "index": 8,
+                        "wordId": 664901
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "\u304b",
+                        "indexInSentence": 9,
+                        "transliteration": {
+                            "hiragana": "",
+                            "romaji": "ka"
+                        },
+                        "index": 9,
+                        "wordId": 569383
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "punct": "\uff1f"
+                    }
+                ],
+                "text": "\u307f\u306a\u3055\u3093 \u3001 \u3053\u3093\u306b\u3061\u306f \u3002 \u307f\u306a\u3055\u3093 \u3001 \u3068\u3063\u3066\u3082 \u30b8\u30e7\u30fc\u30bb\u30c3\u30c6\u30a3 \u306a \u3093 \u3067\u3059 \u304b \uff1f",
+                "normalizedText": "\u307f\u306a\u3055\u3093 \u3053\u3093\u306b\u3061\u306f \u307f\u306a\u3055\u3093 \u3068\u3063\u3066\u3082 \u30b8\u30e7\u30fc\u30bb\u30c3\u30c6\u30a3 \u306a \u3093 \u3067\u3059 \u304b",
+                "index": 1,
+                "timestamp": [
+                    0.0,
+                    6.0
+                ]
+            },
+            {
+                "tokens": [
+                    {
+                        "indexInSentence": 1,
+                        "transliteration": {
+                            "hiragana": "\u3044\u307e",
+                            "furigana": {
+                                "\u4eca": "\u3044\u307e"
+                            },
+                            "romaji": "ima"
+                        },
+                        "index": 10,
+                        "text": "\u4eca",
+                        "wordId": 687043,
+                        "translation": {
+                            "en": "now"
+                        }
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "indexInSentence": 2,
+                        "transliteration": {
+                            "hiragana": "\u304b\u3044",
+                            "furigana": {
+                                "\u56de": "\u304b\u3044"
+                            },
+                            "romaji": "kai"
+                        },
+                        "index": 11,
+                        "text": "\u56de",
+                        "wordId": 661021,
+                        "translation": {
+                            "en": "time"
+                        }
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "indexInSentence": 3,
+                        "transliteration": {
+                            "hiragana": "\u306e",
+                            "romaji": "no"
+                        },
+                        "index": 12,
+                        "text": "\u306e",
+                        "wordId": 690763,
+                        "translation": {
+                            "en": "possessive particle"
+                        }
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "indexInSentence": 4,
+                        "transliteration": {
+                            "hiragana": "\u30a4\u30fc\u30b8\u30fc",
+                            "romaji": "iijii"
+                        },
+                        "index": 13,
+                        "text": "\u30a4\u30fc\u30b8\u30fc",
+                        "wordId": 934218,
+                        "translation": {
+                            "en": "easy"
+                        }
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "indexInSentence": 5,
+                        "transliteration": {
+                            "hiragana": "\u30c0\u30d1\u30cb\u30fc\u30ba",
+                            "romaji": "dapaniizu"
+                        },
+                        "index": 14,
+                        "text": "\u30c0\u30d1\u30cb\u30fc\u30ba",
+                        "wordId": 150848828,
+                        "translation": {
+                            "en": "Japanese"
+                        }
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "indexInSentence": 6,
+                        "transliteration": {
+                            "hiragana": "\u306f",
+                            "romaji": "wa"
+                        },
+                        "index": 15,
+                        "text": "\u306f",
+                        "wordId": 689724,
+                        "translation": {
+                            "en": "topic marker"
+                        }
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "punct": "\u3001"
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "indexInSentence": 7,
+                        "transliteration": {
+                            "hiragana": "\u306a\u3064",
+                            "furigana": {
+                                "\u590f": "\u306a\u3064"
+                            },
+                            "romaji": "natsu"
+                        },
+                        "index": 16,
+                        "text": "\u590f",
+                        "wordId": 687057,
+                        "translation": {
+                            "en": "summer"
+                        }
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "indexInSentence": 8,
+                        "transliteration": {
+                            "hiragana": "\u306e",
+                            "romaji": "no"
+                        },
+                        "index": 17,
+                        "text": "\u306e",
+                        "wordId": 690763,
+                        "translation": {
+                            "en": "possessive particle"
+                        }
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "\u4eba",
+                        "indexInSentence": 9,
+                        "transliteration": {
+                            "hiragana": "",
+                            "romaji": "jin"
+                        },
+                        "index": 18,
+                        "wordId": 687051
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "\u305f\u3061",
+                        "indexInSentence": 10,
+                        "transliteration": {
+                            "hiragana": "",
+                            "romaji": "tachi"
+                        },
+                        "index": 19,
+                        "wordId": 717697
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "indexInSentence": 11,
+                        "transliteration": {
+                            "hiragana": "\u306b",
+                            "romaji": "ni"
+                        },
+                        "index": 20,
+                        "text": "\u306b",
+                        "wordId": 690239,
+                        "translation": {
+                            "en": "locative particle"
+                        }
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "indexInSentence": 12,
+                        "transliteration": {
+                            "hiragana": "\u30b8\u30e7\u30fc\u30bb\u30c3\u30c6\u30a3",
+                            "romaji": "joosettei"
+                        },
+                        "index": 21,
+                        "text": "\u30b8\u30e7\u30fc\u30bb\u30c3\u30c6\u30a3",
+                        "wordId": 139678432,
+                        "translation": {
+                            "en": "Josetti"
+                        }
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "indexInSentence": 13,
+                        "transliteration": {
+                            "hiragana": "\u3063\u3066",
+                            "romaji": "tte"
+                        },
+                        "index": 22,
+                        "text": "\u3063\u3066",
+                        "wordId": 666038,
+                        "translation": {
+                            "en": "quotation particle"
+                        }
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "punct": "\u3001"
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "\u304a",
+                        "indexInSentence": 14,
+                        "transliteration": {
+                            "hiragana": "",
+                            "romaji": "o"
+                        },
+                        "index": 23,
+                        "wordId": 694302
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "\u8a71",
+                        "indexInSentence": 15,
+                        "transliteration": {
+                            "hiragana": "",
+                            "romaji": "hanashi"
+                        },
+                        "index": 24,
+                        "wordId": 663852
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "indexInSentence": 16,
+                        "transliteration": {
+                            "hiragana": "\u3092",
+                            "romaji": "o"
+                        },
+                        "index": 25,
+                        "text": "\u3092",
+                        "wordId": 690159,
+                        "translation": {
+                            "en": "object marker"
+                        }
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "\u805e\u3044\u3066",
+                        "indexInSentence": 17,
+                        "transliteration": {
+                            "hiragana": "",
+                            "romaji": "kiite"
+                        },
+                        "index": 26,
+                        "wordId": 838778
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "\u307f\u305f\u3044",
+                        "indexInSentence": 18,
+                        "transliteration": {
+                            "hiragana": "",
+                            "romaji": "mitai"
+                        },
+                        "index": 27,
+                        "wordId": 696248
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "\u3068",
+                        "indexInSentence": 19,
+                        "transliteration": {
+                            "hiragana": "",
+                            "romaji": "to"
+                        },
+                        "index": 28,
+                        "wordId": 673248
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "text": "\u601d\u3044\u307e\u3059",
+                        "indexInSentence": 20,
+                        "transliteration": {
+                            "hiragana": "",
+                            "romaji": "omoimasu"
+                        },
+                        "index": 29,
+                        "wordId": 807637
+                    },
+                    {
+                        "whitespace": " "
+                    },
+                    {
+                        "punct": "\u3002"
+                    }
+                ],
+                "text": "\u4eca \u56de \u306e \u30a4\u30fc\u30b8\u30fc \u30c0\u30d1\u30cb\u30fc\u30ba \u306f \u3001 \u590f \u306e \u4eba \u305f\u3061 \u306b \u30b8\u30e7\u30fc\u30bb\u30c3\u30c6\u30a3 \u3063\u3066 \u3001 \u304a \u8a71 \u3092 \u805e\u3044\u3066 \u307f\u305f\u3044 \u3068 \u601d\u3044\u307e\u3059 \u3002",
+                "normalizedText": "\u4eca \u56de \u306e \u30a4\u30fc\u30b8\u30fc \u30c0\u30d1\u30cb\u30fc\u30ba \u306f \u590f \u306e \u4eba \u305f\u3061 \u306b \u30b8\u30e7\u30fc\u30bb\u30c3\u30c6\u30a3 \u3063\u3066 \u304a \u8a71 \u3092 \u805e\u3044\u3066 \u307f\u305f\u3044 \u3068 \u601d\u3044\u307e\u3059",
+                "index": 2,
+                "timestamp": [
+                    6.0,
+                    13.0
+                ]
+            }
+        ]
+    ],
+    "isLocked": null,
+    "sharedByImageUrl": "https://static.lingq.com/media/resources/photo/1596440470.png",
+    "sharedByIsFriend": true,
+    "promotedCourse": null,
+    "lastOpenTime": "2024-10-25T21:49:29.254435",
+    "printUrl": "/en/learn/ja/workdesk/item/103323601/print/",
+    "canEdit": true,
+    "canEditSentence": true,
+    "bookmark": {},
+    "nextLessonId": 34754329,
+    "previousLessonId": null,
+    "previousLesson": null,
+    "nextLesson": {
+        "price": 0,
+        "collectionTitle": "Quick Imports",
+        "isTaken": true,
+        "sharedById": 1824368,
+        "status": "D",
+        "title": "How to use ChatGPT to learn a language: tips and prompts - YouTube",
+        "image": "https://static.lingq.com/media/resources/contents/images/2024/10/09/maxresdefault_e9427f65-orig.webp",
+        "id": 34754329
+    },
+    "translation": {
+        "method": "chatgpt",
+        "language": "en",
+        "sentences": [
+            "Hello everyone. Are you all feeling very Josetti?",
+            "This time on Easy Japanese, I would like to hear about Josetti from the summer people."
+        ]
+    },
+    "videoUrl": null,
+    "cards": {
+        "240608100": {
+            "status": 3,
+            "writings": [
+                "\u307f\u306a\u3055\u3093"
+            ],
+            "tags": [
+                "\u540d\u8a5e"
+            ],
+            "importance": 3,
+            "readings": {},
+            "extended_status": 3,
+            "gTags": [],
+            "words": [
+                "\u307f\u306a\u3055\u3093"
+            ],
+            "hints": [
+                {
+                    "flagged": false,
+                    "locale": "en",
+                    "term_id": 5404,
+                    "is_google_translate": false,
+                    "popularity": 505,
+                    "approved": false,
+                    "detected_locale": "en",
+                    "creator_id": null,
+                    "text": "everyone",
+                    "id": 4907,
+                    "word_id": 568012
+                }
+            ],
+            "term": "\u307f\u306a\u3055\u3093",
+            "transliteration": {
+                "romaji": "minasan"
+            },
+            "srs_due_date": "2034-11-19T12:56:33.662006",
+            "notes": "\u307f\u306a\u3055\u3093 2\u3010\u7686\u3055\u3093\u3011\n\u4e00\u2008\uff08\u540d\uff09\n\u2192\u7686\u69d8\uff08\u307f\u306a\u3055\u307e\uff091\u306b\u540c\u3058\u3002\u300c\u2015\u306b\u304a\u77e5\u3089\u305b\u3057\u307e\u3059\u300d\n\u4e8c\u2008\uff08\u4ee3\uff09\n\u2192\u7686\u69d82\u306b\u540c\u3058\u3002\u300c\u2015\uff0c\u304a\u65e9\u3046\u3054\u3056\u3044\u307e\u3059\u300d\u3014\u300c\u307f\u306a\u3055\u307e\u300d\u3088\u308a\u3084\u3084\u4e01\u5be7\u5ea6\u304c\u4f4e\u3044\u3015",
+            "fragment": "\u307f\u306a\u3055\u3093\u3001 \u3053\u3093\u306b\u3061\u306f\uff01",
+            "pk": 240608100
+        },
+        "240384934": {
+            "status": 3,
+            "writings": [
+                "\u8a71"
+            ],
+            "tags": [
+                "\u540d\u8a5e"
+            ],
+            "importance": 3,
+            "readings": {
+                "hiragana": [
+                    "\u306f\u306a\u3057",
+                    "\u306f\u3059 \u3044\u3051",
+                    "\u308f"
+                ],
+                "romaji": [
+                    "hanashi",
+                    "hasuike",
+                    "wa"
+                ]
+            },
+            "extended_status": 3,
+            "gTags": [],
+            "words": [
+                "\u8a71"
+            ],
+            "hints": [
+                {
+                    "flagged": false,
+                    "locale": "en",
+                    "term_id": 425132,
+                    "is_google_translate": false,
+                    "popularity": 104,
+                    "approved": true,
+                    "detected_locale": "en",
+                    "creator_id": 1136426,
+                    "text": "talk, speech; story; conversation",
+                    "id": 26590112,
+                    "word_id": 663852
+                }
+            ],
+            "term": "\u8a71",
+            "transliteration": {
+                "hiragana": "\u306f\u306a\u3057",
+                "furigana": {
+                    "\u8a71": "\u306f\u306a\u3057"
+                },
+                "romaji": "hanashi"
+            },
+            "srs_due_date": "2034-11-18T14:00:06.073656",
+            "notes": "\u306f\u306a\u3057 3\u3010\u8a71\u30fb\u5484\u30fb\u567a\u3011\n\u2460\u2008\u8a71\u3059\u3053\u3068\u3002\u53e3\u306b\u51fa\u3057\u3066\u8a9e\u308b\u3053\u3068\u3002\u300c\u2015\u304c\u3068\u304e\u308c\u308b\u300d\u300c\u2015\u304c\u4e0a\u624b\u3060\u300d\u300c\u3072\u305d\u3072\u305d\u2015\u300d\n\u2461\u2008\u8a71\u3055\u308c\u305f\u5185\u5bb9\u3002\u300c\u5b9f\u306e\u3042\u308b\u2015\u300d\u300c\u3064\u307e\u3089\u306a\u3044\u2015\u300d\n\u2462\u2008\u8a71\u984c\u3002\u300c\u2015\u3092\u5909\u3048\u308b\u300d\u300c\u305d\u306e\u2015\u306f\u3084\u3081\u3088\u3046\u300d\n\u2463\u2008\u3046\u308f\u3055\u3002\u8a55\u5224\u3002\u300c\u8033\u5bc4\u308a\u306a\u2015\u300d\u300c\u6b21\u306e\u9078\u6319\u306b\u51fa\u308b\u3068\u3044\u3046\u2015\u3060\u300d",
+            "fragment": "\u4e09\u90ce \u306f \u305d\u3093\u306a \u8a71 \u3092 \u304d\u304f \u3068\u3001 \u6c17\u5473\u2026",
+            "pk": 240384934
+        },
+        "124540871": {
+            "status": 3,
+            "writings": [
+                "\u590f"
+            ],
+            "tags": [
+                "\u540d\u8a5e",
+                "2"
+            ],
+            "importance": 3,
+            "readings": {
+                "hiragana": [
+                    "\u306a\u3064",
+                    "\u3057\u3084",
+                    "\u304b",
+                    "\u3042\u304b\u308a",
+                    "\u3052",
+                    "\u304b\u3059\u307f",
+                    "\u3071\u3044 \u3093",
+                    "\u304b \u307b",
+                    "\u3055\u307e -"
+                ],
+                "romaji": [
+                    "natsu",
+                    "shiya",
+                    "ka",
+                    "akari",
+                    "ge",
+                    "kasumi",
+                    "pain",
+                    "kaho",
+                    "sama-"
+                ]
+            },
+            "extended_status": 0,
+            "gTags": [],
+            "words": [
+                "\u590f"
+            ],
+            "hints": [
+                {
+                    "flagged": false,
+                    "locale": "en",
+                    "term_id": 408315,
+                    "is_google_translate": true,
+                    "popularity": 169,
+                    "approved": false,
+                    "detected_locale": null,
+                    "creator_id": 792124,
+                    "text": "summer",
+                    "id": 13492500,
+                    "word_id": 687057
+                }
+            ],
+            "term": "\u590f",
+            "transliteration": {
+                "hiragana": "\u306a\u3064",
+                "furigana": {
+                    "\u590f": "\u306a\u3064"
+                },
+                "romaji": "natsu"
+            },
+            "srs_due_date": "2021-05-29T09:14:21.648388",
+            "notes": "\u306a\u3064 2\u3010\u590f\u3011",
+            "fragment": "\u3042\u306a\u305f \u304c \u304f\u308c\u305f \u590f",
+            "pk": 124540871
+        },
+        "122894601": {
+            "status": 3,
+            "writings": [
+                "\u805e\u3044\u3066"
+            ],
+            "tags": [
+                "\u805e\u304f",
+                "\u52d5\u8a5e"
+            ],
+            "importance": 3,
+            "readings": {},
+            "extended_status": 3,
+            "gTags": [],
+            "words": [
+                "\u805e\u3044\u3066"
+            ],
+            "hints": [
+                {
+                    "flagged": false,
+                    "locale": "en",
+                    "term_id": 423042,
+                    "is_google_translate": false,
+                    "popularity": 1,
+                    "approved": false,
+                    "detected_locale": "en",
+                    "creator_id": 1824368,
+                    "text": "hear, listen; ask",
+                    "id": 41002845,
+                    "word_id": 838778
+                }
+            ],
+            "term": "\u805e\u3044\u3066",
+            "transliteration": {
+                "hiragana": "\u304d\u3044\u3066",
+                "furigana": {
+                    "\u805e": "\u304d"
+                },
+                "romaji": "kiite"
+            },
+            "srs_due_date": "2035-06-17T10:10:17.049410",
+            "notes": "\u304d\u30fb\u304f 0\u3010\u805e\u304f\u30fb\u8074\u304f\u3011",
+            "fragment": "\u304a \u5144\u3055\u3093 \u306b \u805e\u3044\u3066 \u304f\u3060\u3055\u3044\u3002",
+            "pk": 122894601
+        },
+        "123778055": {
+            "status": 3,
+            "writings": [
+                "\u307f\u305f\u3044"
+            ],
+            "tags": [
+                "\u52a9\u52d5\u8a5e",
+                "\u307f\u305f\u3044\u3060"
+            ],
+            "importance": 2,
+            "readings": {},
+            "extended_status": 3,
+            "gTags": [],
+            "words": [
+                "\u307f\u305f\u3044"
+            ],
+            "hints": [
+                {
+                    "flagged": false,
+                    "locale": "en",
+                    "term_id": 2736,
+                    "is_google_translate": false,
+                    "popularity": 2,
+                    "approved": false,
+                    "detected_locale": "en",
+                    "creator_id": 1824368,
+                    "text": "v. seem, appear to be, look like",
+                    "id": 41166212,
+                    "word_id": 696248
+                }
+            ],
+            "term": "\u307f\u305f\u3044",
+            "transliteration": {
+                "romaji": "mitai"
+            },
+            "srs_due_date": "2037-10-10T21:52:26.666831",
+            "notes": "",
+            "fragment": "...\u3082 \u3001 \u5341\u5206 \u3067\u306f \u306a\u3044 \u307f\u305f\u3044 \u3067\u3059 \u3002",
+            "pk": 123778055
+        },
+        "512729775": {
+            "status": 3,
+            "writings": [
+                "\u306e"
+            ],
+            "importance": 0,
+            "readings": {},
+            "extended_status": 3,
+            "gTags": [],
+            "words": [
+                "\u306e"
+            ],
+            "hints": [],
+            "term": "\u306e",
+            "transliteration": {
+                "romaji": "no"
+            },
+            "srs_due_date": "2037-10-09T11:55:14.731092",
+            "notes": "",
+            "fragment": "\u6210\u9577 \u3059\u308b \u5c02\u7528 \u306e \u76fe \u3092 \u6368\u3066\u3066 \u6b66\u5668",
+            "pk": 512729775
+        },
+        "256843414": {
+            "status": 3,
+            "writings": [
+                "\u4eba"
+            ],
+            "tags": [
+                "\u540d\u8a5e",
+                "0"
+            ],
+            "importance": 3,
+            "readings": {
+                "hiragana": [
+                    "\u3058\u3093",
+                    "\u3072\u3068 \u305f\u304b",
+                    "\u3068",
+                    "\u308a",
+                    "\u3072\u3068 \u3056 \u304d",
+                    "\u306b\u3093",
+                    "\u305f\u308a",
+                    "\u3072\u3068"
+                ],
+                "romaji": [
+                    "jin",
+                    "hitotaka",
+                    "to",
+                    "ri",
+                    "hitozaki",
+                    "nin",
+                    "tari",
+                    "hito"
+                ]
+            },
+            "extended_status": 3,
+            "gTags": [],
+            "words": [
+                "\u4eba"
+            ],
+            "hints": [
+                {
+                    "flagged": true,
+                    "locale": "en",
+                    "term_id": 402184,
+                    "is_google_translate": true,
+                    "popularity": 1751,
+                    "approved": false,
+                    "detected_locale": null,
+                    "creator_id": 916040,
+                    "text": "Man",
+                    "id": 13492801,
+                    "word_id": 687051
+                }
+            ],
+            "term": "\u4eba",
+            "transliteration": {
+                "hiragana": "\u3058\u3093",
+                "furigana": {
+                    "\u4eba": "\u3058\u3093"
+                },
+                "romaji": "jin"
+            },
+            "srs_due_date": "2035-01-29T08:50:54.736056",
+            "notes": "\u3072\u3068 0",
+            "fragment": "\u795e\u793e \u306e \u4eba \u304c \u51b7\u305f\u3044 \u6d77 \u306b\u2026",
+            "pk": 256843414
+        }
+    },
+    "cardsCount": 0,
+    "words": {
+        "717697": {
+            "status": "known",
+            "tags": [],
+            "importance": 3,
+            "text": "\u305f\u3061",
+            "readings": {},
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "word marking plural of the previous word",
+                    "is_google_translate": false,
+                    "popularity": 568568,
+                    "flagged": false,
+                    "id": 1123123
+                },
+                {
+                    "locale": "en",
+                    "text": "We/Us",
+                    "is_google_translate": false,
+                    "popularity": 287,
+                    "flagged": false,
+                    "id": 102346291
+                },
+                {
+                    "locale": "en",
+                    "text": "Plural",
+                    "is_google_translate": false,
+                    "popularity": 163,
+                    "flagged": false,
+                    "id": 144680546
+                }
+            ]
+        },
+        "882824": {
+            "status": "known",
+            "tags": [],
+            "importance": 2,
+            "text": "\u3068\u3063\u3066\u3082",
+            "readings": {},
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "adv.  mighty, very much",
+                    "is_google_translate": false,
+                    "popularity": 756,
+                    "flagged": false,
+                    "id": 1646582
+                },
+                {
+                    "locale": "en",
+                    "text": "1. very; awfully; exceedingly",
+                    "is_google_translate": false,
+                    "popularity": 387,
+                    "flagged": false,
+                    "id": 16860094
+                },
+                {
+                    "locale": "en",
+                    "text": "Very",
+                    "is_google_translate": true,
+                    "popularity": 74,
+                    "flagged": false,
+                    "id": 9142210
+                }
+            ]
+        },
+        "687043": {
+            "status": "known",
+            "tags": [],
+            "importance": 3,
+            "text": "\u4eca",
+            "readings": {
+                "hiragana": [
+                    "\u3044\u307e",
+                    "\u3044\u307e \u3055\u304d",
+                    "\u3044\u307e \u3075\u304f",
+                    "\u3044\u306a",
+                    "\u3053\u3093",
+                    "\u3044\u307e \u3056 \u304d",
+                    "\u3044\u307e \u3076 \u304f",
+                    "\u3084\u304d\u306b\u304f",
+                    "\u304d\u3093",
+                    "\u306a\u3046",
+                    "\u3044\u307e\u3044\u3061"
+                ],
+                "romaji": [
+                    "ima",
+                    "imasaki",
+                    "imafuku",
+                    "ina",
+                    "kon",
+                    "imazaki",
+                    "imabuku",
+                    "yakiniku",
+                    "kin",
+                    "nau",
+                    "imaichi"
+                ]
+            },
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "Now",
+                    "is_google_translate": false,
+                    "popularity": 741014,
+                    "flagged": false,
+                    "id": 20224272
+                },
+                {
+                    "locale": "en",
+                    "text": "now; the present time; just now; soon; immediately; (one) more",
+                    "is_google_translate": false,
+                    "popularity": 238,
+                    "flagged": false,
+                    "id": 19572742
+                },
+                {
+                    "locale": "en",
+                    "text": "now",
+                    "is_google_translate": true,
+                    "popularity": 170,
+                    "flagged": false,
+                    "id": 377821
+                }
+            ]
+        },
+        "661021": {
+            "status": "known",
+            "tags": [],
+            "importance": 3,
+            "text": "\u56de",
+            "readings": {
+                "hiragana": [
+                    "\u304b\u3044",
+                    "\u3081\u3050\u308a",
+                    "\u307e\u304c\u308a",
+                    "\u307e\u308f\u308a",
+                    "\u304d\u3056 \u306f \u3057"
+                ],
+                "romaji": [
+                    "kai",
+                    "meguri",
+                    "magari",
+                    "mawari",
+                    "kizahashi"
+                ]
+            },
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "[Kai]  (Hira=\u304b\u3044) number of times identifier",
+                    "is_google_translate": false,
+                    "popularity": 3474,
+                    "flagged": false,
+                    "id": 1969428
+                },
+                {
+                    "locale": "en",
+                    "text": "Time",
+                    "is_google_translate": true,
+                    "popularity": 642,
+                    "flagged": true,
+                    "id": 13481341
+                },
+                {
+                    "locale": "en",
+                    "text": "number of times identifier (counter for occurences)",
+                    "is_google_translate": false,
+                    "popularity": 110,
+                    "flagged": false,
+                    "id": 23527410
+                }
+            ]
+        },
+        "694302": {
+            "status": "known",
+            "tags": [],
+            "importance": 3,
+            "text": "\u304a",
+            "readings": {},
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "honorific/polite/humble prefix",
+                    "is_google_translate": false,
+                    "popularity": 274716,
+                    "flagged": true,
+                    "id": 16726291
+                },
+                {
+                    "locale": "en",
+                    "text": "particle; used to mark the object of the sentence; becomes an honorific if used before a noun.",
+                    "is_google_translate": false,
+                    "popularity": 774,
+                    "flagged": false,
+                    "id": 103788675
+                },
+                {
+                    "locale": "en",
+                    "text": "honorable",
+                    "is_google_translate": false,
+                    "popularity": 221,
+                    "flagged": false,
+                    "id": 23849768
+                }
+            ]
+        },
+        "690763": {
+            "status": "card",
+            "tags": [],
+            "importance": 0,
+            "text": "\u306e",
+            "readings": {},
+            "cardId": 512729775
+        },
+        "569383": {
+            "status": "known",
+            "tags": [],
+            "importance": 3,
+            "text": "\u304b",
+            "readings": {},
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "question marker",
+                    "is_google_translate": false,
+                    "popularity": 136377,
+                    "flagged": false,
+                    "id": 28472567
+                },
+                {
+                    "locale": "en",
+                    "text": "To indicate uncertainty or indecision\nA third function of \u304b ka is that it can be placed after phrases within larger sentences to indicate uncertainty or indecision",
+                    "is_google_translate": false,
+                    "popularity": 448,
+                    "flagged": false,
+                    "id": 51439983
+                },
+                {
+                    "locale": "en",
+                    "text": "(question marker)",
+                    "is_google_translate": false,
+                    "popularity": 162,
+                    "flagged": false,
+                    "id": 130179072
+                }
+            ]
+        },
+        "663852": {
+            "status": "card",
+            "tags": [],
+            "importance": 3,
+            "text": "\u8a71",
+            "readings": {
+                "hiragana": [
+                    "\u306f\u306a\u3057",
+                    "\u306f\u3059 \u3044\u3051",
+                    "\u308f"
+                ],
+                "romaji": [
+                    "hanashi",
+                    "hasuike",
+                    "wa"
+                ]
+            },
+            "cardId": 240384934
+        },
+        "666038": {
+            "status": "known",
+            "tags": [],
+            "importance": 3,
+            "text": "\u3063\u3066",
+            "readings": {},
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "1. casual quoting particle, 2. indicates supposition; if ... then, 3. indicates a rhetorical question, 4. indicates certainty, insistence, etc",
+                    "is_google_translate": false,
+                    "popularity": 2547,
+                    "flagged": true,
+                    "id": 18379981
+                },
+                {
+                    "locale": "en",
+                    "text": "-te verbal suffix",
+                    "is_google_translate": false,
+                    "popularity": 520,
+                    "flagged": true,
+                    "id": 730
+                },
+                {
+                    "locale": "en",
+                    "text": "you said; he said; she said; they said",
+                    "is_google_translate": false,
+                    "popularity": 59,
+                    "flagged": true,
+                    "id": 34279067
+                }
+            ]
+        },
+        "696248": {
+            "status": "card",
+            "tags": [],
+            "importance": 2,
+            "text": "\u307f\u305f\u3044",
+            "readings": {},
+            "cardId": 123778055
+        },
+        "689724": {
+            "status": "known",
+            "tags": [],
+            "importance": 3,
+            "text": "\u306f",
+            "readings": {},
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "topic marker particle; indicates contrast with another option (stated or unstated); adds emphasis",
+                    "is_google_translate": false,
+                    "popularity": 1969,
+                    "flagged": true,
+                    "id": 24365135
+                },
+                {
+                    "locale": "en",
+                    "text": "(topic marker)",
+                    "is_google_translate": false,
+                    "popularity": 581,
+                    "flagged": false,
+                    "id": 169164281
+                },
+                {
+                    "locale": "en",
+                    "text": "topic marker",
+                    "is_google_translate": false,
+                    "popularity": 138,
+                    "flagged": false,
+                    "id": 162
+                }
+            ]
+        },
+        "690879": {
+            "status": "known",
+            "tags": [],
+            "importance": 3,
+            "text": "\u3093",
+            "readings": {},
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "of particle \"ni\" (used especially when it precedes the verb \"naru\"",
+                    "is_google_translate": false,
+                    "popularity": 4247,
+                    "flagged": true,
+                    "id": 9279761
+                },
+                {
+                    "locale": "en",
+                    "text": "negative verb ending used in informal speech (abbr. of negative verb ending \"nu\")",
+                    "is_google_translate": false,
+                    "popularity": 658,
+                    "flagged": false,
+                    "id": 15630297
+                },
+                {
+                    "locale": "en",
+                    "text": "Hmm",
+                    "is_google_translate": true,
+                    "popularity": 146,
+                    "flagged": true,
+                    "id": 15322193
+                }
+            ]
+        },
+        "139678432": {
+            "status": "new",
+            "tags": [],
+            "importance": 0,
+            "text": "\u30b8\u30e7\u30fc\u30bb\u30c3\u30c6\u30a3",
+            "readings": {},
+            "hints": []
+        },
+        "568011": {
+            "status": "known",
+            "tags": [],
+            "importance": 3,
+            "text": "\u3053\u3093\u306b\u3061\u306f",
+            "readings": {},
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "Hello",
+                    "is_google_translate": true,
+                    "popularity": 17682,
+                    "flagged": false,
+                    "id": 100142207
+                },
+                {
+                    "locale": "en",
+                    "text": "konichiwa = Ol\u00e1, oi! (usado em sauda\u00e7\u00e3o), boa tarde.",
+                    "is_google_translate": false,
+                    "popularity": 928,
+                    "flagged": false,
+                    "id": 52667684
+                },
+                {
+                    "locale": "en",
+                    "text": "hello",
+                    "is_google_translate": false,
+                    "popularity": 680,
+                    "flagged": false,
+                    "id": 12071147
+                }
+            ]
+        },
+        "664901": {
+            "status": "known",
+            "tags": [],
+            "importance": 3,
+            "text": "\u3067\u3059",
+            "readings": {},
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "it\u2019s, she\u2019s, he\u2019s, I\u2019m",
+                    "is_google_translate": false,
+                    "popularity": 960892,
+                    "flagged": false,
+                    "id": 98655334
+                },
+                {
+                    "locale": "en",
+                    "text": "Standard polite form, present tense (to be)",
+                    "is_google_translate": false,
+                    "popularity": 958,
+                    "flagged": false,
+                    "id": 763
+                },
+                {
+                    "locale": "en",
+                    "text": "is",
+                    "is_google_translate": true,
+                    "popularity": 435,
+                    "flagged": false,
+                    "id": 2333501
+                }
+            ]
+        },
+        "687049": {
+            "status": "known",
+            "tags": [],
+            "importance": 3,
+            "text": "\u306a",
+            "readings": {},
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "(sentence end) indicates emotion or emphasis",
+                    "is_google_translate": false,
+                    "popularity": 358503,
+                    "flagged": false,
+                    "id": 24059163
+                },
+                {
+                    "locale": "en",
+                    "text": "used with na-adjectives",
+                    "is_google_translate": false,
+                    "popularity": 257,
+                    "flagged": false,
+                    "id": 27631307
+                },
+                {
+                    "locale": "en",
+                    "text": "nominalizer",
+                    "is_google_translate": false,
+                    "popularity": 45,
+                    "flagged": false,
+                    "id": 160263027
+                }
+            ]
+        },
+        "934218": {
+            "status": "known",
+            "tags": [],
+            "importance": 0,
+            "text": "\u30a4\u30fc\u30b8\u30fc",
+            "readings": {},
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "(adj-na,n) easy; (P); ED",
+                    "is_google_translate": false,
+                    "popularity": 52,
+                    "flagged": false,
+                    "id": 14810110
+                },
+                {
+                    "locale": "en",
+                    "text": "Easy",
+                    "is_google_translate": true,
+                    "popularity": 20,
+                    "flagged": false,
+                    "id": 3962430
+                },
+                {
+                    "locale": "en",
+                    "text": "easy",
+                    "is_google_translate": true,
+                    "popularity": 12,
+                    "flagged": false,
+                    "id": 100442614
+                }
+            ]
+        },
+        "687051": {
+            "status": "card",
+            "tags": [],
+            "importance": 3,
+            "text": "\u4eba",
+            "readings": {
+                "hiragana": [
+                    "\u3058\u3093",
+                    "\u3072\u3068 \u305f\u304b",
+                    "\u3068",
+                    "\u308a",
+                    "\u3072\u3068 \u3056 \u304d",
+                    "\u306b\u3093",
+                    "\u305f\u308a",
+                    "\u3072\u3068"
+                ],
+                "romaji": [
+                    "jin",
+                    "hitotaka",
+                    "to",
+                    "ri",
+                    "hitozaki",
+                    "nin",
+                    "tari",
+                    "hito"
+                ]
+            },
+            "cardId": 256843414
+        },
+        "568012": {
+            "status": "card",
+            "tags": [],
+            "importance": 3,
+            "text": "\u307f\u306a\u3055\u3093",
+            "readings": {},
+            "cardId": 240608100
+        },
+        "687057": {
+            "status": "card",
+            "tags": [],
+            "importance": 3,
+            "text": "\u590f",
+            "readings": {
+                "hiragana": [
+                    "\u306a\u3064",
+                    "\u3057\u3084",
+                    "\u304b",
+                    "\u3042\u304b\u308a",
+                    "\u3052",
+                    "\u304b\u3059\u307f",
+                    "\u3071\u3044 \u3093",
+                    "\u304b \u307b",
+                    "\u3055\u307e -"
+                ],
+                "romaji": [
+                    "natsu",
+                    "shiya",
+                    "ka",
+                    "akari",
+                    "ge",
+                    "kasumi",
+                    "pain",
+                    "kaho",
+                    "sama-"
+                ]
+            },
+            "cardId": 124540871
+        },
+        "807637": {
+            "status": "known",
+            "tags": [],
+            "importance": 0,
+            "text": "\u601d\u3044\u307e\u3059",
+            "readings": {},
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "thought",
+                    "is_google_translate": false,
+                    "popularity": 2101,
+                    "flagged": true,
+                    "id": 387538
+                },
+                {
+                    "locale": "en",
+                    "text": "\u304a\u3082\u3044 - thought, feelong, emotion, wish, hope, desire",
+                    "is_google_translate": false,
+                    "popularity": 720,
+                    "flagged": true,
+                    "id": 387539
+                },
+                {
+                    "locale": "en",
+                    "text": "think",
+                    "is_google_translate": true,
+                    "popularity": 147,
+                    "flagged": false,
+                    "id": 14226115
+                }
+            ]
+        },
+        "673248": {
+            "status": "ignored",
+            "tags": [],
+            "importance": 3,
+            "text": "\u3068",
+            "readings": {},
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "if; when; and; with; particle used for quoting (with speech, thoughts, etc.); quoting particle\u200b",
+                    "is_google_translate": false,
+                    "popularity": 5576,
+                    "flagged": true,
+                    "id": 23034096
+                },
+                {
+                    "locale": "en",
+                    "text": "if; when; and; with; particle used for quoting (with speech, thoughts, etc.); quoting particle",
+                    "is_google_translate": false,
+                    "popularity": 637,
+                    "flagged": false,
+                    "id": 84077677
+                },
+                {
+                    "locale": "en",
+                    "text": "and",
+                    "is_google_translate": false,
+                    "popularity": 277,
+                    "flagged": false,
+                    "id": 143760823
+                }
+            ]
+        },
+        "150848828": {
+            "status": "new",
+            "tags": [],
+            "importance": 0,
+            "text": "\u30c0\u30d1\u30cb\u30fc\u30ba",
+            "readings": {},
+            "hints": []
+        },
+        "690159": {
+            "status": "ignored",
+            "tags": [],
+            "importance": 3,
+            "text": "\u3092",
+            "readings": {},
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "Direct object particle. It is attached at the end of a word to signify that it is the direct object",
+                    "is_google_translate": false,
+                    "popularity": 6549,
+                    "flagged": true,
+                    "id": 98233582
+                },
+                {
+                    "locale": "en",
+                    "text": "(object marker)",
+                    "is_google_translate": false,
+                    "popularity": 1024,
+                    "flagged": false,
+                    "id": 4150923
+                },
+                {
+                    "locale": "en",
+                    "text": "\u3092\n1. indicates direct object of action\u200b\n2. indicates subject of causative expression\u200b\n3. indicates an area traversed\u200b\n4. indicates time over which action takes place\u200b\n5. indicates point of departure\n6. indicates object of desire, like, hate, etc.\u200b",
+                    "is_google_translate": false,
+                    "popularity": 490,
+                    "flagged": true,
+                    "id": 47221843
+                }
+            ]
+        },
+        "838778": {
+            "status": "card",
+            "tags": [],
+            "importance": 3,
+            "text": "\u805e\u3044\u3066",
+            "readings": {},
+            "cardId": 122894601
+        },
+        "690239": {
+            "status": "known",
+            "tags": [],
+            "importance": 3,
+            "text": "\u306b",
+            "readings": {},
+            "hints": [
+                {
+                    "locale": "en",
+                    "text": "indicates time, location, direction, or indirect object",
+                    "is_google_translate": false,
+                    "popularity": 2600,
+                    "flagged": false,
+                    "id": 98699134
+                },
+                {
+                    "locale": "en",
+                    "text": "at",
+                    "is_google_translate": false,
+                    "popularity": 1484,
+                    "flagged": false,
+                    "id": 29224730
+                },
+                {
+                    "locale": "en",
+                    "text": "[Particle]\n1.\u00a0at (place, time); in; on; during\u200b\n2.\u00a0to (direction, state); toward; into\u200b\n3.\u00a0for (purpose)\u200b\n4.\u00a0because of (reason); for; with\u200b\n5.\u00a0by; from\u200b\n6.\u00a0as (i.e. in the role of)\u200b\n7.\u00a0per; in; for; a (e.g. \"once a month\")\u200b\n8.\u00a0and; in addition to",
+                    "is_google_translate": false,
+                    "popularity": 333,
+                    "flagged": true,
+                    "id": 88584425
+                }
+            ]
+        }
+    }
+}
