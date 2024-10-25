@@ -16,7 +16,7 @@ from gpt4all import GPT4All
 
 
 # Function to download YouTube subtitles using yt-dlp
-def download_subtitles(video_url: str, lang="ja") -> Path | None:
+def download_subtitles(video_url: str, lang: str = "ja") -> Path | None:
     """Download YouTube's video's subtitles using yt-dlp"""
     print(f"[yt-dlp] Downloading subtitles for: {video_url}")
     # fmt: off
@@ -56,7 +56,7 @@ def clean_subtitles(subtitles_path: Path) -> str:
     return " ".join(clean_lines)
 
 
-def generate_questions(subtitle_text, num_questions):
+def generate_questions(subtitle_text: str, num_questions: int) -> str:
     model = GPT4All("Meta-Llama-3-8B-Instruct.Q4_0.gguf")
 
     # There is a 2048 context window in LLaMA
@@ -68,7 +68,7 @@ def generate_questions(subtitle_text, num_questions):
     return response
 
 
-def main(video_url, n_questions):
+def main(video_url: str, n_questions: int) -> None:
     # Step 1: Download subtitles
     subtitles_path = download_subtitles(video_url)
     if subtitles_path is None:
@@ -90,7 +90,7 @@ def main(video_url, n_questions):
     Path.unlink(subtitles_path)
 
 
-def parse_args():
+def parse_args():  # noqa: ANN201
     parser = argparse.ArgumentParser()
     parser.add_argument("video_url", help="URL of the YouTube video")
     parser.add_argument(

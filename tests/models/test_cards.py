@@ -1,7 +1,7 @@
 from models.cards import Card, Cards, Readings, Transliteration
 
 
-def test_model_cards():
+def test_model_cards() -> None:
     # From LingQ. Note the camelcase in gTags.
     data_cards = {  # type: ignore
         "count": 2203,
@@ -76,7 +76,7 @@ def test_model_cards():
     Cards.model_validate(data_cards)
 
 
-def test_model_card():
+def test_model_card() -> None:
     # When it is read it becomes snake_case
     data_card = {
         "pk": 459243703,
@@ -109,7 +109,7 @@ def test_model_card():
     Card.model_validate(data_card)
 
 
-def test_model_readings():
+def test_model_readings() -> None:
     readings_data = {
         "hiragana": ["ゆうしょう しゃ", "ゆう しょうしゃ"],
         "romaji": ["yuushousha", "yuushousha"],
@@ -118,11 +118,11 @@ def test_model_readings():
     Readings.model_validate(readings_data)
 
 
-def test_model_empty_readings():
+def test_model_empty_readings() -> None:
     Readings.model_validate({})
 
 
-def test_model_transliteration_ja():
+def test_model_transliteration_ja() -> None:
     transliteration_data = {
         "hiragana": ["りっきょう"],
         "furigana": [{"陸橋": "りっきょう"}],
@@ -131,10 +131,10 @@ def test_model_transliteration_ja():
     Transliteration.model_validate(transliteration_data)
 
 
-def test_model_transliteration_el():
+def test_model_transliteration_el() -> None:
     transliteration_data = {"latin": ["ekfonisis"]}
     Transliteration.model_validate(transliteration_data)
 
 
-def test_mode_empty_transliteration():
+def test_mode_empty_transliteration() -> None:
     Transliteration.model_validate({})

@@ -88,6 +88,7 @@ import logging
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
 from aeneas.executetask import ExecuteTask
 from aeneas.task import Task
@@ -114,7 +115,7 @@ BLUE = "\033[34m"
 
 
 class ColoredFormatter(logging.Formatter):
-    def format(self, record):
+    def format(self, record):  # noqa: ANN001, ANN201
         match record.levelname:
             case "DEBUG":
                 record.levelname = f"{BLUE}[{record.levelname}]{RESET}"
@@ -168,14 +169,14 @@ def get_mp3_length(file_path: Path) -> float:
     return MP3(file_path).info.length
 
 
-def seconds_to_hms(seconds_str):
+def seconds_to_hms(seconds_str: str) -> str:
     seconds = int(float(seconds_str))
     hours, remainder = divmod(seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
     return f"{hours}:{minutes:02}:{seconds:02}"
 
 
-def ffmpeg_split(audio_file, begin, end, output_audio_path):
+def ffmpeg_split(audio_file: Path, begin: str, end: str, output_audio_path: Path) -> None:
     # fmt: off
     subprocess.run(
         [
@@ -192,7 +193,9 @@ def ffmpeg_split(audio_file, begin, end, output_audio_path):
     # fmt: on
 
 
-def split_audio(fragments, text_files, cut_at_seconds=0.0) -> list[TimedText]:
+def split_audio(
+    fragments: Any, text_files: list[list[str]], cut_at_seconds: float = 0.0
+) -> list[TimedText]:
     logging.info("Start split_audio")
 
     if cut_at_seconds > 0:
@@ -203,7 +206,7 @@ def split_audio(fragments, text_files, cut_at_seconds=0.0) -> list[TimedText]:
     return timed_texts
 
 
-def split_audio_preserving_chapters(fragments, text_files):
+def split_audio_preserving_chapters(fragments: Any, text_files: list[list[str]]) -> list[TimedText]:
     """Split audio and text preserving the original text split."""
     logging.info("Start split preserving texts")
 
@@ -250,7 +253,7 @@ def split_audio_preserving_chapters(fragments, text_files):
     return timed_texts
 
 
-def split_audio_by_time(fragments, cut_at_seconds):
+def split_audio_by_time(fragments: Any, cut_at_seconds: float) -> list[TimedText]:
     """Split audio and text by the given cut_at_seconds"""
     # TODO: split by sentences the original text to see if it improves precision
 
@@ -294,10 +297,10 @@ def split_audio_by_time(fragments, cut_at_seconds):
     return timed_texts
 
 
-def write_timed_texts(timed_texts, audio_file, output_dir: Path) -> None:
+def write_timed_texts(timed_texts: list[TimedText], audio_file: Path, output_dir: Path) -> None:
     logging.info("Writting timed texts")
     for idx, tt in enumerate(timed_texts, 1):
-        opath_audio = f"{output_dir}/audios/audio{idx}.mp3"
+        opath_audio = output_dir / "audios" / f"audio{idx}.mp3"
         ffmpeg_split(audio_file, tt.begin, tt.end, opath_audio)
         opath_text = output_dir / "texts" / f"text{idx}.txt"
         with opath_text.open("w") as f:
@@ -357,8 +360,8 @@ def merge_audio_files(merged_audio_file: Path) -> None:
 def process_files(
     language: str,
     files_dir: Path,
-    cut_at_seconds=0.0,
-    n_sections=0,
+    cut_at_seconds: float = 0.0,
+    n_sections: int = 0,
 ) -> None:
     # Setup input file structure
     audio_dir = files_dir / "audios"

@@ -15,7 +15,7 @@ def create_headings(filepath: Path) -> None:
     print(f"There are {len(headings)} headings")
 
 
-def main():
+def main() -> None:
     filename = "text.txt"
     filepath = Path(filename)
     create_headings(filepath)

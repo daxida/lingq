@@ -44,7 +44,7 @@ COLLECTION_LIST = [
 ]
 
 
-def test_markdown_with_views():
+def test_markdown_with_views() -> None:
     expected_lines = [
         "|Status| |Title|Views|Lessons|Created&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Updated&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|",
         "|-|-|-|-|-|-|-|",
@@ -58,7 +58,7 @@ def test_markdown_with_views():
     assert markdown == expected
 
 
-def test_markdown_without_views():
+def test_markdown_without_views() -> None:
     expected_lines = [
         "|Status| |Title|Lessons|Created&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Updated&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|",
         "|-|-|-|-|-|-|",

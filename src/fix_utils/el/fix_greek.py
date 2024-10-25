@@ -180,7 +180,7 @@ def fix_textlines(line: str) -> str:
     return line
 
 
-def write(filepath: Path, text: str):
+def write(filepath: Path, text: str) -> None:
     opath = Path(f"fix_{filepath}")
     with opath.open("w") as out:
         for line in text.split("\n"):
@@ -201,7 +201,7 @@ def fix(text: str) -> str:
     return text
 
 
-def main():
+def main() -> None:
     filepath = Path(filename)
     with filepath.open("r") as file:
         text = file.read()

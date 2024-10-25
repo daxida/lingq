@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
 
 
-def test_handler():
+def test_handler() -> None:
     """NOTE: This is user dependent!"""
     logger.info("Starting test_pipeline")
 
@@ -24,7 +24,7 @@ def test_handler():
     asyncio.run(run_handler(test_lc))
 
 
-async def run_handler(language_code):
+async def run_handler(language_code: str) -> None:
     async with LingqHandler(language_code) as handler:
         # await handler.get_languages()
         # await handler._get_user_language_codes()

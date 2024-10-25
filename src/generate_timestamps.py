@@ -42,7 +42,7 @@ async def generate_timestamps_async(
         print(f"Generated timestamps for '{collection_title}'.")
 
 
-def generate_timestamps(language_code: str, course_id: str, skip_already_timestamped: bool):
+def generate_timestamps(language_code: str, course_id: str, skip_already_timestamped: bool) -> None:
     asyncio.run(generate_timestamps_async(language_code, course_id, skip_already_timestamped))
 
 

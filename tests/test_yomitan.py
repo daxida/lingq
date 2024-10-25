@@ -12,7 +12,7 @@ def rewrite_json_with_first_n_entries(json_file_path: Path, n: int = 5) -> None:
         json.dump(first_ten_entries, f, ensure_ascii=False, indent=4)
 
 
-def test_yomitan():
+def test_yomitan() -> None:
     """Simply test that the yomitan function does not crash."""
     fixture_path = Path("tests/fixtures/lingqs")
     assert (fixture_path / "pt").exists()

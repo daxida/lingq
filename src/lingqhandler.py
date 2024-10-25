@@ -12,7 +12,7 @@ from utils import Colors
 
 
 class Config:
-    def __init__(self):
+    def __init__(self) -> None:
         env_path = find_dotenv()
         if not env_path:
             print("Error: could not find an .env file.")
@@ -87,14 +87,14 @@ class LingqHandler:
         )
         self.session = retry_client
 
-    async def close(self):
+    async def close(self) -> None:
         await self.session.close()
 
     # Make the handler into an async context manager (for better debug messages)
-    async def __aenter__(self):
+    async def __aenter__(self):  # noqa: ANN204
         return self
 
-    async def __aexit__(self, *_):
+    async def __aexit__(self, *_):  # noqa: ANN002, ANN204
         await self.close()
 
     async def get_languages(self) -> Any:
@@ -120,7 +120,7 @@ class LingqHandler:
         This is a class method since it does not require initializing a language code.
         """
 
-        async def get_user_language_codes_tmp():
+        async def get_user_language_codes_tmp() -> list[str]:
             async with cls("Filler") as handler:
                 return await handler._get_user_language_codes()
 

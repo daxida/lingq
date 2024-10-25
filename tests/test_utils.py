@@ -1,7 +1,7 @@
 from utils import greek_sorting_fn, roman_sorting_fn
 
 
-def test_greek_sorting_fn():
+def test_greek_sorting_fn() -> None:
     entries = [
         "Ι'. Η μάχη",  # 10
         "Α'. Η αρχή",  # 1
@@ -21,7 +21,7 @@ def test_greek_sorting_fn():
     assert sorted_entries == expected
 
 
-def test_roman_sorting_fn():
+def test_roman_sorting_fn() -> None:
     entries = [
         "Chapitre IX.mp3",  # 9
         "Chapitre I.mp3",  # 1

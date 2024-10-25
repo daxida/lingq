@@ -182,7 +182,7 @@ def post(
     fr_lesson: int = 1,
     to_lesson: int = 99,
     pairing_strategy: str = "match_exact_titles",
-):
+) -> None:
     """
     Posts preprocessed split text and audio files to a specified course.
 

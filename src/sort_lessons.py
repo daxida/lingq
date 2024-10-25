@@ -120,7 +120,7 @@ def get_patch_requests_order(lessons: list[Any]) -> list[tuple[Any, int]]:
     return requests
 
 
-async def sort_lessons_async(language_code: str, course_id: str):
+async def sort_lessons_async(language_code: str, course_id: str) -> None:
     async with LingqHandler(language_code) as handler:
         collection_json = await handler.get_collection_json_from_id(course_id)
         assert collection_json is not None

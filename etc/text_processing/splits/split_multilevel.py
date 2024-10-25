@@ -80,7 +80,7 @@ def test_titles(separated_data: Separated) -> None:
             print(part, chapter)
 
 
-def main():
+def main() -> None:
     folder_path = Path("split")
     Path.mkdir(folder_path, exist_ok=True)
 

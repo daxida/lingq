@@ -54,6 +54,10 @@ select = [
     "F",    # Pyflakes rules
     "C",    # flake8-complexity
     "PTH",  # Paths
+    "ANN",  # Annotations
+]
+ignore = [
+    "ANN401",
 ]
 
 [tool.mypy]

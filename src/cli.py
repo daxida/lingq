@@ -28,7 +28,7 @@ DEFAULT_AUDIOS_FOLDER = None
 
 @click.group()
 @click.version_option()
-def cli():
+def cli() -> None:
     """Lingq command line scripts.
 
     You can always get more details about a command with the --help flag.
@@ -83,7 +83,7 @@ def fix_cli(language_code: str, course_id: str) -> None:
 
 
 @cli.group()
-def show():
+def show() -> None:
     """Show commands."""
 
 
@@ -95,7 +95,7 @@ def show_my_cli(language_code: str) -> None:
 
 
 @cli.group()
-def get():
+def get() -> None:
     """Get commands."""
 
 
@@ -277,7 +277,7 @@ def post_yt_playlist_cli(
 
 
 @cli.group()
-def patch():
+def patch() -> None:
     """Patch commands."""
 
 
@@ -295,9 +295,9 @@ def patch_audios_cli(
 
 
 @patch.command("texts")
-def patch_texts_cli():
+def patch_texts_cli() -> None:
     """Not implemented."""
-    return NotImplementedError
+    raise NotImplementedError()
 
 
 @cli.command("resplit")

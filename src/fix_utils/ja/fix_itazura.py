@@ -47,7 +47,7 @@ def fix(text: str) -> str:
     return text
 
 
-def process_file(file_path: Path):
+def process_file(file_path: Path) -> None:
     with file_path.open("r") as file:
         text = file.read()
         text = fix(text)
@@ -57,7 +57,7 @@ def process_file(file_path: Path):
         out.write(text)
 
 
-def main():
+def main() -> None:
     for file_path in FOLDER_PATH.iterdir():
         process_file(file_path)
 

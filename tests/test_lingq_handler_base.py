@@ -5,12 +5,12 @@ import pytest
 from lingqhandler import check_for_valid_token_or_exit
 
 
-def test_check_for_valid_token_or_exit_wrong_input_type():
+def test_check_for_valid_token_or_exit_wrong_input_type() -> None:
     with pytest.raises(NotImplementedError):
         check_for_valid_token_or_exit(3)
 
 
-def test_check_for_valid_token_or_exit_invalid_token():
+def test_check_for_valid_token_or_exit_invalid_token() -> None:
     with mock.patch("sys.exit") as mock_exit:
         check_for_valid_token_or_exit({"detail": "Invalid token."})
         mock_exit.assert_called_once()

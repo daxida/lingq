@@ -24,7 +24,7 @@ def get_and_write_url(url: str) -> None:
         json.dump(data, json_file, indent=4)
 
 
-def make_model_fixtures():
+def make_model_fixtures() -> None:
     collection_urls = [
         "https://www.lingq.com/api/v3/ja/collections/537808/",
         "https://www.lingq.com/api/v3/el/collections/1070313/",

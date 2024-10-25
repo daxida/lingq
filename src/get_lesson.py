@@ -133,7 +133,7 @@ if __name__ == "__main__":
         download_audio: bool,
         download_timestamps: bool,
         verbose: bool,
-    ):
+    ) -> Lesson:
         async with LingqHandler(language_code) as handler:
             return await get_lesson_async(
                 handler, lesson_id, download_audio, download_timestamps, verbose

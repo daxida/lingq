@@ -9,6 +9,9 @@ from utils import timing
 # TODO: rename to images
 
 
+TitledPicture = tuple[str, Any]
+
+
 def get_title_from_lesson(lesson_json: Any) -> str:
     # Implement your own logic to get the picture title from the lesson.
     title = lesson_json["title"]
@@ -21,7 +24,7 @@ def get_title_from_lesson(lesson_json: Any) -> str:
     return author_name
 
 
-async def get_picture(handler: LingqHandler, lesson_json: Any) -> tuple[str, Any]:
+async def get_picture(handler: LingqHandler, lesson_json: Any) -> TitledPicture:
     picture_title = get_title_from_lesson(lesson_json)
     lesson = await handler.get_lesson_from_url(lesson_json["url"])
     image_url = lesson["originalImageUrl"]
@@ -30,7 +33,7 @@ async def get_picture(handler: LingqHandler, lesson_json: Any) -> tuple[str, Any
     return (picture_title, picture_content)
 
 
-def write_pictures(pictures_and_titles, collection_path: Path) -> None:
+def write_pictures(pictures_and_titles: list[TitledPicture], collection_path: Path) -> None:
     pictures_path = collection_path / "pictures"
     Path.mkdir(pictures_path, parents=True, exist_ok=True)
     for picture_title, picture_content in pictures_and_titles:
@@ -53,7 +56,7 @@ async def get_pictures_async(language_code: str, course_id: str, opath: Path) ->
 
 
 @timing
-def get_pictures(language_code: str, course_id: str, opath: Path):
+def get_pictures(language_code: str, course_id: str, opath: Path) -> None:
     """Get all pictures from a course"""
     asyncio.run(get_pictures_async(language_code, course_id, opath))
 

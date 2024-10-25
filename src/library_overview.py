@@ -99,7 +99,7 @@ def write_to_csv(language_code: str, data_list: list[Any]) -> None:
     print(f"Data saved to {output_filename}.")
 
 
-def overview(language_code: str):
+def overview(language_code: str) -> None:
     asyncio.run(fetch_and_save_to_csv(language_code))
 
 

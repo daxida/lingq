@@ -3,7 +3,7 @@ from importlib.util import find_spec
 import pytest
 
 
-def test_simple():
+def test_simple() -> None:
     if find_spec("aeneas") is None:
         pytest.skip("Aeneas is not installed")
 
