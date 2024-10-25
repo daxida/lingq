@@ -1,25 +1,11 @@
-from typing import Any, Optional
+from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
-
-class Hint(BaseModel):
-    id: int
-    locale: str
-    text: str
-    term: str
-    popularity: int
-    is_google_translate: bool
-    flagged: bool
-
-
-class Transliteration(BaseModel):
-    readings: dict[str, list[Any]] = {}
-
-
-class Readings(BaseModel):
-    readings: dict[str, list[str]] = {}
+from models.hint import Hint
+from models.readings import Readings
+from models.transliteration import Transliteration
 
 
 class Card(BaseModel):
@@ -45,10 +31,6 @@ class Card(BaseModel):
     words: list[str]
     tags: list[str]
     hints: list[Hint]
-    # This:
-    # - Has no keys for german or english
-    # - Has exactly one key for greek: "transliteration": {"latin": ["paraschete"]}
-    # - Has exactly three keys for japanese: "hiragana", "furigana" and "romaji".
     transliteration: Transliteration = Transliteration()
     g_tags: list[str]
     word_tags: list[str]
