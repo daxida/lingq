@@ -73,6 +73,10 @@ def apply_pairing_strategy(strategy: str, texts: list[Path], audios: list[Path])
         pairs = list(zip(texts, audios))
         n_pairs = len(pairs)
         print(f"Found {n_pairs} pairs of texts ({len(texts)}) / audio ({len(audios)}).")
+    elif strategy == "zip_sorted":
+        pairs = list(zip(sorted(texts), sorted(audios)))
+        n_pairs = len(pairs)
+        print(f"Found {n_pairs} pairs of texts ({len(texts)}) / audio ({len(audios)}).")
     elif strategy == "match_exact_titles":
         pairs = []
         for text_path in texts:

@@ -225,20 +225,26 @@ def get_courses_cli(
 @cli.command("post")
 @click.argument("language_code")
 @click.argument("course_id")
-@click.argument("texts_folder")
-@click.option("-a", "--audios_folder", default=DEFAULT_AUDIOS_FOLDER)
+@click.argument("texts_folder", type=click.Path(exists=True, path_type=Path))
+@click.option(
+    "--audios_folder",
+    "-a",
+    default=DEFAULT_AUDIOS_FOLDER,
+    type=click.Path(exists=True, path_type=Path),
+    help="Audios folder path.",
+)
 @click.option("--fr_lesson", type=int, default=DEFAULT_FROM_LESSON)
 @click.option("--to_lesson", type=int, default=DEFAULT_TO_LESSON)
 @click.option(
     "--pairing_strategy",
-    type=click.Choice(["zip", "match_exact_titles"]),
+    type=click.Choice(["zip", "zip_sorted", "match_exact_titles"]),
     default="match_exact_titles",
 )
 def post_cli(
     language_code: str,
     course_id: str,
-    texts_folder: str,
-    audios_folder: str | None,
+    texts_folder: Path,
+    audios_folder: Path | None,
     fr_lesson: int,
     to_lesson: int,
     pairing_strategy: str,
