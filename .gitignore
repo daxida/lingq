@@ -6,5 +6,6 @@ build
 .env
 .vscode
 
+book
 downloads
 hidden_tests

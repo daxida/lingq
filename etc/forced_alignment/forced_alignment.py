@@ -300,9 +300,9 @@ def split_audio_by_time(fragments: Any, cut_at_seconds: float) -> list[TimedText
 def write_timed_texts(timed_texts: list[TimedText], audio_file: Path, output_dir: Path) -> None:
     logging.info("Writting timed texts")
     for idx, tt in enumerate(timed_texts, 1):
-        opath_audio = output_dir / "audios" / f"audio{idx}.mp3"
+        opath_audio = output_dir / "audios" / f"audio{idx:02}.mp3"
         ffmpeg_split(audio_file, tt.begin, tt.end, opath_audio)
-        opath_text = output_dir / "texts" / f"text{idx}.txt"
+        opath_text = output_dir / "texts" / f"text{idx:02}.txt"
         with opath_text.open("w") as f:
             f.write(tt.text)
 
@@ -420,8 +420,8 @@ if __name__ == "__main__":
     # TODO: make it work for japanese!
     process_files(
         language="ell",
-        files_dir=Path("test_el_1m_3t_2a"),
-        cut_at_seconds=10,
+        files_dir=Path("book"),
+        # cut_at_seconds=10,
         # n_sections=20,
     )
     logging.info("Processing complete. Check the 'output' directory for results.")

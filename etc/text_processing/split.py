@@ -37,7 +37,7 @@ How to Import and Structure a Book
        You can always manually add a separator, f.e. "$" (level1), "$$" (level2), and
        adapt the logic of the code.
 
-If it succeeds, this script will output each section to a separate file in the "split" folder,
+If it succeeds, this script will output each section to a separate file in the OUT_FOLDER,
 with files named according to their hierarchical structure.
 """
 
@@ -45,8 +45,8 @@ import re
 import shutil
 from pathlib import Path
 
-FPATH = Path(__file__).parent
-OUT_FOLDER = FPATH / "split"
+FPATH = Path("book")
+OUT_FOLDER = FPATH / "texts"
 IPATH = FPATH / "book.txt"
 HEADINGS_PATH = FPATH / "headings.txt"  # Optional
 
@@ -105,9 +105,10 @@ def write_recursive(
     if isinstance(split_data, list):
         file_title = filetitles[-1][1]
         # With tree indices...
-        # file_title = "_".join([str(idx) for idx, _ in file_titles] + [file_titles[-1][1]])
+        file_title = ".".join([f"{idx:02}" for idx, _ in filetitles] + [filetitles[-1][1]])
         filepath = OUT_FOLDER / f"{file_title}.txt"
         with filepath.open("w") as f:
+            f.write(file_title + "\n")  # Add title at start
             for line in split_data:
                 f.write(line)
     else:
@@ -184,7 +185,7 @@ def main() -> None:
     text = IPATH.open("r").read()
     # If the headings patterns are spread over multiple lines,
     # we have to fit them in a line or the separate logic will not work:
-    text = re.sub(r" \n \n \n", "$", text)
+    text = re.sub(r" \n \n \n", "\n$", text)
 
     text_lines = text.splitlines(keepends=True)
 
