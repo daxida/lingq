@@ -4,8 +4,6 @@ from typing import Match
 
 # TODO: Make a test every time I use this script to fix a book.
 
-filename = "18. Η επιβράβευση του Ντόμπι.txt"
-
 
 def upper(pat: Match[str]) -> str:
     return pat.group(1).upper()
@@ -15,8 +13,18 @@ def capitalize(pat: Match[str]) -> str:
     return pat.group(1).capitalize()
 
 
+def standarize_punctuation(text: str) -> str:
+    """Standarize punctuation symbols.
+
+    TODO: Consider << >>, and accented letters?.
+    """
+    # Ellipsis
+    text = re.sub(r"\.\.\.", "…", text)
+    return text
+
+
 def fix_problematic_chars(text: str) -> str:
-    # Fixes mathematical mu
+    # Mathematical mu
     text = re.sub(r"µ", "μ", text)
 
     return text
@@ -132,34 +140,40 @@ def specific_fixes(text: str) -> str:
 def fix_textstring(text: str) -> str:
     """Apply the fixes to the whole string of text"""
 
-    # Fix page numbers
+    # Page numbers
     text = re.sub(r"\d+\n", "", text)
 
-    # Fix newlines
-    text = re.sub(r"(?<=[^.;:?!\-\"\d\n])\n", " ", text)
-    # Special case for newlines - due to splitting words
-    text = re.sub(r"(?<=-)\n", "", text)
-    # Fix multiple newlines
+    # Note numbers
+    text = re.sub(r"(?<=[Ά-Ͽ])\d+", "", text)
+
+    # Boundary hyphens
+    text = re.sub(r" *- *\n *", "", text)
+
+    # Newlines after non-punctuation character
+    # Potentially unsafe since headings usually do not contain punctuation.
+    # text = re.sub(r"(?<=[^.;:?!\-\"\d\n ])\n", " ", text)
+    # Potentially unsafe but safer: check for a lowercase letter after the newline.
+    text = re.sub(r"(?<=[^.;:?!\-\"\d\n ])\n(?=[α-ωάέήίόύώϊϋΐΰ])", " ", text)
+
+    # Multiple consecutive newlines
     text = re.sub(r"\n{2,}}", "\n", text)
 
-    # Fix multiple spaces
+    # Multiple spaces
     text = re.sub(r" {2,}", " ", text)
-    # Fix extra spaces before "
+    # Extra spaces before "
     text = re.sub(r" +(?=\"[ \n])", "", text)
 
-    # Fix - splitting words (GREEK)
-    text = re.sub(r"([Ά-Ͽ]+)\-([Ά-Ͽ]+)", r"\1\2", text)
+    # Wrongly hyphenated words (GREEK)
+    # UNSAFE: messes correctly hyphenated pairs, f.e. Αγια-Σοφιά
+    # text = re.sub(r"([Ά-Ͽ]+)\-([Ά-Ͽ]+)", r"\1\2", text)
 
-    # Adds spaces after ponctuation if missing
-    text = re.sub(r",(?=[^ ])", ", ", text)
-    # We have to be careful of not changing ... -> . . .
-    text = re.sub(r'\.(?=[^ ."])', ". ", text)
-    text = re.sub(r';(?=[^ "])', "; ", text)
-    # text = re.sub(r'»(?=[^ ])',  '» ', text)
+    # Add space after punctuation if missing
+    text = re.sub(r"([,.;])(?=[^ .\"\n…»])", r"\1 ", text)
+    # Fix the only counter-example for commas : ό,τι (case insensitive)
+    text = re.sub(r"(?i)(ό,)\s+(τι)", r"\1\2", text)
 
-    # Fix capital letters in the middle of a sentence.
-    text = re.sub(r"(?<=[\.!;] )(.)", upper, text)
-    text = re.sub(r"(?<=[\.!;] \")(.)", upper, text)
+    # Capital letters after a dot
+    text = re.sub(r"(?<=[\.] )(.)", upper, text)
 
     return text
 
@@ -180,14 +194,15 @@ def fix_textlines(line: str) -> str:
     return line
 
 
-def write(filepath: Path, text: str) -> None:
-    opath = Path(f"fix_{filepath}")
+def write(opath: Path, text: str) -> None:
     with opath.open("w") as out:
         for line in text.split("\n"):
             out.write(f"{line}\n")
 
 
 def fix(text: str) -> str:
+    text = standarize_punctuation(text)
+
     text = fix_problematic_chars(text)
     text = fix_latin_letters(text)
     text = specific_fixes(text)
@@ -202,12 +217,12 @@ def fix(text: str) -> str:
 
 
 def main() -> None:
-    filepath = Path(filename)
+    filepath = Path("book/book.txt")
     with filepath.open("r") as file:
-        text = file.read()
+        text = file.read().strip()
         text = fix(text)
 
-    write(filepath, text)
+    write(filepath.with_stem("book_fix"), text)
 
 
 if __name__ == "__main__":

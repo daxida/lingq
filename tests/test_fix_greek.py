@@ -1,4 +1,4 @@
-from fix_utils.el.fix_greek import fix_latin_letters
+from fix_utils.el.fix_greek import fix_latin_letters, fix_textstring
 
 
 def make_test_latin_letters(received: str, expected: str) -> None:
@@ -42,3 +42,45 @@ def test_latin_letters_only_latin() -> None:
     # Should not fix actual latin words
     text = "Ο Μικελάντζελο ντι Λοντοβίκο Μπουοναρότι Σιμόνι (Michelangelo di Lodovico Buonarroti Simoni, 6 Μαρτίου 1475 – 18 Φεβρουαρίου 1564)"
     make_test_latin_letters(text, text)
+
+
+"""
+Punctuation reference:
+http://ebooks.edu.gr/ebooks/v/html/8547/2334/Grammatiki-Neas-Ellinikis-Glossas_A-B-G-Gymnasiou_html-apli/index_B_03.html
+"""
+
+
+def test_should_not_enforce_capital_after_exclamation_mark() -> None:
+    text = "Τρέχα! Πρόφθασε! Φθάσε! απάντησε λαχανιασμένος ..."
+    assert fix_textstring(text) == text
+
+
+def test_should_not_enforce_capital_after_question_mark() -> None:
+    text = "Ο γιός μου! Πού είναι ο Ασώτης; φώναξε ..."
+    assert fix_textstring(text) == text
+
+
+def test_should_delete_boundary_hyphens() -> None:
+    text = "χα-\nρά χα- \nρά χα-\n ρά χα - \nρά"
+    expected = "χαρά χαρά χαρά χαρά"
+    assert fix_textstring(text) == expected
+
+
+def test_should_not_delete_correct_hyphens() -> None:
+    text = "χτύπησε ένα-δυο άλλους"
+    assert fix_textstring(text) == text
+
+
+def test_should_not_change_oti() -> None:
+    text = "ό,τι Ό,τι"
+    assert fix_textstring(text) == text
+
+
+def test_should_not_add_space_in_punctuation_pair_one() -> None:
+    text = "Πατέρα, εσύ!… επανέλαβε πιο σιγά. Και ο σύντροφος σου ποιος είναι;… Ρωμανέ"
+    assert fix_textstring(text) == text
+
+
+def test_should_not_add_space_in_punctuation_pair_two() -> None:
+    text = "«Φύγε να πας εκεί που ξέρεις. Το θέλω.» "
+    assert fix_textstring(text) == text
