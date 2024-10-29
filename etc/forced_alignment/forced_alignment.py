@@ -139,11 +139,22 @@ def align_audio_to_text(
 ) -> None:
     logging.info(f"Starting alignment for audio: {audio_path} and text: {text_path}")
 
-    # Update the task configuration string to use the specified language
+    # TODO: Test removing silences!
+
+    # https://groups.google.com/g/aeneas-forced-alignment/c/J7FnZ8OSOLE
+    # For a parameters list:
+    # python3 -m aeneas.tools.execute_task --list-parameters
     config = [
+        # Required
         f"task_language={language}",
         "is_text_type=plain",
         "os_task_file_format=json",
+        # Optional
+        # Do not allow zero-length fragments
+        # "task_adjust_boundary_no_zero",
+        # # Trim nonspeech
+        # "task_adjust_boundary_nonspeech_min=0.500",
+        # "task_adjust_boundary_nonspeech_string=REMOVE",
     ]
     config_string = "|".join(config)
     task = Task(config_string=config_string)
@@ -197,6 +208,15 @@ def split_audio(
     fragments: Any, text_files: list[list[str]], cut_at_seconds: float = 0.0
 ) -> list[TimedText]:
     logging.info("Start split_audio")
+
+    # Remove fragments with no text. This may happen if the text has empty lines.
+    fragments = [fr for fr in fragments if fr["lines"][0]]
+
+    n_paragraphs = sum(len(paragraph) for paragraph in text_files)
+    if len(fragments) != n_paragraphs:
+        raise ValueError(
+            f"The number of fragments: {len(fragments)} is different from the number of paragraphs: {n_paragraphs}"
+        )
 
     if cut_at_seconds > 0:
         timed_texts = split_audio_by_time(fragments, cut_at_seconds)
