@@ -1,4 +1,4 @@
-from fix_utils.el.fix_greek import fix_latin_letters, fix_textstring
+from fix_utils.el.fix_greek import fix_latin_letters, fix_textstring, standarize_punctuation
 
 
 def make_test_latin_letters(received: str, expected: str) -> None:
@@ -48,6 +48,12 @@ def test_latin_letters_only_latin() -> None:
 Punctuation reference:
 http://ebooks.edu.gr/ebooks/v/html/8547/2334/Grammatiki-Neas-Ellinikis-Glossas_A-B-G-Gymnasiou_html-apli/index_B_03.html
 """
+
+
+def test_correctly_fixes_ellipsis() -> None:
+    text = "«Ν.Ο.Α....;»"
+    expected = "«Ν.Ο.Α.…;»"
+    assert standarize_punctuation(text) == expected
 
 
 def test_should_not_enforce_capital_after_exclamation_mark() -> None:

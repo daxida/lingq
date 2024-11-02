@@ -19,7 +19,7 @@ def standarize_punctuation(text: str) -> str:
     TODO: Consider << >>, and accented letters?.
     """
     # Ellipsis
-    text = re.sub(r"\.\.\.", "…", text)
+    text = re.sub(r"\.\.\.(?!\.)", "…", text)
     return text
 
 
