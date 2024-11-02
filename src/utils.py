@@ -66,8 +66,8 @@ def greek_sorting_fn(x: str) -> int:
     # This requires fine tuning depending of the entries' name format:
     # I was working with:
     # Ι'. Η μάχη -> 10
-    numerals = "Α Β Γ Δ Ε ΣΤ Ζ Η Θ Ι ΙΑ ΙΒ ΙΓ ΙΔ ΙΕ ΙΣΤ ΙΖ".split()
-    order = [f"{num}'" for num in numerals]
+    numerals = "Α Β Γ Δ Ε ΣΤ Ζ Η Θ Ι ΙΑ ΙΒ ΙΓ ΙΔ ΙΕ ΙΣΤ ΙΖ ΙΗ ΙΘ Κ ΚΑ ΚΒ ΚΓ ΚΔ ΚΕ ΚΣΤ ΚΖ ΚΗ ΚΘ"
+    order = [f"{num}'" for num in numerals.split()]
     return order.index(x.split(".")[0])
 
 

@@ -17,7 +17,7 @@ def download_book_from_text_id(text_id: str, text_name: str, author_name: str) -
         _path = Path(text_name)
 
     path = DOWNLOAD_FOLDER / _path
-    Path.mkdir(path, parents=True, exist_ok=True)
+    path.mkdir(parents=True, exist_ok=True)
 
     for page in range(1, 999):  # safety upper bound
         url = f"https://www.greek-language.gr/digitalResources/ancient_greek/library/browse.html?text_id={text_id}&page={page}"
