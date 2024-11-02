@@ -194,12 +194,6 @@ def fix_textlines(line: str) -> str:
     return line
 
 
-def write(opath: Path, text: str) -> None:
-    with opath.open("w") as out:
-        for line in text.split("\n"):
-            out.write(f"{line}\n")
-
-
 def fix(text: str) -> str:
     text = standarize_punctuation(text)
 
@@ -216,13 +210,24 @@ def fix(text: str) -> str:
     return text
 
 
-def main() -> None:
-    filepath = Path("book/book.txt")
-    with filepath.open("r") as file:
-        text = file.read().strip()
-        text = fix(text)
+def read_write(ipath: Path, opath: Path) -> None:
+    text = ipath.open("r").read().strip()
+    text = fix(text)
+    with opath.open("w") as out:
+        for line in text.split("\n"):
+            out.write(f"{line}\n")
 
-    write(filepath.with_stem("book_fix"), text)
+
+def main(single_file: bool = False) -> None:
+    if single_file:
+        ipath = Path("book/book.txt")
+        opath = ipath.with_stem(f"{ipath.stem}_fix")
+        read_write(ipath, opath)
+    else:
+        folder_path = Path("book/texts")
+        for ipath in folder_path.iterdir():
+            opath = ipath  # .with_stem(f"{ipath.stem}_fix")
+            read_write(ipath, opath)
 
 
 if __name__ == "__main__":
