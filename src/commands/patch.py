@@ -6,17 +6,17 @@ from log import logger
 from utils import double_check, sorted_subpaths, timing
 
 
-async def patch_audios_async(language_code: str, course_id: int, audios_folder: Path) -> None:
+async def patch_audios_async(lang: str, course_id: int, audios_folder: Path) -> None:
     audios_path = sorted_subpaths(audios_folder, mode="human")
     logger.info(f"Found {len(audios_path)} audio(s) at path")
 
-    async with LingqHandler(language_code) as handler:
+    async with LingqHandler(lang) as handler:
         lessons = await handler.get_collection_lessons_from_id(course_id)
         if not lessons:
             return
 
         collection_title = lessons[0].collection_title
-        logger.info(f"Patching audio for course: {collection_title} ({language_code})")
+        logger.info(f"Patching audio for course: {collection_title} ({lang})")
 
         if len(audios_path) == 1 and len(lessons) > 1:
             logger.info("Patching all the lessons with the same audio")
@@ -33,19 +33,19 @@ async def patch_audios_async(language_code: str, course_id: int, audios_folder: 
 
 
 @timing
-def patch_audios(language_code: str, course_id: int, audios_folder: Path) -> None:
+def patch_audios(lang: str, course_id: int, audios_folder: Path) -> None:
     """Deals with overwriting of existing lessons / collections.
     The main usecase is to add audio to an already uploaded book where some
     editing has already be done, and we wouldn't want to upload the text again.
     """
     # The blank audios were found here: https://github.com/anars/blank-audio.
-    asyncio.run(patch_audios_async(language_code, course_id, audios_folder))
+    asyncio.run(patch_audios_async(lang, course_id, audios_folder))
 
 
 if __name__ == "__main__":
     # Defaults for manually running this script.
     patch_audios(
-        language_code="ja",
+        lang="ja",
         course_id=537808,
         audios_folder=Path("example/audios"),
     )

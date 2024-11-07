@@ -20,8 +20,8 @@ from utils import timing
 OldPlaylist = list[Any]
 
 
-def has_closed_captions(language_code: str, entry: Any) -> bool:  # noqa: ANN401
-    return "subtitles" in entry and language_code in entry["subtitles"]
+def has_closed_captions(lang: str, entry: Any) -> bool:  # noqa: ANN401
+    return "subtitles" in entry and lang in entry["subtitles"]
 
 
 async def filter_playlist(
@@ -39,7 +39,7 @@ async def filter_playlist(
         filtered_playlist: OldPlaylist = []
         for entry in playlist:
             title = entry["title"]
-            if not has_closed_captions(handler.language_code, entry):
+            if not has_closed_captions(handler.lang, entry):
                 logger.info(f"[skip: no CC] {title}")
             else:
                 filtered_playlist.append(entry)
@@ -79,7 +79,7 @@ async def post_playlist_entry(
     They do the subtitle generation when needed (that is, when there are no CC).
     """
     title = entry["title"]
-    lang = handler.language_code
+    lang = handler.lang
     # logger.critical(entry.get("subtitles", "NSUB"))
     if not has_closed_captions(lang, entry):
         logger.warning(f"No closed captions: skipping {title}.")
@@ -140,7 +140,7 @@ def get_playlist(url: str, ydl_opts: dict[str, Any]) -> Any:  # noqa: ANN401
 
 
 async def post_yt_playlist_async(
-    language_code: str,
+    lang: str,
     course_id: int,
     playlist_url: str,
     skip_uploaded: bool,
@@ -155,7 +155,7 @@ async def post_yt_playlist_async(
         # program. If you know it hasn't, you would probably want this set to 'False'.
         "ignoreerrors": True,
         "verbose": False,
-        "extractor_args": {"youtube": {"lang": [language_code]}},
+        "extractor_args": {"youtube": {"lang": [lang]}},
     }
 
     # Just bulk download the urls (faster but contains no sub info).
@@ -165,7 +165,7 @@ async def post_yt_playlist_async(
     playlist_data = get_playlist(playlist_url, ydl_opts)
 
     if "entries" in playlist_data:
-        async with LingqHandler(language_code) as handler:
+        async with LingqHandler(lang) as handler:
             playlist = playlist_data["entries"]
             playlist = await filter_playlist(
                 handler, course_id, playlist, skip_uploaded, skip_no_cc
@@ -176,7 +176,7 @@ async def post_yt_playlist_async(
 
 @timing
 def post_yt_playlist(
-    language_code: str,
+    lang: str,
     course_id: int,
     playlist_url: str,
     *,
@@ -187,7 +187,7 @@ def post_yt_playlist(
     Main function to download and upload videos from a YouTube playlist to LingQ.
 
     Args:
-        language_code (str): The language code for the course.
+        lang (str): The language code for the course.
         course_id (int): The ID of the course to which videos will be uploaded.
         playlist_url (str): The URL of the YouTube playlist or channel to download videos from.
         skip_uploaded (bool): If True, skip videos already uploaded to the course.
@@ -197,7 +197,7 @@ def post_yt_playlist(
     """
     asyncio.run(
         post_yt_playlist_async(
-            language_code,
+            lang,
             course_id,
             playlist_url,
             skip_uploaded,
@@ -213,7 +213,7 @@ if __name__ == "__main__":
     PLAYLIST_URL = "https://www.youtube.com/@mikurealjapanese/videos"
 
     post_yt_playlist(
-        language_code="ja",
+        lang="ja",
         course_id=537808,
         playlist_url=PLAYLIST_URL,
         skip_uploaded=True,

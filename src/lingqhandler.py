@@ -30,7 +30,7 @@ class LingqHandler:
     This abstracts some of the requests sent to the LingQ API.
 
     Attributes:
-        language_code (str): The language code for the course (e.g., 'ja' for Japanese).
+        lang (str): The language code for the course (e.g., 'ja' for Japanese).
         config (Config): Configuration settings for the LingQ API.
         session (RetryClient): A retry-enabled HTTP client session.
     """
@@ -38,8 +38,8 @@ class LingqHandler:
     API_URL_V2 = "https://www.lingq.com/api/v2"
     API_URL_V3 = "https://www.lingq.com/api/v3"
 
-    def __init__(self, language_code: str) -> None:
-        self.language_code = language_code
+    def __init__(self, lang: str) -> None:
+        self.lang = lang
         self.config = Config()
         retry_client = RetryClient(
             client_session=ClientSession(),
@@ -96,7 +96,7 @@ class LingqHandler:
     ) -> Any:  # noqa: ANN401
         api_url = {2: LingqHandler.API_URL_V2, 3: LingqHandler.API_URL_V3}[version]
         if add_language:
-            url = f"{api_url}/{self.language_code}/{endpoint}"
+            url = f"{api_url}/{self.lang}/{endpoint}"
         else:
             url = f"{api_url}/{endpoint}"
 
@@ -116,7 +116,7 @@ class LingqHandler:
 
         return data
 
-    async def _get_user_language_codes(self) -> list[str]:
+    async def _get_user_langs(self) -> list[str]:
         """Get a list of language codes with known words.
         https://www.lingq.com/apidocs/api-2.0.html#get
         """
@@ -124,16 +124,16 @@ class LingqHandler:
         return [lc["code"] for lc in data if lc["knownWords"] > 0]
 
     @classmethod
-    def get_user_language_codes(cls) -> list[str]:
+    def get_user_langs(cls) -> list[str]:
         """Get a list of language codes with known words.
         This is a class method since it does not require initializing a language code.
         """
 
-        async def get_user_language_codes_tmp() -> list[str]:
+        async def get_user_langs_tmp() -> list[str]:
             async with cls("Filler") as handler:
-                return await handler._get_user_language_codes()
+                return await handler._get_user_langs()
 
-        return asyncio.run(get_user_language_codes_tmp())
+        return asyncio.run(get_user_langs_tmp())
 
     async def get_lesson_from_id(self, lesson_id: int) -> LessonV3:
         """Get a lesson, from its id. Example id: 34754329
@@ -159,7 +159,7 @@ class LingqHandler:
         """Get a list of lessons, from its id. Example id: 537808
         Corresponding url: https://www.lingq.com/api/v3/ja/collections/537808/lessons
         """
-        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/collections/{collection_id}/lessons/"
+        url = f"{LingqHandler.API_URL_V3}/{self.lang}/collections/{collection_id}/lessons/"
         collection_lessons = []
         cur_url = url
 
@@ -174,7 +174,7 @@ class LingqHandler:
             cur_url = collection_lessons_at_page.next
 
         if collection_lessons.count == 0:
-            editor_url = get_editor_url(self.language_code, collection_id, "course")
+            editor_url = get_editor_url(self.lang, collection_id, "course")
             print(
                 f"{Colors.WARN}WARN{Colors.END}"
                 f" The collection {collection_id} at {editor_url} has no lessons, (delete it?)"
@@ -221,7 +221,7 @@ class LingqHandler:
         if collection.get("detail", "") == "Not found.":
             return None
         col = Collection()
-        col.add_data(self.language_code, collection)
+        col.add_data(self.lang, collection)
         return col
 
     async def get_audio_from_lesson(self, lesson: LessonV3) -> bytes | None:
@@ -245,7 +245,7 @@ class LingqHandler:
         raise_for: dict[int, str] = {},
         warn_for: dict[int, str] = {},
     ) -> ReqReturnType:
-        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/{endpoint}"
+        url = f"{LingqHandler.API_URL_V3}/{self.lang}/{endpoint}"
         logger.trace(f"Patching at {url}")
         async with self.session.patch(url, headers=self.config.headers, data=data) as response:
             if msg := raise_for.get(response.status, ""):
@@ -268,7 +268,7 @@ class LingqHandler:
         raise_for: dict[int, str] = {},
         warn_for: dict[int, str] = {},
     ) -> ReqReturnType:
-        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/{endpoint}"
+        url = f"{LingqHandler.API_URL_V3}/{self.lang}/{endpoint}"
         async with self.session.post(url, headers=self.config.headers, data=data) as response:
             if msg := raise_for.get(response.status, ""):
                 print(msg)
@@ -360,6 +360,6 @@ class LingqHandler:
 
     async def delete_course(self, course_id: int) -> None:
         """Crashes if the course is not succesfully deleted."""
-        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/collections/{course_id}"
+        url = f"{LingqHandler.API_URL_V3}/{self.lang}/collections/{course_id}"
         async with self.session.delete(url, headers=self.config.headers) as response:
             assert response.status == 202

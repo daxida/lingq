@@ -5,7 +5,7 @@ COLLECTION_LIST = [
     Collection(
         _id=693846,
         title="Quick Imports",
-        language_code="fr",
+        lang="fr",
         course_url="https://www.lingq.com/en/learn/fr/web/library/course/693846",
         level="-",
         has_audio=True,
@@ -18,7 +18,7 @@ COLLECTION_LIST = [
     Collection(
         _id=518792,
         title="La Dame aux Camélias - Dumas Fils",
-        language_code="fr",
+        lang="fr",
         course_url="https://www.lingq.com/en/learn/fr/web/library/course/518792",
         level="C1",
         has_audio=True,
@@ -31,7 +31,7 @@ COLLECTION_LIST = [
     Collection(
         _id=1133996,
         title="Le laboureur et les mangeurs de vent - Boris Cyrulnik",
-        language_code="fr",
+        lang="fr",
         course_url="https://www.lingq.com/en/learn/fr/web/library/course/1133996",
         level="C2",
         has_audio=True,

@@ -10,12 +10,12 @@ from utils import get_editor_url, timing
 
 
 def write_lessons(
-    language_code: str, lessons: list[SimpleLesson], opath: Path, verbose: bool
+    lang: str, lessons: list[SimpleLesson], opath: Path, verbose: bool
 ) -> None:
     for idx, lesson in enumerate(lessons, 1):
         if verbose:
             print(f"Writing lesson nº{idx}: {lesson.title}")
-        write_lesson(language_code, lesson, opath)
+        write_lesson(lang, lesson, opath)
 
 
 def filter_downloaded(
@@ -37,7 +37,7 @@ def filter_downloaded(
 
 
 async def get_lessons_async(
-    language_code: str,
+    lang: str,
     course_id: int,
     opath: Path,
     *,
@@ -49,19 +49,19 @@ async def get_lessons_async(
 ) -> list[SimpleLesson]:
     # TODO: Return a LessonV3?
     # if not handler:
-    #     handler = LingqHandler(language_code)
+    #     handler = LingqHandler(lang)
 
-    async with LingqHandler(language_code) as handler:
+    async with LingqHandler(lang) as handler:
         lessons = await handler.get_collection_lessons_from_id(course_id)
         if not lessons:
             return []
 
-        editor_url = get_editor_url(language_code, course_id, "course")
+        editor_url = get_editor_url(lang, course_id, "course")
         logger.trace(editor_url)
         collection_title = lessons[0].collection_title
 
         if skip_downloaded:
-            texts_folder = opath / language_code / collection_title / "texts"
+            texts_folder = opath / lang / collection_title / "texts"
             lessons = filter_downloaded(texts_folder, lessons)
             if not lessons:
                 return []
@@ -80,14 +80,14 @@ async def get_lessons_async(
         logger.success(f"'{collection_title}'")
 
         if write:
-            write_lessons(language_code, lessons, opath, verbose)
+            write_lessons(lang, lessons, opath, verbose)
 
         return lessons
 
 
 @timing
 def get_lessons(
-    language_code: str,
+    lang: str,
     course_id: int,
     opath: Path,
     *,
@@ -101,7 +101,7 @@ def get_lessons(
     Downloads text and/or audio from a course given the language code and the course ID.
 
     Args:
-        language_code (str): The language code of the course.
+        lang (str): The language code of the course.
         course_id (str): The ID of the course. This is the last number in the course URL.
         skip_downloaded (bool): If True, skip downloading already downloaded lessons.
         download_audio (bool): If True, downloads the audio files for the lessons.
@@ -111,7 +111,7 @@ def get_lessons(
     """
     asyncio.run(
         get_lessons_async(
-            language_code,
+            lang,
             course_id,
             opath,
             download_audio=download_audio,
@@ -126,7 +126,7 @@ def get_lessons(
 if __name__ == "__main__":
     # Defaults for manually running this script.
     get_lessons(
-        language_code="el",
+        lang="el",
         course_id=730129,
         opath=Path("downloads"),
         download_audio=True,

@@ -21,7 +21,7 @@ class Collection:
     # fmt: off
     _id:            int = 0
     title:          str | None = None
-    language_code:  str | None = None
+    lang:           str | None = None
     course_url:     str | None = None
     level:          str = "-"
     has_audio:      bool = False
@@ -32,16 +32,16 @@ class Collection:
     views_count:    int = 0
     # fmt: on
 
-    def add_data(self, language_code: str, collection_v2: Any) -> None:  # noqa: ANN401
+    def add_data(self, lang: str, collection_v2: Any) -> None:  # noqa: ANN401
         """Transfer the data from the JSON to the Collection object"""
 
         # TODO: Fixme (this needs both [lessons] and collection info....
 
-        self.language_code = language_code
+        self.lang = lang
         self._id = collection_v2["pk"]  # it's pk in V2 and id in V3
         self.title = collection_v2["title"]
         self.course_url = (
-            f"https://www.lingq.com/en/learn/{self.language_code}/web/library/course/{self._id}"
+            f"https://www.lingq.com/en/learn/{self.lang}/web/library/course/{self._id}"
         )
 
         lessons = collection_v2["lessons"]

@@ -17,7 +17,7 @@ async def get_lessons_async_rate_limited(
 
 
 async def get_courses_for_language_async(
-    language_code: str,
+    lang: str,
     opath: Path,
     *,
     download_audio: bool,
@@ -28,16 +28,16 @@ async def get_courses_for_language_async(
     # Number of courses to download in batch
     semaphore = asyncio.Semaphore(batch_size)
 
-    async with LingqHandler(language_code) as handler:
+    async with LingqHandler(lang) as handler:
         # This is only for the courses ID.
         # To get the text we need to do yet another request.
         my_collections = await handler.get_my_collections()
-        logger.info(f"Found {my_collections.count} courses in language: {language_code}")
+        logger.info(f"Found {my_collections.count} courses in language: {lang}")
 
         # Async fetching of courses is too fast for the API...
         # for res in my_collections.results:
         #     await get_lessons_async(
-        #         language_code,
+        #         lang,
         #         res.id,
         #         skip_already_downloaded=False,
         #         download_audio=download_audio,
@@ -52,7 +52,7 @@ async def get_courses_for_language_async(
             *(
                 get_lessons_async_rate_limited(
                     semaphore,
-                    language_code,
+                    lang,
                     res.id,
                     skip_downloaded=skip_downloaded,
                     download_audio=download_audio,
@@ -67,7 +67,7 @@ async def get_courses_for_language_async(
 
 
 async def get_courses_async(
-    language_codes: list[str],
+    langs: list[str],
     opath: Path,
     *,
     download_audio: bool,
@@ -75,11 +75,11 @@ async def get_courses_async(
     skip_downloaded: bool,
     batch_size: int,
 ) -> None:
-    logger.info(f"Getting courses for languages: {', '.join(language_codes)}")
+    logger.info(f"Getting courses for languages: {', '.join(langs)}")
     double_check("CAREFUL: This reorders your 'Continue studying' shelf.")
-    for language_code in language_codes:
+    for lang in langs:
         await get_courses_for_language_async(
-            language_code,
+            lang,
             opath,
             download_audio=download_audio,
             download_timestamps=download_timestamps,
@@ -91,7 +91,7 @@ async def get_courses_async(
 
 @timing
 def get_courses(
-    language_codes: list[str],
+    langs: list[str],
     opath: Path,
     *,
     download_audio: bool,
@@ -104,11 +104,11 @@ def get_courses(
     CAREFUL: This reorders your 'Continue studying' shelf.
     """
     # If no language codes are given, use all languages.
-    if not language_codes:
-        language_codes = LingqHandler.get_user_language_codes()
+    if not langs:
+        langs = LingqHandler.get_user_langs()
     asyncio.run(
         get_courses_async(
-            language_codes,
+            langs,
             opath,
             download_audio=download_audio,
             download_timestamps=download_timestamps,
@@ -121,7 +121,7 @@ def get_courses(
 if __name__ == "__main__":
     # Defaults for manually running this script.
     get_courses(
-        language_codes=["ja"],
+        langs=["ja"],
         download_audio=False,
         download_timestamps=False,
         skip_downloaded=False,

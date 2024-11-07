@@ -124,8 +124,8 @@ def get_patch_requests_order(
     return requests
 
 
-async def sort_lessons_async(language_code: str, course_id: int) -> None:
-    async with LingqHandler(language_code) as handler:
+async def sort_lessons_async(lang: str, course_id: int) -> None:
+    async with LingqHandler(lang) as handler:
         lessons = await handler.get_collection_lessons_from_id(course_id)
         if not lessons:
             return
@@ -145,10 +145,10 @@ async def sort_lessons_async(language_code: str, course_id: int) -> None:
 
 
 @timing
-def sort_lessons(language_code: str, course_id: int) -> None:
-    asyncio.run(sort_lessons_async(language_code, course_id))
+def sort_lessons(lang: str, course_id: int) -> None:
+    asyncio.run(sort_lessons_async(lang, course_id))
 
 
 if __name__ == "__main__":
     # Defaults for manually running this script.
-    sort_lessons(language_code="ja", course_id=537808)
+    sort_lessons(lang="ja", course_id=537808)

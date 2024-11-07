@@ -4,9 +4,9 @@ from pathlib import Path
 from models.collection_v3 import CollectionV3
 
 
-def make_test_collection_v3(language_code: str) -> None:
+def make_test_collection_v3(lang: str) -> None:
     fixture_folder_path = Path("tests/models/models_fixtures/collections")
-    fixture_path = fixture_folder_path / f"{language_code}.json"
+    fixture_path = fixture_folder_path / f"{lang}.json"
     with fixture_path.open("r") as json_file:
         data = json.load(json_file)
         CollectionV3.model_validate(data)

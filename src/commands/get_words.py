@@ -13,7 +13,7 @@ from utils import timing
 WordDump = list[dict[str, Any]]
 
 
-async def get_words_for_language_async(language_code: str, page_size: int = 500) -> WordDump:
+async def get_words_for_language_async(lang: str, page_size: int = 500) -> WordDump:
     """
     Get all LingQs for the given language.
 
@@ -22,8 +22,8 @@ async def get_words_for_language_async(language_code: str, page_size: int = 500)
     """
     assert page_size <= 1000  # The API itself clamps it to 1000 anyway
 
-    async with LingqHandler(language_code) as handler:
-        url = f"https://www.lingq.com/api/v3/{language_code}/cards/"
+    async with LingqHandler(lang) as handler:
+        url = f"https://www.lingq.com/api/v3/{lang}/cards/"
         cur_url = f"{url}?page=1&page_size={page_size}"
         words: list[Card] = []
         step = 1
@@ -35,7 +35,7 @@ async def get_words_for_language_async(language_code: str, page_size: int = 500)
                 cards = Cards.model_validate(cards_json)
 
             if step == 1:
-                logger.info(f"Getting {cards.count} lingqs for {language_code}...")
+                logger.info(f"Getting {cards.count} lingqs for {lang}...")
                 total_pages = ceil(cards.count / page_size)
 
             words.extend(cards.results)
@@ -50,9 +50,9 @@ async def get_words_for_language_async(language_code: str, page_size: int = 500)
         return dump
 
 
-def write_words_for_language(language_code: str, opath: Path, dump: WordDump) -> None:
+def write_words_for_language(lang: str, opath: Path, dump: WordDump) -> None:
     """Write the word dump for a specific language."""
-    dump_folder_path = opath / "lingqs" / language_code
+    dump_folder_path = opath / "lingqs" / lang
     Path.mkdir(dump_folder_path, parents=True, exist_ok=True)
     dump_path = dump_folder_path / "lingqs.json"
     with dump_path.open("w") as f:
@@ -60,25 +60,25 @@ def write_words_for_language(language_code: str, opath: Path, dump: WordDump) ->
     logger.success(f"Wrote words at {dump_path}")
 
 
-async def get_words_async(language_codes: list[str], opath: Path) -> None:
-    for language_code in language_codes:
-        dump = await get_words_for_language_async(language_code)
-        write_words_for_language(language_code, opath, dump)
+async def get_words_async(langs: list[str], opath: Path) -> None:
+    for lang in langs:
+        dump = await get_words_for_language_async(lang)
+        write_words_for_language(lang, opath, dump)
 
 
 @timing
-def get_words(language_codes: list[str], opath: Path) -> None:
+def get_words(langs: list[str], opath: Path) -> None:
     """Get my words (LingQs) from a language."""
     # If no language codes are given, use all languages.
-    if not language_codes:
-        language_codes = LingqHandler.get_user_language_codes()
-    logger.info(f"Getting words for languages: {', '.join(language_codes)}")
-    asyncio.run(get_words_async(language_codes, opath))
+    if not langs:
+        langs = LingqHandler.get_user_langs()
+    logger.info(f"Getting words for languages: {', '.join(langs)}")
+    asyncio.run(get_words_async(langs, opath))
 
 
 if __name__ == "__main__":
     # Defaults for manually running this script.
     get_words(
-        language_codes=["pt"],
+        langs=["pt"],
         opath=Path("downloads/lingqs"),
     )

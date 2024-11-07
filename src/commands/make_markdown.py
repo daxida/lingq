@@ -13,7 +13,7 @@ def sanitize_title(title: str) -> str:
     return title.replace("|", "-").replace("[", "(").replace("]", ")")
 
 
-def write_readme(language_codes: list[str], out_folder: Path) -> None:
+def write_readme(langs: list[str], out_folder: Path) -> None:
     """
     Writes an index-like README.md:
         * [Greek (el)](./courses/courses_el.md)
@@ -24,8 +24,8 @@ def write_readme(language_codes: list[str], out_folder: Path) -> None:
 
     readme_path = out_folder / "README.md"
     with readme_path.open("w", encoding="utf-8") as f:
-        for language_code in language_codes:
-            f.write(f"* [{language_code}](./courses/courses_{language_code}.md)\n")
+        for lang in langs:
+            f.write(f"* [{lang}](./courses/courses_{lang}.md)\n")
 
 
 def format_markdown(collection_list: list[Collection], include_views: bool) -> str:
@@ -131,12 +131,12 @@ def sort_collections(collections: list[Collection]) -> None:
 
 
 async def make_markdown_async(
-    language_codes: list[str],
+    langs: list[str],
     select_courses: str,
     include_views: bool,
     out_folder: Path,
 ) -> None:
-    print(f"Making markdown for language(s): '{', '.join(language_codes)}'")
+    print(f"Making markdown for language(s): '{', '.join(langs)}'")
     print(f"With courses selection: {select_courses}")
     print(f"With include views: {include_views}")
     print(f"At folder: {out_folder}")
@@ -146,30 +146,30 @@ async def make_markdown_async(
     readme_folder = out_folder / "markdowns" / f"markdown_{select_courses}{extension_msg}"
     courses_folder = readme_folder / "courses"
     Path.mkdir(courses_folder, parents=True, exist_ok=True)
-    write_readme(language_codes, readme_folder)
+    write_readme(langs, readme_folder)
 
     async with LingqHandler("Filler") as handler:
-        n_languages = len(language_codes)
-        for idx, language_code in enumerate(language_codes, 1):
-            print(f"Starting download for {language_code} ({idx} of {n_languages})")
+        n_languages = len(langs)
+        for idx, lang in enumerate(langs, 1):
+            print(f"Starting download for {lang} ({idx} of {n_languages})")
 
-            handler.language_code = language_code
+            handler.lang = lang
             collections_list = await get_collections(handler, select_courses)
 
             if not collections_list:
-                print(f"Didn't find any courses for language: {language_code}")
+                print(f"Didn't find any courses for language: {lang}")
                 continue
 
             sort_collections(collections_list)
 
-            out_folder_markdown = courses_folder / f"courses_{language_code}.md"
+            out_folder_markdown = courses_folder / f"courses_{lang}.md"
             write_markdown(collections_list, out_folder_markdown, include_views)
-            print(f"Created markdown for {language_code}!")
+            print(f"Created markdown for {lang}!")
 
 
 @timing
 def make_markdown(
-    language_codes: list[str],
+    langs: list[str],
     select_courses: str,
     include_views: bool,
     out_folder: Path,
@@ -178,7 +178,7 @@ def make_markdown(
     Generate markdown files for the given language codes.
 
     Args:
-        language_codes (list[str]): List of language codes to process.
+        langs (list[str]): List of language codes to process.
             If no language codes are given, use all languages.
         select_courses (str): Determines which courses to include.
             - "shared" for only my imported and shared collections (ignore private)
@@ -187,15 +187,15 @@ def make_markdown(
         include_views (bool): If True, includes the number of views in the markdown.
         out_folder (str): The output folder where the markdown files will be saved.
     """
-    if not language_codes:
-        language_codes = LingqHandler.get_user_language_codes()
-    asyncio.run(make_markdown_async(language_codes, select_courses, include_views, out_folder))
+    if not langs:
+        langs = LingqHandler.get_user_langs()
+    asyncio.run(make_markdown_async(langs, select_courses, include_views, out_folder))
 
 
 if __name__ == "__main__":
     # Defaults for manually running this script.
     make_markdown(
-        language_codes=["fr"],
+        langs=["fr"],
         select_courses="all",  # all, shared or mine
         include_views=False,
         out_folder=Path("downloads"),

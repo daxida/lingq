@@ -11,19 +11,19 @@ from lingqhandler import LingqHandler
 BASE_URL = "https://www.lingq.com"
 
 
-async def fetch_and_save_to_csv(language_code: str) -> None:
-    library_data_list = await fetch_library(language_code)
-    data_list = [process_json_entry(language_code, entry) for entry in library_data_list]
+async def fetch_and_save_to_csv(lang: str) -> None:
+    library_data_list = await fetch_library(lang)
+    data_list = [process_json_entry(lang, entry) for entry in library_data_list]
     data_list.sort(key=lambda x: x["roses"], reverse=True)
-    write_to_csv(language_code, data_list)
+    write_to_csv(lang, data_list)
 
 
-async def fetch_library(language_code: str) -> list[Any]:
+async def fetch_library(lang: str) -> list[Any]:
     async with LingqHandler("Filler") as handler:
         library_data_list: list[Any] = []
         page = 1
         while True:
-            library_url = f"{BASE_URL}/api/v3/{language_code}/search/?level=1&level=2&level=3&level=4&level=5&level=6&sortBy=mostLiked&type=collection&page={page}"
+            library_url = f"{BASE_URL}/api/v3/{lang}/search/?level=1&level=2&level=3&level=4&level=5&level=6&sortBy=mostLiked&type=collection&page={page}"
             library_response = await handler.session.get(
                 library_url, headers=handler.config.headers
             )
@@ -48,7 +48,7 @@ async def fetch_library(language_code: str) -> list[Any]:
     return library_data_list
 
 
-def process_json_entry(language_code: str, entry: dict[str, Any]) -> dict[str, str]:
+def process_json_entry(lang: str, entry: dict[str, Any]) -> dict[str, str]:
     id_value = entry.get("id")
     title = entry.get("title")
     lessons_count = entry.get("lessonsCount")
@@ -61,7 +61,7 @@ def process_json_entry(language_code: str, entry: dict[str, Any]) -> dict[str, s
     status = entry.get("status", "")
 
     return {
-        "link": f"{BASE_URL}/uni/learn/{language_code}/web/library/course/{id_value}",
+        "link": f"{BASE_URL}/uni/learn/{lang}/web/library/course/{id_value}",
         "title": title,
         "level": level,
         "lessonsCount": lessons_count,
@@ -74,8 +74,8 @@ def process_json_entry(language_code: str, entry: dict[str, Any]) -> dict[str, s
     }
 
 
-def write_to_csv(language_code: str, data_list: list[Any]) -> None:
-    output_filename = Path(f"{language_code}_library.csv")
+def write_to_csv(lang: str, data_list: list[Any]) -> None:
+    output_filename = Path(f"{lang}_library.csv")
 
     with output_filename.open("w", newline="", encoding="utf-8") as csv_file:
         fieldnames = [
@@ -99,10 +99,10 @@ def write_to_csv(language_code: str, data_list: list[Any]) -> None:
     print(f"Data saved to {output_filename}.")
 
 
-def overview(language_code: str) -> None:
-    asyncio.run(fetch_and_save_to_csv(language_code))
+def overview(lang: str) -> None:
+    asyncio.run(fetch_and_save_to_csv(lang))
 
 
 if __name__ == "__main__":
     # Defaults for manually running this script.
-    overview(language_code="el")
+    overview(lang="el")

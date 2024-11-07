@@ -17,22 +17,19 @@ def test_handler() -> None:
     """NOTE: This is user dependent!"""
     logger.info("Starting test_pipeline")
 
-    # Test get_user_language_codes
+    # Test get_user_langs
     test_lc = "de"
-    language_codes = LingqHandler.get_user_language_codes()
-    assert test_lc in language_codes
-    logger.debug(f"User language codes: {language_codes}")
+    langs = LingqHandler.get_user_langs()
+    assert test_lc in langs
+    logger.debug(f"User language codes: {langs}")
 
     asyncio.run(run_handler(test_lc))
 
 
-async def run_handler(language_code: str) -> None:
+async def run_handler(lang: str) -> None:
     tmpname = "__tmp"
 
-    async with LingqHandler(language_code) as handler:
-        # await handler.get_languages()
-        # await handler._get_user_language_codes()
-
+    async with LingqHandler(lang) as handler:
         # 1.1.1 Course creation / deletion
         logger.info("Testing course creation")
         responses = await asyncio.gather(

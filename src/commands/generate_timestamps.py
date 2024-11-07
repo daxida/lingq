@@ -21,9 +21,9 @@ async def filter_timestamped(
 
 
 async def generate_timestamps_async(
-    language_code: str, course_id: int, skip_timestamped: bool
+    lang: str, course_id: int, skip_timestamped: bool
 ) -> None:
-    async with LingqHandler(language_code) as handler:
+    async with LingqHandler(lang) as handler:
         lessons = await handler.get_collection_lessons_from_id(course_id)
 
         if not lessons:
@@ -38,10 +38,10 @@ async def generate_timestamps_async(
         logger.info(f"Generated timestamps for '{lessons[0].collection_title}'.")
 
 
-def generate_timestamps(language_code: str, course_id: int, skip_timestamped: bool) -> None:
-    asyncio.run(generate_timestamps_async(language_code, course_id, skip_timestamped))
+def generate_timestamps(lang: str, course_id: int, skip_timestamped: bool) -> None:
+    asyncio.run(generate_timestamps_async(lang, course_id, skip_timestamped))
 
 
 if __name__ == "__main__":
     # Defaults for manually running this script.
-    generate_timestamps(language_code="ja", course_id=537808, skip_timestamped=True)
+    generate_timestamps(lang="ja", course_id=537808, skip_timestamped=True)

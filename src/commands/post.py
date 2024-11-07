@@ -157,7 +157,7 @@ def check_extensions(paths: list[Path], supported: list[str]) -> list[str]:
 
 
 async def post_async(
-    language_code: str,
+    lang: str,
     course_id: int,
     texts_folder: Path | None,
     audios_folder: Path | None,
@@ -182,16 +182,16 @@ async def post_async(
 
     pairings = apply_pairing_strategy(pairing_strategy, texts_paths, audios_paths)
 
-    editor_url = get_editor_url(language_code, course_id, "course")
+    editor_url = get_editor_url(lang, course_id, "course")
     logger.info(f"Uploading at {editor_url}")
-    async with LingqHandler(language_code) as handler:
+    async with LingqHandler(lang) as handler:
         for tpath, apath in pairings:
             await post_lesson(handler, course_id, tpath, apath)
 
 
 @timing
 def post(
-    language_code: str,
+    lang: str,
     course_id: int,
     texts_folder: Path,
     audios_folder: Path | None = None,
@@ -204,7 +204,7 @@ def post(
     and the audio (.mp3 or .m4a) files should be in audios_folder.
 
     Args:
-        language_code (str): The language code of the course.
+        lang (str): The language code of the course.
         course_id (int): The ID of the course. This is the last number in the course URL.
         texts_folder (Path): The folder containing the preprocessed split text files.
         audios_folder (Path, optional): The folder containing the audio files.
@@ -220,7 +220,7 @@ def post(
     """
     asyncio.run(
         post_async(
-            language_code,
+            lang,
             course_id,
             texts_folder,
             audios_folder,
@@ -232,7 +232,7 @@ def post(
 if __name__ == "__main__":
     # Defaults for manually running this script.
     post(
-        language_code="ja",
+        lang="ja",
         course_id=537808,
         texts_folder=Path("downloads/ja/Quick Imports/srts"),
         # texts_folder=Path("downloads/ja/Quick Imports/texts"),

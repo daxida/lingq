@@ -7,9 +7,9 @@ from fix_utils.ja.fix_japanese import fix_youtube_newlines
 from lingqhandler import LingqHandler
 
 
-def transformation_fn(language_code: str, text: str) -> str:
+def transformation_fn(lang: str, text: str) -> str:
     # Replace this with your custom logic per language
-    match language_code:
+    match lang:
         case "el":
             print("Fixing latin letters for greek")
             return fix_latin_letters(text)
@@ -20,9 +20,9 @@ def transformation_fn(language_code: str, text: str) -> str:
             raise NotImplementedError()
 
 
-async def fix_async(language_code: str, course_id: int) -> None:
+async def fix_async(lang: str, course_id: int) -> None:
     lessons = await get_lessons_async(
-        language_code,
+        lang,
         course_id,
         skip_downloaded=False,
         download_audio=False,
@@ -32,14 +32,14 @@ async def fix_async(language_code: str, course_id: int) -> None:
         verbose=False,
     )
     for lesson in lessons:
-        text = transformation_fn(language_code, lesson.text)
-        async with LingqHandler(language_code) as handler:
+        text = transformation_fn(lang, lesson.text)
+        async with LingqHandler(lang) as handler:
             await handler.patch_text(lesson.id_, text)
 
 
-def fix(language_code: str, course_id: int) -> None:
-    asyncio.run(fix_async(language_code, course_id))
+def fix(lang: str, course_id: int) -> None:
+    asyncio.run(fix_async(lang, course_id))
 
 
 if __name__ == "__main__":
-    fix(language_code="el", course_id=1070313)
+    fix(lang="el", course_id=1070313)

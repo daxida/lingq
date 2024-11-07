@@ -45,25 +45,25 @@ def write_pictures(pictures_and_titles: list[TitledPicture], collection_path: Pa
     print(f"Wrote pictures at {pictures_path}")
 
 
-async def get_pictures_async(language_code: str, course_id: int, opath: Path) -> None:
-    async with LingqHandler(language_code) as handler:
+async def get_pictures_async(lang: str, course_id: int, opath: Path) -> None:
+    async with LingqHandler(lang) as handler:
         lessons = await handler.get_collection_lessons_from_id(course_id)
         if not lessons:
             return
         collection_title = lessons[0].collection_title
-        print(f"Getting pictures for {collection_title} ({language_code})")
+        print(f"Getting pictures for {collection_title} ({lang})")
         tasks = [get_picture(handler, lesson_json) for lesson_json in lessons]
         pictures_and_titles = await asyncio.gather(*tasks)
-        collection_path = opath / language_code / collection_title
+        collection_path = opath / lang / collection_title
         write_pictures(pictures_and_titles, collection_path)
 
 
 @timing
-def get_pictures(language_code: str, course_id: int, opath: Path) -> None:
+def get_pictures(lang: str, course_id: int, opath: Path) -> None:
     """Get all pictures from a course"""
-    asyncio.run(get_pictures_async(language_code, course_id, opath))
+    asyncio.run(get_pictures_async(lang, course_id, opath))
 
 
 if __name__ == "__main__":
     # Defaults for manually running this script.
-    get_pictures(language_code="ja", course_id=537808, opath=Path("downloads"))
+    get_pictures(lang="ja", course_id=537808, opath=Path("downloads"))

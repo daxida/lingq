@@ -28,9 +28,9 @@ def double_check(msg: str = "") -> None:
 
 
 def get_editor_url(
-    language_code: str, content_id: int, content_type: Literal["lesson", "course"]
+    lang: str, content_id: int, content_type: Literal["lesson", "course"]
 ) -> str:
-    base = f"https://www.lingq.com/learn/{language_code}/web/editor"
+    base = f"https://www.lingq.com/learn/{lang}/web/editor"
     if content_type == "course":
         base = f"{base}/courses"
     return f"{base}/{content_id}"

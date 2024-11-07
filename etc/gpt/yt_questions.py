@@ -16,7 +16,7 @@ from gpt4all import GPT4All
 
 
 # Function to download YouTube subtitles using yt-dlp
-def download_subtitles(video_url: str, language_code: str = "ja") -> Path | None:
+def download_subtitles(video_url: str, lang: str = "ja") -> Path | None:
     """Download YouTube's video's subtitles using yt-dlp"""
     print(f"[yt-dlp] Downloading subtitles for: {video_url}")
     # fmt: off
@@ -24,7 +24,7 @@ def download_subtitles(video_url: str, language_code: str = "ja") -> Path | None
         "yt-dlp",
         "--quiet", "--no-warnings",  # Silence their logger and warnings
         "--write-subs",
-        "--sub-lang", language_code,          # Download subtitles in lang
+        "--sub-lang", lang,          # Download subtitles in lang
         "--skip-download",           # Don't download the video, only subtitles
         "--output",
         "%(title)s.%(ext)s",

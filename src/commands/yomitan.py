@@ -31,7 +31,7 @@ from models.cards import Card
 YomitanDict = Any
 
 
-def get_dictionary_index(language_code: str) -> dict[str, Any]:
+def get_dictionary_index(lang: str) -> dict[str, Any]:
     """
     Make a yomitan dictionary index.
 
@@ -47,9 +47,9 @@ def get_dictionary_index(language_code: str) -> dict[str, Any]:
         "url": "https://github.com/daxida/lingq",
         "description": "Dictionary generated from LingQ data.",
         # Change these two if necessary
-        "sourceLanguage": language_code,
+        "sourceLanguage": lang,
         "targetLanguage": "en",
-        "title": f"lingq-{language_code}",
+        "title": f"lingq-{lang}",
     }
 
 
@@ -157,13 +157,13 @@ def yomitan_for_language(dump_path: Path) -> YomitanDict:
     return yomitan_dict
 
 
-def write_yomitan_dict(language_code: str, out_path: Path, yomitan_dict: YomitanDict) -> None:
+def write_yomitan_dict(lang: str, out_path: Path, yomitan_dict: YomitanDict) -> None:
     """Write the zipped yomitan dict."""
     zip_buffer = io.BytesIO()
     with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED, allowZip64=True) as zipf:
         zipf.writestr(
             "index.json",
-            json.dumps(get_dictionary_index(language_code), indent=2, ensure_ascii=False),
+            json.dumps(get_dictionary_index(lang), indent=2, ensure_ascii=False),
         )
         # TODO: I'm not sure what is the correct size to split
         zipf.writestr("term_bank_1.json", json.dumps(yomitan_dict, indent=2, ensure_ascii=False))
@@ -172,26 +172,26 @@ def write_yomitan_dict(language_code: str, out_path: Path, yomitan_dict: Yomitan
         f.write(zip_buffer.getvalue())
 
 
-def yomitan(language_codes: list[str], opath: Path) -> None:
+def yomitan(langs: list[str], opath: Path) -> None:
     """
     Make a Yomitan dictionary from a LingQ JSON dump generated through get_words.
 
     If no language codes are given, use all languages.
     """
-    if not language_codes:
-        language_codes = LingqHandler.get_user_language_codes()
+    if not langs:
+        langs = LingqHandler.get_user_langs()
 
-    for language_code in language_codes:
-        dump_path = opath / language_code
+    for lang in langs:
+        dump_path = opath / lang
         yomitan_dict = yomitan_for_language(dump_path)
-        out_path = dump_path / f"lingqs-{language_code}.zip"
-        write_yomitan_dict(language_code, out_path, yomitan_dict)
-        logger.success(f"Finished dictionary for {language_code} at: {out_path}")
+        out_path = dump_path / f"lingqs-{lang}.zip"
+        write_yomitan_dict(lang, out_path, yomitan_dict)
+        logger.success(f"Finished dictionary for {lang} at: {out_path}")
 
 
 if __name__ == "__main__":
     # Defaults for manually running this script.
     yomitan(
-        language_codes=["el"],
+        langs=["el"],
         opath=Path("downloads/lingqs"),
     )

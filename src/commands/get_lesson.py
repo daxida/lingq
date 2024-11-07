@@ -100,13 +100,13 @@ async def get_lesson_async(
     return simple_lesson
 
 
-def write_lesson(language_code: str, lesson: SimpleLesson, opath: Path) -> None:
+def write_lesson(lang: str, lesson: SimpleLesson, opath: Path) -> None:
     collection_title = sanitize_title(lesson.collection_title)
     title = sanitize_title(lesson.title)
 
-    texts_folder = opath / language_code / collection_title / "texts"
-    audios_folder = opath / language_code / collection_title / "audios"
-    timestamps_folder = opath / language_code / collection_title / "timestamps"
+    texts_folder = opath / lang / collection_title / "texts"
+    audios_folder = opath / lang / collection_title / "audios"
+    timestamps_folder = opath / lang / collection_title / "timestamps"
 
     # Write text
     Path.mkdir(texts_folder, parents=True, exist_ok=True)
@@ -133,20 +133,20 @@ def write_lesson(language_code: str, lesson: SimpleLesson, opath: Path) -> None:
 if __name__ == "__main__":
     # Test getting a single lesson
     async def get_lesson_async_tmp(
-        language_code: str,
+        lang: str,
         lesson_id: int,
         download_audio: bool,
         download_timestamps: bool,
         verbose: bool,
     ) -> SimpleLesson:
-        async with LingqHandler(language_code) as handler:
+        async with LingqHandler(lang) as handler:
             return await get_lesson_async(
                 handler, lesson_id, download_audio, download_timestamps, verbose
             )
 
     lesson = asyncio.run(
         get_lesson_async_tmp(
-            language_code="el",
+            lang="el",
             lesson_id=5897069,
             download_audio=True,
             download_timestamps=True,
@@ -154,7 +154,7 @@ if __name__ == "__main__":
         )
     )
     write_lesson(
-        language_code="el",
+        lang="el",
         lesson=lesson,
         opath=Path("downloads"),
     )
