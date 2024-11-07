@@ -27,13 +27,14 @@ from lingqhandler import LingqHandler
 from log import logger
 from models.cards import Card
 
+YomitanIndex = dict[str, Any]
 # TODO: fix this type. Use pydantic if possible.
-YomitanDict = Any
+YomitanEntry = list[Any]
+YomitanDict = list[YomitanEntry]
 
 
-def get_dictionary_index(lang: str) -> dict[str, Any]:
-    """
-    Make a yomitan dictionary index.
+def get_dictionary_index(lang: str) -> YomitanIndex:
+    """Make a yomitan dictionary index.
 
     Roughly based on the index from the Kaikki-to-yomitan downloads page:
     https://github.com/yomidevs/kaikki-to-yomitan/blob/master/downloads.md
@@ -53,9 +54,8 @@ def get_dictionary_index(lang: str) -> dict[str, Any]:
     }
 
 
-def words_to_yomitan(words: list[Card]) -> YomitanDict:
-    """
-    Convert the Card model to yomitan.
+def card_to_yomitan_entry(card: Card) -> YomitanEntry:
+    """Convert the Card model to a dictionary entry.
 
     Discussion about the structure:
     https://github.com/themoeway/kaikki-to-yomitan/issues/55
@@ -65,79 +65,70 @@ def words_to_yomitan(words: list[Card]) -> YomitanDict:
     https://github.com/themoeway/jmdict-yomitan?tab=readme-ov-file#jmdict-for-yomitan-1
     """
 
-    yomitan_dict: YomitanDict = []
-    for card in words:
-        glossary_content = []
-        for hint in card.hints:
-            fmt_hint = {"content": hint.text, "tag": "li"}
-            glossary_content.append(fmt_hint)
-        glossary = {"content": glossary_content, "data": {"content": "glossary"}, "tag": "ul"}
+    glossary_content = []
+    for hint in card.hints:
+        fmt_hint = {"content": hint.text, "tag": "li"}
+        glossary_content.append(fmt_hint)
+    glossary = {"content": glossary_content, "data": {"content": "glossary"}, "tag": "ul"}
 
-        if card.notes:
-            notes_content = [{"content": card.notes, "tag": "li"}]
-            notes = {"content": notes_content, "data": {"content": "notes"}, "tag": "ul"}
-        else:
-            notes = None
+    if card.notes:
+        notes_content = [{"content": card.notes, "tag": "li"}]
+        notes = {"content": notes_content, "data": {"content": "notes"}, "tag": "ul"}
+    else:
+        notes = None
 
-        example_content = [{"content": card.fragment, "tag": "li"}]
-        example = {
-            "content": example_content,
-            "style": {"fontStyle": "italic"},
-            "data": {"content": "example"},
-            "tag": "ul",
-        }
+    example_content = [{"content": card.fragment, "tag": "li"}]
+    example = {
+        "content": example_content,
+        "style": {"fontStyle": "italic"},
+        "data": {"content": "example"},
+        "tag": "ul",
+    }
 
-        # Actually only notes can be None
-        definitions_contents = [x for x in (glossary, example, notes) if x is not None]
-        definitions = [{"type": "structured-content", "content": definitions_contents}]
+    # Actually only notes can be None
+    definitions_contents = [x for x in (glossary, example, notes) if x is not None]
+    definitions = [{"type": "structured-content", "content": definitions_contents}]
 
-        # The keys are only for documentation. It is immediately converted to a list.
-        entry = {
-            "term": card.term,
-            "readings": "",  # card.transliteration.get("latin", ""),
-            # Abbreviations expanded in tag_bank_1.json
-            # (LINGQ) A grammar tag is a tag that appear both in tags and g_tags
-            "definition_tags": " ".join(card.tags),  # space separated
-            "rule_identifiers": "",
-            "score": 0,
-            # Can do this for a minimal version: [hint.text for hint in card.hints]
-            "definitions_list": definitions,
-            "sequence_number": 0,  # ignore
-            "term_tags": "",
-        }
-        yomitan_dict.append(list(entry.values()))
-
-    return yomitan_dict
+    # The keys are only for documentation. It is immediately converted to a list.
+    _entry = {
+        "term": card.term,
+        "readings": "",  # card.transliteration.get("latin", ""),
+        # Abbreviations expanded in tag_bank_1.json
+        # (LINGQ) A grammar tag is a tag that appear both in tags and g_tags
+        "definition_tags": " ".join(card.tags),  # space separated
+        "rule_identifiers": "",
+        "score": 0,
+        # Can do this for a minimal version: [hint.text for hint in card.hints]
+        "definitions_list": definitions,
+        "sequence_number": 0,  # ignore
+        "term_tags": "",
+    }
+    entry: YomitanEntry = list(_entry.values())
+    return entry
 
 
-def words_to_yomitan_simple(words: list[Card]) -> YomitanDict:
-    """
-    Convert the Card model to yomitan.
-
-    Minimal yomitan dictionary.
+def card_to_yomitan_entry_simple(card: Card) -> YomitanEntry:
+    """Minimal yomitan entry.
     Contains only the terms, tags and hints with no format.
     """
-    yomitan_dict: YomitanDict = []
-    for card in words:
-        entry = [
-            card.term,
-            "",
-            " ".join(card.tags),
-            "",
-            0,
-            [hint.text for hint in card.hints],
-            0,
-            "",
-        ]
-        yomitan_dict.append(entry)
-
-    return yomitan_dict
+    entry: YomitanEntry = [
+        card.term,
+        "",
+        " ".join(card.tags),
+        "",
+        0,
+        [hint.text for hint in card.hints],
+        0,
+        "",
+    ]
+    return entry
 
 
 def yomitan_for_language(dump_path: Path) -> YomitanDict:
     """Read and convert the JSON obtained from LingQ."""
-    # TODO: split the dict into manageable jsons
-    # TODO: make a different entry per hint
+    # NOTE: split the dict into manageable jsons?
+    # TODO: make a different entry per hint?
+    #       That is: single card -> list[YomitanEntry]
 
     # Look for the dump
     lingq_json_path = dump_path / "lingqs.json"
@@ -151,7 +142,10 @@ def yomitan_for_language(dump_path: Path) -> YomitanDict:
         words = [Card.model_validate(word) for word in words]
 
     # Convert to Yomitan
-    yomitan_dict = words_to_yomitan_simple(words)
+    yomitan_dict: YomitanDict = []
+    for card in words:
+        entry = card_to_yomitan_entry_simple(card)
+        yomitan_dict.append(entry)
 
     return yomitan_dict
 
@@ -160,11 +154,9 @@ def write_yomitan_dict(lang: str, out_path: Path, yomitan_dict: YomitanDict) -> 
     """Write the zipped yomitan dict."""
     zip_buffer = io.BytesIO()
     with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED, allowZip64=True) as zipf:
-        zipf.writestr(
-            "index.json",
-            json.dumps(get_dictionary_index(lang), indent=2, ensure_ascii=False),
-        )
-        # TODO: I'm not sure what is the correct size to split
+        index = get_dictionary_index(lang)
+        zipf.writestr("index.json", json.dumps(index, indent=2, ensure_ascii=False))
+        # I'm not sure what is the correct size to split
         zipf.writestr("term_bank_1.json", json.dumps(yomitan_dict, indent=2, ensure_ascii=False))
 
     with out_path.open("wb") as f:
