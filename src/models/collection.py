@@ -36,10 +36,9 @@ class Collection:
     # fmt: on
 
     def add_data(self, lang: str, collection_v2: Any) -> None:  # noqa: ANN401
-        """Transfer the data from the JSON to the Collection object"""
-
-        # TODO: Fixme (this needs both [lessons] and collection info....
-
+        """Transfer the data from the JSON to the Collection object.
+        Can't use V3 because of the lack of pubDate...
+        """
         self.lang = lang
         self._id = collection_v2["pk"]  # it's pk in V2 and id in V3
         self.title = collection_v2["title"]

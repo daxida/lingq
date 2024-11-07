@@ -44,7 +44,6 @@ async def get_courses_for_language_async(
         #         download_timestamps=download_timestamps,
         #         opath=opath,
         #         write=True,
-        #         verbose=False,
         #         handler=handler,
         #     )
 
@@ -59,7 +58,6 @@ async def get_courses_for_language_async(
                     download_timestamps=download_timestamps,
                     opath=opath,
                     write=True,
-                    verbose=False,
                 )
                 for res in my_collections.results
             ),

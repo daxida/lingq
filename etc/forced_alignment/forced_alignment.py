@@ -435,7 +435,7 @@ def process_files(
 
 
 if __name__ == "__main__":
-    # Replace 'eng' with the language code of your choice
+    # Replace 'ell' with the language code of your choice
     # List of aeneas' supported languages: https://www.readbeyond.it/aeneas/docs/language.html
     # TODO: make it work for japanese!
     process_files(

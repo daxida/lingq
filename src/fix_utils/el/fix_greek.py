@@ -1,8 +1,11 @@
+"""Fixes some frequent mistakes / typos in Greek texts.
+
+TODO: Make a test every time I use this script to fix a book.
+"""
+
 import re
 from pathlib import Path
 from typing import Match
-
-# TODO: Make a test every time I use this script to fix a book.
 
 
 def upper(pat: Match[str]) -> str:
