@@ -33,12 +33,12 @@
     "difficulty": 0.0,
     "providerName": "YouTube",
     "providerDescription": "",
-    "lastRoseReceived": "2024-10-11T21:19:13.588800",
+    "lastRoseReceived": "2024-10-26T10:42:12.417064",
     "lessonRating": 0.0,
     "lessonVotes": 0,
     "audioRating": 0.0,
     "audioVotes": 0,
-    "rosesCount": 57,
+    "rosesCount": 58,
     "isFavorite": true,
     "isOverLimit": false,
     "level": "Intermediate 1",
@@ -53,11 +53,11 @@
     "listenTimes": 0.0,
     "roseGiven": false,
     "openDate": null,
-    "viewsCount": 1457,
+    "viewsCount": 1474,
     "isProtected": null,
     "scheduledForDeletion": false,
     "metadata": null,
-    "classicUrl": "/en/learn/pt/workdesk/item/49877830/reader/",
+    "classicUrl": null,
     "collection": {
         "id": 979632,
         "type": "collection",
@@ -81,7 +81,7 @@
         "lessonsCount": 55,
         "newWordsCount": 2410,
         "difficulty": 28.94,
-        "rosesCount": 183,
+        "rosesCount": 186,
         "viewsCount": 0,
         "duration": 37093,
         "progress": null,
@@ -1124,7 +1124,8 @@
                             "fr": "are",
                             "en": "are interested",
                             "de": "interessiert sind",
-                            "ja": "\u8208\u5473\u304c\u3042\u308b"
+                            "ja": "\u8208\u5473\u304c\u3042\u308b",
+                            "es": "est\u00e9n"
                         },
                         "indexInSentence": 16,
                         "index": 70,
@@ -1165,7 +1166,8 @@
                         "translation": {
                             "fr": "am\u00e9liorer",
                             "en": "improve",
-                            "de": "verbessern"
+                            "de": "verbessern",
+                            "es": "mejorar"
                         },
                         "indexInSentence": 19,
                         "index": 73,
@@ -1845,8 +1847,9 @@
                             "fr": "clart\u00e9",
                             "en": "clarity",
                             "de": "Deutlichkeit",
+                            "pl": "jasno\u015b\u0107",
                             "ja": "\u660e\u77ad\u3055",
-                            "pl": "jasno\u015b\u0107"
+                            "es": "claridad"
                         },
                         "indexInSentence": 11,
                         "index": 121,
@@ -3361,7 +3364,8 @@
                     {
                         "text": "j\u00e1",
                         "translation": {
-                            "en": "already"
+                            "en": "already",
+                            "es": "ya"
                         },
                         "indexInSentence": 2,
                         "index": 232,
@@ -4997,6 +5001,9 @@
                     },
                     {
                         "text": "portugu\u00eas",
+                        "translation": {
+                            "de": "Portugiesisch"
+                        },
                         "indexInSentence": 2,
                         "index": 354,
                         "wordId": 718793
@@ -5020,8 +5027,8 @@
                         "text": "Brasil",
                         "translation": {
                             "fr": "Br\u00e9sil",
-                            "en": "Brazilian Portuguese",
-                            "de": "Brasilien"
+                            "de": "Brasilien",
+                            "en": "Brazilian Portuguese"
                         },
                         "indexInSentence": 4,
                         "index": 356,
@@ -5072,8 +5079,8 @@
                         "text": "canais",
                         "translation": {
                             "fr": "canaux",
-                            "en": "channels",
-                            "de": "Kan\u00e4le"
+                            "de": "Kan\u00e4le",
+                            "en": "channels"
                         },
                         "indexInSentence": 8,
                         "index": 360,
@@ -5847,11 +5854,12 @@
                     {
                         "text": "achem",
                         "translation": {
-                            "zh-cn": "\u89c9\u5f97",
                             "fr": "trouvez-le",
                             "en": "find it",
                             "de": "finden",
-                            "ja": "\u601d\u3046"
+                            "zh-cn": "\u89c9\u5f97",
+                            "ja": "\u601d\u3046",
+                            "es": "aumenten"
                         },
                         "indexInSentence": 14,
                         "index": 422,
@@ -6893,7 +6901,8 @@
                             "fr": "have",
                             "en": "have",
                             "de": "habe",
-                            "ja": "\u6301\u3063\u3066\u3044\u305f"
+                            "ja": "\u6301\u3063\u3066\u3044\u305f",
+                            "es": "he tenido"
                         },
                         "indexInSentence": 2,
                         "index": 502,
@@ -6933,9 +6942,9 @@
                             "en": "passion",
                             "de": "Leidenschaft",
                             "zh-cn": "\u70ed\u60c5",
-                            "es": "pasi\u00f3n",
+                            "pl": "passion",
                             "ja": "\u60c5\u71b1",
-                            "pl": "passion"
+                            "es": "pasi\u00f3n"
                         },
                         "indexInSentence": 5,
                         "index": 505,
@@ -8079,7 +8088,8 @@
                             "zh-cn": "\u77e5\u9053",
                             "fr": "sachent",
                             "en": "\"may know\"",
-                            "de": "wissen"
+                            "de": "wissen",
+                            "es": "sepan"
                         },
                         "indexInSentence": 12,
                         "index": 593,
@@ -9308,7 +9318,8 @@
                         "text": "aquele",
                         "translation": {
                             "fr": "that",
-                            "en": "\"the one\""
+                            "en": "\"the one\"",
+                            "es": "aquel"
                         },
                         "indexInSentence": 13,
                         "index": 691,
@@ -9706,6 +9717,9 @@
                     },
                     {
                         "text": "pelo",
+                        "translation": {
+                            "en": "by the"
+                        },
                         "indexInSentence": 2,
                         "index": 722,
                         "wordId": 731380
@@ -9742,6 +9756,9 @@
                     },
                     {
                         "text": "este",
+                        "translation": {
+                            "en": "this"
+                        },
                         "indexInSentence": 5,
                         "index": 725,
                         "wordId": 718782
@@ -9760,6 +9777,9 @@
                     },
                     {
                         "text": "aquele",
+                        "translation": {
+                            "en": "that"
+                        },
                         "indexInSentence": 7,
                         "index": 727,
                         "wordId": 757967
@@ -9820,6 +9840,9 @@
                     },
                     {
                         "text": "maioria",
+                        "translation": {
+                            "en": "majority"
+                        },
                         "indexInSentence": 13,
                         "index": 733,
                         "wordId": 763526
@@ -9897,6 +9920,9 @@
                     },
                     {
                         "text": "que",
+                        "translation": {
+                            "en": "that"
+                        },
                         "indexInSentence": 3,
                         "index": 738,
                         "wordId": 718707
@@ -9906,6 +9932,9 @@
                     },
                     {
                         "text": "me",
+                        "translation": {
+                            "en": "me"
+                        },
                         "indexInSentence": 4,
                         "index": 739,
                         "wordId": 524152
@@ -9915,6 +9944,9 @@
                     },
                     {
                         "text": "est\u00e3o",
+                        "translation": {
+                            "en": "are"
+                        },
                         "indexInSentence": 5,
                         "index": 740,
                         "wordId": 719534
@@ -9934,7 +9966,8 @@
                     {
                         "text": "ouvir",
                         "translation": {
-                            "en": "hearing"
+                            "en": "hearing",
+                            "es": "oyendo"
                         },
                         "indexInSentence": 7,
                         "index": 742,
@@ -9965,7 +9998,8 @@
                             "zh-cn": "\u4e0a\u8fc7\u5b66",
                             "fr": "ont fr\u00e9quent\u00e9",
                             "en": "\"went to school\"",
-                            "de": "zur Schule gegangen"
+                            "de": "zur Schule gegangen",
+                            "es": "estuvieron"
                         },
                         "indexInSentence": 9,
                         "index": 744,
@@ -10040,6 +10074,9 @@
                     },
                     {
                         "text": "pelo",
+                        "translation": {
+                            "en": "for at least"
+                        },
                         "indexInSentence": 3,
                         "index": 749,
                         "wordId": 731380
@@ -10774,7 +10811,8 @@
                         "translation": {
                             "fr": "rend",
                             "en": "makes",
-                            "pl": "it makes return"
+                            "pl": "it makes return",
+                            "es": "hace"
                         },
                         "indexInSentence": 2,
                         "index": 806,
@@ -10810,6 +10848,7 @@
                         "text": "frustrante",
                         "translation": {
                             "zh-cn": "\u4ee4\u4eba\u6cae\u4e27",
+                            "de": "frustrierend",
                             "en": "frustrating",
                             "ja": "\u30d5\u30e9\u30b9\u30c8\u30ec\u30fc\u30b7\u30e7\u30f3",
                             "pl": "frustrating"
@@ -10835,8 +10874,9 @@
                         "translation": {
                             "fr": "ennuyante",
                             "en": "boring",
-                            "es": "aburrida",
-                            "pl": "boring"
+                            "de": "langweilig",
+                            "pl": "boring",
+                            "es": "aburrida"
                         },
                         "indexInSentence": 7,
                         "index": 811,
@@ -10871,7 +10911,8 @@
                         "translation": {
                             "fr": "nous sortons",
                             "en": "we leave",
-                            "de": "we leave"
+                            "de": "we leave",
+                            "es": "salimos"
                         },
                         "indexInSentence": 10,
                         "index": 814,
@@ -11195,6 +11236,9 @@
                     },
                     {
                         "text": "em",
+                        "translation": {
+                            "en": "in"
+                        },
                         "indexInSentence": 3,
                         "index": 839,
                         "wordId": 718673
@@ -11239,7 +11283,8 @@
                     {
                         "text": "forma",
                         "translation": {
-                            "en": "form"
+                            "en": "form",
+                            "es": "forma"
                         },
                         "indexInSentence": 7,
                         "index": 843,
@@ -11654,6 +11699,9 @@
                     },
                     {
                         "text": "pelo",
+                        "translation": {
+                            "en": "by the"
+                        },
                         "indexInSentence": 5,
                         "index": 875,
                         "wordId": 731380
@@ -12122,7 +12170,8 @@
                             "zh-cn": "\u601d\u8003\u4e00\u4e0b",
                             "fr": "penser",
                             "en": "\"think\"",
-                            "de": "denken"
+                            "de": "denken",
+                            "es": "piensan"
                         },
                         "indexInSentence": 3,
                         "index": 909,
@@ -12490,6 +12539,9 @@
                     },
                     {
                         "text": "que",
+                        "translation": {
+                            "en": "that"
+                        },
                         "indexInSentence": 3,
                         "index": 939,
                         "wordId": 718707
@@ -12754,6 +12806,9 @@
                     },
                     {
                         "text": "sem",
+                        "translation": {
+                            "es": "sin"
+                        },
                         "indexInSentence": 5,
                         "index": 962,
                         "wordId": 735788
@@ -13089,6 +13144,9 @@
                     },
                     {
                         "text": "importante",
+                        "translation": {
+                            "en": "important"
+                        },
                         "indexInSentence": 9,
                         "index": 990,
                         "wordId": 735757
@@ -13216,7 +13274,8 @@
                         "text": "lemos",
                         "translation": {
                             "fr": "lisons",
-                            "en": "we read"
+                            "en": "we read",
+                            "es": "leemos"
                         },
                         "indexInSentence": 8,
                         "index": 1000,
@@ -13254,6 +13313,9 @@
                     },
                     {
                         "text": "estamos",
+                        "translation": {
+                            "en": "we are"
+                        },
                         "indexInSentence": 12,
                         "index": 1004,
                         "wordId": 719533
@@ -13315,9 +13377,10 @@
                         "translation": {
                             "fr": "remarqu\u00e9 que",
                             "en": "noticed",
+                            "pt": "noticed",
+                            "de": "haben bemerkt",
                             "pl": "zauwa\u017cyli",
-                            "es": "se dieron cuenta",
-                            "pt": "noticed"
+                            "es": "se dieron cuenta"
                         },
                         "indexInSentence": 1,
                         "index": 1009,
@@ -13442,6 +13505,9 @@
                     },
                     {
                         "text": "n\u00e3o",
+                        "translation": {
+                            "en": "not"
+                        },
                         "indexInSentence": 13,
                         "index": 1021,
                         "wordId": 719581
@@ -13463,6 +13529,9 @@
                     },
                     {
                         "text": "uma",
+                        "translation": {
+                            "en": "a"
+                        },
                         "indexInSentence": 15,
                         "index": 1023,
                         "wordId": 718641
@@ -13639,6 +13708,9 @@
                     },
                     {
                         "text": "de",
+                        "translation": {
+                            "en": "of"
+                        },
                         "indexInSentence": 4,
                         "index": 1036,
                         "wordId": 718817
@@ -13730,6 +13802,9 @@
                     },
                     {
                         "text": "de",
+                        "translation": {
+                            "en": "of"
+                        },
                         "indexInSentence": 13,
                         "index": 1045,
                         "wordId": 718817
@@ -13784,6 +13859,9 @@
                     },
                     {
                         "text": "o",
+                        "translation": {
+                            "en": "the"
+                        },
                         "indexInSentence": 4,
                         "index": 1049,
                         "wordId": 535308
@@ -13793,6 +13871,9 @@
                     },
                     {
                         "text": "mais",
+                        "translation": {
+                            "en": "most"
+                        },
                         "indexInSentence": 5,
                         "index": 1050,
                         "wordId": 719535
@@ -13970,6 +14051,9 @@
                     },
                     {
                         "text": "com",
+                        "translation": {
+                            "en": "with"
+                        },
                         "indexInSentence": 6,
                         "index": 1064,
                         "wordId": 719589
@@ -13991,6 +14075,9 @@
                     },
                     {
                         "text": "teoria",
+                        "translation": {
+                            "en": "theory"
+                        },
                         "indexInSentence": 8,
                         "index": 1066,
                         "wordId": 927074
@@ -14025,6 +14112,9 @@
                     },
                     {
                         "text": "que",
+                        "translation": {
+                            "en": "that"
+                        },
                         "indexInSentence": 2,
                         "index": 1068,
                         "wordId": 718707
@@ -14034,6 +14124,9 @@
                     },
                     {
                         "text": "o",
+                        "translation": {
+                            "en": "o"
+                        },
                         "indexInSentence": 3,
                         "index": 1069,
                         "wordId": 535308
@@ -14043,6 +14136,9 @@
                     },
                     {
                         "text": "mais",
+                        "translation": {
+                            "en": "most"
+                        },
                         "indexInSentence": 4,
                         "index": 1070,
                         "wordId": 719535
@@ -14052,6 +14148,9 @@
                     },
                     {
                         "text": "importante",
+                        "translation": {
+                            "en": "important"
+                        },
                         "indexInSentence": 5,
                         "index": 1071,
                         "wordId": 735757
@@ -14061,6 +14160,9 @@
                     },
                     {
                         "text": "\u00e9",
+                        "translation": {
+                            "en": "is"
+                        },
                         "indexInSentence": 6,
                         "index": 1072,
                         "wordId": 718774
@@ -14267,6 +14369,9 @@
                     },
                     {
                         "text": "e",
+                        "translation": {
+                            "en": "I"
+                        },
                         "indexInSentence": 8,
                         "index": 1089,
                         "wordId": 718829
@@ -14288,6 +14393,9 @@
                     },
                     {
                         "text": "que",
+                        "translation": {
+                            "en": "that"
+                        },
                         "indexInSentence": 10,
                         "index": 1091,
                         "wordId": 718707
@@ -14297,6 +14405,9 @@
                     },
                     {
                         "text": "estudar",
+                        "translation": {
+                            "en": "studying"
+                        },
                         "indexInSentence": 11,
                         "index": 1092,
                         "wordId": 719702
@@ -14347,8 +14458,8 @@
                             "fr": "mesure",
                             "de": "Ma\u00df",
                             "en": "as we go",
-                            "pl": "miara",
-                            "pt": "\u00e0 medida que"
+                            "pt": "\u00e0 medida que",
+                            "pl": "miara"
                         },
                         "indexInSentence": 15,
                         "index": 1096,
@@ -14359,6 +14470,9 @@
                     },
                     {
                         "text": "que",
+                        "translation": {
+                            "en": "as"
+                        },
                         "indexInSentence": 16,
                         "index": 1097,
                         "wordId": 718707
@@ -14515,6 +14629,9 @@
                     },
                     {
                         "text": "que",
+                        "translation": {
+                            "en": "that"
+                        },
                         "indexInSentence": 13,
                         "index": 1111,
                         "wordId": 718707
@@ -14582,6 +14699,9 @@
                     },
                     {
                         "text": "isto",
+                        "translation": {
+                            "en": "this"
+                        },
                         "indexInSentence": 2,
                         "index": 1116,
                         "wordId": 731355
@@ -14652,6 +14772,9 @@
                     },
                     {
                         "text": "j\u00e1",
+                        "translation": {
+                            "en": "already"
+                        },
                         "indexInSentence": 8,
                         "index": 1122,
                         "wordId": 718661
@@ -14748,6 +14871,9 @@
                     },
                     {
                         "text": "gram\u00e1tica",
+                        "translation": {
+                            "en": "grammar"
+                        },
                         "indexInSentence": 16,
                         "index": 1130,
                         "wordId": 735746
@@ -14908,9 +15034,10 @@
                     {
                         "text": "expor",
                         "translation": {
-                            "zh-cn": "\u66b4\u9732",
                             "fr": "exposer \u00e0",
                             "en": "expose you to",
+                            "zh-cn": "\u66b4\u9732",
+                            "es": "exponer",
                             "ja": "\u7d39\u4ecb\u3059\u308b",
                             "pl": "exponowa\u0107"
                         },
@@ -14923,6 +15050,9 @@
                     },
                     {
                         "text": "vos",
+                        "translation": {
+                            "en": "you"
+                        },
                         "indexInSentence": 8,
                         "index": 1144,
                         "wordId": 785515
@@ -15184,6 +15314,9 @@
                     },
                     {
                         "text": "se",
+                        "translation": {
+                            "en": "se"
+                        },
                         "indexInSentence": 13,
                         "index": 1165,
                         "wordId": 719527
@@ -15343,6 +15476,9 @@
                 "tokens": [
                     {
                         "text": "Por",
+                        "translation": {
+                            "en": "for"
+                        },
                         "indexInSentence": 1,
                         "index": 1177,
                         "wordId": 718731
@@ -15352,6 +15488,9 @@
                     },
                     {
                         "text": "isso",
+                        "translation": {
+                            "en": "so"
+                        },
                         "indexInSentence": 2,
                         "index": 1178,
                         "wordId": 719720
@@ -15442,6 +15581,9 @@
                     },
                     {
                         "text": "deste",
+                        "translation": {
+                            "en": "this"
+                        },
                         "indexInSentence": 10,
                         "index": 1186,
                         "wordId": 718785
@@ -15451,6 +15593,9 @@
                     },
                     {
                         "text": "epis\u00f3dio",
+                        "translation": {
+                            "en": "episode"
+                        },
                         "indexInSentence": 11,
                         "index": 1187,
                         "wordId": 730012
@@ -15527,7 +15672,8 @@
                         "translation": {
                             "fr": "un pouce",
                             "en": "thumbs up",
-                            "ja": "\u3044\u3044\u306d"
+                            "ja": "\u3044\u3044\u306d",
+                            "es": "me gusta"
                         },
                         "indexInSentence": 17,
                         "index": 1193,
@@ -15538,6 +15684,9 @@
                     },
                     {
                         "text": "e",
+                        "translation": {
+                            "es": "y"
+                        },
                         "indexInSentence": 18,
                         "index": 1194,
                         "wordId": 718829
@@ -15615,7 +15764,7 @@
     "sharedByImageUrl": "https://static.lingq.com/media/resources/photo/1669846878_7a1f4acf.webp",
     "sharedByIsFriend": true,
     "promotedCourse": null,
-    "lastOpenTime": "2024-10-25T21:49:38.991159",
+    "lastOpenTime": "2024-11-03T20:43:18.531601",
     "printUrl": "/en/learn/pt/workdesk/item/49877830/print/",
     "canEdit": false,
     "canEditSentence": true,
@@ -15818,7 +15967,7 @@
                     "locale": "en",
                     "term_id": 32609,
                     "is_google_translate": true,
-                    "popularity": 2357,
+                    "popularity": 2367,
                     "approved": true,
                     "detected_locale": "en",
                     "creator_id": null,
@@ -15860,7 +16009,7 @@
                     "locale": "en",
                     "term_id": 225231,
                     "is_google_translate": false,
-                    "popularity": 447,
+                    "popularity": 448,
                     "approved": true,
                     "detected_locale": null,
                     "creator_id": null,
@@ -15942,7 +16091,7 @@
                     "locale": "en",
                     "term_id": 275729,
                     "is_google_translate": true,
-                    "popularity": 3853,
+                    "popularity": 3861,
                     "approved": true,
                     "detected_locale": null,
                     "creator_id": null,
@@ -16000,7 +16149,7 @@
                     "locale": "en",
                     "term_id": 171048,
                     "is_google_translate": false,
-                    "popularity": 783,
+                    "popularity": 788,
                     "approved": true,
                     "detected_locale": null,
                     "creator_id": null,
@@ -16036,7 +16185,7 @@
                     "locale": "en",
                     "term_id": 100221,
                     "is_google_translate": false,
-                    "popularity": 160,
+                    "popularity": 161,
                     "approved": false,
                     "detected_locale": null,
                     "creator_id": null,
@@ -16119,7 +16268,7 @@
                     "locale": "en",
                     "term_id": 293805,
                     "is_google_translate": false,
-                    "popularity": 440,
+                    "popularity": 443,
                     "approved": false,
                     "detected_locale": null,
                     "creator_id": 1719579,
@@ -16278,7 +16427,7 @@
                     "locale": "en",
                     "term_id": 126663,
                     "is_google_translate": false,
-                    "popularity": 342,
+                    "popularity": 344,
                     "approved": true,
                     "detected_locale": null,
                     "creator_id": 1038049,
@@ -16324,7 +16473,7 @@
                     "locale": "en",
                     "term_id": 84228,
                     "is_google_translate": false,
-                    "popularity": 366,
+                    "popularity": 367,
                     "approved": true,
                     "detected_locale": null,
                     "creator_id": null,
@@ -16358,7 +16507,7 @@
                     "locale": "en",
                     "term_id": 211077,
                     "is_google_translate": false,
-                    "popularity": 522,
+                    "popularity": 523,
                     "approved": true,
                     "detected_locale": null,
                     "creator_id": null,
@@ -16483,7 +16632,7 @@
                     "locale": "en",
                     "term_id": 184140,
                     "is_google_translate": true,
-                    "popularity": 405,
+                    "popularity": 408,
                     "approved": true,
                     "detected_locale": null,
                     "creator_id": null,
@@ -16510,7 +16659,7 @@
                     "locale": "en",
                     "text": "methods",
                     "is_google_translate": true,
-                    "popularity": 221,
+                    "popularity": 222,
                     "flagged": false,
                     "id": 3656246
                 },
@@ -16615,7 +16764,7 @@
                     "locale": "en",
                     "text": "adj. deed, activity; feat, accomplishment",
                     "is_google_translate": false,
-                    "popularity": 332,
+                    "popularity": 333,
                     "flagged": false,
                     "id": 117941
                 },
@@ -16724,7 +16873,7 @@
                     "locale": "en",
                     "text": "follow",
                     "is_google_translate": true,
-                    "popularity": 181,
+                    "popularity": 182,
                     "flagged": false,
                     "id": 2928015
                 },
@@ -16782,7 +16931,7 @@
                     "locale": "en",
                     "text": "reduce",
                     "is_google_translate": true,
-                    "popularity": 91,
+                    "popularity": 92,
                     "flagged": false,
                     "id": 16919901
                 },
@@ -16847,7 +16996,7 @@
                     "locale": "en",
                     "text": "said",
                     "is_google_translate": false,
-                    "popularity": 1267,
+                    "popularity": 1269,
                     "flagged": false,
                     "id": 88853
                 },
@@ -16855,7 +17004,7 @@
                     "locale": "en",
                     "text": "I/you/he/she said (dizer)",
                     "is_google_translate": false,
-                    "popularity": 259,
+                    "popularity": 260,
                     "flagged": false,
                     "id": 18357131
                 },
@@ -16967,7 +17116,7 @@
                     "locale": "en",
                     "text": "big",
                     "is_google_translate": false,
-                    "popularity": 331,
+                    "popularity": 332,
                     "flagged": false,
                     "id": 35937756
                 },
@@ -17001,7 +17150,7 @@
                     "locale": "en",
                     "text": "yes",
                     "is_google_translate": false,
-                    "popularity": 2112,
+                    "popularity": 2116,
                     "flagged": false,
                     "id": 255298
                 },
@@ -17009,7 +17158,7 @@
                     "locale": "en",
                     "text": "Yes",
                     "is_google_translate": true,
-                    "popularity": 70,
+                    "popularity": 74,
                     "flagged": false,
                     "id": 1229871
                 },
@@ -17044,7 +17193,7 @@
                     "locale": "en",
                     "text": "maximum",
                     "is_google_translate": true,
-                    "popularity": 146,
+                    "popularity": 147,
                     "flagged": false,
                     "id": 4973271
                 },
@@ -17071,7 +17220,7 @@
                     "locale": "en",
                     "text": "French",
                     "is_google_translate": true,
-                    "popularity": 1182,
+                    "popularity": 1187,
                     "flagged": false,
                     "id": 124718
                 },
@@ -17079,7 +17228,7 @@
                     "locale": "en",
                     "text": "French (ms)",
                     "is_google_translate": false,
-                    "popularity": 51,
+                    "popularity": 52,
                     "flagged": false,
                     "id": 57384992
                 },
@@ -17106,7 +17255,7 @@
                     "locale": "en",
                     "text": "to think",
                     "is_google_translate": false,
-                    "popularity": 899,
+                    "popularity": 902,
                     "flagged": false,
                     "id": 1080737
                 },
@@ -17114,7 +17263,7 @@
                     "locale": "en",
                     "text": "think",
                     "is_google_translate": true,
-                    "popularity": 60,
+                    "popularity": 61,
                     "flagged": false,
                     "id": 8755403
                 },
@@ -17143,7 +17292,7 @@
                     "locale": "en",
                     "text": "almost",
                     "is_google_translate": true,
-                    "popularity": 1455,
+                    "popularity": 1458,
                     "flagged": false,
                     "id": 935982
                 },
@@ -17151,7 +17300,7 @@
                     "locale": "en",
                     "text": "almost adv. nearly,",
                     "is_google_translate": false,
-                    "popularity": 225,
+                    "popularity": 227,
                     "flagged": false,
                     "id": 224185
                 },
@@ -17178,7 +17327,7 @@
                     "locale": "en",
                     "text": "neither",
                     "is_google_translate": false,
-                    "popularity": 1238,
+                    "popularity": 1239,
                     "flagged": false,
                     "id": 191813
                 },
@@ -17213,7 +17362,7 @@
                     "locale": "en",
                     "text": "pronoun, your/yours",
                     "is_google_translate": false,
-                    "popularity": 192,
+                    "popularity": 193,
                     "flagged": false,
                     "id": 862320
                 },
@@ -17282,7 +17431,7 @@
                     "locale": "en",
                     "text": "translation",
                     "is_google_translate": false,
-                    "popularity": 416,
+                    "popularity": 417,
                     "flagged": false,
                     "id": 282250
                 },
@@ -17316,7 +17465,7 @@
                     "locale": "en",
                     "text": "once",
                     "is_google_translate": false,
-                    "popularity": 430,
+                    "popularity": 432,
                     "flagged": true,
                     "id": 287629
                 },
@@ -17324,7 +17473,7 @@
                     "locale": "en",
                     "text": "some",
                     "is_google_translate": true,
-                    "popularity": 233,
+                    "popularity": 234,
                     "flagged": false,
                     "id": 2357228
                 },
@@ -17355,7 +17504,7 @@
                     "locale": "en",
                     "text": "video",
                     "is_google_translate": true,
-                    "popularity": 361,
+                    "popularity": 365,
                     "flagged": false,
                     "id": 5049835
                 },
@@ -17437,7 +17586,7 @@
                     "locale": "en",
                     "text": "clarity",
                     "is_google_translate": true,
-                    "popularity": 88,
+                    "popularity": 89,
                     "flagged": false,
                     "id": 1456540
                 },
@@ -17479,7 +17628,7 @@
                     "locale": "en",
                     "text": "main",
                     "is_google_translate": true,
-                    "popularity": 62,
+                    "popularity": 63,
                     "flagged": false,
                     "id": 3946630
                 }
@@ -17498,7 +17647,7 @@
                     "locale": "en",
                     "text": "give (subjunct pres 3 pl)",
                     "is_google_translate": false,
-                    "popularity": 206,
+                    "popularity": 208,
                     "flagged": false,
                     "id": 34040426
                 },
@@ -17506,7 +17655,7 @@
                     "locale": "en",
                     "text": "give",
                     "is_google_translate": true,
-                    "popularity": 51,
+                    "popularity": 52,
                     "flagged": false,
                     "id": 5313258
                 },
@@ -17544,7 +17693,7 @@
                     "locale": "en",
                     "text": "Brazil",
                     "is_google_translate": true,
-                    "popularity": 95,
+                    "popularity": 97,
                     "flagged": false,
                     "id": 3296431
                 },
@@ -17571,7 +17720,7 @@
                     "locale": "en",
                     "text": "need",
                     "is_google_translate": false,
-                    "popularity": 1617,
+                    "popularity": 1620,
                     "flagged": false,
                     "id": 217138
                 },
@@ -17579,7 +17728,7 @@
                     "locale": "en",
                     "text": "necessary",
                     "is_google_translate": true,
-                    "popularity": 128,
+                    "popularity": 129,
                     "flagged": false,
                     "id": 13742601
                 },
@@ -17610,7 +17759,7 @@
                     "locale": "en",
                     "text": "Each",
                     "is_google_translate": true,
-                    "popularity": 1046,
+                    "popularity": 1047,
                     "flagged": true,
                     "id": 13742663
                 },
@@ -17626,7 +17775,7 @@
                     "locale": "en",
                     "text": "each",
                     "is_google_translate": true,
-                    "popularity": 71,
+                    "popularity": 74,
                     "flagged": true,
                     "id": 13619875
                 }
@@ -17679,7 +17828,7 @@
                     "locale": "en",
                     "text": "All (fem; pl.)",
                     "is_google_translate": false,
-                    "popularity": 1190,
+                    "popularity": 1217,
                     "flagged": false,
                     "id": 37313587
                 },
@@ -17687,7 +17836,7 @@
                     "locale": "en",
                     "text": "every",
                     "is_google_translate": false,
-                    "popularity": 469,
+                    "popularity": 502,
                     "flagged": false,
                     "id": 45871488
                 },
@@ -17695,7 +17844,7 @@
                     "locale": "en",
                     "text": "All",
                     "is_google_translate": true,
-                    "popularity": 54,
+                    "popularity": 55,
                     "flagged": false,
                     "id": 6789988
                 }
@@ -17740,7 +17889,7 @@
                     "locale": "en",
                     "text": "why, because, reason",
                     "is_google_translate": false,
-                    "popularity": 879,
+                    "popularity": 882,
                     "flagged": false,
                     "id": 214687
                 },
@@ -17748,7 +17897,7 @@
                     "locale": "en",
                     "text": "because",
                     "is_google_translate": false,
-                    "popularity": 441,
+                    "popularity": 446,
                     "flagged": false,
                     "id": 5722860
                 },
@@ -17817,7 +17966,7 @@
                     "locale": "en",
                     "text": "speakers",
                     "is_google_translate": true,
-                    "popularity": 382,
+                    "popularity": 384,
                     "flagged": false,
                     "id": 4005830
                 },
@@ -17891,7 +18040,7 @@
                     "locale": "en",
                     "text": "they are",
                     "is_google_translate": false,
-                    "popularity": 360,
+                    "popularity": 362,
                     "flagged": false,
                     "id": 7459438
                 },
@@ -17929,7 +18078,7 @@
                     "locale": "en",
                     "text": "become",
                     "is_google_translate": true,
-                    "popularity": 863,
+                    "popularity": 865,
                     "flagged": false,
                     "id": 281052
                 },
@@ -17967,7 +18116,7 @@
                     "locale": "en",
                     "text": "easy",
                     "is_google_translate": true,
-                    "popularity": 1656,
+                    "popularity": 1658,
                     "flagged": false,
                     "id": 114928
                 },
@@ -17975,7 +18124,7 @@
                     "locale": "en",
                     "text": "easy or simple",
                     "is_google_translate": false,
-                    "popularity": 127,
+                    "popularity": 128,
                     "flagged": false,
                     "id": 51651681
                 },
@@ -18016,11 +18165,11 @@
                 },
                 {
                     "locale": "en",
-                    "text": "(pron) self, identity",
-                    "is_google_translate": false,
-                    "popularity": 37,
+                    "text": "own",
+                    "is_google_translate": true,
+                    "popularity": 40,
                     "flagged": false,
-                    "id": 221272
+                    "id": 3037972
                 }
             ],
             "status": "known",
@@ -18036,7 +18185,7 @@
                     "locale": "en",
                     "text": "pron.  them, they",
                     "is_google_translate": false,
-                    "popularity": 2020,
+                    "popularity": 2029,
                     "flagged": false,
                     "id": 97529
                 },
@@ -18044,7 +18193,7 @@
                     "locale": "en",
                     "text": "they",
                     "is_google_translate": true,
-                    "popularity": 322,
+                    "popularity": 323,
                     "flagged": false,
                     "id": 12365938
                 },
@@ -18052,7 +18201,7 @@
                     "locale": "en",
                     "text": "They",
                     "is_google_translate": false,
-                    "popularity": 74,
+                    "popularity": 77,
                     "flagged": false,
                     "id": 2360815
                 }
@@ -18075,7 +18224,7 @@
                     "locale": "en",
                     "text": "used",
                     "is_google_translate": true,
-                    "popularity": 336,
+                    "popularity": 338,
                     "flagged": false,
                     "id": 3682870
                 },
@@ -18135,7 +18284,7 @@
                     "locale": "en",
                     "text": "that one/the one",
                     "is_google_translate": false,
-                    "popularity": 170,
+                    "popularity": 171,
                     "flagged": false,
                     "id": 35649252
                 },
@@ -18143,7 +18292,7 @@
                     "locale": "en",
                     "text": "that one/the one (masculine)",
                     "is_google_translate": false,
-                    "popularity": 90,
+                    "popularity": 91,
                     "flagged": false,
                     "id": 49582643
                 }
@@ -18199,7 +18348,7 @@
                     "locale": "en",
                     "text": "de + os of the",
                     "is_google_translate": false,
-                    "popularity": 1247,
+                    "popularity": 1251,
                     "flagged": false,
                     "id": 90812
                 },
@@ -18207,7 +18356,7 @@
                     "locale": "en",
                     "text": "of the (de + os)",
                     "is_google_translate": false,
-                    "popularity": 347,
+                    "popularity": 348,
                     "flagged": false,
                     "id": 21702857
                 },
@@ -18215,7 +18364,7 @@
                     "locale": "en",
                     "text": "of the (pl.)",
                     "is_google_translate": false,
-                    "popularity": 78,
+                    "popularity": 79,
                     "flagged": false,
                     "id": 2093073
                 }
@@ -18234,7 +18383,7 @@
                     "locale": "en",
                     "text": "to write",
                     "is_google_translate": false,
-                    "popularity": 1679,
+                    "popularity": 1682,
                     "flagged": false,
                     "id": 108566
                 },
@@ -18242,7 +18391,7 @@
                     "locale": "en",
                     "text": "write",
                     "is_google_translate": true,
-                    "popularity": 125,
+                    "popularity": 130,
                     "flagged": false,
                     "id": 870520
                 },
@@ -18279,7 +18428,7 @@
                     "locale": "en",
                     "text": "variety",
                     "is_google_translate": true,
-                    "popularity": 81,
+                    "popularity": 82,
                     "flagged": false,
                     "id": 6155847
                 },
@@ -18305,7 +18454,7 @@
                     "locale": "en",
                     "text": "other",
                     "is_google_translate": true,
-                    "popularity": 994,
+                    "popularity": 997,
                     "flagged": false,
                     "id": 1063682
                 },
@@ -18313,7 +18462,7 @@
                     "locale": "en",
                     "text": "other, another, or another one (different one) (m)",
                     "is_google_translate": false,
-                    "popularity": 205,
+                    "popularity": 206,
                     "flagged": false,
                     "id": 51913624
                 },
@@ -18340,7 +18489,7 @@
                     "locale": "en",
                     "text": "his,its",
                     "is_google_translate": false,
-                    "popularity": 1321,
+                    "popularity": 1326,
                     "flagged": false,
                     "id": 1599485
                 },
@@ -18356,7 +18505,7 @@
                     "locale": "en",
                     "text": "his",
                     "is_google_translate": true,
-                    "popularity": 71,
+                    "popularity": 73,
                     "flagged": false,
                     "id": 5476087
                 }
@@ -18379,7 +18528,7 @@
                     "locale": "en",
                     "text": "manage to",
                     "is_google_translate": false,
-                    "popularity": 276,
+                    "popularity": 279,
                     "flagged": false,
                     "id": 1027218
                 },
@@ -18418,7 +18567,7 @@
                     "locale": "en",
                     "text": "that",
                     "is_google_translate": false,
-                    "popularity": 1734,
+                    "popularity": 1740,
                     "flagged": false,
                     "id": 109672
                 },
@@ -18426,7 +18575,7 @@
                     "locale": "en",
                     "text": "this/that feminine object - (you speaking, object near/in possession of listener)",
                     "is_google_translate": false,
-                    "popularity": 301,
+                    "popularity": 302,
                     "flagged": false,
                     "id": 50681720
                 },
@@ -18434,7 +18583,7 @@
                     "locale": "en",
                     "text": "This",
                     "is_google_translate": false,
-                    "popularity": 67,
+                    "popularity": 73,
                     "flagged": false,
                     "id": 159799646
                 }
@@ -18453,7 +18602,7 @@
                     "locale": "en",
                     "text": "for",
                     "is_google_translate": false,
-                    "popularity": 1741,
+                    "popularity": 1744,
                     "flagged": false,
                     "id": 138593
                 },
@@ -18469,7 +18618,7 @@
                     "locale": "en",
                     "text": "there is/there are/ago [past time]",
                     "is_google_translate": false,
-                    "popularity": 327,
+                    "popularity": 328,
                     "flagged": false,
                     "id": 35782155
                 }
@@ -18492,7 +18641,7 @@
                     "locale": "en",
                     "text": "I say",
                     "is_google_translate": true,
-                    "popularity": 792,
+                    "popularity": 796,
                     "flagged": false,
                     "id": 86604
                 },
@@ -18531,7 +18680,7 @@
                     "locale": "en",
                     "text": "noticed",
                     "is_google_translate": false,
-                    "popularity": 215,
+                    "popularity": 217,
                     "flagged": false,
                     "id": 12524130
                 },
@@ -18539,7 +18688,7 @@
                     "locale": "en",
                     "text": "noticed, repaired",
                     "is_google_translate": false,
-                    "popularity": 58,
+                    "popularity": 59,
                     "flagged": false,
                     "id": 31414795
                 },
@@ -18568,7 +18717,7 @@
                     "locale": "en",
                     "text": "less, minus, fewer, lesser",
                     "is_google_translate": false,
-                    "popularity": 670,
+                    "popularity": 673,
                     "flagged": false,
                     "id": 182484
                 },
@@ -18576,7 +18725,7 @@
                     "locale": "en",
                     "text": "less",
                     "is_google_translate": false,
-                    "popularity": 96,
+                    "popularity": 97,
                     "flagged": true,
                     "id": 182483
                 },
@@ -18603,7 +18752,7 @@
                     "locale": "en",
                     "text": "fazer  v. make, cause, create; do, effect; fulfill; manufacture",
                     "is_google_translate": false,
-                    "popularity": 917,
+                    "popularity": 920,
                     "flagged": false,
                     "id": 120431
                 },
@@ -18642,7 +18791,7 @@
                     "locale": "en",
                     "text": "by the, for the",
                     "is_google_translate": false,
-                    "popularity": 1507,
+                    "popularity": 1508,
                     "flagged": false,
                     "id": 206979
                 },
@@ -18681,7 +18830,7 @@
                     "locale": "en",
                     "text": "something, anything",
                     "is_google_translate": false,
-                    "popularity": 1108,
+                    "popularity": 1109,
                     "flagged": false,
                     "id": 16545
                 },
@@ -18689,7 +18838,7 @@
                     "locale": "en",
                     "text": "something",
                     "is_google_translate": true,
-                    "popularity": 116,
+                    "popularity": 120,
                     "flagged": false,
                     "id": 1300509
                 },
@@ -18716,7 +18865,7 @@
                     "locale": "en",
                     "text": "since",
                     "is_google_translate": true,
-                    "popularity": 787,
+                    "popularity": 788,
                     "flagged": false,
                     "id": 4865806
                 },
@@ -18724,7 +18873,7 @@
                     "locale": "en",
                     "text": "From, since",
                     "is_google_translate": false,
-                    "popularity": 103,
+                    "popularity": 104,
                     "flagged": false,
                     "id": 82490
                 },
@@ -18732,7 +18881,7 @@
                     "locale": "en",
                     "text": "Since",
                     "is_google_translate": true,
-                    "popularity": 49,
+                    "popularity": 51,
                     "flagged": true,
                     "id": 82507
                 }
@@ -18763,7 +18912,7 @@
                     "locale": "en",
                     "text": "need",
                     "is_google_translate": false,
-                    "popularity": 118,
+                    "popularity": 119,
                     "flagged": false,
                     "id": 2360419
                 },
@@ -18799,7 +18948,7 @@
                     "locale": "en",
                     "text": "I had/got",
                     "is_google_translate": false,
-                    "popularity": 452,
+                    "popularity": 453,
                     "flagged": false,
                     "id": 935886
                 },
@@ -18830,7 +18979,7 @@
                     "locale": "en",
                     "text": "fast",
                     "is_google_translate": true,
-                    "popularity": 262,
+                    "popularity": 263,
                     "flagged": false,
                     "id": 13742714
                 },
@@ -18880,7 +19029,7 @@
                     "locale": "en",
                     "text": "can, may",
                     "is_google_translate": false,
-                    "popularity": 127,
+                    "popularity": 128,
                     "flagged": false,
                     "id": 213194
                 }
@@ -18900,7 +19049,7 @@
                     "locale": "en",
                     "text": "Basic",
                     "is_google_translate": false,
-                    "popularity": 249,
+                    "popularity": 250,
                     "flagged": false,
                     "id": 2300103
                 },
@@ -18975,7 +19124,7 @@
                     "locale": "en",
                     "text": "study",
                     "is_google_translate": true,
-                    "popularity": 527,
+                    "popularity": 531,
                     "flagged": false,
                     "id": 3789167
                 },
@@ -19093,7 +19242,7 @@
                     "locale": "en",
                     "text": "right",
                     "is_google_translate": true,
-                    "popularity": 588,
+                    "popularity": 592,
                     "flagged": false,
                     "id": 13488008
                 },
@@ -19101,7 +19250,7 @@
                     "locale": "en",
                     "text": "right, correct; certain; true",
                     "is_google_translate": false,
-                    "popularity": 357,
+                    "popularity": 359,
                     "flagged": false,
                     "id": 20197188
                 },
@@ -19128,7 +19277,7 @@
                     "locale": "en",
                     "text": "we left",
                     "is_google_translate": true,
-                    "popularity": 331,
+                    "popularity": 332,
                     "flagged": false,
                     "id": 1296046
                 },
@@ -19166,7 +19315,7 @@
                     "locale": "en",
                     "text": "to listen, to hear",
                     "is_google_translate": false,
-                    "popularity": 2266,
+                    "popularity": 2267,
                     "flagged": false,
                     "id": 1083357
                 },
@@ -19211,7 +19360,7 @@
                     "locale": "en",
                     "text": "canals, channels",
                     "is_google_translate": false,
-                    "popularity": 44,
+                    "popularity": 45,
                     "flagged": false,
                     "id": 12328726
                 },
@@ -19237,7 +19386,7 @@
                     "locale": "en",
                     "text": "n. time, turn",
                     "is_google_translate": false,
-                    "popularity": 1385,
+                    "popularity": 1387,
                     "flagged": false,
                     "id": 2047895
                 },
@@ -19245,7 +19394,7 @@
                     "locale": "en",
                     "text": "times",
                     "is_google_translate": true,
-                    "popularity": 824,
+                    "popularity": 825,
                     "flagged": false,
                     "id": 1074635
                 },
@@ -19288,7 +19437,7 @@
                     "locale": "en",
                     "text": "materials",
                     "is_google_translate": true,
-                    "popularity": 19,
+                    "popularity": 22,
                     "flagged": false,
                     "id": 10671405
                 }
@@ -19367,7 +19516,7 @@
                     "locale": "en",
                     "text": "to learn",
                     "is_google_translate": false,
-                    "popularity": 44,
+                    "popularity": 46,
                     "flagged": false,
                     "id": 24764
                 }
@@ -19388,7 +19537,7 @@
                     "locale": "en",
                     "text": "de+as: of the",
                     "is_google_translate": false,
-                    "popularity": 1246,
+                    "popularity": 1250,
                     "flagged": true,
                     "id": 75406
                 },
@@ -19402,11 +19551,11 @@
                 },
                 {
                     "locale": "en",
-                    "text": "of the (de + as)",
+                    "text": "of the",
                     "is_google_translate": false,
-                    "popularity": 25,
+                    "popularity": 27,
                     "flagged": false,
-                    "id": 21702980
+                    "id": 10353947
                 }
             ],
             "status": "known",
@@ -19423,7 +19572,7 @@
                     "locale": "en",
                     "text": "ourselves; we",
                     "is_google_translate": false,
-                    "popularity": 1025,
+                    "popularity": 1032,
                     "flagged": false,
                     "id": 1288362
                 },
@@ -19439,7 +19588,7 @@
                     "locale": "en",
                     "text": "(em + os) in the",
                     "is_google_translate": false,
-                    "popularity": 159,
+                    "popularity": 160,
                     "flagged": false,
                     "id": 2924529
                 }
@@ -19458,7 +19607,7 @@
                     "locale": "en",
                     "text": "important",
                     "is_google_translate": true,
-                    "popularity": 973,
+                    "popularity": 976,
                     "flagged": false,
                     "id": 925784
                 },
@@ -19466,7 +19615,7 @@
                     "locale": "en",
                     "text": "important (m/f s)",
                     "is_google_translate": false,
-                    "popularity": 38,
+                    "popularity": 39,
                     "flagged": false,
                     "id": 58265923
                 },
@@ -19501,7 +19650,7 @@
                     "locale": "en",
                     "text": "linguistics",
                     "is_google_translate": true,
-                    "popularity": 45,
+                    "popularity": 46,
                     "flagged": false,
                     "id": 15041328
                 },
@@ -19528,7 +19677,7 @@
                     "locale": "en",
                     "text": "minus, less, without, lacking, (sin)",
                     "is_google_translate": false,
-                    "popularity": 343,
+                    "popularity": 344,
                     "flagged": false,
                     "id": 250208
                 },
@@ -19563,7 +19712,7 @@
                     "locale": "en",
                     "text": "v. practice, exercise; use; commit",
                     "is_google_translate": false,
-                    "popularity": 412,
+                    "popularity": 413,
                     "flagged": false,
                     "id": 216742
                 },
@@ -19579,7 +19728,7 @@
                     "locale": "en",
                     "text": "practice",
                     "is_google_translate": true,
-                    "popularity": 30,
+                    "popularity": 31,
                     "flagged": false,
                     "id": 13662984
                 }
@@ -19599,7 +19748,7 @@
                     "locale": "en",
                     "text": "to, for, to pause (pres.3rdsing)",
                     "is_google_translate": false,
-                    "popularity": 2956,
+                    "popularity": 2970,
                     "flagged": false,
                     "id": 28604620
                 },
@@ -19607,7 +19756,7 @@
                     "locale": "en",
                     "text": "for, in order to, to",
                     "is_google_translate": false,
-                    "popularity": 1400,
+                    "popularity": 1402,
                     "flagged": false,
                     "id": 142282879
                 },
@@ -19615,7 +19764,7 @@
                     "locale": "en",
                     "text": "to",
                     "is_google_translate": false,
-                    "popularity": 1019,
+                    "popularity": 1035,
                     "flagged": false,
                     "id": 203118
                 }
@@ -19638,7 +19787,7 @@
                     "locale": "en",
                     "text": "native",
                     "is_google_translate": false,
-                    "popularity": 381,
+                    "popularity": 382,
                     "flagged": false,
                     "id": 190901
                 },
@@ -19689,7 +19838,7 @@
                     "locale": "en",
                     "text": "words",
                     "is_google_translate": true,
-                    "popularity": 3239,
+                    "popularity": 3241,
                     "flagged": false,
                     "id": 202503
                 },
@@ -19724,7 +19873,7 @@
                     "locale": "en",
                     "text": "goal , objective",
                     "is_google_translate": false,
-                    "popularity": 271,
+                    "popularity": 272,
                     "flagged": false,
                     "id": 30800846
                 },
@@ -19732,7 +19881,7 @@
                     "locale": "en",
                     "text": "goal",
                     "is_google_translate": true,
-                    "popularity": 100,
+                    "popularity": 101,
                     "flagged": false,
                     "id": 2504835
                 },
@@ -19777,7 +19926,7 @@
                     "locale": "en",
                     "text": "rapidly, quickly",
                     "is_google_translate": false,
-                    "popularity": 462,
+                    "popularity": 465,
                     "flagged": false,
                     "id": 6966116
                 },
@@ -19793,7 +19942,7 @@
                     "locale": "en",
                     "text": "quickly",
                     "is_google_translate": true,
-                    "popularity": 10,
+                    "popularity": 12,
                     "flagged": false,
                     "id": 2306977
                 }
@@ -19821,7 +19970,7 @@
                     "locale": "en",
                     "text": "to repeat",
                     "is_google_translate": false,
-                    "popularity": 512,
+                    "popularity": 513,
                     "flagged": false,
                     "id": 1145768
                 },
@@ -19857,7 +20006,7 @@
                     "locale": "en",
                     "text": "it is/this",
                     "is_google_translate": false,
-                    "popularity": 1133,
+                    "popularity": 1135,
                     "flagged": false,
                     "id": 31434376
                 },
@@ -19900,7 +20049,7 @@
                     "locale": "en",
                     "text": "which, what (plural)",
                     "is_google_translate": false,
-                    "popularity": 189,
+                    "popularity": 190,
                     "flagged": false,
                     "id": 18312559
                 },
@@ -19927,7 +20076,7 @@
                     "locale": "en",
                     "text": "habituate, make one accustomed to, familiarize",
                     "is_google_translate": false,
-                    "popularity": 154,
+                    "popularity": 155,
                     "flagged": false,
                     "id": 138881
                 },
@@ -19964,7 +20113,7 @@
                     "locale": "en",
                     "text": "naturally",
                     "is_google_translate": true,
-                    "popularity": 322,
+                    "popularity": 324,
                     "flagged": false,
                     "id": 3042840
                 },
@@ -19991,7 +20140,7 @@
                     "locale": "en",
                     "text": "tentar - to try, attempt",
                     "is_google_translate": false,
-                    "popularity": 1194,
+                    "popularity": 1198,
                     "flagged": false,
                     "id": 1116203
                 },
@@ -20030,7 +20179,7 @@
                     "locale": "en",
                     "text": "same, even, just, indeed, likewise, itself",
                     "is_google_translate": false,
-                    "popularity": 1500,
+                    "popularity": 1504,
                     "flagged": false,
                     "id": 31414962
                 },
@@ -20038,7 +20187,7 @@
                     "locale": "en",
                     "text": "even, yet",
                     "is_google_translate": false,
-                    "popularity": 166,
+                    "popularity": 167,
                     "flagged": false,
                     "id": 183273
                 },
@@ -20046,7 +20195,7 @@
                     "locale": "en",
                     "text": "same; even",
                     "is_google_translate": false,
-                    "popularity": 32,
+                    "popularity": 33,
                     "flagged": false,
                     "id": 25125892
                 }
@@ -20065,7 +20214,7 @@
                     "locale": "en",
                     "text": "me",
                     "is_google_translate": true,
-                    "popularity": 1527,
+                    "popularity": 1533,
                     "flagged": false,
                     "id": 184505
                 },
@@ -20073,7 +20222,7 @@
                     "locale": "en",
                     "text": "me, myself",
                     "is_google_translate": false,
-                    "popularity": 606,
+                    "popularity": 608,
                     "flagged": false,
                     "id": 184506
                 },
@@ -20135,7 +20284,7 @@
                     "locale": "en",
                     "text": "f\u00e1cil, easy (plural)",
                     "is_google_translate": false,
-                    "popularity": 1482,
+                    "popularity": 1484,
                     "flagged": false,
                     "id": 6771649
                 },
@@ -20151,7 +20300,7 @@
                     "locale": "en",
                     "text": "easy",
                     "is_google_translate": true,
-                    "popularity": 23,
+                    "popularity": 25,
                     "flagged": false,
                     "id": 4129875
                 }
@@ -20170,7 +20319,7 @@
                     "locale": "en",
                     "text": "teach",
                     "is_google_translate": false,
-                    "popularity": 498,
+                    "popularity": 502,
                     "flagged": false,
                     "id": 103274
                 },
@@ -20178,7 +20327,7 @@
                     "locale": "en",
                     "text": "to teach",
                     "is_google_translate": true,
-                    "popularity": 167,
+                    "popularity": 169,
                     "flagged": false,
                     "id": 103275
                 },
@@ -20214,7 +20363,7 @@
                     "locale": "en",
                     "text": "Polyglot: multilingual person",
                     "is_google_translate": false,
-                    "popularity": 4,
+                    "popularity": 5,
                     "flagged": false,
                     "id": 161045638
                 },
@@ -20241,7 +20390,7 @@
                     "locale": "en",
                     "text": "Oh",
                     "is_google_translate": false,
-                    "popularity": 610,
+                    "popularity": 613,
                     "flagged": false,
                     "id": 32958323
                 },
@@ -20249,7 +20398,7 @@
                     "locale": "en",
                     "text": "Ah",
                     "is_google_translate": true,
-                    "popularity": 57,
+                    "popularity": 58,
                     "flagged": false,
                     "id": 13488769
                 },
@@ -20276,7 +20425,7 @@
                     "locale": "en",
                     "text": "simply",
                     "is_google_translate": true,
-                    "popularity": 983,
+                    "popularity": 985,
                     "flagged": false,
                     "id": 255401
                 },
@@ -20311,7 +20460,7 @@
                     "locale": "en",
                     "text": "n.  word",
                     "is_google_translate": false,
-                    "popularity": 311,
+                    "popularity": 312,
                     "flagged": false,
                     "id": 202500
                 },
@@ -20346,7 +20495,7 @@
                     "locale": "en",
                     "text": "in case",
                     "is_google_translate": false,
-                    "popularity": 314,
+                    "popularity": 315,
                     "flagged": false,
                     "id": 17723221
                 },
@@ -20385,7 +20534,7 @@
                     "locale": "en",
                     "text": "Hola",
                     "is_google_translate": true,
-                    "popularity": 978,
+                    "popularity": 980,
                     "flagged": false,
                     "id": 46895131
                 },
@@ -20401,7 +20550,7 @@
                     "locale": "en",
                     "text": "Hello",
                     "is_google_translate": true,
-                    "popularity": 74,
+                    "popularity": 82,
                     "flagged": false,
                     "id": 12104082
                 }
@@ -20420,7 +20569,7 @@
                     "locale": "en",
                     "text": "I was",
                     "is_google_translate": false,
-                    "popularity": 986,
+                    "popularity": 988,
                     "flagged": false,
                     "id": 126517
                 },
@@ -20460,7 +20609,7 @@
                     "locale": "en",
                     "text": "story",
                     "is_google_translate": true,
-                    "popularity": 1123,
+                    "popularity": 1127,
                     "flagged": false,
                     "id": 144689
                 },
@@ -20468,7 +20617,7 @@
                     "locale": "en",
                     "text": "History, story (f)",
                     "is_google_translate": false,
-                    "popularity": 122,
+                    "popularity": 123,
                     "flagged": false,
                     "id": 25205385
                 },
@@ -20495,7 +20644,7 @@
                     "locale": "en",
                     "text": "go",
                     "is_google_translate": true,
-                    "popularity": 1761,
+                    "popularity": 1775,
                     "flagged": false,
                     "id": 157940
                 },
@@ -20503,7 +20652,7 @@
                     "locale": "en",
                     "text": "to go",
                     "is_google_translate": false,
-                    "popularity": 557,
+                    "popularity": 561,
                     "flagged": false,
                     "id": 4302800
                 },
@@ -20532,7 +20681,7 @@
                     "locale": "en",
                     "text": "some",
                     "is_google_translate": true,
-                    "popularity": 1796,
+                    "popularity": 1802,
                     "flagged": false,
                     "id": 16675
                 },
@@ -20601,7 +20750,7 @@
                     "locale": "en",
                     "text": "help",
                     "is_google_translate": false,
-                    "popularity": 1877,
+                    "popularity": 1882,
                     "flagged": false,
                     "id": 15715
                 },
@@ -20637,7 +20786,7 @@
                     "locale": "en",
                     "text": "he/she/it goes.  you go",
                     "is_google_translate": false,
-                    "popularity": 6623,
+                    "popularity": 6631,
                     "flagged": true,
                     "id": 33965672
                 },
@@ -20676,7 +20825,7 @@
                     "locale": "en",
                     "text": "also,too",
                     "is_google_translate": false,
-                    "popularity": 250,
+                    "popularity": 258,
                     "flagged": false,
                     "id": 12428937
                 },
@@ -20692,7 +20841,7 @@
                     "locale": "en",
                     "text": "also",
                     "is_google_translate": false,
-                    "popularity": 36,
+                    "popularity": 39,
                     "flagged": false,
                     "id": 159704755
                 }
@@ -20711,7 +20860,7 @@
                     "locale": "en",
                     "text": "my",
                     "is_google_translate": false,
-                    "popularity": 2791,
+                    "popularity": 2799,
                     "flagged": false,
                     "id": 184773
                 },
@@ -20719,7 +20868,7 @@
                     "locale": "en",
                     "text": "my, mine",
                     "is_google_translate": false,
-                    "popularity": 623,
+                    "popularity": 624,
                     "flagged": false,
                     "id": 184765
                 },
@@ -20746,7 +20895,7 @@
                     "locale": "en",
                     "text": "(conj) if ; whether ; supposing ; in case that / (pron) themselves ; itself ; himself ; oneself",
                     "is_google_translate": false,
-                    "popularity": 12550,
+                    "popularity": 12590,
                     "flagged": false,
                     "id": 21705508
                 },
@@ -20754,7 +20903,7 @@
                     "locale": "en",
                     "text": "himself",
                     "is_google_translate": false,
-                    "popularity": 564,
+                    "popularity": 605,
                     "flagged": true,
                     "id": 12170112
                 },
@@ -20781,7 +20930,7 @@
                     "locale": "en",
                     "text": "Your",
                     "is_google_translate": true,
-                    "popularity": 955,
+                    "popularity": 976,
                     "flagged": false,
                     "id": 16171494
                 },
@@ -20789,7 +20938,7 @@
                     "locale": "en",
                     "text": "his",
                     "is_google_translate": false,
-                    "popularity": 252,
+                    "popularity": 273,
                     "flagged": false,
                     "id": 12246300
                 },
@@ -20797,7 +20946,7 @@
                     "locale": "en",
                     "text": "your",
                     "is_google_translate": true,
-                    "popularity": 133,
+                    "popularity": 136,
                     "flagged": false,
                     "id": 252624
                 }
@@ -20816,7 +20965,7 @@
                     "locale": "en",
                     "text": "in this",
                     "is_google_translate": true,
-                    "popularity": 1316,
+                    "popularity": 1317,
                     "flagged": false,
                     "id": 192044
                 },
@@ -20824,7 +20973,7 @@
                     "locale": "en",
                     "text": "in this (en este)",
                     "is_google_translate": false,
-                    "popularity": 152,
+                    "popularity": 155,
                     "flagged": false,
                     "id": 192046
                 },
@@ -20850,7 +20999,7 @@
                     "locale": "en",
                     "text": "am",
                     "is_google_translate": true,
-                    "popularity": 2065,
+                    "popularity": 2077,
                     "flagged": false,
                     "id": 260728
                 },
@@ -20858,7 +21007,7 @@
                     "locale": "en",
                     "text": "I am (ser)",
                     "is_google_translate": false,
-                    "popularity": 655,
+                    "popularity": 660,
                     "flagged": false,
                     "id": 33047194
                 },
@@ -20889,7 +21038,7 @@
                     "locale": "en",
                     "text": "I",
                     "is_google_translate": true,
-                    "popularity": 2625,
+                    "popularity": 2642,
                     "flagged": false,
                     "id": 110923591
                 },
@@ -20897,7 +21046,7 @@
                     "locale": "en",
                     "text": "I; self; ego",
                     "is_google_translate": false,
-                    "popularity": 537,
+                    "popularity": 538,
                     "flagged": false,
                     "id": 146385415
                 },
@@ -20924,7 +21073,7 @@
                     "locale": "en",
                     "text": "We are",
                     "is_google_translate": false,
-                    "popularity": 859,
+                    "popularity": 861,
                     "flagged": false,
                     "id": 13466035
                 },
@@ -20963,7 +21112,7 @@
                     "locale": "en",
                     "text": "you are",
                     "is_google_translate": false,
-                    "popularity": 1074,
+                    "popularity": 1077,
                     "flagged": true,
                     "id": 110333
                 },
@@ -20979,7 +21128,7 @@
                     "locale": "en",
                     "text": "They are",
                     "is_google_translate": true,
-                    "popularity": 213,
+                    "popularity": 214,
                     "flagged": false,
                     "id": 13427521
                 }
@@ -21002,7 +21151,7 @@
                     "locale": "en",
                     "text": "More",
                     "is_google_translate": true,
-                    "popularity": 2092,
+                    "popularity": 2099,
                     "flagged": false,
                     "id": 13528765
                 },
@@ -21010,7 +21159,7 @@
                     "locale": "en",
                     "text": "more",
                     "is_google_translate": true,
-                    "popularity": 603,
+                    "popularity": 605,
                     "flagged": true,
                     "id": 177301
                 },
@@ -21037,7 +21186,7 @@
                     "locale": "en",
                     "text": "who",
                     "is_google_translate": true,
-                    "popularity": 4279,
+                    "popularity": 4284,
                     "flagged": false,
                     "id": 224942
                 },
@@ -21045,7 +21194,7 @@
                     "locale": "en",
                     "text": "who,  whom, whoever",
                     "is_google_translate": false,
-                    "popularity": 347,
+                    "popularity": 349,
                     "flagged": false,
                     "id": 42965931
                 },
@@ -21072,7 +21221,7 @@
                     "locale": "en",
                     "text": "learned",
                     "is_google_translate": true,
-                    "popularity": 245,
+                    "popularity": 246,
                     "flagged": false,
                     "id": 2421649
                 },
@@ -21110,7 +21259,7 @@
                     "locale": "en",
                     "text": "person",
                     "is_google_translate": false,
-                    "popularity": 1070,
+                    "popularity": 1075,
                     "flagged": false,
                     "id": 209423
                 },
@@ -21118,7 +21267,7 @@
                     "locale": "en",
                     "text": "person (f)",
                     "is_google_translate": false,
-                    "popularity": 296,
+                    "popularity": 297,
                     "flagged": false,
                     "id": 20788272
                 },
@@ -21145,7 +21294,7 @@
                     "locale": "en",
                     "text": "countries (plural m)",
                     "is_google_translate": false,
-                    "popularity": 525,
+                    "popularity": 533,
                     "flagged": false,
                     "id": 51122290
                 },
@@ -21153,7 +21302,7 @@
                     "locale": "en",
                     "text": "countries",
                     "is_google_translate": false,
-                    "popularity": 113,
+                    "popularity": 119,
                     "flagged": false,
                     "id": 158808946
                 },
@@ -21180,7 +21329,7 @@
                     "locale": "en",
                     "text": "which; what (sing)",
                     "is_google_translate": false,
-                    "popularity": 4258,
+                    "popularity": 4260,
                     "flagged": false,
                     "id": 67492078
                 },
@@ -21215,7 +21364,7 @@
                     "locale": "en",
                     "text": "or",
                     "is_google_translate": true,
-                    "popularity": 1926,
+                    "popularity": 1929,
                     "flagged": false,
                     "id": 1275816
                 },
@@ -21258,7 +21407,7 @@
                     "locale": "en",
                     "text": "fasinates",
                     "is_google_translate": false,
-                    "popularity": 27,
+                    "popularity": 28,
                     "flagged": false,
                     "id": 1417275
                 },
@@ -21287,7 +21436,7 @@
                     "locale": "en",
                     "text": "it is",
                     "is_google_translate": true,
-                    "popularity": 2124,
+                    "popularity": 2127,
                     "flagged": false,
                     "id": 109950
                 },
@@ -21295,7 +21444,7 @@
                     "locale": "en",
                     "text": "you are; he/she/it is (estar)",
                     "is_google_translate": false,
-                    "popularity": 611,
+                    "popularity": 613,
                     "flagged": false,
                     "id": 67419446
                 },
@@ -21326,7 +21475,7 @@
                     "locale": "en",
                     "text": "to say, tell",
                     "is_google_translate": false,
-                    "popularity": 1074,
+                    "popularity": 1078,
                     "flagged": false,
                     "id": 17435149
                 },
@@ -21362,7 +21511,7 @@
                     "locale": "en",
                     "text": "I know: saber - to know",
                     "is_google_translate": false,
-                    "popularity": 354,
+                    "popularity": 358,
                     "flagged": false,
                     "id": 20454098
                 },
@@ -21401,7 +21550,7 @@
                     "locale": "en",
                     "text": "(you/he/she/it) want(s)",
                     "is_google_translate": false,
-                    "popularity": 3945,
+                    "popularity": 3949,
                     "flagged": false,
                     "id": 49917401
                 },
@@ -21440,7 +21589,7 @@
                     "locale": "en",
                     "text": "about",
                     "is_google_translate": false,
-                    "popularity": 1960,
+                    "popularity": 1968,
                     "flagged": false,
                     "id": 258305
                 },
@@ -21513,7 +21662,7 @@
                     "locale": "en",
                     "text": "but",
                     "is_google_translate": true,
-                    "popularity": 2908,
+                    "popularity": 2915,
                     "flagged": false,
                     "id": 179735
                 },
@@ -21521,7 +21670,7 @@
                     "locale": "en",
                     "text": "but, only, yet",
                     "is_google_translate": false,
-                    "popularity": 725,
+                    "popularity": 727,
                     "flagged": false,
                     "id": 179737
                 },
@@ -21548,7 +21697,7 @@
                     "locale": "en",
                     "text": "time, moment",
                     "is_google_translate": false,
-                    "popularity": 489,
+                    "popularity": 492,
                     "flagged": false,
                     "id": 4882674
                 },
@@ -21619,7 +21768,7 @@
                     "locale": "en",
                     "text": "nothing / anything",
                     "is_google_translate": false,
-                    "popularity": 649,
+                    "popularity": 651,
                     "flagged": false,
                     "id": 14753509
                 },
@@ -21627,7 +21776,7 @@
                     "locale": "en",
                     "text": "anything",
                     "is_google_translate": true,
-                    "popularity": 122,
+                    "popularity": 123,
                     "flagged": false,
                     "id": 190127
                 },
@@ -21658,7 +21807,7 @@
                     "locale": "en",
                     "text": "no; not; non",
                     "is_google_translate": false,
-                    "popularity": 2082,
+                    "popularity": 2088,
                     "flagged": false,
                     "id": 23341416
                 },
@@ -21693,7 +21842,7 @@
                     "locale": "en",
                     "text": "want (querer)",
                     "is_google_translate": false,
-                    "popularity": 979,
+                    "popularity": 981,
                     "flagged": false,
                     "id": 1383743
                 },
@@ -21701,7 +21850,7 @@
                     "locale": "en",
                     "text": "I want",
                     "is_google_translate": true,
-                    "popularity": 644,
+                    "popularity": 646,
                     "flagged": false,
                     "id": 8749625
                 },
@@ -21742,7 +21891,7 @@
                     "locale": "en",
                     "text": "achar - to think/find out",
                     "is_google_translate": false,
-                    "popularity": 1618,
+                    "popularity": 1624,
                     "flagged": false,
                     "id": 10986
                 },
@@ -21750,7 +21899,7 @@
                     "locale": "en",
                     "text": "I think",
                     "is_google_translate": false,
-                    "popularity": 771,
+                    "popularity": 772,
                     "flagged": false,
                     "id": 881040
                 },
@@ -21781,7 +21930,7 @@
                     "locale": "en",
                     "text": "now",
                     "is_google_translate": true,
-                    "popularity": 1042,
+                    "popularity": 1052,
                     "flagged": true,
                     "id": 14482
                 },
@@ -21789,7 +21938,7 @@
                     "locale": "en",
                     "text": "Now",
                     "is_google_translate": true,
-                    "popularity": 80,
+                    "popularity": 84,
                     "flagged": false,
                     "id": 13615015
                 },
@@ -21797,7 +21946,7 @@
                     "locale": "en",
                     "text": "now, at this moment",
                     "is_google_translate": false,
-                    "popularity": 74,
+                    "popularity": 76,
                     "flagged": false,
                     "id": 35320964
                 }
@@ -21816,7 +21965,7 @@
                     "locale": "en",
                     "text": "I am - he/she is (subjunctive)",
                     "is_google_translate": false,
-                    "popularity": 2823,
+                    "popularity": 2826,
                     "flagged": false,
                     "id": 36242182
                 },
@@ -21855,7 +22004,7 @@
                     "locale": "en",
                     "text": "with",
                     "is_google_translate": true,
-                    "popularity": 3973,
+                    "popularity": 3984,
                     "flagged": false,
                     "id": 12428658
                 },
@@ -21863,7 +22012,7 @@
                     "locale": "en",
                     "text": "with / like/ for / at",
                     "is_google_translate": false,
-                    "popularity": 165,
+                    "popularity": 168,
                     "flagged": false,
                     "id": 100938630
                 },
@@ -21890,7 +22039,7 @@
                     "locale": "en",
                     "text": "where",
                     "is_google_translate": false,
-                    "popularity": 3414,
+                    "popularity": 3425,
                     "flagged": false,
                     "id": 12428905
                 },
@@ -21898,7 +22047,7 @@
                     "locale": "en",
                     "text": "where, in what location",
                     "is_google_translate": false,
-                    "popularity": 197,
+                    "popularity": 198,
                     "flagged": false,
                     "id": 198257
                 },
@@ -21925,7 +22074,7 @@
                     "locale": "en",
                     "text": "life",
                     "is_google_translate": true,
-                    "popularity": 800,
+                    "popularity": 806,
                     "flagged": false,
                     "id": 298864
                 },
@@ -21933,7 +22082,7 @@
                     "locale": "en",
                     "text": "life,   living (noun)",
                     "is_google_translate": false,
-                    "popularity": 166,
+                    "popularity": 167,
                     "flagged": false,
                     "id": 34394996
                 },
@@ -21998,7 +22147,7 @@
                     "locale": "en",
                     "text": "learning",
                     "is_google_translate": true,
-                    "popularity": 553,
+                    "popularity": 558,
                     "flagged": false,
                     "id": 24819
                 },
@@ -22032,7 +22181,7 @@
                     "locale": "en",
                     "text": "various, several",
                     "is_google_translate": false,
-                    "popularity": 668,
+                    "popularity": 669,
                     "flagged": false,
                     "id": 1696342
                 },
@@ -22048,7 +22197,7 @@
                     "locale": "en",
                     "text": "several",
                     "is_google_translate": true,
-                    "popularity": 15,
+                    "popularity": 17,
                     "flagged": false,
                     "id": 5722758
                 }
@@ -22066,7 +22215,7 @@
                     "locale": "en",
                     "text": "speak",
                     "is_google_translate": false,
-                    "popularity": 1422,
+                    "popularity": 1426,
                     "flagged": false,
                     "id": 115847
                 },
@@ -22106,7 +22255,7 @@
                     "locale": "en",
                     "text": "said",
                     "is_google_translate": true,
-                    "popularity": 842,
+                    "popularity": 845,
                     "flagged": false,
                     "id": 89341
                 },
@@ -22147,7 +22296,7 @@
                     "locale": "en",
                     "text": "Italian",
                     "is_google_translate": true,
-                    "popularity": 339,
+                    "popularity": 340,
                     "flagged": false,
                     "id": 3837663
                 },
@@ -22182,7 +22331,7 @@
                     "locale": "en",
                     "text": "diffcult",
                     "is_google_translate": false,
-                    "popularity": 997,
+                    "popularity": 998,
                     "flagged": false,
                     "id": 972593
                 },
@@ -22190,7 +22339,7 @@
                     "locale": "en",
                     "text": "diffcult (m/f s)",
                     "is_google_translate": false,
-                    "popularity": 142,
+                    "popularity": 143,
                     "flagged": false,
                     "id": 62795154
                 },
@@ -22217,7 +22366,7 @@
                     "locale": "en",
                     "text": "subscribe",
                     "is_google_translate": true,
-                    "popularity": 122,
+                    "popularity": 124,
                     "flagged": false,
                     "id": 35047839
                 },
@@ -22254,7 +22403,7 @@
                     "locale": "en",
                     "text": "created (verb: criar)",
                     "is_google_translate": false,
-                    "popularity": 310,
+                    "popularity": 311,
                     "flagged": false,
                     "id": 926894
                 },
@@ -22293,7 +22442,7 @@
                     "locale": "en",
                     "text": "day (m)",
                     "is_google_translate": false,
-                    "popularity": 2698,
+                    "popularity": 2701,
                     "flagged": false,
                     "id": 11970787
                 },
@@ -22301,7 +22450,7 @@
                     "locale": "en",
                     "text": "day",
                     "is_google_translate": true,
-                    "popularity": 701,
+                    "popularity": 703,
                     "flagged": false,
                     "id": 7556203
                 },
@@ -22309,7 +22458,7 @@
                     "locale": "en",
                     "text": "morning",
                     "is_google_translate": true,
-                    "popularity": 230,
+                    "popularity": 232,
                     "flagged": true,
                     "id": 13488044
                 }
@@ -22328,7 +22477,7 @@
                     "locale": "en",
                     "text": "the; him; it",
                     "is_google_translate": false,
-                    "popularity": 7591,
+                    "popularity": 7599,
                     "flagged": true,
                     "id": 1342897
                 },
@@ -22336,7 +22485,7 @@
                     "locale": "en",
                     "text": "the; him; you; it; such",
                     "is_google_translate": false,
-                    "popularity": 1357,
+                    "popularity": 1358,
                     "flagged": false,
                     "id": 24097308
                 },
@@ -22398,7 +22547,7 @@
                     "locale": "en",
                     "text": "first, initial, primary (m)",
                     "is_google_translate": false,
-                    "popularity": 3056,
+                    "popularity": 3058,
                     "flagged": false,
                     "id": 90858788
                 },
@@ -22414,7 +22563,7 @@
                     "locale": "en",
                     "text": "first",
                     "is_google_translate": false,
-                    "popularity": 34,
+                    "popularity": 35,
                     "flagged": false,
                     "id": 159508556
                 }
@@ -22433,7 +22582,7 @@
                     "locale": "en",
                     "text": "make, do",
                     "is_google_translate": false,
-                    "popularity": 1868,
+                    "popularity": 1869,
                     "flagged": false,
                     "id": 117435
                 },
@@ -22470,7 +22619,7 @@
                     "locale": "en",
                     "text": "Internet",
                     "is_google_translate": true,
-                    "popularity": 408,
+                    "popularity": 409,
                     "flagged": false,
                     "id": 2426709
                 },
@@ -22486,7 +22635,7 @@
                     "locale": "en",
                     "text": "internet",
                     "is_google_translate": false,
-                    "popularity": 10,
+                    "popularity": 11,
                     "flagged": false,
                     "id": 11608730
                 }
@@ -22504,7 +22653,7 @@
                     "locale": "en",
                     "text": "was",
                     "is_google_translate": false,
-                    "popularity": 2821,
+                    "popularity": 2826,
                     "flagged": false,
                     "id": 12428517
                 },
@@ -22512,7 +22661,7 @@
                     "locale": "en",
                     "text": "it was",
                     "is_google_translate": false,
-                    "popularity": 339,
+                    "popularity": 341,
                     "flagged": false,
                     "id": 121950
                 },
@@ -22544,7 +22693,7 @@
                     "locale": "en",
                     "text": "season, tense, time, weather",
                     "is_google_translate": false,
-                    "popularity": 1242,
+                    "popularity": 1246,
                     "flagged": false,
                     "id": 157953187
                 },
@@ -22552,7 +22701,7 @@
                     "locale": "en",
                     "text": "time",
                     "is_google_translate": true,
-                    "popularity": 595,
+                    "popularity": 596,
                     "flagged": false,
                     "id": 1668321
                 },
@@ -22587,7 +22736,7 @@
                     "locale": "en",
                     "text": "that",
                     "is_google_translate": false,
-                    "popularity": 103,
+                    "popularity": 106,
                     "flagged": false,
                     "id": 5293880
                 },
@@ -22614,7 +22763,7 @@
                     "locale": "en",
                     "text": "understand",
                     "is_google_translate": true,
-                    "popularity": 1415,
+                    "popularity": 1418,
                     "flagged": false,
                     "id": 63571
                 },
@@ -22651,7 +22800,7 @@
                     "locale": "en",
                     "text": "first",
                     "is_google_translate": true,
-                    "popularity": 288,
+                    "popularity": 290,
                     "flagged": false,
                     "id": 2375328
                 },
@@ -22685,7 +22834,7 @@
                     "locale": "en",
                     "text": "The",
                     "is_google_translate": true,
-                    "popularity": 995,
+                    "popularity": 997,
                     "flagged": false,
                     "id": 15443990
                 },
@@ -22720,7 +22869,7 @@
                     "locale": "en",
                     "text": "years",
                     "is_google_translate": false,
-                    "popularity": 1416,
+                    "popularity": 1420,
                     "flagged": false,
                     "id": 21819
                 },
@@ -22755,7 +22904,7 @@
                     "locale": "en",
                     "text": "good",
                     "is_google_translate": false,
-                    "popularity": 3239,
+                    "popularity": 3248,
                     "flagged": true,
                     "id": 2152916
                 },
@@ -22763,7 +22912,7 @@
                     "locale": "en",
                     "text": "good (f)",
                     "is_google_translate": false,
-                    "popularity": 652,
+                    "popularity": 656,
                     "flagged": false,
                     "id": 8503856
                 },
@@ -22771,7 +22920,7 @@
                     "locale": "en",
                     "text": "Good",
                     "is_google_translate": true,
-                    "popularity": 85,
+                    "popularity": 87,
                     "flagged": false,
                     "id": 13528763
                 }
@@ -22825,7 +22974,7 @@
                     "locale": "en",
                     "text": "people",
                     "is_google_translate": true,
-                    "popularity": 3338,
+                    "popularity": 3352,
                     "flagged": false,
                     "id": 209444
                 },
@@ -22833,7 +22982,7 @@
                     "locale": "en",
                     "text": "people, privity",
                     "is_google_translate": false,
-                    "popularity": 75,
+                    "popularity": 76,
                     "flagged": false,
                     "id": 1272400
                 },
@@ -22841,7 +22990,7 @@
                     "locale": "en",
                     "text": "people (fpl)",
                     "is_google_translate": false,
-                    "popularity": 22,
+                    "popularity": 23,
                     "flagged": false,
                     "id": 87674057
                 }
@@ -22860,7 +23009,7 @@
                     "locale": "en",
                     "text": "n. schoolchildren n. pupil, student; schoolboy, schoolchild",
                     "is_google_translate": false,
-                    "popularity": 373,
+                    "popularity": 374,
                     "flagged": false,
                     "id": 18562
                 },
@@ -22876,7 +23025,7 @@
                     "locale": "en",
                     "text": "students",
                     "is_google_translate": true,
-                    "popularity": 56,
+                    "popularity": 58,
                     "flagged": false,
                     "id": 1703748
                 }
@@ -22929,7 +23078,7 @@
                     "locale": "en",
                     "text": "maternal",
                     "is_google_translate": true,
-                    "popularity": 319,
+                    "popularity": 320,
                     "flagged": false,
                     "id": 5070609
                 },
@@ -22964,7 +23113,7 @@
                     "locale": "en",
                     "text": "I hope, I expect",
                     "is_google_translate": false,
-                    "popularity": 698,
+                    "popularity": 700,
                     "flagged": false,
                     "id": 20363219
                 },
@@ -23003,7 +23152,7 @@
                     "locale": "en",
                     "text": "many, lot",
                     "is_google_translate": false,
-                    "popularity": 1395,
+                    "popularity": 1402,
                     "flagged": false,
                     "id": 188701
                 },
@@ -23011,7 +23160,7 @@
                     "locale": "en",
                     "text": "many, a lot (masc.; pl.)",
                     "is_google_translate": false,
-                    "popularity": 241,
+                    "popularity": 242,
                     "flagged": false,
                     "id": 67491871
                 },
@@ -23064,7 +23213,7 @@
                     "locale": "en",
                     "text": "a, an, one, some",
                     "is_google_translate": false,
-                    "popularity": 5352,
+                    "popularity": 5370,
                     "flagged": false,
                     "id": 19194651
                 },
@@ -23099,7 +23248,7 @@
                     "locale": "en",
                     "text": "languages",
                     "is_google_translate": true,
-                    "popularity": 948,
+                    "popularity": 953,
                     "flagged": false,
                     "id": 3403191
                 },
@@ -23134,7 +23283,7 @@
                     "locale": "en",
                     "text": "can, may",
                     "is_google_translate": false,
-                    "popularity": 2927,
+                    "popularity": 2940,
                     "flagged": false,
                     "id": 213142
                 },
@@ -23150,7 +23299,7 @@
                     "locale": "en",
                     "text": "he/she/it can, you can",
                     "is_google_translate": false,
-                    "popularity": 177,
+                    "popularity": 178,
                     "flagged": false,
                     "id": 57879448
                 }
@@ -23208,7 +23357,7 @@
                     "locale": "en",
                     "text": "university",
                     "is_google_translate": true,
-                    "popularity": 499,
+                    "popularity": 500,
                     "flagged": false,
                     "id": 2211239
                 },
@@ -23216,7 +23365,7 @@
                     "locale": "en",
                     "text": "(f) university",
                     "is_google_translate": false,
-                    "popularity": 38,
+                    "popularity": 39,
                     "flagged": false,
                     "id": 12220665
                 },
@@ -23242,7 +23391,7 @@
                     "locale": "en",
                     "text": "study",
                     "is_google_translate": false,
-                    "popularity": 1446,
+                    "popularity": 1449,
                     "flagged": false,
                     "id": 111086
                 },
@@ -23258,7 +23407,7 @@
                     "locale": "en",
                     "text": "to study",
                     "is_google_translate": false,
-                    "popularity": 55,
+                    "popularity": 59,
                     "flagged": false,
                     "id": 5111925
                 }
@@ -23278,7 +23427,7 @@
                     "locale": "en",
                     "text": "experience; experiment",
                     "is_google_translate": false,
-                    "popularity": 421,
+                    "popularity": 422,
                     "flagged": false,
                     "id": 113886
                 },
@@ -23312,7 +23461,7 @@
                     "locale": "en",
                     "text": "All",
                     "is_google_translate": false,
-                    "popularity": 945,
+                    "popularity": 947,
                     "flagged": false,
                     "id": 15386499
                 },
@@ -23347,7 +23496,7 @@
                     "locale": "en",
                     "text": "various, different",
                     "is_google_translate": false,
-                    "popularity": 1199,
+                    "popularity": 1205,
                     "flagged": false,
                     "id": 293863
                 },
@@ -23363,7 +23512,7 @@
                     "locale": "en",
                     "text": "several",
                     "is_google_translate": false,
-                    "popularity": 21,
+                    "popularity": 23,
                     "flagged": false,
                     "id": 4824364
                 }
@@ -23382,7 +23531,7 @@
                     "locale": "en",
                     "text": "language",
                     "is_google_translate": false,
-                    "popularity": 1149,
+                    "popularity": 1150,
                     "flagged": false,
                     "id": 172837
                 },
@@ -23398,7 +23547,7 @@
                     "locale": "en",
                     "text": "language; tongue",
                     "is_google_translate": false,
-                    "popularity": 24,
+                    "popularity": 25,
                     "flagged": false,
                     "id": 32588160
                 }
@@ -23416,7 +23565,7 @@
                     "locale": "en",
                     "text": "between",
                     "is_google_translate": false,
-                    "popularity": 666,
+                    "popularity": 667,
                     "flagged": true,
                     "id": 6815082
                 },
@@ -23424,7 +23573,7 @@
                     "locale": "en",
                     "text": "among",
                     "is_google_translate": false,
-                    "popularity": 177,
+                    "popularity": 178,
                     "flagged": false,
                     "id": 15670291
                 },
@@ -23455,7 +23604,7 @@
                     "locale": "en",
                     "text": "english",
                     "is_google_translate": false,
-                    "popularity": 927,
+                    "popularity": 928,
                     "flagged": false,
                     "id": 153912
                 },
@@ -23463,7 +23612,7 @@
                     "locale": "en",
                     "text": "English",
                     "is_google_translate": true,
-                    "popularity": 143,
+                    "popularity": 145,
                     "flagged": false,
                     "id": 12003348
                 },
@@ -23490,7 +23639,7 @@
                     "locale": "en",
                     "text": "that",
                     "is_google_translate": false,
-                    "popularity": 1963,
+                    "popularity": 1968,
                     "flagged": false,
                     "id": 158490
                 },
@@ -23498,7 +23647,7 @@
                     "locale": "en",
                     "text": "that, this",
                     "is_google_translate": false,
-                    "popularity": 594,
+                    "popularity": 596,
                     "flagged": false,
                     "id": 158495
                 },
@@ -23525,7 +23674,7 @@
                     "locale": "en",
                     "text": "must",
                     "is_google_translate": false,
-                    "popularity": 991,
+                    "popularity": 995,
                     "flagged": false,
                     "id": 84820
                 },
@@ -23533,7 +23682,7 @@
                     "locale": "en",
                     "text": "(they) must",
                     "is_google_translate": false,
-                    "popularity": 267,
+                    "popularity": 269,
                     "flagged": false,
                     "id": 15395278
                 },
@@ -23565,7 +23714,7 @@
                     "locale": "en",
                     "text": "They exist",
                     "is_google_translate": false,
-                    "popularity": 493,
+                    "popularity": 495,
                     "flagged": false,
                     "id": 1015725
                 },
@@ -23604,7 +23753,7 @@
                     "locale": "en",
                     "text": "see",
                     "is_google_translate": false,
-                    "popularity": 1066,
+                    "popularity": 1069,
                     "flagged": true,
                     "id": 8755533
                 },
@@ -23612,7 +23761,7 @@
                     "locale": "en",
                     "text": "to see/to watch",
                     "is_google_translate": false,
-                    "popularity": 195,
+                    "popularity": 196,
                     "flagged": false,
                     "id": 27650586
                 },
@@ -23620,7 +23769,7 @@
                     "locale": "en",
                     "text": "to see",
                     "is_google_translate": true,
-                    "popularity": 19,
+                    "popularity": 20,
                     "flagged": false,
                     "id": 2088469
                 }
@@ -23640,7 +23789,7 @@
                     "locale": "en",
                     "text": "estudar: study",
                     "is_google_translate": false,
-                    "popularity": 674,
+                    "popularity": 676,
                     "flagged": true,
                     "id": 111123
                 },
@@ -23656,7 +23805,7 @@
                     "locale": "en",
                     "text": "study",
                     "is_google_translate": true,
-                    "popularity": 39,
+                    "popularity": 43,
                     "flagged": false,
                     "id": 8252211
                 }
@@ -23695,7 +23844,7 @@
                     "locale": "en",
                     "text": "certainly",
                     "is_google_translate": false,
-                    "popularity": 7,
+                    "popularity": 9,
                     "flagged": false,
                     "id": 3513049
                 }
@@ -23785,7 +23934,7 @@
                     "locale": "en",
                     "text": "effective",
                     "is_google_translate": true,
-                    "popularity": 358,
+                    "popularity": 359,
                     "flagged": false,
                     "id": 95148
                 },
@@ -23819,7 +23968,7 @@
                     "locale": "en",
                     "text": "good, well",
                     "is_google_translate": false,
-                    "popularity": 7529,
+                    "popularity": 7535,
                     "flagged": true,
                     "id": 1039227
                 },
@@ -23827,7 +23976,7 @@
                     "locale": "en",
                     "text": "bien",
                     "is_google_translate": false,
-                    "popularity": 205,
+                    "popularity": 206,
                     "flagged": false,
                     "id": 100794903
                 },
@@ -23854,7 +24003,7 @@
                     "locale": "en",
                     "text": "days",
                     "is_google_translate": true,
-                    "popularity": 923,
+                    "popularity": 928,
                     "flagged": false,
                     "id": 1074081
                 },
@@ -23889,7 +24038,7 @@
                     "locale": "en",
                     "text": "lets go; come on.",
                     "is_google_translate": false,
-                    "popularity": 826,
+                    "popularity": 827,
                     "flagged": false,
                     "id": 293458
                 },
@@ -23905,7 +24054,7 @@
                     "locale": "en",
                     "text": "we go, lets go",
                     "is_google_translate": false,
-                    "popularity": 24,
+                    "popularity": 25,
                     "flagged": false,
                     "id": 49484660
                 }
@@ -23978,7 +24127,7 @@
                     "locale": "en",
                     "text": "even",
                     "is_google_translate": false,
-                    "popularity": 229,
+                    "popularity": 233,
                     "flagged": false,
                     "id": 251521
                 }
@@ -24064,7 +24213,7 @@
                     "locale": "en",
                     "text": "many, much, very",
                     "is_google_translate": false,
-                    "popularity": 477,
+                    "popularity": 478,
                     "flagged": false,
                     "id": 4394030
                 },
@@ -24080,7 +24229,7 @@
                     "locale": "en",
                     "text": "a lot of",
                     "is_google_translate": false,
-                    "popularity": 16,
+                    "popularity": 17,
                     "flagged": false,
                     "id": 160578097
                 }
@@ -24099,7 +24248,7 @@
                     "locale": "en",
                     "text": "things, stuff",
                     "is_google_translate": false,
-                    "popularity": 1393,
+                    "popularity": 1397,
                     "flagged": false,
                     "id": 60769
                 },
@@ -24107,7 +24256,7 @@
                     "locale": "en",
                     "text": "things",
                     "is_google_translate": false,
-                    "popularity": 56,
+                    "popularity": 60,
                     "flagged": false,
                     "id": 35125148
                 },
@@ -24138,7 +24287,7 @@
                     "locale": "en",
                     "text": "take away",
                     "is_google_translate": false,
-                    "popularity": 1089,
+                    "popularity": 1090,
                     "flagged": false,
                     "id": 279395
                 },
@@ -24175,7 +24324,7 @@
                     "locale": "en",
                     "text": "read",
                     "is_google_translate": true,
-                    "popularity": 1948,
+                    "popularity": 1951,
                     "flagged": false,
                     "id": 170717
                 },
@@ -24213,7 +24362,7 @@
                     "locale": "en",
                     "text": "school",
                     "is_google_translate": true,
-                    "popularity": 1349,
+                    "popularity": 1356,
                     "flagged": false,
                     "id": 108440
                 },
@@ -24221,7 +24370,7 @@
                     "locale": "en",
                     "text": "school (singular, feminine)",
                     "is_google_translate": false,
-                    "popularity": 84,
+                    "popularity": 85,
                     "flagged": false,
                     "id": 10312049
                 },
@@ -24247,7 +24396,7 @@
                     "locale": "en",
                     "text": "truth",
                     "is_google_translate": true,
-                    "popularity": 1049,
+                    "popularity": 1051,
                     "flagged": false,
                     "id": 295506
                 },
@@ -24255,7 +24404,7 @@
                     "locale": "en",
                     "text": "true",
                     "is_google_translate": true,
-                    "popularity": 69,
+                    "popularity": 72,
                     "flagged": false,
                     "id": 13488122
                 },
@@ -24282,7 +24431,7 @@
                     "locale": "en",
                     "text": "others",
                     "is_google_translate": true,
-                    "popularity": 943,
+                    "popularity": 944,
                     "flagged": false,
                     "id": 5146112
                 },
@@ -24317,7 +24466,7 @@
                     "locale": "en",
                     "text": "personally",
                     "is_google_translate": true,
-                    "popularity": 322,
+                    "popularity": 324,
                     "flagged": false,
                     "id": 844355
                 },
@@ -24352,7 +24501,7 @@
                     "locale": "en",
                     "text": "adj. next; adverb. close, near, close by",
                     "is_google_translate": false,
-                    "popularity": 690,
+                    "popularity": 691,
                     "flagged": false,
                     "id": 221929
                 },
@@ -24368,7 +24517,7 @@
                     "locale": "en",
                     "text": "next",
                     "is_google_translate": true,
-                    "popularity": 54,
+                    "popularity": 55,
                     "flagged": false,
                     "id": 11608817
                 }
@@ -24387,7 +24536,7 @@
                     "locale": "en",
                     "text": "thank you",
                     "is_google_translate": false,
-                    "popularity": 881,
+                    "popularity": 884,
                     "flagged": false,
                     "id": 196159
                 },
@@ -24426,7 +24575,7 @@
                     "locale": "en",
                     "text": "episode",
                     "is_google_translate": true,
-                    "popularity": 419,
+                    "popularity": 421,
                     "flagged": false,
                     "id": 105811
                 },
@@ -24460,7 +24609,7 @@
                     "locale": "en",
                     "text": "explain",
                     "is_google_translate": true,
-                    "popularity": 392,
+                    "popularity": 394,
                     "flagged": false,
                     "id": 113957
                 },
@@ -24532,7 +24681,7 @@
                     "locale": "en",
                     "text": "when",
                     "is_google_translate": false,
-                    "popularity": 2162,
+                    "popularity": 2175,
                     "flagged": false,
                     "id": 879899
                 },
@@ -24567,7 +24716,7 @@
                     "locale": "en",
                     "text": "to the (a+o)",
                     "is_google_translate": false,
-                    "popularity": 7058,
+                    "popularity": 7077,
                     "flagged": false,
                     "id": 4877888
                 },
@@ -24602,7 +24751,7 @@
                     "locale": "en",
                     "text": "They liked",
                     "is_google_translate": true,
-                    "popularity": 295,
+                    "popularity": 296,
                     "flagged": false,
                     "id": 18848136
                 },
@@ -24640,7 +24789,7 @@
                     "locale": "en",
                     "text": "pass, spend",
                     "is_google_translate": false,
-                    "popularity": 718,
+                    "popularity": 720,
                     "flagged": false,
                     "id": 3505204
                 },
@@ -24677,7 +24826,7 @@
                     "locale": "en",
                     "text": "always",
                     "is_google_translate": false,
-                    "popularity": 1200,
+                    "popularity": 1202,
                     "flagged": false,
                     "id": 125017124
                 },
@@ -24685,7 +24834,7 @@
                     "locale": "en",
                     "text": "always, ever, all the time",
                     "is_google_translate": false,
-                    "popularity": 223,
+                    "popularity": 224,
                     "flagged": false,
                     "id": 9553682
                 },
@@ -24738,7 +24887,7 @@
                     "locale": "en",
                     "text": "adj. other, another one",
                     "is_google_translate": false,
-                    "popularity": 669,
+                    "popularity": 670,
                     "flagged": false,
                     "id": 200956
                 },
@@ -24754,7 +24903,7 @@
                     "locale": "en",
                     "text": "others",
                     "is_google_translate": true,
-                    "popularity": 30,
+                    "popularity": 31,
                     "flagged": false,
                     "id": 6814963
                 }
@@ -24773,7 +24922,7 @@
                     "locale": "en",
                     "text": "beginning, start, commencement, outset, origin",
                     "is_google_translate": false,
-                    "popularity": 278,
+                    "popularity": 279,
                     "flagged": false,
                     "id": 956898
                 },
@@ -24843,7 +24992,7 @@
                     "locale": "en",
                     "text": "level",
                     "is_google_translate": true,
-                    "popularity": 1154,
+                    "popularity": 1155,
                     "flagged": false,
                     "id": 193066
                 },
@@ -24877,7 +25026,7 @@
                     "locale": "en",
                     "text": "at the",
                     "is_google_translate": true,
-                    "popularity": 1076,
+                    "popularity": 1077,
                     "flagged": false,
                     "id": 190734
                 },
@@ -24885,7 +25034,7 @@
                     "locale": "en",
                     "text": "em + as = at the",
                     "is_google_translate": false,
-                    "popularity": 338,
+                    "popularity": 339,
                     "flagged": false,
                     "id": 57074569
                 },
@@ -24912,7 +25061,7 @@
                     "locale": "en",
                     "text": "little",
                     "is_google_translate": true,
-                    "popularity": 1645,
+                    "popularity": 1648,
                     "flagged": false,
                     "id": 215840
                 },
@@ -24920,7 +25069,7 @@
                     "locale": "en",
                     "text": "little quantity, few",
                     "is_google_translate": false,
-                    "popularity": 443,
+                    "popularity": 444,
                     "flagged": false,
                     "id": 215843
                 },
@@ -24947,7 +25096,7 @@
                     "locale": "en",
                     "text": "they have",
                     "is_google_translate": false,
-                    "popularity": 875,
+                    "popularity": 878,
                     "flagged": false,
                     "id": 9016623
                 },
@@ -24963,7 +25112,7 @@
                     "locale": "en",
                     "text": "have",
                     "is_google_translate": true,
-                    "popularity": 25,
+                    "popularity": 26,
                     "flagged": false,
                     "id": 43389809
                 }
@@ -24986,7 +25135,7 @@
                     "locale": "en",
                     "text": "present",
                     "is_google_translate": true,
-                    "popularity": 173,
+                    "popularity": 174,
                     "flagged": false,
                     "id": 3979230
                 },
@@ -25020,7 +25169,7 @@
                     "locale": "en",
                     "text": "big",
                     "is_google_translate": true,
-                    "popularity": 540,
+                    "popularity": 544,
                     "flagged": false,
                     "id": 4327537
                 },
@@ -25055,7 +25204,7 @@
                     "locale": "en",
                     "text": "speak",
                     "is_google_translate": false,
-                    "popularity": 926,
+                    "popularity": 928,
                     "flagged": false,
                     "id": 116109
                 },
@@ -25063,7 +25212,7 @@
                     "locale": "en",
                     "text": "I speak: falar - to speak",
                     "is_google_translate": false,
-                    "popularity": 481,
+                    "popularity": 482,
                     "flagged": false,
                     "id": 20437186
                 },
@@ -25119,7 +25268,7 @@
                     "locale": "en",
                     "text": "comprehension, understanding",
                     "is_google_translate": false,
-                    "popularity": 519,
+                    "popularity": 520,
                     "flagged": false,
                     "id": 1115748
                 },
@@ -25153,7 +25302,7 @@
                     "locale": "en",
                     "text": "personal",
                     "is_google_translate": false,
-                    "popularity": 794,
+                    "popularity": 795,
                     "flagged": false,
                     "id": 209435
                 },
@@ -25188,7 +25337,7 @@
                     "locale": "en",
                     "text": "adj.  basic, fundamental, underlying, bottom, main, principal, essential, primary, cardinal",
                     "is_google_translate": false,
-                    "popularity": 211,
+                    "popularity": 212,
                     "flagged": false,
                     "id": 2447911
                 },
@@ -25281,7 +25430,7 @@
                     "locale": "en",
                     "text": "to meet; to find",
                     "is_google_translate": false,
-                    "popularity": 308,
+                    "popularity": 309,
                     "flagged": false,
                     "id": 17434681
                 },
@@ -25329,7 +25478,7 @@
                     "locale": "en",
                     "text": "read",
                     "is_google_translate": true,
-                    "popularity": 447,
+                    "popularity": 448,
                     "flagged": false,
                     "id": 170390
                 },
@@ -25402,7 +25551,7 @@
                     "locale": "en",
                     "text": "activate",
                     "is_google_translate": true,
-                    "popularity": 204,
+                    "popularity": 205,
                     "flagged": false,
                     "id": 6049994
                 },
@@ -25438,7 +25587,7 @@
                     "locale": "en",
                     "text": "advanced",
                     "is_google_translate": true,
-                    "popularity": 215,
+                    "popularity": 216,
                     "flagged": false,
                     "id": 3316310
                 },
@@ -25473,7 +25622,7 @@
                     "locale": "en",
                     "text": "much",
                     "is_google_translate": false,
-                    "popularity": 1013,
+                    "popularity": 1016,
                     "flagged": false,
                     "id": 188672
                 },
@@ -25481,7 +25630,7 @@
                     "locale": "en",
                     "text": "much; very; a lot",
                     "is_google_translate": false,
-                    "popularity": 490,
+                    "popularity": 491,
                     "flagged": false,
                     "id": 24659815
                 },
@@ -25508,7 +25657,7 @@
                     "locale": "en",
                     "text": "English",
                     "is_google_translate": true,
-                    "popularity": 275,
+                    "popularity": 278,
                     "flagged": false,
                     "id": 3042788
                 },
@@ -25612,7 +25761,7 @@
                     "locale": "en",
                     "text": "you all",
                     "is_google_translate": false,
-                    "popularity": 251,
+                    "popularity": 253,
                     "flagged": true,
                     "id": 9090862
                 },
@@ -25647,7 +25796,7 @@
                     "locale": "en",
                     "text": "amante - lover",
                     "is_google_translate": false,
-                    "popularity": 143,
+                    "popularity": 144,
                     "flagged": false,
                     "id": 18728
                 },
@@ -25682,7 +25831,7 @@
                     "locale": "en",
                     "text": "objective",
                     "is_google_translate": false,
-                    "popularity": 133,
+                    "popularity": 134,
                     "flagged": false,
                     "id": 8514507
                 },
@@ -25728,7 +25877,7 @@
                     "locale": "en",
                     "text": "students",
                     "is_google_translate": true,
-                    "popularity": 148,
+                    "popularity": 152,
                     "flagged": false,
                     "id": 10623902
                 },
@@ -25771,7 +25920,7 @@
                     "locale": "en",
                     "text": "we started",
                     "is_google_translate": false,
-                    "popularity": 6,
+                    "popularity": 7,
                     "flagged": false,
                     "id": 40443024
                 }
@@ -25898,7 +26047,7 @@
                     "locale": "en",
                     "text": "I read",
                     "is_google_translate": true,
-                    "popularity": 76,
+                    "popularity": 77,
                     "flagged": false,
                     "id": 22026626
                 },
@@ -25979,7 +26128,7 @@
                     "locale": "en",
                     "text": "Europeu",
                     "is_google_translate": false,
-                    "popularity": 2,
+                    "popularity": 3,
                     "flagged": false,
                     "id": 167902820
                 }
@@ -25997,7 +26146,7 @@
                     "locale": "en",
                     "text": "need to",
                     "is_google_translate": false,
-                    "popularity": 386,
+                    "popularity": 387,
                     "flagged": false,
                     "id": 2770482
                 },
@@ -26036,7 +26185,7 @@
                     "locale": "en",
                     "text": "like; how; as",
                     "is_google_translate": false,
-                    "popularity": 2492,
+                    "popularity": 2498,
                     "flagged": false,
                     "id": 25123405
                 },
@@ -26091,7 +26240,7 @@
                     "locale": "en",
                     "text": "useful",
                     "is_google_translate": true,
-                    "popularity": 674,
+                    "popularity": 675,
                     "flagged": false,
                     "id": 292451
                 },
@@ -26209,7 +26358,7 @@
                     "locale": "en",
                     "text": "size",
                     "is_google_translate": false,
-                    "popularity": 578,
+                    "popularity": 580,
                     "flagged": true,
                     "id": 181204
                 },
@@ -26217,7 +26366,7 @@
                     "locale": "en",
                     "text": "measure",
                     "is_google_translate": true,
-                    "popularity": 405,
+                    "popularity": 406,
                     "flagged": false,
                     "id": 181202
                 },
@@ -26251,7 +26400,7 @@
                     "locale": "en",
                     "text": "learning",
                     "is_google_translate": true,
-                    "popularity": 322,
+                    "popularity": 323,
                     "flagged": false,
                     "id": 7208947
                 },
@@ -26320,7 +26469,7 @@
                     "locale": "en",
                     "text": "n.  remainder",
                     "is_google_translate": false,
-                    "popularity": 301,
+                    "popularity": 302,
                     "flagged": false,
                     "id": 236059
                 },
@@ -26485,7 +26634,7 @@
                     "locale": "en",
                     "text": "v. exert, exercise; use, wear",
                     "is_google_translate": false,
-                    "popularity": 794,
+                    "popularity": 795,
                     "flagged": false,
                     "id": 292203
                 },
@@ -26501,7 +26650,7 @@
                     "locale": "en",
                     "text": "use",
                     "is_google_translate": false,
-                    "popularity": 69,
+                    "popularity": 70,
                     "flagged": false,
                     "id": 11608327
                 }
@@ -26522,7 +26671,7 @@
                     "locale": "en",
                     "text": "perceived",
                     "is_google_translate": false,
-                    "popularity": 222,
+                    "popularity": 223,
                     "flagged": false,
                     "id": 2979935
                 },
@@ -26536,11 +26685,11 @@
                 },
                 {
                     "locale": "en",
-                    "text": "noticed, perceived",
+                    "text": "realized",
                     "is_google_translate": false,
-                    "popularity": 7,
+                    "popularity": 8,
                     "flagged": false,
-                    "id": 109831809
+                    "id": 65070396
                 }
             ],
             "status": "known",
@@ -26568,7 +26717,7 @@
                     "locale": "en",
                     "text": "that/thing/that one",
                     "is_google_translate": false,
-                    "popularity": 193,
+                    "popularity": 194,
                     "flagged": false,
                     "id": 35928922
                 },
@@ -26595,7 +26744,7 @@
                     "locale": "en",
                     "text": "this",
                     "is_google_translate": true,
-                    "popularity": 2125,
+                    "popularity": 2129,
                     "flagged": false,
                     "id": 158617
                 },
@@ -26603,7 +26752,7 @@
                     "locale": "en",
                     "text": "This",
                     "is_google_translate": true,
-                    "popularity": 161,
+                    "popularity": 162,
                     "flagged": false,
                     "id": 13472650
                 },
@@ -26611,7 +26760,7 @@
                     "locale": "en",
                     "text": "it, this, such",
                     "is_google_translate": false,
-                    "popularity": 103,
+                    "popularity": 106,
                     "flagged": false,
                     "id": 4056244
                 }
@@ -26664,7 +26813,7 @@
                     "locale": "en",
                     "text": "interesting",
                     "is_google_translate": true,
-                    "popularity": 915,
+                    "popularity": 916,
                     "flagged": false,
                     "id": 1425144
                 },
@@ -26699,7 +26848,7 @@
                     "locale": "en",
                     "text": "starting, beggining",
                     "is_google_translate": false,
-                    "popularity": 349,
+                    "popularity": 350,
                     "flagged": false,
                     "id": 5347949
                 },
@@ -26738,7 +26887,7 @@
                     "locale": "en",
                     "text": "begin, start",
                     "is_google_translate": false,
-                    "popularity": 869,
+                    "popularity": 871,
                     "flagged": false,
                     "id": 61566
                 },
@@ -26746,7 +26895,7 @@
                     "locale": "en",
                     "text": "to begin, to start, to commence",
                     "is_google_translate": false,
-                    "popularity": 180,
+                    "popularity": 181,
                     "flagged": false,
                     "id": 12435336
                 },
@@ -26754,7 +26903,7 @@
                     "locale": "en",
                     "text": "begin",
                     "is_google_translate": true,
-                    "popularity": 38,
+                    "popularity": 39,
                     "flagged": false,
                     "id": 13489137
                 }
@@ -26848,7 +26997,7 @@
                     "locale": "en",
                     "text": "first",
                     "is_google_translate": true,
-                    "popularity": 336,
+                    "popularity": 337,
                     "flagged": false,
                     "id": 1107408
                 },
@@ -26965,7 +27114,7 @@
                     "locale": "en",
                     "text": "I used  (preterite, 1ps)",
                     "is_google_translate": false,
-                    "popularity": 178,
+                    "popularity": 179,
                     "flagged": false,
                     "id": 7747365
                 },
@@ -27002,7 +27151,7 @@
                     "locale": "en",
                     "text": "I agree",
                     "is_google_translate": true,
-                    "popularity": 513,
+                    "popularity": 515,
                     "flagged": false,
                     "id": 4845047
                 },
@@ -27075,7 +27224,7 @@
                     "locale": "en",
                     "text": "many (fem. pl.)",
                     "is_google_translate": false,
-                    "popularity": 3177,
+                    "popularity": 3187,
                     "flagged": false,
                     "id": 188662
                 },
@@ -27083,7 +27232,7 @@
                     "locale": "en",
                     "text": "many",
                     "is_google_translate": false,
-                    "popularity": 103,
+                    "popularity": 108,
                     "flagged": false,
                     "id": 958315
                 },
@@ -27110,7 +27259,7 @@
                     "locale": "en",
                     "text": "these",
                     "is_google_translate": false,
-                    "popularity": 1376,
+                    "popularity": 1379,
                     "flagged": false,
                     "id": 2440836
                 },
@@ -27126,7 +27275,7 @@
                     "locale": "en",
                     "text": "of these (de + estas)",
                     "is_google_translate": false,
-                    "popularity": 78,
+                    "popularity": 79,
                     "flagged": false,
                     "id": 21700340
                 }
@@ -27145,7 +27294,7 @@
                     "locale": "en",
                     "text": "name",
                     "is_google_translate": false,
-                    "popularity": 7352,
+                    "popularity": 7361,
                     "flagged": false,
                     "id": 193612
                 },
@@ -27153,7 +27302,7 @@
                     "locale": "en",
                     "text": "(n.m.) name",
                     "is_google_translate": false,
-                    "popularity": 129,
+                    "popularity": 130,
                     "flagged": true,
                     "id": 15484524
                 },
@@ -27187,7 +27336,7 @@
                     "locale": "en",
                     "text": "available",
                     "is_google_translate": true,
-                    "popularity": 22,
+                    "popularity": 23,
                     "flagged": false,
                     "id": 3037908
                 },
@@ -27253,7 +27402,7 @@
                     "locale": "en",
                     "text": "addresses",
                     "is_google_translate": true,
-                    "popularity": 273,
+                    "popularity": 277,
                     "flagged": false,
                     "id": 3874773
                 },
@@ -27261,7 +27410,7 @@
                     "locale": "en",
                     "text": "addresses, approaches (pres 3 sg)",
                     "is_google_translate": false,
-                    "popularity": 120,
+                    "popularity": 121,
                     "flagged": false,
                     "id": 31921630
                 },
@@ -27290,7 +27439,7 @@
                     "locale": "en",
                     "text": "They walked",
                     "is_google_translate": true,
-                    "popularity": 179,
+                    "popularity": 180,
                     "flagged": false,
                     "id": 17114074
                 },
@@ -27354,7 +27503,7 @@
                     "locale": "en",
                     "text": "will be",
                     "is_google_translate": true,
-                    "popularity": 591,
+                    "popularity": 592,
                     "flagged": false,
                     "id": 251617
                 },
@@ -27431,7 +27580,7 @@
                     "locale": "en",
                     "text": "platforms",
                     "is_google_translate": true,
-                    "popularity": 183,
+                    "popularity": 184,
                     "flagged": false,
                     "id": 13572502
                 },
@@ -27465,7 +27614,7 @@
                     "locale": "en",
                     "text": "(they, there)  may, can",
                     "is_google_translate": false,
-                    "popularity": 832,
+                    "popularity": 834,
                     "flagged": false,
                     "id": 15278940
                 },
@@ -27481,7 +27630,7 @@
                     "locale": "en",
                     "text": "they can",
                     "is_google_translate": true,
-                    "popularity": 36,
+                    "popularity": 37,
                     "flagged": false,
                     "id": 7807488
                 }
@@ -27506,7 +27655,7 @@
                     "locale": "en",
                     "text": "philosophy",
                     "is_google_translate": true,
-                    "popularity": 262,
+                    "popularity": 263,
                     "flagged": false,
                     "id": 119698
                 },
@@ -27540,7 +27689,7 @@
                     "locale": "en",
                     "text": "example",
                     "is_google_translate": true,
-                    "popularity": 639,
+                    "popularity": 642,
                     "flagged": false,
                     "id": 971782
                 },
@@ -27548,7 +27697,7 @@
                     "locale": "en",
                     "text": "example (m)",
                     "is_google_translate": false,
-                    "popularity": 42,
+                    "popularity": 43,
                     "flagged": false,
                     "id": 19810069
                 },
@@ -27556,7 +27705,7 @@
                     "locale": "en",
                     "text": "for example",
                     "is_google_translate": false,
-                    "popularity": 9,
+                    "popularity": 10,
                     "flagged": false,
                     "id": 161411379
                 }
@@ -27686,7 +27835,7 @@
                     "locale": "en",
                     "text": "development",
                     "is_google_translate": true,
-                    "popularity": 697,
+                    "popularity": 701,
                     "flagged": false,
                     "id": 82712
                 },
@@ -27720,7 +27869,7 @@
                     "locale": "en",
                     "text": "however",
                     "is_google_translate": true,
-                    "popularity": 1697,
+                    "popularity": 1699,
                     "flagged": false,
                     "id": 103473
                 },
@@ -27785,7 +27934,7 @@
                     "locale": "en",
                     "text": "simple",
                     "is_google_translate": true,
-                    "popularity": 677,
+                    "popularity": 678,
                     "flagged": false,
                     "id": 255395
                 },
@@ -27828,7 +27977,7 @@
                     "locale": "en",
                     "text": "German",
                     "is_google_translate": true,
-                    "popularity": 179,
+                    "popularity": 180,
                     "flagged": false,
                     "id": 1062078
                 },
@@ -27855,7 +28004,7 @@
                     "locale": "en",
                     "text": "PT, O Partido dos Trabalhadores (PT) \u00e9 um partido pol\u00edtico brasileiro.",
                     "is_google_translate": false,
-                    "popularity": 96,
+                    "popularity": 97,
                     "flagged": false,
                     "id": 31855195
                 },
@@ -27890,7 +28039,7 @@
                     "locale": "en",
                     "text": "f. Portuguese",
                     "is_google_translate": false,
-                    "popularity": 356,
+                    "popularity": 357,
                     "flagged": false,
                     "id": 911547
                 },
@@ -27898,7 +28047,7 @@
                     "locale": "en",
                     "text": "Portuguese",
                     "is_google_translate": false,
-                    "popularity": 56,
+                    "popularity": 57,
                     "flagged": false,
                     "id": 3896391
                 },
@@ -27929,7 +28078,7 @@
                     "locale": "en",
                     "text": "then, by then, so",
                     "is_google_translate": false,
-                    "popularity": 680,
+                    "popularity": 686,
                     "flagged": false,
                     "id": 2974224
                 },
@@ -27945,7 +28094,7 @@
                     "locale": "en",
                     "text": "So",
                     "is_google_translate": false,
-                    "popularity": 83,
+                    "popularity": 85,
                     "flagged": false,
                     "id": 103509
                 }
@@ -27972,7 +28121,7 @@
                     "locale": "en",
                     "text": "States",
                     "is_google_translate": true,
-                    "popularity": 73,
+                    "popularity": 74,
                     "flagged": false,
                     "id": 7304306
                 },
@@ -28047,7 +28196,7 @@
                     "locale": "en",
                     "text": "your",
                     "is_google_translate": true,
-                    "popularity": 297,
+                    "popularity": 298,
                     "flagged": false,
                     "id": 1886490
                 },
@@ -28116,7 +28265,7 @@
                     "locale": "en",
                     "text": "against",
                     "is_google_translate": true,
-                    "popularity": 631,
+                    "popularity": 635,
                     "flagged": false,
                     "id": 67692
                 },
@@ -28159,7 +28308,7 @@
                     "locale": "en",
                     "text": "gift",
                     "is_google_translate": true,
-                    "popularity": 91,
+                    "popularity": 92,
                     "flagged": false,
                     "id": 14423709
                 },
@@ -28186,7 +28335,7 @@
                     "locale": "en",
                     "text": "body; majority, plurality",
                     "is_google_translate": false,
-                    "popularity": 462,
+                    "popularity": 463,
                     "flagged": false,
                     "id": 2083746
                 },
@@ -28202,7 +28351,7 @@
                     "locale": "en",
                     "text": "majority",
                     "is_google_translate": true,
-                    "popularity": 24,
+                    "popularity": 26,
                     "flagged": false,
                     "id": 6808182
                 }
@@ -28229,7 +28378,7 @@
                     "locale": "en",
                     "text": "United",
                     "is_google_translate": true,
-                    "popularity": 74,
+                    "popularity": 75,
                     "flagged": false,
                     "id": 7291333
                 },
@@ -28280,7 +28429,7 @@
                     "locale": "en",
                     "text": "remainder, remains, rest",
                     "is_google_translate": false,
-                    "popularity": 87,
+                    "popularity": 88,
                     "flagged": false,
                     "id": 31413911
                 },
@@ -28310,7 +28459,7 @@
                     "locale": "en",
                     "text": "specifically",
                     "is_google_translate": true,
-                    "popularity": 254,
+                    "popularity": 255,
                     "flagged": false,
                     "id": 2608213
                 },
@@ -28391,7 +28540,7 @@
                     "locale": "en",
                     "text": "start",
                     "is_google_translate": false,
-                    "popularity": 58,
+                    "popularity": 59,
                     "flagged": false,
                     "id": 5156475
                 },
@@ -28421,7 +28570,7 @@
                     "locale": "en",
                     "text": "thing",
                     "is_google_translate": true,
-                    "popularity": 1556,
+                    "popularity": 1558,
                     "flagged": false,
                     "id": 60758
                 },
@@ -28429,7 +28578,7 @@
                     "locale": "en",
                     "text": "thing, object",
                     "is_google_translate": false,
-                    "popularity": 343,
+                    "popularity": 344,
                     "flagged": false,
                     "id": 60760
                 },
@@ -28468,17 +28617,17 @@
                     "locale": "en",
                     "text": "doubt",
                     "is_google_translate": true,
-                    "popularity": 337,
+                    "popularity": 338,
                     "flagged": false,
                     "id": 6777552
                 },
                 {
                     "locale": "en",
-                    "text": "doubt, question, reservation, concern",
+                    "text": "question",
                     "is_google_translate": false,
                     "popularity": 27,
                     "flagged": false,
-                    "id": 25910624
+                    "id": 102389512
                 }
             ],
             "status": "known",
@@ -28503,7 +28652,7 @@
                     "locale": "en",
                     "text": "listen",
                     "is_google_translate": false,
-                    "popularity": 67,
+                    "popularity": 69,
                     "flagged": false,
                     "id": 2579787
                 },
@@ -28572,7 +28721,7 @@
                     "locale": "en",
                     "text": "speed, velocity",
                     "is_google_translate": false,
-                    "popularity": 283,
+                    "popularity": 284,
                     "flagged": false,
                     "id": 16538084
                 },
@@ -28620,11 +28769,11 @@
                 },
                 {
                     "locale": "en",
-                    "text": "give a like",
+                    "text": "thumbs up",
                     "is_google_translate": false,
                     "popularity": 2,
                     "flagged": false,
-                    "id": 167760498
+                    "id": 173959930
                 }
             ],
             "status": "known",
@@ -28641,7 +28790,7 @@
                     "locale": "en",
                     "text": "matter, subject",
                     "is_google_translate": false,
-                    "popularity": 215,
+                    "popularity": 218,
                     "flagged": false,
                     "id": 3814584
                 },
@@ -28675,7 +28824,7 @@
                     "locale": "en",
                     "text": "European",
                     "is_google_translate": true,
-                    "popularity": 255,
+                    "popularity": 257,
                     "flagged": false,
                     "id": 3771466
                 },
@@ -28710,7 +28859,7 @@
                     "locale": "en",
                     "text": "interested",
                     "is_google_translate": true,
-                    "popularity": 219,
+                    "popularity": 220,
                     "flagged": false,
                     "id": 5825041
                 },
@@ -28726,7 +28875,7 @@
                     "locale": "en",
                     "text": "interested parties",
                     "is_google_translate": false,
-                    "popularity": 7,
+                    "popularity": 8,
                     "flagged": false,
                     "id": 161967823
                 }
@@ -28744,7 +28893,7 @@
                     "locale": "en",
                     "text": "practice",
                     "is_google_translate": true,
-                    "popularity": 360,
+                    "popularity": 362,
                     "flagged": false,
                     "id": 3042835
                 },
@@ -28795,7 +28944,7 @@
                     "locale": "en",
                     "text": "follow",
                     "is_google_translate": true,
-                    "popularity": 48,
+                    "popularity": 49,
                     "flagged": false,
                     "id": 23781250
                 }
@@ -28816,7 +28965,7 @@
                     "locale": "en",
                     "text": "before",
                     "is_google_translate": true,
-                    "popularity": 1142,
+                    "popularity": 1148,
                     "flagged": false,
                     "id": 22387
                 },
@@ -28824,7 +28973,7 @@
                     "locale": "en",
                     "text": "Before",
                     "is_google_translate": false,
-                    "popularity": 52,
+                    "popularity": 53,
                     "flagged": true,
                     "id": 6467290
                 },
@@ -28890,7 +29039,7 @@
                     "locale": "en",
                     "text": "time",
                     "is_google_translate": false,
-                    "popularity": 783,
+                    "popularity": 784,
                     "flagged": false,
                     "id": 11608328
                 },
@@ -28898,7 +29047,7 @@
                     "locale": "en",
                     "text": "n. occasion, time; turn",
                     "is_google_translate": false,
-                    "popularity": 252,
+                    "popularity": 253,
                     "flagged": false,
                     "id": 9855531
                 },
@@ -28925,7 +29074,7 @@
                     "locale": "en",
                     "text": "everything, all",
                     "is_google_translate": false,
-                    "popularity": 2105,
+                    "popularity": 2108,
                     "flagged": false,
                     "id": 285642
                 },
@@ -28960,7 +29109,7 @@
                     "locale": "en",
                     "text": "a",
                     "is_google_translate": false,
-                    "popularity": 3167,
+                    "popularity": 3174,
                     "flagged": false,
                     "id": 287615
                 },
@@ -28968,7 +29117,7 @@
                     "locale": "en",
                     "text": "a, an",
                     "is_google_translate": false,
-                    "popularity": 1010,
+                    "popularity": 1012,
                     "flagged": false,
                     "id": 287617
                 },
@@ -28976,7 +29125,7 @@
                     "locale": "en",
                     "text": "a, an (feminine)",
                     "is_google_translate": false,
-                    "popularity": 507,
+                    "popularity": 508,
                     "flagged": false,
                     "id": 66555288
                 }
@@ -28999,7 +29148,7 @@
                     "locale": "en",
                     "text": "de+o: of the",
                     "is_google_translate": false,
-                    "popularity": 3287,
+                    "popularity": 3292,
                     "flagged": false,
                     "id": 89748
                 },
@@ -29007,7 +29156,7 @@
                     "locale": "en",
                     "text": "of",
                     "is_google_translate": true,
-                    "popularity": 430,
+                    "popularity": 431,
                     "flagged": false,
                     "id": 7952511
                 },
@@ -29034,7 +29183,7 @@
                     "locale": "en",
                     "text": "form, shape, manner, way",
                     "is_google_translate": false,
-                    "popularity": 1760,
+                    "popularity": 1761,
                     "flagged": false,
                     "id": 34901934
                 },
@@ -29107,7 +29256,7 @@
                     "locale": "en",
                     "text": "passion",
                     "is_google_translate": true,
-                    "popularity": 777,
+                    "popularity": 783,
                     "flagged": false,
                     "id": 202414
                 },
@@ -29115,7 +29264,7 @@
                     "locale": "en",
                     "text": "passion, glow; love, passion;",
                     "is_google_translate": false,
-                    "popularity": 67,
+                    "popularity": 68,
                     "flagged": false,
                     "id": 202415
                 },
@@ -29176,7 +29325,7 @@
                     "locale": "en",
                     "text": "de + a \u2013 of the",
                     "is_google_translate": false,
-                    "popularity": 1668,
+                    "popularity": 1695,
                     "flagged": false,
                     "id": 39535306
                 },
@@ -29184,7 +29333,7 @@
                     "locale": "en",
                     "text": "of the",
                     "is_google_translate": false,
-                    "popularity": 273,
+                    "popularity": 275,
                     "flagged": false,
                     "id": 5793812
                 },
@@ -29263,7 +29412,7 @@
                     "locale": "en",
                     "text": "intermediate level",
                     "is_google_translate": false,
-                    "popularity": 4,
+                    "popularity": 5,
                     "flagged": false,
                     "id": 164223406
                 }
@@ -29292,7 +29441,7 @@
                     "locale": "en",
                     "text": "Is there?",
                     "is_google_translate": false,
-                    "popularity": 361,
+                    "popularity": 362,
                     "flagged": false,
                     "id": 863063
                 },
@@ -29300,7 +29449,7 @@
                     "locale": "en",
                     "text": "Exist",
                     "is_google_translate": true,
-                    "popularity": 149,
+                    "popularity": 150,
                     "flagged": false,
                     "id": 13489066
                 },
@@ -29331,7 +29480,7 @@
                     "locale": "en",
                     "text": "better",
                     "is_google_translate": false,
-                    "popularity": 497,
+                    "popularity": 499,
                     "flagged": false,
                     "id": 182007
                 },
@@ -29370,7 +29519,7 @@
                     "locale": "en",
                     "text": "with",
                     "is_google_translate": false,
-                    "popularity": 3263,
+                    "popularity": 3274,
                     "flagged": false,
                     "id": 1062077
                 },
@@ -29378,7 +29527,7 @@
                     "locale": "en",
                     "text": "in",
                     "is_google_translate": true,
-                    "popularity": 1217,
+                    "popularity": 1223,
                     "flagged": false,
                     "id": 1010945
                 },
@@ -29405,7 +29554,7 @@
                     "locale": "en",
                     "text": "Portuguese",
                     "is_google_translate": false,
-                    "popularity": 145,
+                    "popularity": 146,
                     "flagged": false,
                     "id": 4850585
                 },
@@ -29443,7 +29592,7 @@
                     "locale": "en",
                     "text": "They are",
                     "is_google_translate": false,
-                    "popularity": 1426,
+                    "popularity": 1441,
                     "flagged": false,
                     "id": 12243934
                 },
@@ -29451,7 +29600,7 @@
                     "locale": "en",
                     "text": "they are [ser]",
                     "is_google_translate": false,
-                    "popularity": 119,
+                    "popularity": 120,
                     "flagged": false,
                     "id": 31473016
                 },
@@ -29459,7 +29608,7 @@
                     "locale": "en",
                     "text": "are",
                     "is_google_translate": true,
-                    "popularity": 112,
+                    "popularity": 118,
                     "flagged": true,
                     "id": 243587
                 }
@@ -29482,7 +29631,7 @@
                     "locale": "en",
                     "text": "n.  movies, films",
                     "is_google_translate": false,
-                    "popularity": 713,
+                    "popularity": 714,
                     "flagged": false,
                     "id": 119681
                 },
@@ -29490,7 +29639,7 @@
                     "locale": "en",
                     "text": "movies",
                     "is_google_translate": true,
-                    "popularity": 136,
+                    "popularity": 138,
                     "flagged": false,
                     "id": 13500161
                 },
@@ -29498,7 +29647,7 @@
                     "locale": "en",
                     "text": "movies, films",
                     "is_google_translate": false,
-                    "popularity": 17,
+                    "popularity": 18,
                     "flagged": false,
                     "id": 37809756
                 }
@@ -29557,7 +29706,7 @@
                     "locale": "en",
                     "text": "favour",
                     "is_google_translate": false,
-                    "popularity": 916,
+                    "popularity": 917,
                     "flagged": false,
                     "id": 35993820
                 },
@@ -29565,7 +29714,7 @@
                     "locale": "en",
                     "text": "please",
                     "is_google_translate": false,
-                    "popularity": 205,
+                    "popularity": 208,
                     "flagged": false,
                     "id": 117342
                 },
@@ -29592,7 +29741,7 @@
                     "locale": "en",
                     "text": "adv.  today, current day",
                     "is_google_translate": false,
-                    "popularity": 516,
+                    "popularity": 519,
                     "flagged": false,
                     "id": 145275
                 },
@@ -29600,7 +29749,7 @@
                     "locale": "en",
                     "text": "today",
                     "is_google_translate": true,
-                    "popularity": 49,
+                    "popularity": 52,
                     "flagged": false,
                     "id": 145279
                 },
@@ -29627,7 +29776,7 @@
                     "locale": "en",
                     "text": "during",
                     "is_google_translate": true,
-                    "popularity": 1022,
+                    "popularity": 1024,
                     "flagged": false,
                     "id": 92956
                 },
@@ -29635,7 +29784,7 @@
                     "locale": "en",
                     "text": "conj.  when, while   prep. over; under; per, during; for; in; pending",
                     "is_google_translate": false,
-                    "popularity": 52,
+                    "popularity": 53,
                     "flagged": false,
                     "id": 4379645
                 },
@@ -29698,7 +29847,7 @@
                     "locale": "en",
                     "text": "by",
                     "is_google_translate": false,
-                    "popularity": 1543,
+                    "popularity": 1547,
                     "flagged": false,
                     "id": 206877
                 },
@@ -29772,7 +29921,7 @@
                     "locale": "en",
                     "text": "they are",
                     "is_google_translate": false,
-                    "popularity": 318,
+                    "popularity": 319,
                     "flagged": false,
                     "id": 7585671
                 },
@@ -29811,7 +29960,7 @@
                     "locale": "en",
                     "text": "lessons",
                     "is_google_translate": false,
-                    "popularity": 633,
+                    "popularity": 634,
                     "flagged": false,
                     "id": 31743
                 },
@@ -29819,7 +29968,7 @@
                     "locale": "en",
                     "text": "class, lesson",
                     "is_google_translate": false,
-                    "popularity": 111,
+                    "popularity": 112,
                     "flagged": false,
                     "id": 2605324
                 },
@@ -29846,7 +29995,7 @@
                     "locale": "en",
                     "text": "(pron) what, that, which, whom; (conj) that, than, whether; (adv) how; (prep) than",
                     "is_google_translate": false,
-                    "popularity": 4203,
+                    "popularity": 4210,
                     "flagged": false,
                     "id": 17644508
                 },
@@ -29854,7 +30003,7 @@
                     "locale": "en",
                     "text": "what, that",
                     "is_google_translate": false,
-                    "popularity": 1569,
+                    "popularity": 1570,
                     "flagged": true,
                     "id": 14611408
                 },
@@ -29915,7 +30064,7 @@
                     "locale": "en",
                     "text": "psychology",
                     "is_google_translate": true,
-                    "popularity": 30,
+                    "popularity": 31,
                     "flagged": false,
                     "id": 19063958
                 },
@@ -29975,7 +30124,7 @@
                     "locale": "en",
                     "text": "me; myself",
                     "is_google_translate": false,
-                    "popularity": 1088,
+                    "popularity": 1093,
                     "flagged": false,
                     "id": 1342894
                 },
@@ -29991,7 +30140,7 @@
                     "locale": "en",
                     "text": "myself",
                     "is_google_translate": false,
-                    "popularity": 41,
+                    "popularity": 45,
                     "flagged": false,
                     "id": 180699
                 }
@@ -30010,7 +30159,7 @@
                     "locale": "en",
                     "text": "here",
                     "is_google_translate": false,
-                    "popularity": 2752,
+                    "popularity": 2754,
                     "flagged": false,
                     "id": 87432212
                 },
@@ -30018,7 +30167,7 @@
                     "locale": "en",
                     "text": "here, in here, on here",
                     "is_google_translate": false,
-                    "popularity": 130,
+                    "popularity": 131,
                     "flagged": false,
                     "id": 79059483
                 },
@@ -30081,7 +30230,7 @@
                     "locale": "en",
                     "text": "to speak",
                     "is_google_translate": true,
-                    "popularity": 2514,
+                    "popularity": 2516,
                     "flagged": false,
                     "id": 115873
                 },
@@ -30095,11 +30244,11 @@
                 },
                 {
                     "locale": "en",
-                    "text": "to say, tell",
+                    "text": "speak",
                     "is_google_translate": false,
-                    "popularity": 21,
+                    "popularity": 22,
                     "flagged": false,
-                    "id": 7176019
+                    "id": 5156040
                 }
             ],
             "status": "known",
@@ -30119,7 +30268,7 @@
                     "locale": "en",
                     "text": "adj. foremost; better, superior",
                     "is_google_translate": false,
-                    "popularity": 749,
+                    "popularity": 755,
                     "flagged": false,
                     "id": 181988
                 },
@@ -30127,7 +30276,7 @@
                     "locale": "en",
                     "text": "best",
                     "is_google_translate": true,
-                    "popularity": 171,
+                    "popularity": 177,
                     "flagged": false,
                     "id": 3008644
                 },
@@ -30135,7 +30284,7 @@
                     "locale": "en",
                     "text": "\"better\"",
                     "is_google_translate": false,
-                    "popularity": 36,
+                    "popularity": 40,
                     "flagged": false,
                     "id": 160429702
                 }
@@ -30154,7 +30303,7 @@
                     "locale": "en",
                     "text": "good, decent, fair, fine.",
                     "is_google_translate": false,
-                    "popularity": 475,
+                    "popularity": 477,
                     "flagged": false,
                     "id": 45275
                 },
@@ -30170,7 +30319,7 @@
                     "locale": "en",
                     "text": "Good",
                     "is_google_translate": true,
-                    "popularity": 35,
+                    "popularity": 40,
                     "flagged": false,
                     "id": 5395131
                 }
@@ -30189,7 +30338,7 @@
                     "locale": "en",
                     "text": "the (plural)",
                     "is_google_translate": false,
-                    "popularity": 1987,
+                    "popularity": 1994,
                     "flagged": false,
                     "id": 14703618
                 },
@@ -30205,7 +30354,7 @@
                     "locale": "en",
                     "text": "The",
                     "is_google_translate": true,
-                    "popularity": 74,
+                    "popularity": 78,
                     "flagged": false,
                     "id": 13589574
                 }
@@ -30258,7 +30407,7 @@
                     "locale": "en",
                     "text": "for, by, through, per",
                     "is_google_translate": false,
-                    "popularity": 2084,
+                    "popularity": 2089,
                     "flagged": false,
                     "id": 5138972
                 },
@@ -30274,7 +30423,7 @@
                     "locale": "en",
                     "text": "by",
                     "is_google_translate": false,
-                    "popularity": 54,
+                    "popularity": 56,
                     "flagged": false,
                     "id": 8322259
                 }
@@ -30293,7 +30442,7 @@
                     "locale": "en",
                     "text": "Advice",
                     "is_google_translate": false,
-                    "popularity": 388,
+                    "popularity": 389,
                     "flagged": false,
                     "id": 1459437
                 },
@@ -30301,7 +30450,7 @@
                     "locale": "en",
                     "text": "advice",
                     "is_google_translate": false,
-                    "popularity": 76,
+                    "popularity": 77,
                     "flagged": false,
                     "id": 4174723
                 },
@@ -30328,7 +30477,7 @@
                     "locale": "en",
                     "text": "part",
                     "is_google_translate": true,
-                    "popularity": 865,
+                    "popularity": 866,
                     "flagged": false,
                     "id": 204482
                 },
@@ -30336,7 +30485,7 @@
                     "locale": "en",
                     "text": "part,piece",
                     "is_google_translate": false,
-                    "popularity": 76,
+                    "popularity": 77,
                     "flagged": true,
                     "id": 2244025
                 },
@@ -30367,7 +30516,7 @@
                     "locale": "en",
                     "text": "party",
                     "is_google_translate": false,
-                    "popularity": 386,
+                    "popularity": 388,
                     "flagged": false,
                     "id": 1576632
                 },
@@ -30406,7 +30555,7 @@
                     "locale": "en",
                     "text": "n.  those",
                     "is_google_translate": false,
-                    "popularity": 500,
+                    "popularity": 501,
                     "flagged": false,
                     "id": 903461
                 },
@@ -30422,7 +30571,7 @@
                     "locale": "en",
                     "text": "those",
                     "is_google_translate": false,
-                    "popularity": 56,
+                    "popularity": 57,
                     "flagged": false,
                     "id": 4013190
                 }
@@ -30441,7 +30590,7 @@
                     "locale": "en",
                     "text": "my",
                     "is_google_translate": false,
-                    "popularity": 4236,
+                    "popularity": 4245,
                     "flagged": true,
                     "id": 183794
                 },
@@ -30449,7 +30598,7 @@
                     "locale": "en",
                     "text": "my  (referring to masculine object)",
                     "is_google_translate": false,
-                    "popularity": 605,
+                    "popularity": 607,
                     "flagged": false,
                     "id": 14936710
                 },
@@ -30476,7 +30625,7 @@
                     "locale": "en",
                     "text": "Monday",
                     "is_google_translate": true,
-                    "popularity": 602,
+                    "popularity": 604,
                     "flagged": false,
                     "id": 1087939
                 },
@@ -30492,7 +30641,7 @@
                     "locale": "en",
                     "text": "second",
                     "is_google_translate": false,
-                    "popularity": 40,
+                    "popularity": 45,
                     "flagged": false,
                     "id": 4359768
                 }
@@ -30525,7 +30674,7 @@
                     "locale": "en",
                     "text": "my",
                     "is_google_translate": true,
-                    "popularity": 2023,
+                    "popularity": 2026,
                     "flagged": false,
                     "id": 1428852
                 },
@@ -30533,7 +30682,7 @@
                     "locale": "en",
                     "text": "pron.  mine, my",
                     "is_google_translate": false,
-                    "popularity": 377,
+                    "popularity": 378,
                     "flagged": false,
                     "id": 183841
                 },
@@ -30595,7 +30744,7 @@
                     "locale": "en",
                     "text": "the; to; at; in; with; you; it",
                     "is_google_translate": false,
-                    "popularity": 4484,
+                    "popularity": 4494,
                     "flagged": true,
                     "id": 23843118
                 },
@@ -30665,7 +30814,7 @@
                     "locale": "en",
                     "text": "go",
                     "is_google_translate": false,
-                    "popularity": 2788,
+                    "popularity": 2795,
                     "flagged": false,
                     "id": 1331223
                 },
@@ -30704,7 +30853,7 @@
                     "locale": "en",
                     "text": "he;she;it;you is/are (ser)",
                     "is_google_translate": false,
-                    "popularity": 6534,
+                    "popularity": 6549,
                     "flagged": false,
                     "id": 38226443
                 },
@@ -30720,7 +30869,7 @@
                     "locale": "en",
                     "text": "he/she/it is (ser)",
                     "is_google_translate": false,
-                    "popularity": 1060,
+                    "popularity": 1061,
                     "flagged": false,
                     "id": 36241943
                 }
@@ -30743,7 +30892,7 @@
                     "locale": "en",
                     "text": "This",
                     "is_google_translate": false,
-                    "popularity": 2069,
+                    "popularity": 2073,
                     "flagged": false,
                     "id": 110495
                 },
@@ -30778,7 +30927,7 @@
                     "locale": "en",
                     "text": "promise",
                     "is_google_translate": true,
-                    "popularity": 178,
+                    "popularity": 179,
                     "flagged": true,
                     "id": 3319326
                 },
@@ -30849,7 +30998,7 @@
                     "locale": "en",
                     "text": "of this",
                     "is_google_translate": true,
-                    "popularity": 565,
+                    "popularity": 567,
                     "flagged": false,
                     "id": 1889238
                 },
@@ -30865,7 +31014,7 @@
                     "locale": "en",
                     "text": "this",
                     "is_google_translate": true,
-                    "popularity": 27,
+                    "popularity": 29,
                     "flagged": false,
                     "id": 13488868
                 }
@@ -30888,7 +31037,7 @@
                     "locale": "en",
                     "text": "the",
                     "is_google_translate": false,
-                    "popularity": 4772,
+                    "popularity": 4830,
                     "flagged": false,
                     "id": 1676704
                 },
@@ -30896,7 +31045,7 @@
                     "locale": "en",
                     "text": "the, female plural",
                     "is_google_translate": false,
-                    "popularity": 1623,
+                    "popularity": 1629,
                     "flagged": false,
                     "id": 35918714
                 },
@@ -30923,7 +31072,7 @@
                     "locale": "en",
                     "text": "Portuguese",
                     "is_google_translate": true,
-                    "popularity": 1157,
+                    "popularity": 1158,
                     "flagged": false,
                     "id": 215104
                 },
@@ -30993,7 +31142,7 @@
                     "locale": "en",
                     "text": "resources",
                     "is_google_translate": true,
-                    "popularity": 458,
+                    "popularity": 461,
                     "flagged": false,
                     "id": 7243272
                 },
@@ -31028,7 +31177,7 @@
                     "locale": "en",
                     "text": "at the, in the",
                     "is_google_translate": false,
-                    "popularity": 2264,
+                    "popularity": 2272,
                     "flagged": false,
                     "id": 27827400
                 },
@@ -31036,7 +31185,7 @@
                     "locale": "en",
                     "text": "in the",
                     "is_google_translate": false,
-                    "popularity": 290,
+                    "popularity": 292,
                     "flagged": true,
                     "id": 922970
                 },
@@ -31063,7 +31212,7 @@
                     "locale": "en",
                     "text": "(em +a )\tin the",
                     "is_google_translate": false,
-                    "popularity": 62123,
+                    "popularity": 62128,
                     "flagged": false,
                     "id": 14611512
                 },
@@ -31079,7 +31228,7 @@
                     "locale": "en",
                     "text": "in the",
                     "is_google_translate": false,
-                    "popularity": 60,
+                    "popularity": 64,
                     "flagged": false,
                     "id": 10336563
                 }
@@ -31098,7 +31247,7 @@
                     "locale": "en",
                     "text": "possible",
                     "is_google_translate": true,
-                    "popularity": 833,
+                    "popularity": 835,
                     "flagged": true,
                     "id": 215332
                 },
@@ -31106,7 +31255,7 @@
                     "locale": "en",
                     "text": "possible (poss\u00edveis - plural)",
                     "is_google_translate": false,
-                    "popularity": 40,
+                    "popularity": 41,
                     "flagged": false,
                     "id": 18356795
                 },
@@ -31133,7 +31282,7 @@
                     "locale": "en",
                     "text": "of, from, to",
                     "is_google_translate": false,
-                    "popularity": 3476,
+                    "popularity": 3488,
                     "flagged": true,
                     "id": 15067576
                 },
@@ -31141,7 +31290,7 @@
                     "locale": "en",
                     "text": "of",
                     "is_google_translate": false,
-                    "popularity": 1089,
+                    "popularity": 1091,
                     "flagged": true,
                     "id": 14938333
                 },
@@ -31149,7 +31298,7 @@
                     "locale": "en",
                     "text": "from",
                     "is_google_translate": false,
-                    "popularity": 106,
+                    "popularity": 113,
                     "flagged": false,
                     "id": 8149001
                 }
@@ -31168,7 +31317,7 @@
                     "locale": "en",
                     "text": "you",
                     "is_google_translate": false,
-                    "popularity": 2146,
+                    "popularity": 2149,
                     "flagged": false,
                     "id": 1701101
                 },
@@ -31203,7 +31352,7 @@
                     "locale": "en",
                     "text": "I have",
                     "is_google_translate": true,
-                    "popularity": 1501,
+                    "popularity": 1506,
                     "flagged": false,
                     "id": 275819
                 },
@@ -31211,7 +31360,7 @@
                     "locale": "en",
                     "text": "have",
                     "is_google_translate": true,
-                    "popularity": 51,
+                    "popularity": 52,
                     "flagged": false,
                     "id": 43389771
                 },
@@ -31242,7 +31391,7 @@
                     "locale": "en",
                     "text": "and",
                     "is_google_translate": true,
-                    "popularity": 6834,
+                    "popularity": 6875,
                     "flagged": false,
                     "id": 93446
                 },
@@ -31250,7 +31399,7 @@
                     "locale": "en",
                     "text": "And",
                     "is_google_translate": false,
-                    "popularity": 779,
+                    "popularity": 782,
                     "flagged": false,
                     "id": 7556295
                 },
@@ -31258,7 +31407,7 @@
                     "locale": "en",
                     "text": "[i]and",
                     "is_google_translate": false,
-                    "popularity": 32,
+                    "popularity": 33,
                     "flagged": false,
                     "id": 91579760
                 }

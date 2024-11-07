@@ -16,8 +16,16 @@ def test_lesson_v3_ja() -> None:
     make_test_lesson_v3("ja")
 
 
+def test_lesson_v3_ja2() -> None:
+    make_test_lesson_v3("ja2")
+
+
 def test_lesson_v3_el() -> None:
     make_test_lesson_v3("el")
+
+
+def test_lesson_v3_el2() -> None:
+    make_test_lesson_v3("el2")
 
 
 def test_lesson_v3_de() -> None:

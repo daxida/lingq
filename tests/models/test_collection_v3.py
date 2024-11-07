@@ -20,6 +20,14 @@ def test_collection_v3_el() -> None:
     make_test_collection_v3("el")
 
 
+def test_collection_v3_el2() -> None:
+    make_test_collection_v3("el2")
+
+
+def test_collection_v3_el3() -> None:
+    make_test_collection_v3("el3")
+
+
 def test_collection_v3_de() -> None:
     make_test_collection_v3("de")
 

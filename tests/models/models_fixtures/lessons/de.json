@@ -33,12 +33,12 @@
     "difficulty": 0.0,
     "providerName": "LingQ",
     "providerDescription": "",
-    "lastRoseReceived": "2024-10-18T15:53:22.294621",
+    "lastRoseReceived": "2024-11-02T17:50:36.743009",
     "lessonRating": 19.0,
     "lessonVotes": 6,
     "audioRating": 22.0,
     "audioVotes": 6,
-    "rosesCount": 428,
+    "rosesCount": 430,
     "isFavorite": false,
     "isOverLimit": false,
     "level": "Beginner 1",
@@ -51,7 +51,7 @@
     "listenTimes": 0.0,
     "roseGiven": false,
     "openDate": null,
-    "viewsCount": 12015,
+    "viewsCount": 12086,
     "isProtected": 1,
     "scheduledForDeletion": false,
     "metadata": null,
@@ -79,7 +79,7 @@
         "lessonsCount": 26,
         "newWordsCount": 228,
         "difficulty": 29.01,
-        "rosesCount": 268,
+        "rosesCount": 274,
         "viewsCount": 0,
         "duration": 1606,
         "progress": null,
@@ -113,6 +113,7 @@
                         "text": "Hallo",
                         "translation": {
                             "en": "Hello",
+                            "uk": "\u041f\u0440\u0438\u0432\u0456\u0442",
                             "hu": "szia"
                         },
                         "indexInSentence": 1,
@@ -129,6 +130,8 @@
                         "text": "wie",
                         "translation": {
                             "en": "how",
+                            "pt": "como",
+                            "uk": "\u044f\u043a",
                             "hu": "hogyan"
                         },
                         "indexInSentence": 2,
@@ -142,6 +145,8 @@
                         "text": "kann",
                         "translation": {
                             "en": "can",
+                            "pt": "posso",
+                            "uk": "\u043c\u043e\u0436\u0443",
                             "hu": "tud"
                         },
                         "indexInSentence": 3,
@@ -154,7 +159,9 @@
                     {
                         "text": "ich",
                         "translation": {
+                            "zh-tw": "\u6211",
                             "en": "I",
+                            "uk": "\u044f",
                             "hu": "\u00e9n"
                         },
                         "indexInSentence": 4,
@@ -167,7 +174,10 @@
                     {
                         "text": "dir",
                         "translation": {
+                            "zh-tw": "\u4f60",
                             "en": "you",
+                            "pt": "voc\u00ea",
+                            "uk": "\u0442\u043e\u0431\u0456",
                             "hu": "neked"
                         },
                         "indexInSentence": 5,
@@ -180,7 +190,10 @@
                     {
                         "text": "helfen",
                         "translation": {
+                            "zh-tw": "\u5e2e\u52a9",
                             "en": "help",
+                            "pt": "ajudar",
+                            "uk": "\u0434\u043e\u043f\u043e\u043c\u043e\u0433\u0442\u0438",
                             "hu": "seg\u00edteni"
                         },
                         "indexInSentence": 6,
@@ -207,6 +220,7 @@
                         "text": "Hallo",
                         "translation": {
                             "en": "Hello",
+                            "uk": "\u041f\u0440\u0438\u0432\u0456\u0442",
                             "hu": "Hell\u00f3"
                         },
                         "indexInSentence": 1,
@@ -235,6 +249,7 @@
                         "text": "Name",
                         "translation": {
                             "en": "name",
+                            "uk": "\u0456\u043c'\u044f",
                             "hu": "nevem"
                         },
                         "indexInSentence": 3,
@@ -259,6 +274,7 @@
                     {
                         "text": "Maria",
                         "translation": {
+                            "zh-tw": "\u739b\u4e3d\u4e9a",
                             "en": "Maria",
                             "hu": "M\u00e1ria"
                         },
@@ -286,7 +302,11 @@
                         "text": "Sch\u00f6n",
                         "translation": {
                             "en": "Nice",
-                            "hu": "j\u00f3"
+                            "pt": "bom",
+                            "zh-tw": "\u5f88\u9ad8\u5174",
+                            "it": "\u00e8 bello",
+                            "hu": "j\u00f3",
+                            "uk": "\u043f\u0440\u0438\u0454\u043c\u043d\u043e"
                         },
                         "indexInSentence": 1,
                         "index": 12,
@@ -298,7 +318,9 @@
                     {
                         "text": "dich",
                         "translation": {
+                            "zh-tw": "\u4f60",
                             "en": "you",
+                            "uk": "\u0442\u0435\u0431\u0435",
                             "hu": "t\u00e9ged"
                         },
                         "indexInSentence": 2,
@@ -311,8 +333,11 @@
                     {
                         "text": "zu",
                         "translation": {
+                            "hu": "meg",
                             "en": "to",
-                            "hu": "meg"
+                            "it": "a",
+                            "uk": "\u0442\u0438",
+                            "pt": "a"
                         },
                         "indexInSentence": 3,
                         "index": 14,
@@ -324,9 +349,14 @@
                     {
                         "text": "treffen",
                         "translation": {
+                            "el": "\u03c3\u03c5\u03bd\u03b1\u03bd\u03c4\u03ae\u03c3\u03c9",
                             "en": "meet",
-                            "es": "ver",
-                            "hu": "tal\u00e1lkozni"
+                            "pt": "encontrar",
+                            "zh-tw": "\u89c1\u9762",
+                            "it": "incontrare",
+                            "hu": "tal\u00e1lkozni",
+                            "uk": "\u0437\u0443\u0441\u0442\u0440\u0456\u0442\u0438",
+                            "es": "ver"
                         },
                         "indexInSentence": 4,
                         "index": 15,
@@ -352,7 +382,12 @@
                         "text": "Ganz",
                         "translation": {
                             "en": "entirely",
-                            "hu": "ganz"
+                            "pt": "muito",
+                            "zh-tw": "\u975e\u5e38",
+                            "it": "da parte mia",
+                            "hu": "ganz",
+                            "uk": "\u0437\u043e\u0432\u0441\u0456\u043c",
+                            "es": "totalmente"
                         },
                         "indexInSentence": 1,
                         "index": 16,
@@ -364,10 +399,16 @@
                     {
                         "text": "meinerseits",
                         "translation": {
-                            "fa": "\u0627\u0632 \u0637\u0631\u0641 \u0645\u0646",
+                            "el": "\u03b1\u03c0\u03cc \u03c4\u03b7\u03bd \u03c0\u03bb\u03b5\u03c5\u03c1\u03ac \u03bc\u03bf\u03c5",
                             "en": "on my part",
-                            "es": "de mi parte",
-                            "hu": "r\u00e9szemr\u0151l"
+                            "pt": "da minha parte",
+                            "zh-tw": "\u6211\u8fd9\u8fb9",
+                            "ko": "\ub0b4 \ucabd\uc5d0\uc11c\ub294",
+                            "it": "da parte mia",
+                            "hu": "r\u00e9szemr\u0151l",
+                            "fa": "\u0627\u0632 \u0637\u0631\u0641 \u0645\u0646",
+                            "uk": "\u0437 \u043c\u043e\u0433\u043e \u0431\u043e\u043a\u0443",
+                            "es": "de mi parte"
                         },
                         "indexInSentence": 2,
                         "index": 17,
@@ -395,7 +436,10 @@
                     {
                         "text": "freue",
                         "translation": {
+                            "el": "\u03c7\u03b1\u03af\u03c1\u03bf\u03bc\u03b1\u03b9",
                             "en": "am happy",
+                            "it": "sono contento",
+                            "pt": "fico",
                             "hu": "\u00f6r\u00fcl\u00f6k"
                         },
                         "indexInSentence": 4,
@@ -420,7 +464,9 @@
                     {
                         "text": "auch",
                         "translation": {
-                            "en": "also"
+                            "en": "also",
+                            "it": "anche",
+                            "pt": "tamb\u00e9m"
                         },
                         "indexInSentence": 6,
                         "index": 21,
@@ -435,7 +481,8 @@
                     {
                         "text": "dich",
                         "translation": {
-                            "en": "you"
+                            "en": "you",
+                            "pt": "voc\u00ea"
                         },
                         "indexInSentence": 7,
                         "index": 22,
@@ -459,7 +506,9 @@
                     {
                         "text": "treffen",
                         "translation": {
-                            "en": "meet"
+                            "en": "meet",
+                            "it": "incontrare",
+                            "pt": "encontrar"
                         },
                         "indexInSentence": 9,
                         "index": 24,
@@ -484,6 +533,7 @@
                     {
                         "text": "Und",
                         "translation": {
+                            "zh-tw": "\u90a3\u4e48",
                             "en": "And",
                             "hu": "\u00e9s"
                         },
@@ -498,6 +548,7 @@
                         "text": "wie",
                         "translation": {
                             "en": "how",
+                            "pt": "como",
                             "hu": "hogyan"
                         },
                         "indexInSentence": 2,
@@ -524,6 +575,7 @@
                         "text": "deine",
                         "translation": {
                             "en": "your",
+                            "uk": "\u0442\u0432\u043e\u044f",
                             "es": "tu",
                             "hu": "a te"
                         },
@@ -602,7 +654,9 @@
                     {
                         "text": "Sabine",
                         "translation": {
+                            "zh-tw": "\u8428\u5bbe\u5a1c",
                             "en": "Sabine",
+                            "uk": "\u0421\u0430\u0431\u0456\u043d\u0430",
                             "es": "Sabine"
                         },
                         "indexInSentence": 4,
@@ -677,7 +731,8 @@
                     {
                         "text": "Sabine",
                         "translation": {
-                            "en": "Sabine"
+                            "en": "Sabine",
+                            "uk": "\u0421\u0430\u0431\u0456\u043d\u0430"
                         },
                         "indexInSentence": 2,
                         "index": 37,
@@ -702,7 +757,8 @@
                     {
                         "text": "Sch\u00f6n",
                         "translation": {
-                            "en": "Nice"
+                            "en": "Nice",
+                            "pt": "bom"
                         },
                         "indexInSentence": 1,
                         "index": 38,
@@ -717,7 +773,10 @@
                     {
                         "text": "euch",
                         "translation": {
+                            "zh-tw": "\u4f60\u4eec",
                             "en": "you",
+                            "pt": "voc\u00eas",
+                            "uk": "\u0432\u0430\u0441",
                             "es": "a ustedes"
                         },
                         "indexInSentence": 2,
@@ -730,7 +789,10 @@
                     {
                         "text": "beide",
                         "translation": {
+                            "zh-tw": "\u4f60\u4eec",
                             "en": "both",
+                            "it": "entrambi",
+                            "pt": "ambos",
                             "hu": "mindkett\u0151t\u00f6ket"
                         },
                         "indexInSentence": 3,
@@ -780,7 +842,7 @@
     "sharedByImageUrl": "https://static.lingq.com/media/resources/photo/1669846878_7a1f4acf.webp",
     "sharedByIsFriend": true,
     "promotedCourse": null,
-    "lastOpenTime": "2024-10-25T21:49:31.604714",
+    "lastOpenTime": "2024-11-03T20:43:11.286498",
     "printUrl": "/en/learn/de/workdesk/item/46002970/print/",
     "canEdit": false,
     "canEditSentence": false,
@@ -887,7 +949,7 @@
                     "locale": "en",
                     "term_id": 198316,
                     "is_google_translate": false,
-                    "popularity": 3595,
+                    "popularity": 3604,
                     "approved": true,
                     "detected_locale": null,
                     "creator_id": null,
@@ -914,7 +976,7 @@
                     "locale": "en",
                     "text": "can; may",
                     "is_google_translate": false,
-                    "popularity": 3845,
+                    "popularity": 3866,
                     "flagged": false,
                     "id": 162355
                 },
@@ -928,11 +990,11 @@
                 },
                 {
                     "locale": "en",
-                    "text": "can, may, know, be able to",
+                    "text": "can",
                     "is_google_translate": false,
-                    "popularity": 34,
+                    "popularity": 40,
                     "flagged": false,
-                    "id": 22070051
+                    "id": 173147265
                 }
             ],
             "status": "known",
@@ -953,7 +1015,7 @@
                     "locale": "en",
                     "text": "[adv] also, too, as well",
                     "is_google_translate": false,
-                    "popularity": 844672,
+                    "popularity": 844693,
                     "flagged": true,
                     "id": 12427324
                 },
@@ -961,7 +1023,7 @@
                     "locale": "en",
                     "text": "also",
                     "is_google_translate": true,
-                    "popularity": 868,
+                    "popularity": 885,
                     "flagged": true,
                     "id": 11087267
                 },
@@ -988,7 +1050,7 @@
                     "locale": "en",
                     "text": "help",
                     "is_google_translate": true,
-                    "popularity": 459223,
+                    "popularity": 459240,
                     "flagged": false,
                     "id": 142525
                 },
@@ -996,7 +1058,7 @@
                     "locale": "en",
                     "text": "to help",
                     "is_google_translate": false,
-                    "popularity": 371,
+                    "popularity": 372,
                     "flagged": true,
                     "id": 142529
                 },
@@ -1004,7 +1066,7 @@
                     "locale": "en",
                     "text": "(+dat.) to help",
                     "is_google_translate": false,
-                    "popularity": 81,
+                    "popularity": 82,
                     "flagged": false,
                     "id": 17265327
                 }
@@ -1029,17 +1091,9 @@
             "hints": [
                 {
                     "locale": "en",
-                    "text": "you guys, you all",
-                    "is_google_translate": false,
-                    "popularity": 11287,
-                    "flagged": false,
-                    "id": 15123238
-                },
-                {
-                    "locale": "en",
                     "text": "you",
                     "is_google_translate": false,
-                    "popularity": 6453,
+                    "popularity": 515,
                     "flagged": false,
                     "id": 866028
                 },
@@ -1050,6 +1104,14 @@
                     "popularity": 186,
                     "flagged": false,
                     "id": 16027360
+                },
+                {
+                    "locale": "en",
+                    "text": "you (plural, dative and accusative)",
+                    "is_google_translate": false,
+                    "popularity": 106,
+                    "flagged": false,
+                    "id": 22964092
                 }
             ],
             "status": "known",
@@ -1066,7 +1128,7 @@
                     "locale": "en",
                     "text": "v: he/she/it is",
                     "is_google_translate": false,
-                    "popularity": 5008,
+                    "popularity": 5106,
                     "flagged": false,
                     "id": 26753858
                 },
@@ -1074,7 +1136,7 @@
                     "locale": "en",
                     "text": "is",
                     "is_google_translate": true,
-                    "popularity": 3717,
+                    "popularity": 3967,
                     "flagged": false,
                     "id": 6554893
                 },
@@ -1105,23 +1167,23 @@
                     "locale": "en",
                     "text": "And",
                     "is_google_translate": true,
-                    "popularity": 397497,
+                    "popularity": 397545,
                     "flagged": true,
                     "id": 5448765
                 },
                 {
                     "locale": "en",
-                    "text": "and",
+                    "text": "and, with, together with; also, too",
                     "is_google_translate": false,
-                    "popularity": 1192,
-                    "flagged": false,
-                    "id": 121070594
+                    "popularity": 657,
+                    "flagged": true,
+                    "id": 1128190
                 },
                 {
                     "locale": "en",
                     "text": "and; plus",
                     "is_google_translate": false,
-                    "popularity": 213,
+                    "popularity": 216,
                     "flagged": false,
                     "id": 23914213
                 }
@@ -1138,17 +1200,17 @@
             "hints": [
                 {
                     "locale": "en",
-                    "text": "nice, pretty, good",
+                    "text": "very well, nice, fine, beautiful",
                     "is_google_translate": false,
-                    "popularity": 4623,
+                    "popularity": 1090,
                     "flagged": true,
-                    "id": 1343415
+                    "id": 1528582
                 },
                 {
                     "locale": "en",
                     "text": "nice",
                     "is_google_translate": false,
-                    "popularity": 214,
+                    "popularity": 225,
                     "flagged": true,
                     "id": 246376
                 },
@@ -1175,25 +1237,25 @@
                     "locale": "en",
                     "text": "how | as",
                     "is_google_translate": false,
-                    "popularity": 2872,
+                    "popularity": 2903,
                     "flagged": false,
                     "id": 98270178
                 },
                 {
                     "locale": "en",
-                    "text": "As, such as, like",
+                    "text": "HOW",
                     "is_google_translate": false,
-                    "popularity": 481,
-                    "flagged": false,
-                    "id": 42873720
+                    "popularity": 1910,
+                    "flagged": true,
+                    "id": 9396675
                 },
                 {
                     "locale": "en",
-                    "text": "how",
+                    "text": "As, such as, like",
                     "is_google_translate": false,
-                    "popularity": 337,
+                    "popularity": 482,
                     "flagged": false,
-                    "id": 136103655
+                    "id": 42873720
                 }
             ],
             "status": "known",
@@ -1210,7 +1272,7 @@
                     "locale": "en",
                     "text": "glad",
                     "is_google_translate": false,
-                    "popularity": 1421,
+                    "popularity": 1436,
                     "flagged": false,
                     "id": 125483
                 },
@@ -1226,7 +1288,7 @@
                     "locale": "en",
                     "text": "am happy",
                     "is_google_translate": true,
-                    "popularity": 229,
+                    "popularity": 240,
                     "flagged": false,
                     "id": 91105107
                 }
@@ -1248,7 +1310,7 @@
                     "locale": "en",
                     "text": "both, one and the other, the two of them",
                     "is_google_translate": false,
-                    "popularity": 1455,
+                    "popularity": 1467,
                     "flagged": false,
                     "id": 15112845
                 },
@@ -1256,7 +1318,7 @@
                     "locale": "en",
                     "text": "both, either, both of them",
                     "is_google_translate": false,
-                    "popularity": 236,
+                    "popularity": 237,
                     "flagged": false,
                     "id": 39895794
                 },
@@ -1264,7 +1326,7 @@
                     "locale": "en",
                     "text": "both",
                     "is_google_translate": true,
-                    "popularity": 215,
+                    "popularity": 227,
                     "flagged": false,
                     "id": 39214
                 }
@@ -1281,17 +1343,9 @@
             "hints": [
                 {
                     "locale": "en",
-                    "text": "you",
-                    "is_google_translate": true,
-                    "popularity": 11768,
-                    "flagged": false,
-                    "id": 85529
-                },
-                {
-                    "locale": "en",
                     "text": "You [as the Direct object]",
                     "is_google_translate": false,
-                    "popularity": 1384,
+                    "popularity": 1389,
                     "flagged": false,
                     "id": 32299836
                 },
@@ -1302,6 +1356,14 @@
                     "popularity": 246,
                     "flagged": false,
                     "id": 29057858
+                },
+                {
+                    "locale": "en",
+                    "text": "you",
+                    "is_google_translate": true,
+                    "popularity": 192,
+                    "flagged": false,
+                    "id": 85529
                 }
             ],
             "status": "known",
@@ -1318,7 +1380,7 @@
                     "locale": "en",
                     "text": "your",
                     "is_google_translate": false,
-                    "popularity": 5360,
+                    "popularity": 5367,
                     "flagged": false,
                     "id": 78698
                 },
@@ -1326,7 +1388,7 @@
                     "locale": "en",
                     "text": "your (informal)",
                     "is_google_translate": false,
-                    "popularity": 382,
+                    "popularity": 384,
                     "flagged": false,
                     "id": 18520605
                 },
@@ -1353,7 +1415,7 @@
                     "locale": "en",
                     "text": "me (ich - Accusative)",
                     "is_google_translate": false,
-                    "popularity": 1889,
+                    "popularity": 1899,
                     "flagged": false,
                     "id": 25341141
                 },
@@ -1369,7 +1431,7 @@
                     "locale": "en",
                     "text": "me",
                     "is_google_translate": false,
-                    "popularity": 106,
+                    "popularity": 110,
                     "flagged": false,
                     "id": 124397072
                 }
@@ -1397,7 +1459,7 @@
                     "locale": "en",
                     "text": "name (der)",
                     "is_google_translate": false,
-                    "popularity": 1871,
+                    "popularity": 1872,
                     "flagged": false,
                     "id": 30775603
                 },
@@ -1405,7 +1467,7 @@
                     "locale": "en",
                     "text": "name",
                     "is_google_translate": false,
-                    "popularity": 187,
+                    "popularity": 192,
                     "flagged": true,
                     "id": 7397249
                 },
@@ -1444,25 +1506,25 @@
                     "locale": "en",
                     "text": "Hi",
                     "is_google_translate": true,
-                    "popularity": 10153,
+                    "popularity": 10163,
                     "flagged": false,
                     "id": 7823339
                 },
                 {
                     "locale": "en",
-                    "text": "hello",
-                    "is_google_translate": false,
-                    "popularity": 1750,
-                    "flagged": true,
-                    "id": 6629157
+                    "text": "Hello",
+                    "is_google_translate": true,
+                    "popularity": 300,
+                    "flagged": false,
+                    "id": 91806047
                 },
                 {
                     "locale": "en",
-                    "text": "Hello",
-                    "is_google_translate": true,
-                    "popularity": 281,
-                    "flagged": false,
-                    "id": 91806047
+                    "text": "hello",
+                    "is_google_translate": false,
+                    "popularity": 45,
+                    "flagged": true,
+                    "id": 6629157
                 }
             ],
             "status": "known",
@@ -1479,7 +1541,7 @@
                     "locale": "en",
                     "text": "n. female first name (form of Mary)",
                     "is_google_translate": false,
-                    "popularity": 949,
+                    "popularity": 950,
                     "flagged": false,
                     "id": 7975295
                 },
@@ -1495,7 +1557,7 @@
                     "locale": "en",
                     "text": "Maria",
                     "is_google_translate": true,
-                    "popularity": 65,
+                    "popularity": 68,
                     "flagged": false,
                     "id": 2318375
                 }
@@ -1513,7 +1575,7 @@
                     "locale": "en",
                     "text": "my",
                     "is_google_translate": false,
-                    "popularity": 262284,
+                    "popularity": 262294,
                     "flagged": false,
                     "id": 10568140
                 },
@@ -1521,17 +1583,17 @@
                     "locale": "en",
                     "text": "my\u2026",
                     "is_google_translate": true,
-                    "popularity": 790,
+                    "popularity": 791,
                     "flagged": false,
                     "id": 15569608
                 },
                 {
                     "locale": "en",
-                    "text": "My",
-                    "is_google_translate": true,
-                    "popularity": 135,
-                    "flagged": true,
-                    "id": 6287132
+                    "text": "mine, to mean",
+                    "is_google_translate": false,
+                    "popularity": 110,
+                    "flagged": false,
+                    "id": 21159754
                 }
             ],
             "status": "known",
@@ -1552,7 +1614,7 @@
                     "locale": "en",
                     "text": "my, mine.  (m)",
                     "is_google_translate": false,
-                    "popularity": 550,
+                    "popularity": 552,
                     "flagged": false,
                     "id": 98136145
                 },
@@ -1560,7 +1622,7 @@
                     "locale": "en",
                     "text": "my",
                     "is_google_translate": true,
-                    "popularity": 182,
+                    "popularity": 54,
                     "flagged": false,
                     "id": 15796786
                 },
@@ -1587,7 +1649,7 @@
                     "locale": "en",
                     "text": "all",
                     "is_google_translate": false,
-                    "popularity": 6506,
+                    "popularity": 6514,
                     "flagged": false,
                     "id": 2071050
                 },
@@ -1595,7 +1657,7 @@
                     "locale": "en",
                     "text": "quite, very, all",
                     "is_google_translate": false,
-                    "popularity": 2406,
+                    "popularity": 2408,
                     "flagged": false,
                     "id": 138616281
                 },
@@ -1603,7 +1665,7 @@
                     "locale": "en",
                     "text": "completely",
                     "is_google_translate": false,
-                    "popularity": 690,
+                    "popularity": 693,
                     "flagged": false,
                     "id": 128041
                 }
@@ -1622,7 +1684,7 @@
                     "locale": "en",
                     "text": "girlfriend",
                     "is_google_translate": false,
-                    "popularity": 220712,
+                    "popularity": 220725,
                     "flagged": false,
                     "id": 125499
                 },
@@ -1638,7 +1700,7 @@
                     "locale": "en",
                     "text": "friend",
                     "is_google_translate": true,
-                    "popularity": 181,
+                    "popularity": 187,
                     "flagged": true,
                     "id": 2527540
                 }
@@ -1656,7 +1718,7 @@
                     "locale": "en",
                     "text": "name",
                     "is_google_translate": false,
-                    "popularity": 277,
+                    "popularity": 278,
                     "flagged": true,
                     "id": 2146119
                 },
@@ -1664,7 +1726,7 @@
                     "locale": "en",
                     "text": "Sabine",
                     "is_google_translate": false,
-                    "popularity": 88,
+                    "popularity": 89,
                     "flagged": false,
                     "id": 3811095
                 },
@@ -1672,7 +1734,7 @@
                     "locale": "en",
                     "text": "Sabine (name)",
                     "is_google_translate": false,
-                    "popularity": 16,
+                    "popularity": 17,
                     "flagged": false,
                     "id": 110514431
                 }
@@ -1690,7 +1752,7 @@
                     "locale": "en",
                     "text": "to, at, for, too",
                     "is_google_translate": false,
-                    "popularity": 829,
+                    "popularity": 842,
                     "flagged": false,
                     "id": 99416162
                 },
@@ -1704,11 +1766,11 @@
                 },
                 {
                     "locale": "en",
-                    "text": "to",
-                    "is_google_translate": true,
-                    "popularity": 424,
+                    "text": "(prep.) to, at, for.  / (adv.) too",
+                    "is_google_translate": false,
+                    "popularity": 121,
                     "flagged": false,
-                    "id": 1125856
+                    "id": 98065192
                 }
             ],
             "status": "known",
@@ -1723,17 +1785,9 @@
             "hints": [
                 {
                     "locale": "en",
-                    "text": "to you; yourself",
-                    "is_google_translate": false,
-                    "popularity": 7256,
-                    "flagged": true,
-                    "id": 7274949
-                },
-                {
-                    "locale": "en",
                     "text": "direct",
                     "is_google_translate": false,
-                    "popularity": 360,
+                    "popularity": 364,
                     "flagged": true,
                     "id": 87162
                 },
@@ -1741,9 +1795,17 @@
                     "locale": "en",
                     "text": "you",
                     "is_google_translate": false,
-                    "popularity": 290,
+                    "popularity": 310,
                     "flagged": true,
                     "id": 7407843
+                },
+                {
+                    "locale": "en",
+                    "text": "You in Dativ form",
+                    "is_google_translate": false,
+                    "popularity": 159,
+                    "flagged": false,
+                    "id": 174066866
                 }
             ],
             "status": "known",
@@ -1760,7 +1822,7 @@
                     "locale": "en",
                     "text": "v: he/she/it/you is called",
                     "is_google_translate": false,
-                    "popularity": 1990,
+                    "popularity": 1995,
                     "flagged": false,
                     "id": 26876238
                 },
@@ -1776,7 +1838,7 @@
                     "locale": "en",
                     "text": "means",
                     "is_google_translate": false,
-                    "popularity": 180,
+                    "popularity": 182,
                     "flagged": false,
                     "id": 142381
                 }
@@ -1798,27 +1860,27 @@
             "hints": [
                 {
                     "locale": "en",
+                    "text": "I (me)",
+                    "is_google_translate": false,
+                    "popularity": 10745,
+                    "flagged": false,
+                    "id": 34278131
+                },
+                {
+                    "locale": "en",
                     "text": "I (pron)",
                     "is_google_translate": false,
-                    "popularity": 1238,
+                    "popularity": 1248,
                     "flagged": false,
                     "id": 99487613
                 },
                 {
                     "locale": "en",
-                    "text": "I",
-                    "is_google_translate": true,
-                    "popularity": 343,
-                    "flagged": true,
-                    "id": 7403857
-                },
-                {
-                    "locale": "en",
-                    "text": "I, self, me; ego",
+                    "text": "I, me",
                     "is_google_translate": false,
-                    "popularity": 99,
-                    "flagged": false,
-                    "id": 29913536
+                    "popularity": 803,
+                    "flagged": true,
+                    "id": 147688
                 }
             ],
             "status": "known",

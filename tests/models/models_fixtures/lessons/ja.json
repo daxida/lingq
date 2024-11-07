@@ -55,7 +55,7 @@
         "splitting_method": "reformat+chatgpt",
         "import_method": "Audio"
     },
-    "classicUrl": null,
+    "classicUrl": "/en/learn/ja/workdesk/item/103323601/reader/",
     "collection": {
         "id": 537808,
         "type": "collection",
@@ -596,7 +596,7 @@
     "sharedByImageUrl": "https://static.lingq.com/media/resources/photo/1596440470.png",
     "sharedByIsFriend": true,
     "promotedCourse": null,
-    "lastOpenTime": "2024-10-25T21:49:29.254435",
+    "lastOpenTime": "2024-11-03T20:43:08.674144",
     "printUrl": "/en/learn/ja/workdesk/item/103323601/print/",
     "canEdit": true,
     "canEditSentence": true,
@@ -645,7 +645,7 @@
                     "locale": "en",
                     "term_id": 5404,
                     "is_google_translate": false,
-                    "popularity": 505,
+                    "popularity": 511,
                     "approved": false,
                     "detected_locale": "en",
                     "creator_id": null,
@@ -695,7 +695,7 @@
                     "locale": "en",
                     "term_id": 425132,
                     "is_google_translate": false,
-                    "popularity": 104,
+                    "popularity": 106,
                     "approved": true,
                     "detected_locale": "en",
                     "creator_id": 1136426,
@@ -762,7 +762,7 @@
                     "locale": "en",
                     "term_id": 408315,
                     "is_google_translate": true,
-                    "popularity": 169,
+                    "popularity": 188,
                     "approved": false,
                     "detected_locale": null,
                     "creator_id": 792124,
@@ -933,7 +933,7 @@
                     "locale": "en",
                     "term_id": 402184,
                     "is_google_translate": true,
-                    "popularity": 1751,
+                    "popularity": 1762,
                     "approved": false,
                     "detected_locale": null,
                     "creator_id": 916040,
@@ -969,7 +969,7 @@
                     "locale": "en",
                     "text": "word marking plural of the previous word",
                     "is_google_translate": false,
-                    "popularity": 568568,
+                    "popularity": 568573,
                     "flagged": false,
                     "id": 1123123
                 },
@@ -985,7 +985,7 @@
                     "locale": "en",
                     "text": "Plural",
                     "is_google_translate": false,
-                    "popularity": 163,
+                    "popularity": 164,
                     "flagged": false,
                     "id": 144680546
                 }
@@ -1002,7 +1002,7 @@
                     "locale": "en",
                     "text": "adv.  mighty, very much",
                     "is_google_translate": false,
-                    "popularity": 756,
+                    "popularity": 757,
                     "flagged": false,
                     "id": 1646582
                 },
@@ -1010,7 +1010,7 @@
                     "locale": "en",
                     "text": "1. very; awfully; exceedingly",
                     "is_google_translate": false,
-                    "popularity": 387,
+                    "popularity": 388,
                     "flagged": false,
                     "id": 16860094
                 },
@@ -1062,7 +1062,7 @@
                     "locale": "en",
                     "text": "Now",
                     "is_google_translate": false,
-                    "popularity": 741014,
+                    "popularity": 741018,
                     "flagged": false,
                     "id": 20224272
                 },
@@ -1070,7 +1070,7 @@
                     "locale": "en",
                     "text": "now; the present time; just now; soon; immediately; (one) more",
                     "is_google_translate": false,
-                    "popularity": 238,
+                    "popularity": 240,
                     "flagged": false,
                     "id": 19572742
                 },
@@ -1078,7 +1078,7 @@
                     "locale": "en",
                     "text": "now",
                     "is_google_translate": true,
-                    "popularity": 170,
+                    "popularity": 184,
                     "flagged": false,
                     "id": 377821
                 }
@@ -1110,7 +1110,7 @@
                     "locale": "en",
                     "text": "[Kai]  (Hira=\u304b\u3044) number of times identifier",
                     "is_google_translate": false,
-                    "popularity": 3474,
+                    "popularity": 3476,
                     "flagged": false,
                     "id": 1969428
                 },
@@ -1126,7 +1126,7 @@
                     "locale": "en",
                     "text": "number of times identifier (counter for occurences)",
                     "is_google_translate": false,
-                    "popularity": 110,
+                    "popularity": 111,
                     "flagged": false,
                     "id": 23527410
                 }
@@ -1143,7 +1143,7 @@
                     "locale": "en",
                     "text": "honorific/polite/humble prefix",
                     "is_google_translate": false,
-                    "popularity": 274716,
+                    "popularity": 274735,
                     "flagged": true,
                     "id": 16726291
                 },
@@ -1151,7 +1151,7 @@
                     "locale": "en",
                     "text": "particle; used to mark the object of the sentence; becomes an honorific if used before a noun.",
                     "is_google_translate": false,
-                    "popularity": 774,
+                    "popularity": 775,
                     "flagged": false,
                     "id": 103788675
                 },
@@ -1159,7 +1159,7 @@
                     "locale": "en",
                     "text": "honorable",
                     "is_google_translate": false,
-                    "popularity": 221,
+                    "popularity": 240,
                     "flagged": false,
                     "id": 23849768
                 }
@@ -1184,7 +1184,7 @@
                     "locale": "en",
                     "text": "question marker",
                     "is_google_translate": false,
-                    "popularity": 136377,
+                    "popularity": 136391,
                     "flagged": false,
                     "id": 28472567
                 },
@@ -1192,7 +1192,7 @@
                     "locale": "en",
                     "text": "To indicate uncertainty or indecision\nA third function of \u304b ka is that it can be placed after phrases within larger sentences to indicate uncertainty or indecision",
                     "is_google_translate": false,
-                    "popularity": 448,
+                    "popularity": 453,
                     "flagged": false,
                     "id": 51439983
                 },
@@ -1200,7 +1200,7 @@
                     "locale": "en",
                     "text": "(question marker)",
                     "is_google_translate": false,
-                    "popularity": 162,
+                    "popularity": 166,
                     "flagged": false,
                     "id": 130179072
                 }
@@ -1236,7 +1236,7 @@
                     "locale": "en",
                     "text": "1. casual quoting particle, 2. indicates supposition; if ... then, 3. indicates a rhetorical question, 4. indicates certainty, insistence, etc",
                     "is_google_translate": false,
-                    "popularity": 2547,
+                    "popularity": 2553,
                     "flagged": true,
                     "id": 18379981
                 },
@@ -1252,7 +1252,7 @@
                     "locale": "en",
                     "text": "you said; he said; she said; they said",
                     "is_google_translate": false,
-                    "popularity": 59,
+                    "popularity": 60,
                     "flagged": true,
                     "id": 34279067
                 }
@@ -1277,7 +1277,7 @@
                     "locale": "en",
                     "text": "topic marker particle; indicates contrast with another option (stated or unstated); adds emphasis",
                     "is_google_translate": false,
-                    "popularity": 1969,
+                    "popularity": 2033,
                     "flagged": true,
                     "id": 24365135
                 },
@@ -1285,7 +1285,7 @@
                     "locale": "en",
                     "text": "(topic marker)",
                     "is_google_translate": false,
-                    "popularity": 581,
+                    "popularity": 602,
                     "flagged": false,
                     "id": 169164281
                 },
@@ -1293,7 +1293,7 @@
                     "locale": "en",
                     "text": "topic marker",
                     "is_google_translate": false,
-                    "popularity": 138,
+                    "popularity": 286,
                     "flagged": false,
                     "id": 162
                 }
@@ -1310,7 +1310,7 @@
                     "locale": "en",
                     "text": "of particle \"ni\" (used especially when it precedes the verb \"naru\"",
                     "is_google_translate": false,
-                    "popularity": 4247,
+                    "popularity": 4250,
                     "flagged": true,
                     "id": 9279761
                 },
@@ -1318,7 +1318,7 @@
                     "locale": "en",
                     "text": "negative verb ending used in informal speech (abbr. of negative verb ending \"nu\")",
                     "is_google_translate": false,
-                    "popularity": 658,
+                    "popularity": 660,
                     "flagged": false,
                     "id": 15630297
                 },
@@ -1351,7 +1351,7 @@
                     "locale": "en",
                     "text": "Hello",
                     "is_google_translate": true,
-                    "popularity": 17682,
+                    "popularity": 17701,
                     "flagged": false,
                     "id": 100142207
                 },
@@ -1367,7 +1367,7 @@
                     "locale": "en",
                     "text": "hello",
                     "is_google_translate": false,
-                    "popularity": 680,
+                    "popularity": 721,
                     "flagged": false,
                     "id": 12071147
                 }
@@ -1384,7 +1384,7 @@
                     "locale": "en",
                     "text": "it\u2019s, she\u2019s, he\u2019s, I\u2019m",
                     "is_google_translate": false,
-                    "popularity": 960892,
+                    "popularity": 960920,
                     "flagged": false,
                     "id": 98655334
                 },
@@ -1392,7 +1392,7 @@
                     "locale": "en",
                     "text": "Standard polite form, present tense (to be)",
                     "is_google_translate": false,
-                    "popularity": 958,
+                    "popularity": 959,
                     "flagged": false,
                     "id": 763
                 },
@@ -1400,7 +1400,7 @@
                     "locale": "en",
                     "text": "is",
                     "is_google_translate": true,
-                    "popularity": 435,
+                    "popularity": 449,
                     "flagged": false,
                     "id": 2333501
                 }
@@ -1417,7 +1417,7 @@
                     "locale": "en",
                     "text": "(sentence end) indicates emotion or emphasis",
                     "is_google_translate": false,
-                    "popularity": 358503,
+                    "popularity": 358508,
                     "flagged": false,
                     "id": 24059163
                 },
@@ -1425,7 +1425,7 @@
                     "locale": "en",
                     "text": "used with na-adjectives",
                     "is_google_translate": false,
-                    "popularity": 257,
+                    "popularity": 258,
                     "flagged": false,
                     "id": 27631307
                 },
@@ -1466,7 +1466,7 @@
                     "locale": "en",
                     "text": "easy",
                     "is_google_translate": true,
-                    "popularity": 12,
+                    "popularity": 13,
                     "flagged": false,
                     "id": 100442614
                 }
@@ -1551,7 +1551,7 @@
                     "locale": "en",
                     "text": "thought",
                     "is_google_translate": false,
-                    "popularity": 2101,
+                    "popularity": 2102,
                     "flagged": true,
                     "id": 387538
                 },
@@ -1567,7 +1567,7 @@
                     "locale": "en",
                     "text": "think",
                     "is_google_translate": true,
-                    "popularity": 147,
+                    "popularity": 154,
                     "flagged": false,
                     "id": 14226115
                 }
@@ -1584,7 +1584,7 @@
                     "locale": "en",
                     "text": "if; when; and; with; particle used for quoting (with speech, thoughts, etc.); quoting particle\u200b",
                     "is_google_translate": false,
-                    "popularity": 5576,
+                    "popularity": 5580,
                     "flagged": true,
                     "id": 23034096
                 },
@@ -1592,7 +1592,7 @@
                     "locale": "en",
                     "text": "if; when; and; with; particle used for quoting (with speech, thoughts, etc.); quoting particle",
                     "is_google_translate": false,
-                    "popularity": 637,
+                    "popularity": 647,
                     "flagged": false,
                     "id": 84077677
                 },
@@ -1600,7 +1600,7 @@
                     "locale": "en",
                     "text": "and",
                     "is_google_translate": false,
-                    "popularity": 277,
+                    "popularity": 297,
                     "flagged": false,
                     "id": 143760823
                 }
@@ -1625,7 +1625,7 @@
                     "locale": "en",
                     "text": "Direct object particle. It is attached at the end of a word to signify that it is the direct object",
                     "is_google_translate": false,
-                    "popularity": 6549,
+                    "popularity": 6579,
                     "flagged": true,
                     "id": 98233582
                 },
@@ -1633,7 +1633,7 @@
                     "locale": "en",
                     "text": "(object marker)",
                     "is_google_translate": false,
-                    "popularity": 1024,
+                    "popularity": 1037,
                     "flagged": false,
                     "id": 4150923
                 },
@@ -1641,7 +1641,7 @@
                     "locale": "en",
                     "text": "\u3092\n1. indicates direct object of action\u200b\n2. indicates subject of causative expression\u200b\n3. indicates an area traversed\u200b\n4. indicates time over which action takes place\u200b\n5. indicates point of departure\n6. indicates object of desire, like, hate, etc.\u200b",
                     "is_google_translate": false,
-                    "popularity": 490,
+                    "popularity": 491,
                     "flagged": true,
                     "id": 47221843
                 }
@@ -1666,7 +1666,7 @@
                     "locale": "en",
                     "text": "indicates time, location, direction, or indirect object",
                     "is_google_translate": false,
-                    "popularity": 2600,
+                    "popularity": 2647,
                     "flagged": false,
                     "id": 98699134
                 },
@@ -1674,7 +1674,7 @@
                     "locale": "en",
                     "text": "at",
                     "is_google_translate": false,
-                    "popularity": 1484,
+                    "popularity": 1588,
                     "flagged": false,
                     "id": 29224730
                 },
@@ -1682,7 +1682,7 @@
                     "locale": "en",
                     "text": "[Particle]\n1.\u00a0at (place, time); in; on; during\u200b\n2.\u00a0to (direction, state); toward; into\u200b\n3.\u00a0for (purpose)\u200b\n4.\u00a0because of (reason); for; with\u200b\n5.\u00a0by; from\u200b\n6.\u00a0as (i.e. in the role of)\u200b\n7.\u00a0per; in; for; a (e.g. \"once a month\")\u200b\n8.\u00a0and; in addition to",
                     "is_google_translate": false,
-                    "popularity": 333,
+                    "popularity": 335,
                     "flagged": true,
                     "id": 88584425
                 }

@@ -1,3 +1,5 @@
+"""https://www.lingq.com/api/v3/el/lessons/31145860/"""
+
 from typing import Any, Literal, Optional
 
 from pydantic import BaseModel, ConfigDict, HttpUrl
@@ -28,14 +30,15 @@ class TokenGroup(BaseModel):
     tokens: list[Token]
     text: str
     normalized_text: str
-    timestamp: list[Optional[Any]]
+    # There is even [0, null]...
+    timestamp: tuple[float | None, float | None]
     index: int
 
 
 class LessonTranslation(BaseModel):
-    method: str
+    method: str | None
     language: str
-    sentences: list[Optional[str]]
+    sentences: list[str | None]
 
 
 class Word(BaseModel):
@@ -48,8 +51,8 @@ class Word(BaseModel):
 
 
 class Metadata(BaseModel):
-    splitting_method: str
-    import_method: str
+    import_method: str | None = None
+    splitting_method: str | None = None
 
 
 class PreviousLesson(BaseModel):
@@ -98,12 +101,13 @@ class LessonV3(BaseModel):
     shared_by_role: Optional[str]
     external_type: Optional[str]
     type: str
-    status: str
+    # P := shared, D := private, R := rejected, X := None
+    status: Literal["P", "D", "R", "X"]
     pos: int
     price: int
     opened: bool
     completed: bool
-    percent_completed: int
+    percent_completed: float
     new_words_count: int
     difficulty: float
     provider_name: Optional[str]
@@ -119,9 +123,9 @@ class LessonV3(BaseModel):
     level: Optional[str]
     tags: list[str]
     # Sometimes it is just an empty string...
-    provider_url: Optional[HttpUrl] | Literal[""]
+    provider_url: Optional[str]
     read_times: float
-    listen_times: int
+    listen_times: float
     rose_given: bool
     open_date: Optional[str]
     views_count: int
@@ -135,19 +139,22 @@ class LessonV3(BaseModel):
     simplified_to: Optional[str]
     simplified_by: Optional[str]
     tokenized_text: list[list[TokenGroup]]
-    is_locked: Optional[bool]
+    is_locked: bool | None | Literal["NORMALIZE_AUDIO", "GENERATE_TIMESTAMPS", "TRANSCRIBE_AUDIO"]
     shared_by_image_url: HttpUrl
     shared_by_is_friend: bool
     print_url: Optional[str]
     can_edit: bool
     can_edit_sentence: bool
     bookmark: dict[str, Any]
-    next_lesson_id: Optional[int]
-    previous_lesson_id: Optional[int]
-    previous_lesson: Optional[PreviousLesson]
-    next_lesson: Optional[Any]
+    next_lesson_id: Optional[int] = None
+    previous_lesson_id: Optional[int] = None
+    previous_lesson: Optional[PreviousLesson] = None
+    next_lesson: Optional[PreviousLesson] = None
     translation: Optional[LessonTranslation]
     video_url: Optional[str]
     cards: dict[str, Any]
     cards_count: int
     words: dict[str, Word]
+
+    def get_raw_text(self) -> str:
+        return "\n".join(" ".join(t.text for t in tokens) for tokens in self.tokenized_text[1:])
