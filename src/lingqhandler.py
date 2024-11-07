@@ -90,6 +90,7 @@ class LingqHandler:
     """Get requests"""
 
     async def _get_url(self, url: str, *, params: dict[str, str] = {}) -> Any:  # noqa: ANN401
+        logger.trace(f"GET {url}")
         async with self.session.get(url, headers=self.config.headers, params=params) as response:
             if not 200 <= response.status < 300:
                 await self.response_debug(response)
@@ -149,7 +150,7 @@ class LingqHandler:
         """Get a lesson, from its id. Example id: 34754329
         Corresponding url: https://www.lingq.com/api/v3/LANG/lessons/ID/
         """
-        data = await self._get(f"lessons/{lesson_id}")
+        data = await self._get(f"lessons/{lesson_id}/")
         if reason := data.get("isLocked", ""):
             logger.warning(f"The lesson {lesson_id} is locked: {reason}")
             return None
@@ -256,7 +257,7 @@ class LingqHandler:
         warn_for: dict[int, str] = {},
     ) -> ReqReturnType:
         url = f"{LingqHandler.API_URL_V3}/{self.lang}/{endpoint}"
-        logger.trace(f"Patching at {url}")
+        logger.trace(f"PATCH {url}")
         async with self.session.patch(url, headers=self.config.headers, data=data) as response:
             if msg := raise_for.get(response.status, ""):
                 print(msg)
@@ -280,6 +281,7 @@ class LingqHandler:
         warn_for: dict[int, str] = {},
     ) -> ReqReturnType:
         url = f"{LingqHandler.API_URL_V3}/{self.lang}/{endpoint}"
+        logger.trace(f"POST {url}")
         async with self.session.post(url, headers=self.config.headers, data=data) as response:
             if msg := raise_for.get(response.status, ""):
                 print(msg)

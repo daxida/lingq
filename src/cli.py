@@ -155,9 +155,9 @@ def yomitan_cli(langs: list[str], ipath: Path) -> None:
     show_default=True,
     help="Skip already downloaded lessons.",
 )
-@click.option("--download_audio", is_flag=True, default=False, help="If set, also download audio.")
+@click.option("--download-audio", is_flag=True, default=False, help="If set, also download audio.")
 @click.option(
-    "--download_timestamps", is_flag=True, default=False, help="If set, also download timestamps."
+    "--download-timestamps", is_flag=True, default=False, help="If set, also download timestamps."
 )
 @opath_option()
 def get_lessons_cli(
@@ -187,7 +187,7 @@ def get_lessons_cli(
 @click.argument("langs", nargs=-1)
 @click.option("--download-audio", is_flag=True, default=False, help="If set, also download audio.")
 @click.option(
-    "--download_timestamps", is_flag=True, default=False, help="If set, also download timestamps."
+    "--download-timestamps", is_flag=True, default=False, help="If set, also download timestamps."
 )
 @click.option(
     "--skip-downloaded",

@@ -1,15 +1,9 @@
 import asyncio
-from dataclasses import dataclass
 from pathlib import Path
 
 from lingqhandler import LingqHandler
-from models.lesson import SimpleLesson
-
-
-@dataclass
-class Token:
-    text: str
-    timestamp: tuple[float, float] | tuple[None, None]
+from log import logger
+from models.lesson_v3 import LessonV3
 
 
 def sanitize_title(title: str) -> str:
@@ -25,15 +19,19 @@ def format_timestamp(seconds: float) -> str:
     return f"{hours:02}:{minutes:02}:{secs:02}.{millis:03}"
 
 
-def to_vtt(ptokens: list[list[Token]]) -> str | None:
+def to_vtt(lesson: LessonV3) -> str | None:
     vtt_lines = ["WEBVTT\n"]
 
     idx_token = 0
-    for tokens in ptokens:
-        for token in tokens:
-            start_time, end_time = token.timestamp
+    # The first element is the lesson title, that we don't use.
+    # Note that some defective lessons may not have a title,
+    # and makes us skip the first paragraph.
+    for paragraph_data in lesson.tokenized_text[1:]:
+        for token_group in paragraph_data:
+            start_time, end_time = token_group.timestamp
             if start_time is None or end_time is None:
                 # Early exit: the text has no timestamps
+                logger.warning(f"Lesson {lesson.title} has no subtitles")
                 return None
             start = format_timestamp(start_time)
             end = format_timestamp(end_time)
@@ -41,7 +39,7 @@ def to_vtt(ptokens: list[list[Token]]) -> str | None:
             idx_token += 1
             vtt_lines.append(f"{idx_token}")
             vtt_lines.append(f"{start} --> {end}")
-            vtt_lines.append(token.text)
+            vtt_lines.append(token_group.text)
             vtt_lines.append("")
 
     return "\n".join(vtt_lines)
@@ -52,46 +50,23 @@ async def get_lesson_async(
     lesson_id: int,
     download_audio: bool,
     download_timestamps: bool,
-) -> SimpleLesson | None:
+) -> LessonV3 | None:
     lesson = await handler.get_lesson_from_id(lesson_id)
     if lesson is None:
         return
 
-    # The first element is the lesson title, that we don't use
-    _, *tokenized_text = lesson.tokenized_text
-    paragraph_tokens: list[list[Token]] = []
-    for paragraph_data in tokenized_text:
-        tokens: list[Token] = []
-        for sentence in paragraph_data:
-            tokens.append(Token(sentence.text, sentence.timestamp))  # type: ignore
-        paragraph_tokens.append(tokens)
-
-    text = lesson.get_raw_text()
-
     if download_audio:
         audio = await handler.get_audio_from_lesson(lesson)
-    else:
-        audio = None
+        lesson._downloaded_audio = audio
 
     if download_timestamps:
-        timestamps = to_vtt(paragraph_tokens)
-    else:
-        timestamps = None
+        timestamps = to_vtt(lesson)
+        lesson._timestamps = timestamps
 
-    simple_lesson = SimpleLesson(
-        title=lesson.title,
-        collection_title=lesson.collection_title,
-        url=str(lesson.url),
-        id_=lesson_id,
-        text=text,
-        audio=audio,
-        timestamps=timestamps,
-    )
-
-    return simple_lesson
+    return lesson
 
 
-def write_lesson(lang: str, lesson: SimpleLesson, opath: Path) -> None:
+def write_lesson(lang: str, lesson: LessonV3, opath: Path) -> None:
     collection_title = sanitize_title(lesson.collection_title)
     title = sanitize_title(lesson.title)
 
@@ -104,21 +79,21 @@ def write_lesson(lang: str, lesson: SimpleLesson, opath: Path) -> None:
     text_path = texts_folder / f"{title}.txt"
     with text_path.open("w", encoding="utf-8") as text_file:
         text_file.write(f"{lesson.title}\n")
-        text_file.write(lesson.text)
+        text_file.write(lesson.get_raw_text())
 
     # Write audio if any
-    if lesson.audio:
+    if audio := lesson._downloaded_audio:
         Path.mkdir(audios_folder, parents=True, exist_ok=True)
         mp3_path = audios_folder / f"{title}.mp3"
         with mp3_path.open("wb") as audio_file:
-            audio_file.write(lesson.audio)
+            audio_file.write(audio)
 
     # Write timestamps if any
-    if lesson.timestamps:
+    if timestamps := lesson._timestamps:
         Path.mkdir(timestamps_folder, parents=True, exist_ok=True)
         vtt_path = timestamps_folder / f"{title}.vtt"
         with vtt_path.open("w", encoding="utf-8") as vtt_file:
-            vtt_file.write(lesson.timestamps)
+            vtt_file.write(timestamps)
 
 
 if __name__ == "__main__":
@@ -128,7 +103,7 @@ if __name__ == "__main__":
         lesson_id: int,
         download_audio: bool,
         download_timestamps: bool,
-    ) -> SimpleLesson | None:
+    ) -> LessonV3 | None:
         async with LingqHandler(lang) as handler:
             return await get_lesson_async(handler, lesson_id, download_audio, download_timestamps)
 

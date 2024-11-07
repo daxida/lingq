@@ -160,5 +160,12 @@ class LessonV3(BaseModel):
     cards_count: int
     words: dict[str, Word]
 
+    # Custom attributes
+    _downloaded_audio: bytes | None = None
+    _timestamps: str | None = None
+
     def get_raw_text(self) -> str:
+        # The first element is the lesson title, that we don't use.
+        # Note that some defective lessons may not have a title,
+        # and makes us skip the first paragraph.
         return "\n".join(" ".join(t.text for t in tokens) for tokens in self.tokenized_text[1:])

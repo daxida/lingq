@@ -2,10 +2,11 @@ import asyncio
 import os
 from pathlib import Path
 
-from commands.get_lesson import SimpleLesson, get_lesson_async, sanitize_title, write_lesson
+from commands.get_lesson import get_lesson_async, sanitize_title, write_lesson
 from lingqhandler import LingqHandler
 from log import logger
 from models.collection_v3 import CollectionLessonResult
+from models.lesson_v3 import LessonV3
 from utils import get_editor_url, timing
 
 
@@ -36,9 +37,7 @@ async def get_lessons_async(
     download_timestamps: bool,
     skip_downloaded: bool,
     write: bool,
-) -> list[SimpleLesson]:
-    # TODO: Return a LessonV3?
-
+) -> list[LessonV3]:
     async with LingqHandler(lang) as handler:
         lessons = await handler.get_collection_lessons_from_id(course_id)
         if not lessons:
