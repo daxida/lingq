@@ -7,70 +7,56 @@ from pathlib import Path
 from typing import Any
 
 from lingqhandler import LingqHandler
+from log import logger
+from models.collection_v3 import SearchCollectionResult, SearchCollections
 
 BASE_URL = "https://www.lingq.com"
 
 
 async def fetch_and_save_to_csv(lang: str) -> None:
-    library_data_list = await fetch_library(lang)
-    data_list = [process_json_entry(lang, entry) for entry in library_data_list]
-    data_list.sort(key=lambda x: x["roses"], reverse=True)
-    write_to_csv(lang, data_list)
+    library = await fetch_library(lang)
+    simple_library = [process_json_entry(lang, sres) for sres in library]
+    simple_library.sort(key=lambda x: x["roses"], reverse=True)
+    write_to_csv(lang, simple_library)
 
 
-async def fetch_library(lang: str) -> list[Any]:
-    async with LingqHandler("Filler") as handler:
-        library_data_list: list[Any] = []
+async def fetch_library(lang: str) -> list[SearchCollectionResult]:
+    library: list[SearchCollectionResult] = []
+
+    async with LingqHandler(lang) as handler:
         page = 1
         while True:
-            library_url = f"{BASE_URL}/api/v3/{lang}/search/?level=1&level=2&level=3&level=4&level=5&level=6&sortBy=mostLiked&type=collection&page={page}"
-            library_response = await handler.session.get(
-                library_url, headers=handler.config.headers
+            search: SearchCollections = await handler.search(
+                {
+                    "type": "collection",
+                    "sortBy": "mostLiked",
+                    "page": page,
+                    "level": [1, 2, 3, 4, 5, 6],
+                }
             )
 
-            if library_response.status != 200:
-                print(f"Failed to fetch data from page {page}.")
-                print(f"Status code: {library_response.status}.")
+            results = search.results
+            logger.info(f"Got page {page}")
+            library.extend(results)
+            page += 1
+            if not search.next:
                 break
 
-            library_data = await library_response.json()
-            results = library_data.get("results", [])
-            library_data_list.extend(results)
-
-            next_url = library_data.get("next")
-            if not next_url:
-                print("No further pages")
-                break
-            else:
-                page += 1
-                print("going to page: ", page)
-
-    return library_data_list
+    return library
 
 
-def process_json_entry(lang: str, entry: dict[str, Any]) -> dict[str, str]:
-    id_value = entry.get("id")
-    title = entry.get("title")
-    lessons_count = entry.get("lessonsCount")
-    duration = entry.get("duration")
-    level = entry.get("level")
-    roses = entry.get("rosesCount")
-    shared_by = entry.get("sharedByName")
-    sharer_role = entry.get("sharedByRole")
-    tags = entry.get("tags", "")
-    status = entry.get("status", "")
-
+def process_json_entry(lang: str, sres: SearchCollectionResult) -> dict[str, str]:
     return {
-        "link": f"{BASE_URL}/uni/learn/{lang}/web/library/course/{id_value}",
-        "title": title,
-        "level": level,
-        "lessonsCount": lessons_count,
-        "duration": duration,
-        "roses": roses,
-        "shared_by": shared_by,
-        "sharer_role": sharer_role,
-        "tags": tags,
-        "status": status,
+        "link": f"{BASE_URL}/uni/learn/{lang}/web/library/course/{sres.id}",
+        "title": sres.title,
+        "level": sres.level or "-1",
+        "lessonsCount": str(sres.lessons_count),
+        "duration": str(sres.duration),
+        "roses": str(sres.roses_count),
+        "shared_by": sres.shared_by_name,
+        "sharer_role": sres.shared_by_role or "",
+        "tags": ", ".join(sres.tags),
+        "status": sres.status,
     }
 
 
@@ -96,7 +82,7 @@ def write_to_csv(lang: str, data_list: list[Any]) -> None:
         for data in data_list:
             writer.writerow(data)
 
-    print(f"Data saved to {output_filename}.")
+    logger.success(f"Data saved to {output_filename}.")
 
 
 def overview(lang: str) -> None:

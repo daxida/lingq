@@ -7,7 +7,7 @@ from pydantic.alias_generators import to_camel
 class CollectionSource(BaseModel):
     type: str | None
     name: str
-    url: HttpUrl | None
+    url: str | None
 
 
 class CollectionV3(BaseModel):
@@ -125,30 +125,39 @@ class SearchCollectionResult(BaseModel):
     )
 
     id: int
-    url: str
     type: str
-    date: str
-    level: Optional[str]
     title: str
-    description: Optional[str]
-    accent: Optional[str]
+    status: str
+    source: Optional[CollectionSource]
+    is_taken: Optional[bool]
     image_url: Optional[str]
+    audio_pending: bool
     original_image_url: Optional[str]
-    provider_id: Optional[int]
     provider_image_url: Optional[str]
+    shared_by_image_url: Optional[str]
+    provider_id: Optional[int]
     provider_name: Optional[str]
     shared_by_id: int
     shared_by_name: str
-    status: str
+    shared_by_role: Optional[str]
+    description: Optional[str]
     is_featured: Optional[bool]
-    views_count: int
+    is_locked: Optional[bool]
+    lessons_count: int
     new_words_count: int
     difficulty: float
-    source: Optional[CollectionSource]
+    roses_count: int
+    views_count: int
     duration: int
-    price: int
-    tags: list[str]
+    progress: Optional[float]
+    # metadata
     folders: list[int]
+    accent: Optional[str]
+    level: Optional[str]
+    price: int
+    date: str
+    tags: list[str]
+    url: str
 
 
 class SearchCollections(BaseModel):

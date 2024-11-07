@@ -193,22 +193,25 @@ class LingqHandler:
         data = await self._get("collections/my")
         return MyCollections.model_validate(data)
 
-    async def search(self, params: dict[str, str]) -> list[SearchCollectionResult]:
+    async def search(self, params: dict[str, Any]) -> SearchCollections:
         data = await self._get("search", params=params)
-        return SearchCollections.model_validate(data).results
+        return SearchCollections.model_validate(data)
 
     async def get_my_collections_shared(self) -> list[SearchCollectionResult]:
-        return await self.search(
+        # TODO: Fix this hardcoding of the ID
+        data = await self.search(
             {"type": "collection", "sharedBy": "1824368", "sortBy": "recentlyOpened"}
         )
+        return data.results
 
     async def get_currently_studying_collections(self) -> list[SearchCollectionResult]:
         """Get a collection from the 'Continue Studying shelf'.
         This includes collections imported by other users.
         """
-        return await self.search(
+        data = await self.search(
             {"shelf": "my_lessons", "type": "collection", "sortBy": "recentlyOpened"}
         )
+        return data.results
 
     async def get_collection_from_id(self, collection_id: int) -> CollectionV3:
         data = await self._get(f"collections/{collection_id}")
