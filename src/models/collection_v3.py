@@ -108,7 +108,6 @@ class CollectionLessonResult(BaseModel):
 
 
 class CollectionLessons(BaseModel):
-    # TODO: Testme
     count: int
     next: str | None
     previous: str | None

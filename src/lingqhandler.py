@@ -22,12 +22,11 @@ from models.lesson_v3 import LessonV3
 from models.my_collections import MyCollections
 from utils import Colors, get_editor_url
 
-# TODO: Rename collection_id to course_id or at least be consistent
-
 
 class LingqHandler:
     """
     NOTE: A collection is a course in the API lingo. It is a group of lessons.
+          For consistency, 'course_id' is prefered over 'collection_id'.
 
     This abstracts some of the requests sent to the LingQ API.
 
@@ -161,13 +160,11 @@ class LingqHandler:
         """Get a list of lessons, from their ids."""
         return await asyncio.gather(*(self.get_lesson_from_id(id) for id in ids))
 
-    async def get_collection_lessons_from_id(
-        self, collection_id: int
-    ) -> list[CollectionLessonResult]:
+    async def get_collection_lessons_from_id(self, course_id: int) -> list[CollectionLessonResult]:
         """Get a list of lessons, from its id. Example id: 537808
         Corresponding url: https://www.lingq.com/api/v3/ja/collections/537808/lessons
         """
-        url = f"{LingqHandler.API_URL_V3}/{self.lang}/collections/{collection_id}/lessons/"
+        url = f"{LingqHandler.API_URL_V3}/{self.lang}/collections/{course_id}/lessons/"
         collection_lessons = []
         cur_url = url
 
@@ -182,10 +179,10 @@ class LingqHandler:
             cur_url = collection_lessons_at_page.next
 
         if collection_lessons.count == 0:
-            editor_url = get_editor_url(self.lang, collection_id, "course")
+            editor_url = get_editor_url(self.lang, course_id, "course")
             print(
                 f"{Colors.WARN}WARN{Colors.END}"
-                f" The collection {collection_id} at {editor_url} has no lessons, (delete it?)"
+                f" The collection {course_id} at {editor_url} has no lessons, (delete it?)"
             )
 
         return collection_lessons
@@ -214,22 +211,22 @@ class LingqHandler:
         )
         return data.results
 
-    async def get_collection_from_id(self, collection_id: int) -> CollectionV3:
-        data = await self._get(f"collections/{collection_id}")
+    async def get_collection_from_id(self, course_id: int) -> CollectionV3:
+        data = await self._get(f"collections/{course_id}")
         return CollectionV3.model_validate(data)
 
-    async def get_collection_from_id_v2(self, collection_id: int) -> Any:  # noqa: ANN401
+    async def get_collection_from_id_v2(self, course_id: int) -> Any:  # noqa: ANN401
         """Returns a JSON. TODO: make a model for it."""
         # check_detail is set to False for the moment because of issues on LingQ's side
-        return await self._get(f"collections/{collection_id}", version=2, check_detail=False)
+        return await self._get(f"collections/{course_id}", version=2, check_detail=False)
 
-    async def get_collection_object_from_id(self, collection_id: int) -> Collection | None:
-        """Get a custom collection Object from a collection_id."""
-        collection = await self.get_collection_from_id_v2(collection_id)
+    async def get_collection_object_from_id(self, course_id: int) -> Collection | None:
+        """Get a custom collection Object from a course_id."""
+        collection = await self.get_collection_from_id_v2(course_id)
         if not collection:
             return None
         if collection.get("detail", "") == "Not found.":
-            logger.warning(f"Ghost course at: {get_editor_url(self.lang, collection_id, "course")}")
+            logger.warning(f"Ghost course at: {get_editor_url(self.lang, course_id, "course")}")
             return None
         col = Collection()
         col.add_data(self.lang, collection)
