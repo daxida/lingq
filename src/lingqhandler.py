@@ -22,6 +22,8 @@ from models.lesson_v3 import LessonV3
 from models.my_collections import MyCollections
 from utils import Colors, get_editor_url
 
+# TODO: Rename collection_id to course_id or at least be consistent
+
 
 class LingqHandler:
     """
@@ -69,6 +71,8 @@ class LingqHandler:
                 logger.error("LingQ's servers are overloaded: cloudflare timeout (> 100 secs).")
             case 429:
                 logger.error("Rate limited! Slow down and retry in a couple minutes.")
+            case 404:
+                pass  # Not found error.
             case _:
                 logger.error(f"Unhandled response code error: {response.status}")
         if response.headers.get("Content-Type") == "application/json":
@@ -217,8 +221,8 @@ class LingqHandler:
         collection = await self.get_collection_from_id_v2(collection_id)
         if not collection:
             return None
-        # Ghost collections...
         if collection.get("detail", "") == "Not found.":
+            logger.warning(f"Ghost course at: {get_editor_url(self.lang, collection_id, "course")}")
             return None
         col = Collection()
         col.add_data(self.lang, collection)

@@ -9,9 +9,7 @@ from models.collection_v3 import CollectionLessonResult
 from utils import get_editor_url, timing
 
 
-def write_lessons(
-    lang: str, lessons: list[SimpleLesson], opath: Path, verbose: bool
-) -> None:
+def write_lessons(lang: str, lessons: list[SimpleLesson], opath: Path, verbose: bool) -> None:
     for idx, lesson in enumerate(lessons, 1):
         if verbose:
             print(f"Writing lesson nº{idx}: {lesson.title}")

@@ -3,10 +3,11 @@ from datetime import datetime
 from pathlib import Path
 
 from lingqhandler import LingqHandler
+from log import logger
 from models.collection import Collection
 from models.collection_v3 import SearchCollectionResult
 from models.my_collections import CollectionItem
-from utils import Colors, double_check, timing
+from utils import timing
 
 
 def sanitize_title(title: str) -> str:
@@ -88,38 +89,28 @@ async def get_collections(handler: LingqHandler, select_courses: str) -> list[Co
     Those store the important information of the JSON to then make the markdown.
     """
 
-    collections_json: list[CollectionItem] | list[SearchCollectionResult]
+    _collections: list[CollectionItem] | list[SearchCollectionResult]
     if select_courses == "all":
-        collections_json = await handler.get_currently_studying_collections()
+        _collections = await handler.get_currently_studying_collections()
     else:
-        _collections_json = await handler.get_my_collections()
-        collections_json = _collections_json.results
+        _my_collections = await handler.get_my_collections()
+        _collections = _my_collections.results
 
     collections_list: list[Collection] = []
-    n_collections = len(collections_json)
+    n_collections = len(_collections)
 
-    tasks = [
-        handler.get_collection_object_from_id(collection.id) for collection in collections_json
-    ]
+    tasks = [handler.get_collection_object_from_id(collection.id) for collection in _collections]
     collections = await asyncio.gather(*tasks)
     collections = [collection for collection in collections if collection is not None]
 
     for idx, col in enumerate(collections, 1):
-        # To not mess with the sorting later on. This only happens in very weird cases.
         if col.last_update is None:
-            print(
-                f"[{idx}/{n_collections}] {Colors.SKIP}SKIP{Colors.END} {col.title} (last_update=None)"
-            )
-            continue
-
-        # Ignore private collection if the shared_only flag is true
-        if select_courses == "shared" and not col.is_shared:
-            print(f"[{idx}/{n_collections}] {Colors.SKIP}SKIP{Colors.END} {col.title} (NOT SHARED)")
-            continue
-
-        print(f"[{idx}/{n_collections}] {Colors.OK}OK{Colors.END} {col.title}")
-
-        collections_list.append(col)
+            logger.info(f"[{idx}/{n_collections}] SKIP {col.title} (last_update=None)")
+        elif select_courses == "shared" and not col.is_shared:
+            logger.info(f"[{idx}/{n_collections}] SKIP {col.title} (not shared)")
+        else:
+            logger.success(f"[{idx}/{n_collections}] {col.title}")
+            collections_list.append(col)
 
     return collections_list
 
@@ -136,12 +127,6 @@ async def make_markdown_async(
     include_views: bool,
     out_folder: Path,
 ) -> None:
-    print(f"Making markdown for language(s): '{', '.join(langs)}'")
-    print(f"With courses selection: {select_courses}")
-    print(f"With include views: {include_views}")
-    print(f"At folder: {out_folder}")
-    double_check()
-
     extension_msg = "_no_views" if not include_views else ""
     readme_folder = out_folder / "markdowns" / f"markdown_{select_courses}{extension_msg}"
     courses_folder = readme_folder / "courses"
@@ -151,24 +136,24 @@ async def make_markdown_async(
     async with LingqHandler("Filler") as handler:
         n_languages = len(langs)
         for idx, lang in enumerate(langs, 1):
-            print(f"Starting download for {lang} ({idx} of {n_languages})")
+            logger.info(f"Starting download for {lang} ({idx} of {n_languages})")
 
             handler.lang = lang
             collections_list = await get_collections(handler, select_courses)
 
             if not collections_list:
-                print(f"Didn't find any courses for language: {lang}")
+                logger.warning(f"No courses for language: {lang}")
                 continue
 
             sort_collections(collections_list)
 
             out_folder_markdown = courses_folder / f"courses_{lang}.md"
             write_markdown(collections_list, out_folder_markdown, include_views)
-            print(f"Created markdown for {lang}!")
+            logger.info(f"Created markdown for {lang} at {out_folder}")
 
 
 @timing
-def make_markdown(
+def markdown(
     langs: list[str],
     select_courses: str,
     include_views: bool,
@@ -194,7 +179,7 @@ def make_markdown(
 
 if __name__ == "__main__":
     # Defaults for manually running this script.
-    make_markdown(
+    markdown(
         langs=["fr"],
         select_courses="all",  # all, shared or mine
         include_views=False,

@@ -3,9 +3,7 @@ import asyncio
 from lingqhandler import LingqHandler
 
 
-async def get_my_collections_titles_async(
-    lang: str, shared_only: bool, codes: bool
-) -> list[str]:
+async def get_my_collections_titles_async(lang: str, shared_only: bool, codes: bool) -> list[str]:
     async with LingqHandler(lang) as handler:
         if not shared_only:
             my_collections = await handler.get_my_collections()

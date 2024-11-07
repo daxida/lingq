@@ -9,7 +9,7 @@ from commands.get_lessons import get_lessons
 from commands.get_pictures import get_pictures
 from commands.get_words import get_words
 from commands.library_overview import overview
-from commands.make_markdown import make_markdown
+from commands.markdown import markdown
 from commands.patch import patch_audios
 from commands.post import PAIRING_STRATEGIES, post
 from commands.post_yt_playlist import post_yt_playlist
@@ -355,7 +355,7 @@ def markdown_cli(
 
     If no language codes are given, use all languages.
     """
-    make_markdown(langs, select_courses, include_views, opath)
+    markdown(langs, select_courses, include_views, opath)
 
 
 @cli.command("timestamp")

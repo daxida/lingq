@@ -20,9 +20,7 @@ async def filter_timestamped(
     return [lesson for lesson, is_timestamped in zip(lessons, results) if not is_timestamped]
 
 
-async def generate_timestamps_async(
-    lang: str, course_id: int, skip_timestamped: bool
-) -> None:
+async def generate_timestamps_async(lang: str, course_id: int, skip_timestamped: bool) -> None:
     async with LingqHandler(lang) as handler:
         lessons = await handler.get_collection_lessons_from_id(course_id)
 
