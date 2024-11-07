@@ -2,6 +2,9 @@ from dataclasses import dataclass
 from datetime import datetime as dt
 from typing import Any
 
+from log import logger
+from utils import get_editor_url
+
 # fmt: off
 TOEUROPEAN = {
     'Advanced 2'     : 'C2',
@@ -40,16 +43,12 @@ class Collection:
         self.lang = lang
         self._id = collection_v2["pk"]  # it's pk in V2 and id in V3
         self.title = collection_v2["title"]
-        self.course_url = (
-            f"https://www.lingq.com/en/learn/{self.lang}/web/library/course/{self._id}"
-        )
+        editor_url = get_editor_url(lang, int(self._id), "course")
+        self.course_url = editor_url
 
         lessons = collection_v2["lessons"]
         if not lessons:
-            print(f"  No lessons found for {self.title}")
-            print("  Course url:", self.course_url)
-            print("  Api url   :", collection_v2["url"])
-            print("  Skipping add_data.")
+            logger.warning(f"No lessons found for '{self.title}' at {editor_url}")
             return
 
         self.level = TOEUROPEAN.get(collection_v2["level"], collection_v2["level"]) or "-"

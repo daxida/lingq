@@ -76,6 +76,9 @@ class LingqHandler:
             case 404:
                 # Not found error.
                 pass
+            case 401:
+                # Invalid APIKEY
+                pass
             case _:
                 logger.error(f"Unhandled response code error: {response.status}")
         if response.headers.get("Content-Type") == "application/json":
@@ -114,7 +117,7 @@ class LingqHandler:
                 case "_SENTINEL":
                     pass
                 case "Invalid token.":
-                    print("Invalid APIKEY. Exiting.")
+                    logger.error("Invalid APIKEY. Exiting.")
                     sys.exit(1)
                 case "Not found.":
                     raise ValueError(f"Not found error at {url=}")

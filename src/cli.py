@@ -180,7 +180,6 @@ def get_lessons_cli(
         download_audio=download_audio,
         download_timestamps=download_timestamps,
         write=True,
-        verbose=True,
     )
 
 

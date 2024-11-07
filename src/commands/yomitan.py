@@ -142,8 +142,7 @@ def yomitan_for_language(dump_path: Path) -> YomitanDict:
     # Look for the dump
     lingq_json_path = dump_path / "lingqs.json"
     if not lingq_json_path.exists():
-        print(f"Could not find the dump at {lingq_json_path}")
-        print("Exiting.")
+        logger.error(f"Could not find the dump at {lingq_json_path}. Exiting.")
         sys.exit(1)
 
     # Load the dump

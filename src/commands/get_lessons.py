@@ -9,13 +9,6 @@ from models.collection_v3 import CollectionLessonResult
 from utils import get_editor_url, timing
 
 
-def write_lessons(lang: str, lessons: list[SimpleLesson], opath: Path, verbose: bool) -> None:
-    for idx, lesson in enumerate(lessons, 1):
-        if verbose:
-            print(f"Writing lesson nº{idx}: {lesson.title}")
-        write_lesson(lang, lesson, opath)
-
-
 def filter_downloaded(
     texts_path: Path, lessons: list[CollectionLessonResult]
 ) -> list[CollectionLessonResult]:
@@ -43,11 +36,8 @@ async def get_lessons_async(
     download_timestamps: bool,
     skip_downloaded: bool,
     write: bool,
-    verbose: bool,
 ) -> list[SimpleLesson]:
     # TODO: Return a LessonV3?
-    # if not handler:
-    #     handler = LingqHandler(lang)
 
     async with LingqHandler(lang) as handler:
         lessons = await handler.get_collection_lessons_from_id(course_id)
@@ -70,7 +60,6 @@ async def get_lessons_async(
                 lesson_json.id,
                 download_audio,
                 download_timestamps,
-                verbose,
             )
             for lesson_json in lessons
         ]
@@ -79,7 +68,8 @@ async def get_lessons_async(
         logger.success(f"'{collection_title}'")
 
         if write:
-            write_lessons(lang, lessons, opath, verbose)
+            for lesson in lessons:
+                write_lesson(lang, lesson, opath)
 
         return lessons
 
@@ -94,7 +84,6 @@ def get_lessons(
     download_timestamps: bool,
     skip_downloaded: bool,
     write: bool,
-    verbose: bool,
 ) -> None:
     """
     Downloads text and/or audio from a course given the language code and the course ID.
@@ -117,7 +106,6 @@ def get_lessons(
             download_timestamps=download_timestamps,
             skip_downloaded=skip_downloaded,
             write=write,
-            verbose=verbose,
         )
     )
 
@@ -132,5 +120,4 @@ if __name__ == "__main__":
         download_timestamps=True,
         skip_downloaded=False,
         write=True,
-        verbose=True,
     )

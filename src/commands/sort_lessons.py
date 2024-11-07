@@ -2,6 +2,7 @@ import asyncio
 import re
 
 from lingqhandler import LingqHandler
+from log import logger
 from models.collection_v3 import CollectionLessonResult
 from utils import sort_greek_words, timing
 
@@ -115,7 +116,7 @@ def get_patch_requests_order(
 
     lis = longest_increasing_subsequence(lessons_ids)
     to_reorder = sorted(lesson_id for lesson_id in lessons_ids if lesson_id not in lis)
-    print(f"We need to reorder '{len(to_reorder)}' lessons.")  # Optimal
+    logger.debug(f"We need to reorder '{len(to_reorder)}' lessons.")  # Optimal
 
     requests_with_ids = get_patch_requests_order_for_ids(lessons_ids, to_reorder)
     requests = [(lessons_ids_mapping[lesson_id], pos) for lesson_id, pos in requests_with_ids]
@@ -141,7 +142,7 @@ async def sort_lessons_async(lang: str, course_id: int) -> None:
         # for pos, lesson in enumerate(lessons, 1):
         #     await handler.patch_position(lesson.id, pos)
 
-        print(f"Finished sorting {collection_title}.")
+        logger.success(f"Finished sorting {collection_title}.")
 
 
 @timing

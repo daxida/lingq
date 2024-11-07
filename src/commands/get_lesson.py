@@ -52,7 +52,6 @@ async def get_lesson_async(
     lesson_id: int,
     download_audio: bool,
     download_timestamps: bool,
-    verbose: bool,
 ) -> SimpleLesson | None:
     lesson = await handler.get_lesson_from_id(lesson_id)
     if lesson is None:
@@ -88,9 +87,6 @@ async def get_lesson_async(
         audio=audio,
         timestamps=timestamps,
     )
-
-    if verbose:
-        print(f"Downloaded lesson: {simple_lesson.title}")
 
     return simple_lesson
 
@@ -132,12 +128,9 @@ if __name__ == "__main__":
         lesson_id: int,
         download_audio: bool,
         download_timestamps: bool,
-        verbose: bool,
     ) -> SimpleLesson | None:
         async with LingqHandler(lang) as handler:
-            return await get_lesson_async(
-                handler, lesson_id, download_audio, download_timestamps, verbose
-            )
+            return await get_lesson_async(handler, lesson_id, download_audio, download_timestamps)
 
     lesson = asyncio.run(
         get_lesson_async_tmp(
@@ -145,7 +138,6 @@ if __name__ == "__main__":
             lesson_id=5897069,
             download_audio=True,
             download_timestamps=True,
-            verbose=True,
         )
     )
     if lesson:
