@@ -53,13 +53,10 @@ async def get_lesson_async(
     download_audio: bool,
     download_timestamps: bool,
     verbose: bool,
-) -> SimpleLesson:
-    # async with handler:
-
-    # print("HERE")
+) -> SimpleLesson | None:
     lesson = await handler.get_lesson_from_id(lesson_id)
-    # print(lesson)
-    # print("PAST")
+    if lesson is None:
+        return
 
     # The first element is the lesson title, that we don't use
     _, *tokenized_text = lesson.tokenized_text
@@ -94,8 +91,6 @@ async def get_lesson_async(
 
     if verbose:
         print(f"Downloaded lesson: {simple_lesson.title}")
-
-    # print("RETURNING")
 
     return simple_lesson
 
@@ -138,7 +133,7 @@ if __name__ == "__main__":
         download_audio: bool,
         download_timestamps: bool,
         verbose: bool,
-    ) -> SimpleLesson:
+    ) -> SimpleLesson | None:
         async with LingqHandler(lang) as handler:
             return await get_lesson_async(
                 handler, lesson_id, download_audio, download_timestamps, verbose
@@ -153,8 +148,9 @@ if __name__ == "__main__":
             verbose=True,
         )
     )
-    write_lesson(
-        lang="el",
-        lesson=lesson,
-        opath=Path("downloads"),
-    )
+    if lesson:
+        write_lesson(
+            lang="el",
+            lesson=lesson,
+            opath=Path("downloads"),
+        )

@@ -175,10 +175,10 @@ def get_lessons_cli(
     get_lessons(
         lang,
         course_id,
-        skip_downloaded,
-        download_audio,
-        download_timestamps,
         opath,
+        skip_downloaded=skip_downloaded,
+        download_audio=download_audio,
+        download_timestamps=download_timestamps,
         write=True,
         verbose=True,
     )

@@ -71,8 +71,11 @@ class LingqHandler:
                 logger.error("LingQ's servers are overloaded: cloudflare timeout (> 100 secs).")
             case 429:
                 logger.error("Rate limited! Slow down and retry in a couple minutes.")
+            case 409:
+                logger.error("Conflict. Generating timestamps twice?")
             case 404:
-                pass  # Not found error.
+                # Not found error.
+                pass
             case _:
                 logger.error(f"Unhandled response code error: {response.status}")
         if response.headers.get("Content-Type") == "application/json":
@@ -139,21 +142,18 @@ class LingqHandler:
 
         return asyncio.run(get_user_langs_tmp())
 
-    async def get_lesson_from_id(self, lesson_id: int) -> LessonV3:
+    async def get_lesson_from_id(self, lesson_id: int) -> LessonV3 | None:
         """Get a lesson, from its id. Example id: 34754329
         Corresponding url: https://www.lingq.com/api/v3/LANG/lessons/ID/
         """
         data = await self._get(f"lessons/{lesson_id}")
+        if reason := data.get("isLocked", ""):
+            logger.warning(f"The lesson {lesson_id} is locked: {reason}")
+            return None
         lesson = LessonV3.model_validate(data)
-        if lesson.is_locked:
-            print(
-                f"{Colors.WARN}WARN{Colors.END}"
-                f" The lesson at {lesson.url} is locked..."
-                f" Reason: {lesson.is_locked}"
-            )
         return lesson
 
-    async def get_lesson_from_ids(self, ids: list[int]) -> list[LessonV3]:
+    async def get_lesson_from_ids(self, ids: list[int]) -> list[LessonV3 | None]:
         """Get a list of lessons, from their ids."""
         return await asyncio.gather(*(self.get_lesson_from_id(id) for id in ids))
 
@@ -259,6 +259,7 @@ class LingqHandler:
                 print(msg)
             if not 200 <= response.status < 300:
                 await self.response_debug(response)
+                return response
             if raw:
                 return response
             return await response.json()
@@ -281,6 +282,7 @@ class LingqHandler:
                 print(msg)
             if not 200 <= response.status < 300:
                 await self.response_debug(response)
+                return response
             if raw:
                 return response
             return await response.json()

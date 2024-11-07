@@ -75,6 +75,7 @@ async def get_lessons_async(
             for lesson_json in lessons
         ]
         lessons = await asyncio.gather(*tasks)
+        lessons = [l for l in lessons if l is not None]
         logger.success(f"'{collection_title}'")
 
         if write:

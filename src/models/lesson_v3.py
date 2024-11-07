@@ -139,7 +139,11 @@ class LessonV3(BaseModel):
     simplified_to: Optional[str]
     simplified_by: Optional[str]
     tokenized_text: list[list[TokenGroup]]
-    is_locked: bool | None | Literal["NORMALIZE_AUDIO", "GENERATE_TIMESTAMPS", "TRANSCRIBE_AUDIO"]
+    is_locked: (
+        bool
+        | None
+        | Literal["NORMALIZE_AUDIO", "GENERATE_TIMESTAMPS", "TRANSCRIBE_AUDIO", "TOKENIZE_TEXT"]
+    )
     shared_by_image_url: HttpUrl
     shared_by_is_friend: bool
     print_url: Optional[str]
