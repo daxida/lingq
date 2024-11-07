@@ -34,8 +34,10 @@ class LingqHandler:
         lang (str): The language code for the course (e.g., 'ja' for Japanese).
         config (Config): Configuration settings for the LingQ API.
         session (RetryClient): A retry-enabled HTTP client session.
+        _user_id (int | None): The user id. Used for some requests.
     """
 
+    API_URL_V1 = "https://www.lingq.com/api"
     API_URL_V2 = "https://www.lingq.com/api/v2"
     API_URL_V3 = "https://www.lingq.com/api/v3"
 
@@ -48,6 +50,7 @@ class LingqHandler:
             retry_options=ExponentialRetry(attempts=3),
         )
         self.session = retry_client
+        self._user_id = None
 
     async def close(self) -> None:
         await self.session.close()
@@ -76,7 +79,10 @@ class LingqHandler:
                 # Not found error.
                 pass
             case 401:
-                # Invalid APIKEY
+                # Invalid APIKEY.
+                pass
+            case 400:
+                # Generic error. Happens for multiple reasons.
                 pass
             case _:
                 logger.error(f"Unhandled response code error: {response.status}")
@@ -125,6 +131,14 @@ class LingqHandler:
                     raise NotImplementedError
 
         return data
+
+    async def get_user_id(self) -> None:
+        """Get and cache the user id."""
+        if self._user_id is None:
+            data = await self._get_url(f"{LingqHandler.API_URL_V1}/profile/")
+            user_id = data["id"]
+            logger.trace(f"Cached user id {user_id}")
+            self._user_id = user_id
 
     async def _get_user_langs(self) -> list[str]:
         """Get a list of language codes with known words.
@@ -196,9 +210,9 @@ class LingqHandler:
         return SearchCollections.model_validate(data)
 
     async def get_my_collections_shared(self) -> list[SearchCollectionResult]:
-        # TODO: Fix this hardcoding of the ID
+        await self.get_user_id()
         data = await self.search(
-            {"type": "collection", "sharedBy": "1824368", "sortBy": "recentlyOpened"}
+            {"type": "collection", "sharedBy": str(self._user_id), "sortBy": "recentlyOpened"}
         )
         return data.results
 
