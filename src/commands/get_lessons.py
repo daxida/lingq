@@ -2,7 +2,7 @@ import asyncio
 import os
 from pathlib import Path
 
-from get_lesson import SimpleLesson, get_lesson_async, sanitize_title, write_lesson
+from commands.get_lesson import SimpleLesson, get_lesson_async, sanitize_title, write_lesson
 from lingqhandler import LingqHandler
 from log import logger
 from models.collection_v3 import CollectionLessonResult

@@ -2,21 +2,21 @@ from pathlib import Path
 
 import click
 
-from fix import fix
-from generate_timestamps import generate_timestamps
-from get_courses import get_courses
-from get_lessons import get_lessons
-from get_pictures import get_pictures
-from get_words import get_words
-from library_overview import overview
-from make_markdown import make_markdown
-from patch import patch_audios
-from post import PAIRING_STRATEGIES, post
-from post_yt_playlist import post_yt_playlist
-from resplit import resplit
-from show import show_my
-from sort_lessons import sort_lessons
-from yomitan import yomitan
+from commands.fix import fix
+from commands.generate_timestamps import generate_timestamps
+from commands.get_courses import get_courses
+from commands.get_lessons import get_lessons
+from commands.get_pictures import get_pictures
+from commands.get_words import get_words
+from commands.library_overview import overview
+from commands.make_markdown import make_markdown
+from commands.patch import patch_audios
+from commands.post import PAIRING_STRATEGIES, post
+from commands.post_yt_playlist import post_yt_playlist
+from commands.resplit import resplit
+from commands.show import show_my
+from commands.sort_lessons import sort_lessons
+from commands.yomitan import yomitan
 
 DEFAULT_OUT_PATH = Path("downloads")
 DEFAULT_OUT_WORDS_PATH = DEFAULT_OUT_PATH / "lingqs"

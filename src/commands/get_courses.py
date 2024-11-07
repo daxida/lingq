@@ -1,7 +1,7 @@
 import asyncio
 from pathlib import Path
 
-from get_lessons import get_lessons_async
+from commands.get_lessons import get_lessons_async
 from lingqhandler import LingqHandler
 from log import logger
 from utils import double_check, timing

@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from yomitan import yomitan
+from commands.yomitan import yomitan
 
 
 def rewrite_json_with_first_n_entries(json_file_path: Path, n: int = 5) -> None:

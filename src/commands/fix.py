@@ -1,9 +1,9 @@
 import asyncio
 from pathlib import Path
 
+from commands.get_lessons import get_lessons_async
 from fix_utils.el.fix_greek import fix_latin_letters
 from fix_utils.ja.fix_japanese import fix_youtube_newlines
-from get_lessons import get_lessons_async
 from lingqhandler import LingqHandler
 
 
