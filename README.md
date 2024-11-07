@@ -49,7 +49,7 @@ cli - Lingq command line scripts.
 ├── get - Get commands.
 │   ├── courses - Get every course from a list of languages.
 │   ├── lessons - Get every lesson from a course id.
-│   ├── pictures - Get pictures.
+│   ├── images - Get images.
 │   └── words - Get words (LingQs).
 ├── markdown - Generate markdown files for the given language codes.
 ├── overview - Library overview.

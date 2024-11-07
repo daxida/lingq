@@ -5,8 +5,8 @@ import click
 from commands.fix import fix
 from commands.generate_timestamps import generate_timestamps
 from commands.get_courses import get_courses
+from commands.get_images import get_images
 from commands.get_lessons import get_lessons
-from commands.get_pictures import get_pictures
 from commands.get_words import get_words
 from commands.library_overview import overview
 from commands.markdown import markdown
@@ -108,13 +108,13 @@ def get() -> None:
     """Get commands."""
 
 
-@get.command("pictures")
+@get.command("images")
 @click.argument("lang")
 @click.argument("course_id")
 @opath_option()
-def get_pictures_cli(lang: str, course_id: int, opath: Path) -> None:
-    """Get pictures."""
-    get_pictures(lang, course_id, opath)
+def get_images_cli(lang: str, course_id: int, opath: Path) -> None:
+    """Get images."""
+    get_images(lang, course_id, opath)
 
 
 @get.command("words")
