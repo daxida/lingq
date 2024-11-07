@@ -1,23 +1,23 @@
 import asyncio
 import re
-from typing import Any
 
 from lingqhandler import LingqHandler
-from utils import sort_greek_words, timing  # type: ignore
+from models.collection_v3 import CollectionLessonResult
+from utils import sort_greek_words, timing
 
 
-def sorting_function(lesson: Any) -> tuple[float, ...]:
+def sorting_function(lesson: CollectionLessonResult) -> tuple[float, ...]:
     # Implement and replace your sorting logic here
     # return sort_by_reverse_split_numbers(lesson)
     return sort_by_versioned_numbers(lesson)
 
 
-def sort_by_reverse_split_numbers(lesson: Any) -> tuple[float, ...]:
+def sort_by_reverse_split_numbers(lesson: CollectionLessonResult) -> tuple[float, ...]:
     # NOTE: I think this is the standard now in LingQ.
     # This assumes that the chapters are labelled with numbers.
     # That is: Chapter1 => 1.txt, Chapter2 => 2.txt etc.
     # 1:1 < 2:1 < 1:2 < 2:2 (the section number goes first).
-    title = lesson["title"]
+    title = lesson.title
     if ":" not in title:
         return (float(title), float("inf"))
     else:
@@ -25,9 +25,9 @@ def sort_by_reverse_split_numbers(lesson: Any) -> tuple[float, ...]:
         return (float(title), float(section_num))
 
 
-def sort_by_versioned_numbers(lesson: Any) -> tuple[float, ...]:
+def sort_by_versioned_numbers(lesson: CollectionLessonResult) -> tuple[float, ...]:
     # 1. Title < 1.1 OtherTitle < 1.2. Another < 2. LastTitle < TitleWithoutNumber
-    title = lesson["title"]
+    title = lesson.title
     m = re.findall(r"^[\d.]+", title)
     if m:
         trimmed = m[0].strip(".")
@@ -35,11 +35,13 @@ def sort_by_versioned_numbers(lesson: Any) -> tuple[float, ...]:
         starting_numbers = tuple(float(num) for num in nums)
     else:
         starting_numbers = (float("inf"),)
-    return starting_numbers + (title,)
+    # For resolving ties
+    title_as_numbers = tuple(float(ord(char)) for char in title)
+    return starting_numbers + title_as_numbers
 
 
-def sort_by_greek_words(lesson: Any) -> tuple[float, ...]:
-    return sort_greek_words(lesson["title"])
+def sort_by_greek_words(lesson: CollectionLessonResult) -> tuple[float, ...]:
+    return sort_greek_words(lesson.title)
 
 
 def longest_increasing_subsequence(lst: list[int]) -> list[int]:
@@ -96,16 +98,18 @@ def get_patch_requests_order_for_ids(
     return requests_with_ids
 
 
-def get_patch_requests_order(lessons: list[Any]) -> list[tuple[Any, int]]:
+def get_patch_requests_order(
+    lessons: list[CollectionLessonResult],
+) -> list[tuple[CollectionLessonResult, int]]:
     """Faster (and way more complicated) version to minimize the number of requests.
     Uses a longest increasing subsequence to identify the lessons that should
     not be moved around, then computes some possible requests that sort the lessons."""
     sorted_lessons = sorted(lessons, key=sorting_function)
     sorted_idxs: dict[str, int] = {}
     for idx, sorted_lesson in enumerate(sorted_lessons, 1):
-        sorted_idxs[sorted_lesson["title"]] = idx
-    lessons_ids_mapping: dict[int, Any] = {
-        sorted_idxs[lesson["title"]]: lesson for lesson in lessons
+        sorted_idxs[sorted_lesson.title] = idx
+    lessons_ids_mapping: dict[int, CollectionLessonResult] = {
+        sorted_idxs[lesson.title]: lesson for lesson in lessons
     }
     lessons_ids: list[int] = list(lessons_ids_mapping.keys())
 
@@ -120,31 +124,31 @@ def get_patch_requests_order(lessons: list[Any]) -> list[tuple[Any, int]]:
     return requests
 
 
-async def sort_lessons_async(language_code: str, course_id: str) -> None:
+async def sort_lessons_async(language_code: str, course_id: int) -> None:
     async with LingqHandler(language_code) as handler:
-        collection_json = await handler.get_collection_json_from_id(course_id)
-        assert collection_json is not None
-        lessons = collection_json["lessons"]
+        lessons = await handler.get_collection_lessons_from_id(course_id)
+        if not lessons:
+            return
+        collection_title = lessons[0].collection_title
         patch_requests = get_patch_requests_order(lessons)
         for lesson, pos in patch_requests:
-            # print(f"Sent: {lesson['title']} {pos}")
-            await handler.patch(lesson, {"pos": pos})
+            # print(f"Sent: {lesson.title} {pos}")
+            await handler.patch_position(lesson.id, pos)
 
-        # Simple solution. NOTE: sends a patch request per lesson (too slow).
+        # Simple solution. Note that sends a patch request per lesson (too slow).
 
         # lessons.sort(key=sorting_function)
         # for pos, lesson in enumerate(lessons, 1):
-        #     payload = {"pos": pos}
-        #     await handler.patch(lesson, payload)
+        #     await handler.patch_position(lesson.id, pos)
 
-        print(f"Finished sorting {collection_json['title']}.")
+        print(f"Finished sorting {collection_title}.")
 
 
 @timing
-def sort_lessons(language_code: str, course_id: str) -> None:
+def sort_lessons(language_code: str, course_id: int) -> None:
     asyncio.run(sort_lessons_async(language_code, course_id))
 
 
 if __name__ == "__main__":
     # Defaults for manually running this script.
-    sort_lessons(language_code="ja", course_id="537808")
+    sort_lessons(language_code="ja", course_id=537808)

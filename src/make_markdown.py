@@ -4,6 +4,8 @@ from pathlib import Path
 
 from lingqhandler import LingqHandler
 from models.collection import Collection
+from models.collection_v3 import SearchCollectionResult
+from models.my_collections import CollectionItem
 from utils import Colors, double_check, timing
 
 
@@ -86,16 +88,18 @@ async def get_collections(handler: LingqHandler, select_courses: str) -> list[Co
     Those store the important information of the JSON to then make the markdown.
     """
 
+    collections_json: list[CollectionItem] | list[SearchCollectionResult]
     if select_courses == "all":
         collections_json = await handler.get_currently_studying_collections()
     else:
-        collections_json = await handler.get_my_collections()
+        _collections_json = await handler.get_my_collections()
+        collections_json = _collections_json.results
 
     collections_list: list[Collection] = []
     n_collections = len(collections_json)
 
     tasks = [
-        handler.get_collection_object_from_id(collection["id"]) for collection in collections_json
+        handler.get_collection_object_from_id(collection.id) for collection in collections_json
     ]
     collections = await asyncio.gather(*tasks)
     collections = [collection for collection in collections if collection is not None]
@@ -196,3 +200,8 @@ if __name__ == "__main__":
         include_views=False,
         out_folder=Path("downloads"),
     )
+
+    # Do everything:
+    # for select_courses in ("all", "shared", "mine"):
+    #     for include_views in (True, False):
+    #         make_markdown([], select_courses, include_views, Path("downloads"))

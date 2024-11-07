@@ -2,7 +2,7 @@ import time
 import unicodedata
 from functools import wraps
 from pathlib import Path
-from typing import Any, Callable, TypeVar
+from typing import Any, Callable, Literal, TypeVar
 
 import roman  # type: ignore
 from natsort import os_sorted
@@ -25,6 +25,15 @@ def double_check(msg: str = "") -> None:
     if input("Proceed? [y/n] ") != "y":
         print("Exiting.")
         exit(1)
+
+
+def get_editor_url(
+    language_code: str, content_id: int, content_type: Literal["lesson", "course"]
+) -> str:
+    base = f"https://www.lingq.com/learn/{language_code}/web/editor"
+    if content_type == "course":
+        base = f"{base}/courses"
+    return f"{base}/{content_id}"
 
 
 def normalize_greek_word(word: str) -> str:
@@ -78,7 +87,7 @@ def roman_sorting_fn(x: str) -> int:
     return roman.fromRoman((x.split()[1]).split(".")[0])  # type: ignore
 
 
-def read_sorted_subfolders(folder: Path, mode: str) -> list[Path]:
+def sorted_subpaths(folder: Path, mode: str) -> list[Path]:
     """Supports human (natsort), roman (I < V) and greek (Β < Γ) sorting"""
     sorting_fn: Callable[[str], Any]
     if mode == "human":
@@ -101,7 +110,7 @@ R = TypeVar("R")
 
 def timing(f: Callable[..., R]) -> Callable[..., R]:
     @wraps(f)
-    def wrap(*args: Any, **kw: Any) -> R:
+    def wrap(*args: Any, **kw: Any) -> R:  # noqa: ANN401
         ts = time.time()
         result = f(*args, **kw)
         te = time.time()

@@ -2,11 +2,11 @@ from dataclasses import dataclass
 
 
 @dataclass
-class Lesson:
+class SimpleLesson:
     title: str
     collection_title: str
     url: str
-    id_: str
+    id_: int
     text: str
     audio: bytes | None
     timestamps: str | None

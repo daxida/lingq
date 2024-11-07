@@ -17,14 +17,14 @@ def transformation_fn(language_code: str, text: str) -> str:
             print("Fixing youtube newlines for japanese")
             return fix_youtube_newlines(text)
         case _:
-            raise NotImplementedError
+            raise NotImplementedError()
 
 
-async def fix_async(language_code: str, course_id: str) -> None:
-    _, lessons = await get_lessons_async(
+async def fix_async(language_code: str, course_id: int) -> None:
+    lessons = await get_lessons_async(
         language_code,
         course_id,
-        skip_already_downloaded=False,
+        skip_downloaded=False,
         download_audio=False,
         download_timestamps=False,
         opath=Path(),
@@ -34,12 +34,12 @@ async def fix_async(language_code: str, course_id: str) -> None:
     for lesson in lessons:
         text = transformation_fn(language_code, lesson.text)
         async with LingqHandler(language_code) as handler:
-            await handler.patch_text_from_lesson_id(lesson.id_, text)
+            await handler.patch_text(lesson.id_, text)
 
 
-def fix(language_code: str, course_id: str) -> None:
+def fix(language_code: str, course_id: int) -> None:
     asyncio.run(fix_async(language_code, course_id))
 
 
 if __name__ == "__main__":
-    fix(language_code="el", course_id="1070313")
+    fix(language_code="el", course_id=1070313)

@@ -1,51 +1,47 @@
 import asyncio
-from typing import Any
 
 from lingqhandler import LingqHandler
-from utils import Colors
+from log import logger
+from models.collection_v3 import CollectionLessonResult
 
 
-async def check_if_timestamped(handler: LingqHandler, lesson: Any) -> None:
-    lesson_json = await handler.get_lesson_from_url(lesson["url"])
-    tokens = lesson_json["tokenizedText"]
-    assert len(tokens) > 0 and len(tokens[0]) == 1
-    timestamp = tokens[0][0]["timestamp"]
-    if timestamp[0] is not None:
-        print(f"{Colors.SKIP}[skip: already timestamped]{Colors.END} {lesson['title']}")
-        lesson["is_timestamped"] = True
-    else:
-        print(f"Generating timestamps for {lesson['title']}")
-        lesson["is_timestamped"] = False
+async def check_if_timestamped(handler: LingqHandler, lesson_res: CollectionLessonResult) -> bool:
+    lesson = await handler.get_lesson_from_id(lesson_res.id)
+    is_timestamped = any(lesson.tokenized_text[0][0].timestamp)
+    if is_timestamped:
+        logger.info(f"[Skip: already timestamped] {lesson.title}")
+    return is_timestamped
 
 
-async def filter_already_timestamped(handler: LingqHandler, lessons: list[Any]) -> list[Any]:
-    tasks = [check_if_timestamped(handler, lesson) for lesson in lessons]
-    await asyncio.gather(*tasks)
-    return [lesson for lesson in lessons if not lesson["is_timestamped"]]
+async def filter_timestamped(
+    handler: LingqHandler, lessons: list[CollectionLessonResult]
+) -> list[CollectionLessonResult]:
+    results = await asyncio.gather(*(check_if_timestamped(handler, lesson) for lesson in lessons))
+    return [lesson for lesson, is_timestamped in zip(lessons, results) if not is_timestamped]
 
 
 async def generate_timestamps_async(
-    language_code: str, course_id: str, skip_already_timestamped: bool
+    language_code: str, course_id: int, skip_timestamped: bool
 ) -> None:
     async with LingqHandler(language_code) as handler:
-        collection_json = await handler.get_collection_json_from_id(course_id)
-        assert collection_json is not None
-        collection_title = collection_json["title"]
-        lessons = collection_json["lessons"]
-        if skip_already_timestamped:
-            lessons = await filter_already_timestamped(handler, lessons)
+        lessons = await handler.get_collection_lessons_from_id(course_id)
+
+        if not lessons:
+            return
+        if skip_timestamped:
+            lessons = await filter_timestamped(handler, lessons)
             if not lessons:
                 print("Everything was already timestamped!")
                 return
-        tasks = [handler.generate_timestamps(lesson) for lesson in lessons]
+        tasks = [handler.generate_timestamps(lesson.id) for lesson in lessons]
         await asyncio.gather(*tasks)
-        print(f"Generated timestamps for '{collection_title}'.")
+        logger.info(f"Generated timestamps for '{lessons[0].collection_title}'.")
 
 
-def generate_timestamps(language_code: str, course_id: str, skip_already_timestamped: bool) -> None:
-    asyncio.run(generate_timestamps_async(language_code, course_id, skip_already_timestamped))
+def generate_timestamps(language_code: str, course_id: int, skip_timestamped: bool) -> None:
+    asyncio.run(generate_timestamps_async(language_code, course_id, skip_timestamped))
 
 
 if __name__ == "__main__":
     # Defaults for manually running this script.
-    generate_timestamps(language_code="ja", course_id="537808", skip_already_timestamped=True)
+    generate_timestamps(language_code="ja", course_id=537808, skip_timestamped=True)

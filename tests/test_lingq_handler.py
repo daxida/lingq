@@ -10,6 +10,8 @@ from lingqhandler import LingqHandler
 logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
 
+MOCK_APATH = Path("tests/fixtures/audios/10-seconds-of-silence.mp3")
+
 
 def test_handler() -> None:
     """NOTE: This is user dependent!"""
@@ -25,6 +27,8 @@ def test_handler() -> None:
 
 
 async def run_handler(language_code: str) -> None:
+    tmpname = "__tmp"
+
     async with LingqHandler(language_code) as handler:
         # await handler.get_languages()
         # await handler._get_user_language_codes()
@@ -32,10 +36,10 @@ async def run_handler(language_code: str) -> None:
         # 1.1.1 Course creation / deletion
         logger.info("Testing course creation")
         responses = await asyncio.gather(
-            handler.create_course("test_create"),
-            handler.create_course("test_create2", ""),
-            handler.create_course("test_create3", "long_description"),
-            handler._create_course({"title": "test_create4"}),
+            handler.create_course(f"{tmpname}_create"),
+            handler.create_course(f"{tmpname}_create2", ""),
+            handler.create_course(f"{tmpname}_create3", "long_description"),
+            handler._create_course({"title": f"{tmpname}_create4"}),
         )
         course_ids = [r["id"] for r in responses]
         logger.info(f"Created courses with {course_ids=}")
@@ -44,14 +48,14 @@ async def run_handler(language_code: str) -> None:
 
         # 1.1.2 Create a course
         logger.info("Creating new course")
-        jres = await handler.create_course("tmp")
+        jres = await handler.create_course(tmpname)
         course_id = jres["id"]
         logger.info(f"Created course with ID: {course_id}")
 
         # 1.2. Check that there are no lessons
         logger.info(f"Checking lessons in course {course_id}")
-        collection_json = await handler.get_collection_json_from_id(course_id)
-        assert not collection_json["lessons"]
+        clessons = await handler.get_collection_lessons_from_id(course_id)
+        assert not clessons
         logger.info(f"Course {course_id} has no lessons")
 
         # 2.1. Upload one lesson
@@ -63,20 +67,19 @@ async def run_handler(language_code: str) -> None:
             "collection": str(course_id),
             "save": "true",
         }
-        post_res = await handler.post_from_data_dict(data)
+        posted_lesson = await handler.post_from_data_dict(data)
 
         # 2.2. Check that we have one lesson now
-        collection_json = await handler.get_collection_json_from_id(course_id)
-        assert len(collection_json["lessons"]) == 1
+        clessons = await handler.get_collection_lessons_from_id(course_id)
+        assert len(clessons) == 1
         logger.info(f"One lesson uploaded to course {course_id}")
 
         # 2.3. Open the lesson to place it at the top of "Continue Studying"
-        json_res = await post_res.json()
-        lesson_id = json_res["id"]
+        lesson_id = posted_lesson["id"]
         _ = await handler.get_lesson_from_id(lesson_id)
         logger.info(f"Opened lesson with ID: {lesson_id}")
 
-        # 2.4.1 Upload another lesson with audio, this time with post_from_multipart
+        # 2.4 Upload another lesson with audio, this time with post_from_multipart
         logger.info("Uploading second lesson with audio")
         data = {
             "title": "lesson2",
@@ -84,26 +87,24 @@ async def run_handler(language_code: str) -> None:
             "collection": str(course_id),
             "save": "true",
         }
-        fdata = aiohttp.FormData()
-        for key, value in data.items():
-            fdata.add_field(key, value)
-        mock_audio = Path("tests/fixtures/audios/10-seconds-of-silence.mp3").open("rb")
+        fdata = aiohttp.FormData(data)
+        mock_audio = MOCK_APATH.open("rb")
         fdata.add_field("audio", mock_audio, filename="audio.mp3", content_type="audio/mpeg")
-        post_res = await handler.post_from_multipart(fdata)
+        await handler.post_from_multipart(fdata)
 
         # 2.5. Check that we have two lessons now
-        collection_json = await handler.get_collection_json_from_id(course_id)
-        assert len(collection_json["lessons"]) == 2
+        logger.info(f"Checking lessons in course {course_id}")
+        clessons = await handler.get_collection_lessons_from_id(course_id)
+        assert len(clessons) == 2
         logger.info(f"Two lessons uploaded to course {course_id}")
 
         # 3.1. Getting lessons
         logger.info("Getting lessons")
-        lessons = collection_json["lessons"]
-        lesson1, lesson2 = lessons
+        lesson1, lesson2 = clessons
         l1_by_url, l1_by_id, (l1, l2) = await asyncio.gather(
-            handler.get_lesson_from_url(lesson1["url"]),
-            handler.get_lesson_from_id(lesson1["id"]),
-            handler.get_lessons_from_urls([lesson1["url"], lesson2["url"]]),
+            handler.get_lesson_from_id(lesson1.id),
+            handler.get_lesson_from_id(lesson1.id),
+            handler.get_lesson_from_ids([lesson1.id, lesson2.id]),
         )
         diff = DeepDiff(
             l1_by_url, l1_by_id, ignore_order=True, exclude_paths=["root['lastOpenTime']"]
@@ -112,8 +113,8 @@ async def run_handler(language_code: str) -> None:
 
         # 4.1. Audio testing
         logger.info("Checking that only the second lesson has audio...")
-        assert l1["audioUrl"] is None
-        assert l2["audioUrl"] is not None
+        assert l1.audio_url is None
+        assert l2.audio_url is not None
 
         logger.info("Getting audios")
         audio1, audio2 = await asyncio.gather(
@@ -123,12 +124,38 @@ async def run_handler(language_code: str) -> None:
         assert audio1 is None
         assert audio2 is not None
 
+        # 5.1. Patch methods
+        logger.info("Testing patch text")
+        raw_text = l1.get_raw_text()
+        assert raw_text == "Hello, world!", f"'{raw_text}'"
+        new_text = "Bye, world!"
+        await handler.patch_text(l1.id, new_text)
+        l1 = await handler.get_lesson_from_id(l1.id)  # Update l1
+        raw_text = l1.get_raw_text()
+        assert raw_text == new_text, f"'{raw_text}'"
+
+        # 5.2. Add audio to the first lesson
+        logger.info("Patching audio of the first lesson")
+        await handler.patch_audio(l1.id, MOCK_APATH.open("rb"))
+        l1 = await handler.get_lesson_from_id(l2.id)
+        assert l1.audio_url is not None
+
+        # 6.1. Clean up
         logger.info("Waiting 5 seconds before deleting course")
         await asyncio.sleep(5)
         await handler.delete_course(course_id)
         logger.info("Course deleted")
 
+        # 6.2. Delete every temporary course
+        logger.info("Cleaning all temporary courses")
+        await asyncio.sleep(2)
+        my_collections = await handler.get_my_collections()
+        to_delete = [r for r in my_collections.results if tmpname in r.title]
+        logger.info(f"Deleting extra {len(to_delete)} temporary courses")
+        await asyncio.gather(*(handler.delete_course(result.id) for result in to_delete))
+
     logging.info("Passed all tests")
 
 
-test_handler()
+if __name__ == "__main__":
+    test_handler()

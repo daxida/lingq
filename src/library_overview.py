@@ -48,7 +48,7 @@ async def fetch_library(language_code: str) -> list[Any]:
     return library_data_list
 
 
-def process_json_entry(language_code: str, entry: Any) -> dict[str, str]:
+def process_json_entry(language_code: str, entry: dict[str, Any]) -> dict[str, str]:
     id_value = entry.get("id")
     title = entry.get("title")
     lessons_count = entry.get("lessonsCount")

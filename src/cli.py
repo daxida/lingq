@@ -2,6 +2,7 @@ from pathlib import Path
 
 import click
 
+from fix import fix
 from generate_timestamps import generate_timestamps
 from get_courses import get_courses
 from get_lessons import get_lessons
@@ -10,7 +11,7 @@ from get_words import get_words
 from library_overview import overview
 from make_markdown import make_markdown
 from patch import patch_audios
-from post import post
+from post import PAIRING_STRATEGIES, post
 from post_yt_playlist import post_yt_playlist
 from resplit import resplit
 from show import show_my
@@ -19,11 +20,19 @@ from yomitan import yomitan
 
 DEFAULT_OUT_PATH = Path("downloads")
 DEFAULT_OUT_WORDS_PATH = DEFAULT_OUT_PATH / "lingqs"
-DEFAULT_FROM_LESSON = 1
-DEFAULT_TO_LESSON = 100
 DEFAULT_AUDIOS_FOLDER = None
+DEFAULT_TEXTS_FOLDER = None
 
-# TODO: Reduce boilerplate of opath and ipath
+
+def opath_option():  # noqa: ANN201
+    return click.option(
+        "--opath",
+        "-o",
+        default=DEFAULT_OUT_PATH,
+        show_default=True,
+        type=click.Path(exists=True, path_type=Path),
+        help="Output path.",
+    )
 
 
 @click.group()
@@ -72,13 +81,11 @@ def setup_cli(apikey: str) -> None:
 @cli.command("fix")
 @click.argument("language_code")
 @click.argument("course_id")
-def fix_cli(language_code: str, course_id: str) -> None:
+def fix_cli(language_code: str, course_id: int) -> None:
     """Fix text for a course.
 
     Only supports ja and el at the moment, even though it should work for every language.
     """
-    from fix import fix
-
     fix(language_code, course_id)
 
 
@@ -89,9 +96,11 @@ def show() -> None:
 
 @show.command("my")
 @click.argument("language_code")
-def show_my_cli(language_code: str) -> None:
+@click.option("--shared-only", is_flag=True, default=False, show_default=True)
+@click.option("--codes", is_flag=True, default=False, show_default=True)
+def show_my_cli(language_code: str, shared_only: bool, codes: bool) -> None:
     """Show a list with my collections in the given language."""
-    show_my(language_code)
+    show_my(language_code, shared_only, codes)
 
 
 @cli.group()
@@ -102,43 +111,29 @@ def get() -> None:
 @get.command("pictures")
 @click.argument("language_code")
 @click.argument("course_id")
-@click.option(
-    "--opath",
-    "-o",
-    default=DEFAULT_OUT_PATH,
-    show_default=True,
-    type=click.Path(exists=True, path_type=Path),
-    help="Output path.",
-)
-def get_pictures_cli(language_code: str, course_id: str, opath: Path) -> None:
+@opath_option()
+def get_pictures_cli(language_code: str, course_id: int, opath: Path) -> None:
     """Get pictures."""
     get_pictures(language_code, course_id, opath)
 
 
 @get.command("words")
-@click.argument("language-codes", nargs=-1)
-@click.option(
-    "--opath",
-    "-o",
-    default=DEFAULT_OUT_PATH,
-    show_default=True,
-    type=click.Path(exists=True, path_type=Path),
-    help="Output path.",
-)
+@click.argument("language_codes", nargs=-1)
+@opath_option()
 def get_words_cli(language_codes: list[str], opath: Path) -> None:
     """Get words (LingQs)."""
     get_words(language_codes, opath)
 
 
 @cli.command("yomitan")
-@click.argument("language-codes", nargs=-1)
+@click.argument("language_codes", nargs=-1)
 @click.option(
     "--ipath",
     "-i",
     default=DEFAULT_OUT_WORDS_PATH,
     show_default=True,
     type=click.Path(exists=True, path_type=Path),
-    help="Input path to the JSON dump.",
+    help="Input path.",
 )
 def yomitan_cli(language_codes: list[str], ipath: Path) -> None:
     """
@@ -152,23 +147,23 @@ def yomitan_cli(language_codes: list[str], ipath: Path) -> None:
 @get.command("lessons")
 @click.argument("language_code")
 @click.argument("course_id")
-@click.option("--skip_already_downloaded", is_flag=True, default=False, show_default=True)
+@click.option(
+    "--skip-downloaded",
+    "-s",
+    is_flag=True,
+    default=False,
+    show_default=True,
+    help="Skip already downloaded lessons.",
+)
 @click.option("--download_audio", is_flag=True, default=False, help="If set, also download audio.")
 @click.option(
     "--download_timestamps", is_flag=True, default=False, help="If set, also download timestamps."
 )
-@click.option(
-    "--opath",
-    "-o",
-    default=DEFAULT_OUT_PATH,
-    show_default=True,
-    type=click.Path(exists=True, path_type=Path),
-    help="Output path.",
-)
+@opath_option()
 def get_lessons_cli(
     language_code: str,
-    course_id: str,
-    skip_already_downloaded: bool,
+    course_id: int,
+    skip_downloaded: bool,
     download_audio: bool,
     download_timestamps: bool,
     opath: Path,
@@ -180,7 +175,7 @@ def get_lessons_cli(
     get_lessons(
         language_code,
         course_id,
-        skip_already_downloaded,
+        skip_downloaded,
         download_audio,
         download_timestamps,
         opath,
@@ -196,22 +191,29 @@ def get_lessons_cli(
     "--download_timestamps", is_flag=True, default=False, help="If set, also download timestamps."
 )
 @click.option(
-    "--sleep-time", type=int, default=2, show_default=True, help="Time to wait between courses."
+    "--skip-downloaded",
+    "-s",
+    is_flag=True,
+    default=False,
+    show_default=True,
+    help="Skip already downloaded lessons.",
 )
 @click.option(
-    "--opath",
-    "-o",
-    default=DEFAULT_OUT_PATH,
+    "--batch-size",
+    "-b",
+    type=int,
+    default=1,
     show_default=True,
-    type=click.Path(exists=True, path_type=Path),
-    help="Output path.",
+    help="Number of courses to download simultanously. Increasing this too much may incur in throttling. Suggested: 1 or 2.",
 )
+@opath_option()
 def get_courses_cli(
     language_codes: list[str],
+    opath: Path,
     download_audio: bool,
     download_timestamps: bool,
-    sleep_time: int,
-    opath: Path,
+    skip_downloaded: int,
+    batch_size: int,
 ) -> None:
     """Get every course from a list of languages.
 
@@ -219,44 +221,55 @@ def get_courses_cli(
 
     If no language codes are given, use all languages.
     """
-    get_courses(language_codes, download_audio, download_timestamps, sleep_time, opath)
+    get_courses(
+        language_codes,
+        opath,
+        download_audio=download_audio,
+        download_timestamps=download_timestamps,
+        skip_downloaded=skip_downloaded,
+        batch_size=batch_size,
+    )
 
 
 @cli.command("post")
 @click.argument("language_code")
 @click.argument("course_id")
-@click.argument("texts_folder", type=click.Path(exists=True, path_type=Path))
 @click.option(
-    "--audios_folder",
+    "--texts-folder",
+    "-t",
+    default=DEFAULT_TEXTS_FOLDER,
+    type=click.Path(exists=True, path_type=Path),
+    help="Texts folder path.",
+)
+@click.option(
+    "--audios-folder",
     "-a",
     default=DEFAULT_AUDIOS_FOLDER,
     type=click.Path(exists=True, path_type=Path),
     help="Audios folder path.",
 )
-@click.option("--fr_lesson", type=int, default=DEFAULT_FROM_LESSON)
-@click.option("--to_lesson", type=int, default=DEFAULT_TO_LESSON)
 @click.option(
-    "--pairing_strategy",
-    type=click.Choice(["zip", "zip_sorted", "match_exact_titles"]),
-    default="match_exact_titles",
+    "--pairing-strategy",
+    type=click.Choice(PAIRING_STRATEGIES),
+    default="fuzzy",
+    show_default=True,
 )
 def post_cli(
     language_code: str,
-    course_id: str,
-    texts_folder: Path,
+    course_id: int,
+    texts_folder: Path | None,
     audios_folder: Path | None,
-    fr_lesson: int,
-    to_lesson: int,
     pairing_strategy: str,
 ) -> None:
-    """Upload a lesson."""
+    """Upload lessons.
+
+    When no texts are given, LingQ will use whisper to transcribe.
+    """
     post(
         language_code,
         course_id,
         texts_folder,
         audios_folder,
-        fr_lesson,
-        to_lesson,
         pairing_strategy,
     )
 
@@ -265,20 +278,20 @@ def post_cli(
 @click.argument("language_code")
 @click.argument("course_id")
 @click.argument("playlist_url")
-@click.option("--skip_uploaded", default=True)
-@click.option("--download_audio", default=False)
-@click.option("--skip_without_cc", default=False)
+@click.option("--skip-uploaded", default=True, show_default=True)
 def post_yt_playlist_cli(
     language_code: str,
-    course_id: str,
+    course_id: int,
     playlist_url: str,
     skip_uploaded: bool,
-    download_audio: bool,
-    skip_without_cc: bool,
 ) -> None:
     """Post a youtube playlist."""
     post_yt_playlist(
-        language_code, course_id, playlist_url, skip_uploaded, download_audio, skip_without_cc
+        language_code,
+        course_id,
+        playlist_url,
+        skip_uploaded=skip_uploaded,
+        skip_no_cc=True,
     )
 
 
@@ -290,14 +303,16 @@ def patch() -> None:
 @patch.command("audios")
 @click.argument("language_code")
 @click.argument("course_id")
-@click.argument("audios_folder")
-@click.option("--fr_lesson", type=int, default=DEFAULT_FROM_LESSON)
-@click.option("--to_lesson", type=int, default=DEFAULT_TO_LESSON)
-def patch_audios_cli(
-    language_code: str, course_id: str, audios_folder: str, fr_lesson: int, to_lesson: int
-) -> None:
+@click.option(
+    "--audios-folder",
+    "-a",
+    default=DEFAULT_AUDIOS_FOLDER,
+    type=click.Path(exists=True, path_type=Path),
+    help="Audios folder path.",
+)
+def patch_audios_cli(language_code: str, course_id: int, audios_folder: str) -> None:
     """Patch a course audio."""
-    patch_audios(language_code, course_id, audios_folder, fr_lesson, to_lesson)
+    patch_audios(language_code, course_id, audios_folder)
 
 
 @patch.command("texts")
@@ -308,7 +323,7 @@ def patch_texts_cli() -> None:
 
 @cli.command("resplit")
 @click.argument("course_id")
-def resplit_ja_cli(course_id: str) -> None:
+def resplit_ja_cli(course_id: int) -> None:
     """Resplit a course (only for japanese)."""
     resplit(course_id)
 
@@ -316,27 +331,20 @@ def resplit_ja_cli(course_id: str) -> None:
 @cli.command("markdown")
 @click.argument("language-codes", nargs=-1)
 @click.option(
-    "--select_courses",
+    "--select-courses",
     default="all",
     show_default=True,
     type=click.Choice(["all", "mine", "shared"]),
     help="Select which courses to include.",
 )
 @click.option(
-    "--include_views",
+    "--include-views",
     is_flag=True,
     default=False,
     show_default=True,
     help="Include the number of views in the markdown.",
 )
-@click.option(
-    "--opath",
-    "-o",
-    default=DEFAULT_OUT_PATH,
-    show_default=True,
-    type=click.Path(exists=True, path_type=Path),
-    help="Output path.",
-)
+@opath_option()
 def markdown_cli(
     language_codes: list[str],
     select_courses: str,
@@ -353,12 +361,10 @@ def markdown_cli(
 @cli.command("timestamp")
 @click.argument("language_code")
 @click.argument("course_id")
-@click.option("--skip_already_timestamped", default=True)
-def generate_timestamps_cli(
-    language_code: str, course_id: str, skip_already_timestamped: bool
-) -> None:
+@click.option("--skip-timestamped", default=True)
+def generate_timestamps_cli(language_code: str, course_id: int, skip_timestamped: bool) -> None:
     """Generate timestamps for a course."""
-    generate_timestamps(language_code, course_id, skip_already_timestamped)
+    generate_timestamps(language_code, course_id, skip_timestamped)
 
 
 @cli.command("overview")
@@ -371,7 +377,7 @@ def overview_cli(language_code: str) -> None:
 @cli.command("sort")
 @click.argument("language_code")
 @click.argument("course_id")
-def sort_lessons_cli(language_code: str, course_id: str) -> None:
+def sort_lessons_cli(language_code: str, course_id: int) -> None:
     """Sort all lessons from a course."""
     sort_lessons(language_code, course_id)
 

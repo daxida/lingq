@@ -32,24 +32,27 @@ class Collection:
     views_count:    int = 0
     # fmt: on
 
-    def add_data(self, collection: Any) -> None:
+    def add_data(self, language_code: str, collection_v2: Any) -> None:  # noqa: ANN401
         """Transfer the data from the JSON to the Collection object"""
 
-        self._id = collection["pk"]  # it's pk in V2 and id in V3
-        self.title = collection["title"]
+        # TODO: Fixme (this needs both [lessons] and collection info....
+
+        self.language_code = language_code
+        self._id = collection_v2["pk"]  # it's pk in V2 and id in V3
+        self.title = collection_v2["title"]
         self.course_url = (
             f"https://www.lingq.com/en/learn/{self.language_code}/web/library/course/{self._id}"
         )
 
-        lessons = collection["lessons"]
+        lessons = collection_v2["lessons"]
         if not lessons:
             print(f"  No lessons found for {self.title}")
             print("  Course url:", self.course_url)
-            print("  Api url   :", collection["url"])
+            print("  Api url   :", collection_v2["url"])
             print("  Skipping add_data.")
             return
 
-        self.level = TOEUROPEAN.get(collection["level"], collection["level"]) or "-"
+        self.level = TOEUROPEAN.get(collection_v2["level"], collection_v2["level"]) or "-"
         self.has_audio = lessons[0]["audio"] is not None
         self.last_update = lessons[0]["pubDate"]
         self.first_update = lessons[0]["pubDate"]

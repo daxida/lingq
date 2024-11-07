@@ -24,6 +24,7 @@ from pathlib import Path
 from typing import Any
 
 from lingqhandler import LingqHandler
+from log import logger
 from models.cards import Card
 
 # TODO: fix this type. Use pydantic if possible.
@@ -185,8 +186,7 @@ def yomitan(language_codes: list[str], opath: Path) -> None:
         yomitan_dict = yomitan_for_language(dump_path)
         out_path = dump_path / f"lingqs-{language_code}.zip"
         write_yomitan_dict(language_code, out_path, yomitan_dict)
-        print(f"Finished dictionary for {language_code}.")
-        print(f"It can be found at: {out_path}")
+        logger.success(f"Finished dictionary for {language_code} at: {out_path}")
 
 
 if __name__ == "__main__":

@@ -3,63 +3,24 @@ import sys
 from io import BufferedReader
 from typing import Any
 
+import aiohttp
 from aiohttp import ClientResponse, ClientSession, FormData
 from aiohttp_retry import ExponentialRetry, RetryClient
-from dotenv import dotenv_values, find_dotenv
+from pydantic import ValidationError
 
+from config import Config
+from log import logger
 from models.collection import Collection
-from utils import Colors
-
-
-class Config:
-    def __init__(self) -> None:
-        env_path = find_dotenv()
-        if not env_path:
-            print("Error: could not find an .env file.")
-            print("Create an .env file and add the entry: APIKEY='YourLingQAPIKey'")
-            print("Exiting.")
-            sys.exit(1)
-
-        config = dotenv_values(env_path)
-        if "APIKEY" not in config:
-            print("Error: the .env file does not contain the LingQ APIKEY.")
-            print("Inside the .env file add the entry: APIKEY='YourLingQAPIKey'")
-            print("Exiting.")
-            sys.exit(1)
-
-        self.key = config["APIKEY"]
-        self.headers = {"Authorization": f"Token {self.key}"}
-
-
-async def response_debug(
-    response: ClientResponse, function_name: str, lesson: Any | None = None
-) -> None:
-    print(f"{Colors.FAIL}Error in {function_name}{Colors.END}")
-    if lesson is not None:
-        print(f"For lesson: {lesson['title']}")
-    print(f"Response code: {response.status}")
-    if response.headers.get("Content-Type") == "application/json":
-        print("Response JSON:")
-        response_json = await response.json()
-        print(response_json)
-    else:
-        print(f"Response text: {response.text}")
-    # exit(0)
-
-
-def check_for_valid_token_or_exit(response_json: Any) -> None:
-    """Exits the program if the APIKEY is deemed invalid by the server."""
-    if isinstance(response_json, dict):
-        detail = response_json.get("detail", "")  # type: ignore
-        if detail == "Invalid token.":
-            print("Invalid APIKEY. Exiting.")
-            sys.exit(1)
-    elif isinstance(response_json, list):
-        pass
-    else:
-        raise NotImplementedError(
-            f"Unsupported type in check_for_valid_token_or_exit: {type(response_json)}."
-        )
+from models.collection_v3 import (
+    CollectionLessonResult,
+    CollectionLessons,
+    CollectionV3,
+    SearchCollectionResult,
+    SearchCollections,
+)
+from models.lesson_v3 import LessonV3
+from models.my_collections import MyCollections
+from utils import Colors, get_editor_url
 
 
 class LingqHandler:
@@ -90,33 +51,81 @@ class LingqHandler:
     async def close(self) -> None:
         await self.session.close()
 
-    # Make the handler into an async context manager (for better debug messages)
     async def __aenter__(self):  # noqa: ANN204
         return self
 
     async def __aexit__(self, *_):  # noqa: ANN002, ANN204
         await self.close()
 
-    async def get_languages(self) -> Any:
-        """
-        Get a JSON of supported (or almost) languages by Lingq.
-        https://www.lingq.com/apidocs/api-2.0.html#get
-        """
-        url = f"{LingqHandler.API_URL_V2}/languages"
-        async with self.session.get(url, headers=self.config.headers) as response:
-            languages_res = await response.json()
-            check_for_valid_token_or_exit(languages_res)
-        return languages_res
+    """Debug utils"""
+
+    async def _options(self, url: str) -> Any:  # noqa: ANN401
+        async with self.session.options(url, headers=self.config.headers) as response:
+            return await response.json()
+
+    async def response_debug(self, response: ClientResponse) -> None:
+        match response.status:
+            case 524:
+                logger.error("LingQ's servers are overloaded: cloudflare timeout (> 100 secs).")
+            case 429:
+                logger.error("Rate limited! Slow down and retry in a couple minutes.")
+            case _:
+                logger.error(f"Unhandled response code error: {response.status}")
+        if response.headers.get("Content-Type") == "application/json":
+            response_json = await response.json()
+            logger.error(f"[{response.status}] Response JSON:\n{response_json}")
+        else:
+            logger.error(f"Response text: {response.text}")
+
+    """Get requests"""
+
+    async def _get_url(self, url: str, *, params: dict[str, str] = {}) -> Any:  # noqa: ANN401
+        async with self.session.get(url, headers=self.config.headers, params=params) as response:
+            if not 200 <= response.status < 300:
+                await self.response_debug(response)
+            return await response.json()
+
+    async def _get(
+        self,
+        endpoint: str,
+        *,
+        version: int = 3,
+        add_language: bool = True,
+        check_detail: bool = True,
+        params: dict[str, str] = {},
+    ) -> Any:  # noqa: ANN401
+        api_url = {2: LingqHandler.API_URL_V2, 3: LingqHandler.API_URL_V3}[version]
+        if add_language:
+            url = f"{api_url}/{self.language_code}/{endpoint}"
+        else:
+            url = f"{api_url}/{endpoint}"
+
+        data = await self._get_url(url, params=params)
+
+        if check_detail:
+            match data.get("detail", "_SENTINEL"):
+                case "_SENTINEL":
+                    pass
+                case "Invalid token.":
+                    print("Invalid APIKEY. Exiting.")
+                    sys.exit(1)
+                case "Not found.":
+                    raise ValueError(f"Not found error at {url=}")
+                case _:
+                    raise NotImplementedError
+
+        return data
 
     async def _get_user_language_codes(self) -> list[str]:
-        """Get a list of language codes with known words."""
-        languages_res = await self.get_languages()
-        return [lc["code"] for lc in languages_res if lc["knownWords"] > 0]
+        """Get a list of language codes with known words.
+        https://www.lingq.com/apidocs/api-2.0.html#get
+        """
+        data = await self._get("languages", version=2, add_language=False, check_detail=False)
+        return [lc["code"] for lc in data if lc["knownWords"] > 0]
 
     @classmethod
     def get_user_language_codes(cls) -> list[str]:
-        """
-        Get a list of language codes with known words.
+        """Get a list of language codes with known words.
         This is a class method since it does not require initializing a language code.
         """
 
@@ -126,239 +135,231 @@ class LingqHandler:
 
         return asyncio.run(get_user_language_codes_tmp())
 
-    async def get_lesson_from_url(self, url: str) -> Any:
+    async def get_lesson_from_id(self, lesson_id: int) -> LessonV3:
+        """Get a lesson, from its id. Example id: 34754329
+        Corresponding url: https://www.lingq.com/api/v3/LANG/lessons/ID/
         """
-        Get a lesson JSON, from its url.
-        Example url: https://www.lingq.com/api/v3/ja/lessons/34754329/
-        """
-        async with self.session.get(url, headers=self.config.headers) as response:
-            lesson = await response.json()
-        if lesson.get("isLocked", "") == "TRANSCRIBE_AUDIO":
+        data = await self._get(f"lessons/{lesson_id}")
+        lesson = LessonV3.model_validate(data)
+        if lesson.is_locked:
             print(
-                f"{Colors.WARN}WARN{Colors.END} The lesson at {url} is still transcribing audio..."
+                f"{Colors.WARN}WARN{Colors.END}"
+                f" The lesson at {lesson.url} is locked..."
+                f" Reason: {lesson.is_locked}"
             )
-
         return lesson
 
-    async def get_lesson_from_id(self, lesson_id: str) -> Any:
-        """Get a lesson JSON, from its id. Example id: 34754329"""
-        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/lessons/{lesson_id}/"
-        return await self.get_lesson_from_url(url)
+    async def get_lesson_from_ids(self, ids: list[int]) -> list[LessonV3]:
+        """Get a list of lessons, from their ids."""
+        return await asyncio.gather(*(self.get_lesson_from_id(id) for id in ids))
 
-    async def get_lessons_from_urls(self, urls: list[str]) -> list[Any]:
-        """Get a list of lesson JSONs, from their urls."""
-        return await asyncio.gather(*(self.get_lesson_from_url(url) for url in urls))
-
-    async def get_audio_from_lesson(self, lesson: Any) -> bytes | None:
+    async def get_collection_lessons_from_id(
+        self, collection_id: int
+    ) -> list[CollectionLessonResult]:
+        """Get a list of lessons, from its id. Example id: 537808
+        Corresponding url: https://www.lingq.com/api/v3/ja/collections/537808/lessons
         """
-        Get the audio from a lesson. Return None if there is no audio.
-        The key with the audio url is 'audio' in V2 and 'audioUrl' in V3.
-        """
-        if "audio" in lesson:
-            audio_url = lesson["audio"]
-        elif "audioUrl" in lesson:
-            audio_url = lesson["audioUrl"]
-        else:
-            raise KeyError("Lesson should have at least an 'audio' or 'audioUrl' key")
+        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/collections/{collection_id}/lessons/"
+        collection_lessons = []
+        cur_url = url
 
-        # There is a key but the lesson has no audio
-        if audio_url is None:
-            return None
+        while cur_url:
+            res_json = await self._get_url(cur_url)
+            try:
+                collection_lessons_at_page = CollectionLessons.model_validate(res_json)
+            except ValidationError as e:
+                print(f"Error at: {cur_url=}")
+                raise e
+            collection_lessons.extend(collection_lessons_at_page.results)
+            cur_url = collection_lessons_at_page.next
 
-        async with self.session.get(audio_url) as response:
-            return await response.read()
+        if collection_lessons.count == 0:
+            editor_url = get_editor_url(self.language_code, collection_id, "course")
+            print(
+                f"{Colors.WARN}WARN{Colors.END}"
+                f" The collection {collection_id} at {editor_url} has no lessons, (delete it?)"
+            )
 
-    async def get_collections_from_url(self, url: str) -> Any:
-        """
-        Get a collection JSON, from its url.
-        Example urls:
-            https://www.lingq.com/api/v3/ja/collections/537808
-            https://www.lingq.com/api/v3/ja/collections/my
-        """
-        async with self.session.get(url, headers=self.config.headers) as response:
-            collections = await response.json()
+        return collection_lessons
 
-        assert (
-            collections.get("detail", "") != "Not found."
-        ), f"Error in processing the request at {url=}"
-        assert collections["next"] is None, "We are missing some collections"
+    async def get_my_collections(self) -> MyCollections:
+        data = await self._get("collections/my")
+        return MyCollections.model_validate(data)
 
-        results = collections["results"]
-        assert results is not None
+    async def search(self, params: dict[str, str]) -> list[SearchCollectionResult]:
+        data = await self._get("search", params=params)
+        return SearchCollections.model_validate(data).results
 
-        return results
+    async def get_my_collections_shared(self) -> list[SearchCollectionResult]:
+        return await self.search(
+            {"type": "collection", "sharedBy": "1824368", "sortBy": "recentlyOpened"}
+        )
 
-    async def get_my_collections(self) -> Any:
-        """
-        Get a collection JSON with all my imported collections.
-        This does not include collections imported by other users.
-        """
-        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/collections/my/"
-        return await self.get_collections_from_url(url)
-
-    async def get_currently_studying_collections(self) -> Any:
-        """
-        Get a collection JSON with all the studied collections (Continue Studying shelf).
+    async def get_currently_studying_collections(self) -> list[SearchCollectionResult]:
+        """Get a collection from the 'Continue Studying shelf'.
         This includes collections imported by other users.
         """
-        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/search/?shelf=my_lessons&type=collection&sortBy=recentlyOpened"
-        return await self.get_collections_from_url(url)
+        return await self.search(
+            {"shelf": "my_lessons", "type": "collection", "sortBy": "recentlyOpened"}
+        )
 
-    async def get_collection_json_from_id(self, collection_id: str) -> Any:
-        """Get a collection JSON with the collection, from a collection_id."""
-        url = f"{LingqHandler.API_URL_V2}/{self.language_code}/collections/{collection_id}/"
+    async def get_collection_from_id(self, collection_id: int) -> CollectionV3:
+        data = await self._get(f"collections/{collection_id}")
+        return CollectionV3.model_validate(data)
 
-        async with self.session.get(url, headers=self.config.headers) as response:
-            collection = await response.json()
-            check_for_valid_token_or_exit(collection)
+    async def get_collection_from_id_v2(self, collection_id: int) -> Any:  # noqa: ANN401
+        """Returns a JSON. TODO: make a model for it."""
+        # check_detail is set to False for the moment because of issues on LingQ's side
+        return await self._get(f"collections/{collection_id}", version=2, check_detail=False)
 
-        assert collection is not None, "Failed to get collection"
-
-        if "lessons" not in collection:
-            # I think this is mainly due to an issue with their garbage collection.
-            print(f"{Colors.WARN}WARN{Colors.END} Ghost collection with id: {collection_id}")
-            return None
-
-        if not collection["lessons"]:
-            editor_url = f"https://www.lingq.com/learn/{self.language_code}/web/editor/courses/"
-            msg = f"{Colors.WARN}WARN{Colors.END} The collection {collection['title']} at {editor_url}{collection_id} has no lessons, (delete it?)"
-            print(msg)
-
-        return collection
-
-    async def get_collection_object_from_id(self, collection_id: str) -> Collection | None:
+    async def get_collection_object_from_id(self, collection_id: int) -> Collection | None:
         """Get a custom collection Object from a collection_id."""
-        collection_data = await self.get_collection_json_from_id(collection_id)
-        if not collection_data["lessons"]:
+        collection = await self.get_collection_from_id_v2(collection_id)
+        if not collection:
             return None
-        collection = Collection()
-        collection.language_code = self.language_code
-        collection.add_data(collection_data)
-        return collection
+        # Ghost collections...
+        if collection.get("detail", "") == "Not found.":
+            return None
+        col = Collection()
+        col.add_data(self.language_code, collection)
+        return col
 
-    async def patch(self, lesson_id: str, data: dict[str, Any]) -> ClientResponse:
-        """Generic patch request."""
-        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/lessons/{lesson_id}/"
+    async def get_audio_from_lesson(self, lesson: LessonV3) -> bytes | None:
+        """Get the audio from a lesson. Return None if there is no audio.
+        Note: The key with the audio url is 'audio' in V2 and 'audioUrl' in V3.
+        """
+        if audio_url := lesson.audio_url:
+            async with self.session.get(str(audio_url)) as response:
+                return await response.read()
+
+    """Patch requests"""
+
+    ReqReturnType = ClientResponse | Any
+
+    async def _patch(
+        self,
+        endpoint: str,
+        *,
+        data: aiohttp.FormData | dict[str, Any] = {},
+        raw: bool = False,
+        raise_for: dict[int, str] = {},
+        warn_for: dict[int, str] = {},
+    ) -> ReqReturnType:
+        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/{endpoint}"
+        logger.trace(f"Patching at {url}")
         async with self.session.patch(url, headers=self.config.headers, data=data) as response:
-            if response.status != 200:
-                await response_debug(response, "patch")
-        return response
+            if msg := raise_for.get(response.status, ""):
+                print(msg)
+                raise
+            if msg := warn_for.get(response.status, ""):
+                print(msg)
+            if not 200 <= response.status < 300:
+                await self.response_debug(response)
+            if raw:
+                return response
+            return await response.json()
 
-    async def patch_audio_from_lesson_id(
-        self, lesson_id: str, audio_data: BufferedReader
-    ) -> ClientResponse:
-        """Patch (i.e. replace) the audio of a lesson."""
-        return await self.patch(lesson_id, {"audio": audio_data})
-
-    async def patch_text_from_lesson_id(self, lesson_id: str, text_data: str) -> ClientResponse:
-        """
-        Patch (i.e. replace) the text of a lesson.
-        Note that this is actually a post request that works like a patch one.
-        """
-        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/lessons/{lesson_id}/resplit/"
-        data = {"text": text_data}
+    async def _post(
+        self,
+        endpoint: str,
+        *,
+        data: aiohttp.FormData | dict[str, Any] = {},
+        raw: bool = False,
+        raise_for: dict[int, str] = {},
+        warn_for: dict[int, str] = {},
+    ) -> ReqReturnType:
+        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/{endpoint}"
         async with self.session.post(url, headers=self.config.headers, data=data) as response:
-            if response.status != 200:
-                await response_debug(response, "patch")
-        return response
+            if msg := raise_for.get(response.status, ""):
+                print(msg)
+                raise
+            if msg := warn_for.get(response.status, ""):
+                print(msg)
+            if not 200 <= response.status < 300:
+                await self.response_debug(response)
+            if raw:
+                return response
+            return await response.json()
 
-    async def generate_timestamps(self, lesson: Any) -> ClientResponse:
-        """Post request to add timestamps to a lesson."""
-        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/lessons/{lesson['id']}/genaudio/"
-        async with self.session.post(url, headers=self.config.headers) as response:
-            if response.status == 409:
-                # Ok error. Happens if you try to generate timestamps
-                # before the previous query has had time to finish.
-                print(f"Timestamps are still being generated... ({lesson['title']})")
-            elif response.status != 200:
-                await response_debug(response, "generate_timestamps", lesson)
-        return response
+    async def patch_audio(self, lesson_id: int, audio: BufferedReader) -> ClientResponse:
+        """PATCH. Replace the audio of a lesson."""
+        return await self._patch(f"lessons/{lesson_id}/", data={"audio": audio}, raw=True)
 
-    async def create_course(self, title: str, description: str = "") -> Any:
+    async def patch_text(self, lesson_id: int, text_data: str) -> ReqReturnType:
+        """POST. Replace the text of a lesson.
+        Note that this is actually a POST request that works like a patch one.
         """
-        Create an empty course given its title and (optional) description.
+        return await self._post(f"lessons/{lesson_id}/resplit/", data={"text": text_data})
+
+    async def patch_position(self, lesson_id: int, new_position: int) -> ReqReturnType:
+        """PATCH. Replace the position of a lesson in its course."""
+        return await self._patch(f"lessons/{lesson_id}", data={"pos": new_position})
+
+    async def generate_timestamps(self, lesson_id: int) -> ReqReturnType:
+        """POST. Add timestamps to a lesson."""
+        return await self._post(
+            f"lessons/{lesson_id}/genaudio/",
+            warn_for={405: f"Timestamps are already being generated... (at {lesson_id=})"},
+        )
+
+    async def _create_course(self, data: dict[str, Any]) -> ReqReturnType:
+        """POST. Create a course."""
+        return await self._post("collections/", data=data)
+
+    async def create_course(self, title: str, description: str = "") -> ReqReturnType:
+        """Create an empty course given its title and (optional) description.
         Returns the response JSON, which contains an entry "id" for the course id.
         This id can be used for further uploading through post methods.
         """
         return await self._create_course({"title": title, "description": description})
 
-    async def _create_course(self, data: Any) -> Any:
-        """
-        Create a course from a data payload.
-        Returns the response JSON, which contains an entry "id" for the course id.
-        This id can be used for further uploading through post methods.
+    async def post_from_multipart(self, data: FormData, *, raw: bool = False) -> ReqReturnType:
+        return await self._post("lessons/import/", data=data, raw=raw)
 
-        In its simplest version, it can be called just with the course title:
-        handler.create_course({"title": "my_course_title"})
-
-        From: https://github.com/kaajjaak/LingQGPT/
-        """
-        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/collections/"
-        async with self.session.post(url, headers=self.config.headers, data=data) as response:
-            if response.status != 201:
-                await response_debug(response, "create_course")
-            return await response.json()
-
-    async def delete_course(self, course_id: str) -> None:
-        """
-        Crashes if the course is not succesfully deleted (it is succesfully deleted if
-        the response.status is 202) by entering response_debug.
-        """
-        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/collections/{course_id}"
-        async with self.session.delete(url, headers=self.config.headers) as response:
-            if response.status != 202:
-                await response_debug(response, "delete_course")
-
-    async def post_from_multipart(self, data: Any) -> ClientResponse:
-        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/lessons/import/"
-        async with self.session.post(url, headers=self.config.headers, data=data) as response:
-            if response.status == 524:
-                # Ok error. Happens if their servers are overloaded.
-                print("Cloudflare timeout (> 100 secs).")
-            elif response.status != 201:
-                await response_debug(response, "post_from_multipart")
-        return response
-
-    async def post_from_data_dict(self, data: dict[str, Any]) -> ClientResponse:
+    async def post_from_data_dict(
+        self, data: dict[str, Any], *, raw: bool = False
+    ) -> ReqReturnType:
         """Intended to be used with dictionaries:
         data = {
             "title": "tmp_title",
             "text": "Hello, world!",
             "status": "private",  # default
-            "level": 0,  # default
+            "level": 0,           # default
             "collection": course_id,
-            "save": True,  # NOTE: This is needed!
+            "save": True,         # NOTE: This is needed!
         }
         """
-        needed_keys = ["title", "text", "collection"]
-        warning_keys = ["save"]
+
+        self._check_data_conv(data)
+        fdata = FormData(data)
+        return await self.post_from_multipart(fdata, raw=raw)
+
+    def _check_data_conv(self, data: dict[str, Any]) -> None:
+        """Verify that we have the keys needed by LingQ."""
+        needed_keys = {"title", "collection", "save"}
+        need_one_of = {"text", "url"}
+        keys = set(data.keys())
+        if not keys & need_one_of:
+            raise ValueError(f"Data needs at least one entry in {need_one_of}")
         for key in needed_keys:
             if key not in data:
                 raise ValueError(f"Error at post_from_data_dict: data has no {key=}")
-        for key in warning_keys:
-            if key not in data:
-                print(f"WARN: at post_from_data_dict: data has no {key=}")
 
-        fdata = FormData()
-        for key, value in data.items():
-            fdata.add_field(key, value)
-        return await self.post_from_multipart(fdata)
-
-    async def resplit_lesson(self, lesson: Any, method: str) -> ClientResponse:
+    async def resplit_lesson(self, lesson_id: int, method: str) -> ClientResponse:
         """
         Resplit a Japanese lesson using the new splitting logic.
         Cf: https://forum.lingq.com/t/refining-parsing-in-spaceless-languages-like-japanese-with-ai/179754/5
         """
-        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/lessons/{lesson['id']}/resplit/"
-        data = {}
-        if method == "ichimoe":
-            data = {"method": "ichimoe"}
-        else:
-            raise NotImplementedError(f"Method {method} in resplit_lesson")
+        assert method == "ichimoe", "Only ichimoe is supported atm"
+        return await self._post(
+            f"lessons/{lesson_id}/resplit/",
+            data={"method": method},
+            raw=True,
+            warn_for={409: f"{Colors.WARN}WARN{Colors.END} Already splitting {lesson_id}"},
+        )
 
-        async with self.session.post(url, headers=self.config.headers, data=data) as response:
-            if response.status == 409:
-                print(f"{Colors.WARN}WARN{Colors.END} Already splitting {lesson['title']}")
-            elif response.status != 200:
-                await response_debug(response, "resplit_lesson", lesson)
-        return response
+    async def delete_course(self, course_id: int) -> None:
+        """Crashes if the course is not succesfully deleted."""
+        url = f"{LingqHandler.API_URL_V3}/{self.language_code}/collections/{course_id}"
+        async with self.session.delete(url, headers=self.config.headers) as response:
+            assert response.status == 202

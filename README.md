@@ -33,7 +33,7 @@ Some examples:
 lingq postyt el 129129 "https://www.youtube.com/@awesomeyoutuber"
 
 # Bulk upload a book split by chapters.
-lingq post el 129139 "example/texts" -a "example/audios" --pairing_strategy zip
+lingq post el 129139 "example/texts" -a "example/audios" --pairing-strategy zip
 
 # Timestamp an entire german course.
 lingq timestamp de 129129
