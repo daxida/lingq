@@ -215,7 +215,8 @@ def split_audio(
     n_paragraphs = sum(len(paragraph) for paragraph in text_files)
     if len(fragments) != n_paragraphs:
         raise ValueError(
-            f"The number of fragments: {len(fragments)} is different from the number of paragraphs: {n_paragraphs}"
+            f"The number of fragments: {len(fragments)} "
+            f"is different from the number of paragraphs: {n_paragraphs}"
         )
 
     if cut_at_seconds > 0:
@@ -259,7 +260,8 @@ def split_audio_preserving_chapters(fragments: Any, text_files: list[list[str]])
         if lines[0] == cur_line or end == last_end:
             # logging.debug(f"({fragment_idx+1}) {cur_begin} - {cur_end} ({cur_interval=})")
             logging.debug(
-                f"({fragment_idx+1}) {seconds_to_hms(cur_begin)} - {seconds_to_hms(cur_end)} ({cur_interval=}s)"
+                f"({fragment_idx + 1}) "
+                f"{seconds_to_hms(cur_begin)} - {seconds_to_hms(cur_end)} ({cur_interval=}s)"
             )
 
             timed_text = TimedText(cur_begin, cur_end, "\n".join(text_buffer))
@@ -304,7 +306,8 @@ def split_audio_by_time(fragments: Any, cut_at_seconds: float) -> list[TimedText
         if cur_interval > cut_at_seconds or end == last_end:
             # logging.debug(f"({fragment_idx+1}) {cur_begin} - {cur_end} ({cur_interval=})")
             logging.debug(
-                f"({fragment_idx+1}) {seconds_to_hms(cur_begin)} - {seconds_to_hms(cur_end)} ({cur_interval=}s)"
+                f"({fragment_idx + 1}) "
+                f"{seconds_to_hms(cur_begin)} - {seconds_to_hms(cur_end)} ({cur_interval=}s)"
             )
 
             timed_text = TimedText(cur_begin, cur_end, "\n".join(text_buffer))

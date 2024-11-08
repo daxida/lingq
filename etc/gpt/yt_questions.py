@@ -60,8 +60,13 @@ def generate_questions(subtitle_text: str, num_questions: int) -> str:
     model = GPT4All("Meta-Llama-3-8B-Instruct.Q4_0.gguf")
 
     # There is a 2048 context window in LLaMA
-    subtitle_text = subtitle_text[:2500]  # This is a char limit, tokens are bigger so it's fine
-    prompt = f"このテキストに基づいて、日本語で{num_questions}つの質問を作成してください: \n\n{subtitle_text}\n\n 質問:"
+    char_limit = 2500
+    subtitle_text = subtitle_text[:char_limit]
+    prompt = (
+        f"このテキストに基づいて、日本語で{num_questions}つの質問を作成してください: \n\n"
+        f"{subtitle_text}\n\n "
+        "質問:"
+    )
 
     print("[gpt4all] Prompting GPT4All to generate questions...")
     response = model.generate(prompt)

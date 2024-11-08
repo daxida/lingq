@@ -1,3 +1,5 @@
+# ruff: noqa: E501
+
 from importlib.util import find_spec
 
 import pytest

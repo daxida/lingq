@@ -56,9 +56,6 @@ class CollectionV3(BaseModel):
 
 """https://www.lingq.com/api/v3/el/collections/1765504/lessons/"""
 
-from pydantic import FailFast
-from typing_extensions import Annotated
-
 
 class CollectionLessonResult(BaseModel):
     model_config = ConfigDict(
@@ -111,7 +108,7 @@ class CollectionLessons(BaseModel):
     count: int
     next: str | None
     previous: str | None
-    results: Annotated[list[CollectionLessonResult], FailFast()]
+    results: list[CollectionLessonResult]
 
 
 """https://www.lingq.com/api/v3/el/search/?shelf=my_lessons&type=collection"""
@@ -162,4 +159,4 @@ class SearchCollectionResult(BaseModel):
 class SearchCollections(BaseModel):
     next: str | None
     previous: str | None
-    results: Annotated[list[SearchCollectionResult], FailFast()]
+    results: list[SearchCollectionResult]

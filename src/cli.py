@@ -203,7 +203,8 @@ def get_lessons_cli(
     type=int,
     default=1,
     show_default=True,
-    help="Number of courses to download simultanously. Increasing this too much may incur in throttling. Suggested: 1 or 2.",
+    help="Number of courses to download simultanously. "
+    "Increasing this too much may incur in throttling. Suggested: 1 or 2.",
 )
 @opath_option()
 def get_courses_cli(

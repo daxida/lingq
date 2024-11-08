@@ -5,16 +5,14 @@ from typing import Any
 from log import logger
 from utils import get_editor_url
 
-# fmt: off
-TOEUROPEAN = {
-    'Advanced 2'     : 'C2',
-    'Advanced 1'     : 'C1',
-    'Intermediate 2' : 'B2',
-    'Intermediate 1' : 'B1',
-    'Beginner 2'     : 'A2',
-    'Beginner 1'     : 'A1'
+TO_EUROPEAN = {
+    "Advanced 2": "C2",
+    "Advanced 1": "C1",
+    "Intermediate 2": "B2",
+    "Intermediate 1": "B1",
+    "Beginner 2": "A2",
+    "Beginner 1": "A1",
 }
-# fmt: on
 
 
 @dataclass
@@ -50,7 +48,7 @@ class Collection:
             logger.warning(f"No lessons found for '{self.title}' at {editor_url}")
             return
 
-        self.level = TOEUROPEAN.get(collection_v2["level"], collection_v2["level"]) or "-"
+        self.level = TO_EUROPEAN.get(collection_v2["level"], collection_v2["level"]) or "-"
         self.has_audio = lessons[0]["audio"] is not None
         self.last_update = lessons[0]["pubDate"]
         self.first_update = lessons[0]["pubDate"]

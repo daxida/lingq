@@ -20,7 +20,7 @@ from models.collection_v3 import (
 )
 from models.lesson_v3 import LessonV3
 from models.my_collections import MyCollections
-from utils import Colors, get_editor_url
+from utils import get_editor_url
 
 
 class LingqHandler:
@@ -194,8 +194,7 @@ class LingqHandler:
 
         if collection_lessons.count == 0:
             editor_url = get_editor_url(self.lang, course_id, "course")
-            print(
-                f"{Colors.WARN}WARN{Colors.END}"
+            logger.warning(
                 f" The collection {course_id} at {editor_url} has no lessons, (delete it?)"
             )
 
@@ -274,7 +273,7 @@ class LingqHandler:
                 print(msg)
                 raise
             if msg := warn_for.get(response.status, ""):
-                print(msg)
+                logger.warning(msg)
             if not 200 <= response.status < 300:
                 await self.response_debug(response)
                 return response
@@ -298,7 +297,7 @@ class LingqHandler:
                 print(msg)
                 raise
             if msg := warn_for.get(response.status, ""):
-                print(msg)
+                logger.warning(msg)
             if not 200 <= response.status < 300:
                 await self.response_debug(response)
                 return response
@@ -380,7 +379,7 @@ class LingqHandler:
             f"lessons/{lesson_id}/resplit/",
             data={"method": method},
             raw=True,
-            warn_for={409: f"{Colors.WARN}WARN{Colors.END} Already splitting {lesson_id}"},
+            warn_for={409: f"Already splitting {lesson_id}"},
         )
 
     async def delete_course(self, course_id: int) -> None:

@@ -8,17 +8,6 @@ import roman  # type: ignore
 from natsort import os_sorted
 
 
-class Colors:
-    # fmt: off
-    FAIL = "\033[31m"    # RED
-    OK   = "\033[32m"    # GREEN
-    WARN = "\033[33m"    # YELLOW
-    SKIP = "\033[0;91m"  # ORANGE
-    TIME = "\033[36m"    # CYAN
-    END  = "\033[0m"
-    # fmt: on
-
-
 def double_check(msg: str = "") -> None:
     if msg:
         print(msg)
@@ -112,7 +101,7 @@ def timing(f: Callable[..., R]) -> Callable[..., R]:
         ts = time.time()
         result = f(*args, **kw)
         te = time.time()
-        print(f"{Colors.TIME}({f.__name__} {te-ts:2.2f}sec){Colors.END}")
+        print(f"\033[36m({f.__name__} {te - ts:2.2f}sec)\033[0m")
         return result
 
     return wrap

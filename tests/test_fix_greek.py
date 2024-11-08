@@ -24,10 +24,17 @@ def test_latin_letters_lowercase() -> None:
     )
 
 
-def test_latin_letters() -> None:
+def test_latin_letters_one() -> None:
     make_test_latin_letters(
-        received="7 Eναντίoν μoυ ψιθυρίζoυν μαζί όλoι εκείνoι πoυ με μισoύν· εναντίoν μoυ συλλογίζoνται με κακία, λέγoντας but not this!",
-        expected="7 Εναντίον μου ψιθυρίζουν μαζί όλοι εκείνοι που με μισούν· εναντίον μου συλλογίζονται με κακία, λέγοντας but not this!",
+        received="7 Eναντίoν μoυ ψιθυρίζoυν μαζί όλoι εκείνoι πoυ με μισoύν",
+        expected="7 Εναντίον μου ψιθυρίζουν μαζί όλοι εκείνοι που με μισούν",
+    )
+
+
+def test_latin_letters_two() -> None:
+    make_test_latin_letters(
+        received="εναντίoν μoυ συλλογίζoνται με κακία, λέγoντας but not this!",
+        expected="εναντίον μου συλλογίζονται με κακία, λέγοντας but not this!",
     )
 
 
@@ -40,7 +47,10 @@ def test_latin_letters_error_at_word_end() -> None:
 
 def test_latin_letters_only_latin() -> None:
     # Should not fix actual latin words
-    text = "Ο Μικελάντζελο ντι Λοντοβίκο Μπουοναρότι Σιμόνι (Michelangelo di Lodovico Buonarroti Simoni, 6 Μαρτίου 1475 – 18 Φεβρουαρίου 1564)"
+    text = (
+        "Ο Μικελάντζελο ντι Λοντοβίκο Μπουοναρότι Σιμόνι "
+        "(Michelangelo di Lodovico Buonarroti Simoni, 6 Μαρτίου 1475 – 18 Φεβρουαρίου 1564)"
+    )
     make_test_latin_letters(text, text)
 
 

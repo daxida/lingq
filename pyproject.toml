@@ -50,6 +50,7 @@ max-doc-length = 100
 [tool.ruff.lint]
 preview = true
 select = [
+    "E",    # pycodestyle error
     "W",    # pycodestyle warning
     "I",    # isort
     "N",    # pep8-naming
@@ -57,6 +58,9 @@ select = [
     "C",    # flake8-complexity
     "PTH",  # Paths
     "ANN",  # Annotations
+]
+ignore = [
+    "E221",
 ]
 
 [tool.ruff.lint.per-file-ignores]

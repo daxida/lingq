@@ -45,8 +45,9 @@ COLLECTION_LIST = [
 
 
 def test_markdown_with_views() -> None:
+    padding = "&nbsp;" * 6
     expected_lines = [
-        "|Status| |Title|Views|Lessons|Created&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Updated&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|",
+        f"|Status| |Title|Views|Lessons|Created{padding}|Updated{padding}|",
         "|-|-|-|-|-|-|-|",
         "|private|-|[Quick Imports](https://www.lingq.com/en/learn/fr/web/library/course/693846)|-|1|2023-05-05|2023-05-05",
         "|shared|C1|[La Dame aux Camélias - Dumas Fils](https://www.lingq.com/en/learn/fr/web/library/course/518792)|1573|47|2022-01-01|2022-09-03",
@@ -59,8 +60,9 @@ def test_markdown_with_views() -> None:
 
 
 def test_markdown_without_views() -> None:
+    padding = "&nbsp;" * 6
     expected_lines = [
-        "|Status| |Title|Lessons|Created&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Updated&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|",
+        f"|Status| |Title|Lessons|Created{padding}|Updated{padding}|",
         "|-|-|-|-|-|-|",
         "|private|-|[Quick Imports](https://www.lingq.com/en/learn/fr/web/library/course/693846)|1|2023-05-05|2023-05-05",
         "|shared|C1|[La Dame aux Camélias - Dumas Fils](https://www.lingq.com/en/learn/fr/web/library/course/518792)|47|2022-01-01|2022-09-03",

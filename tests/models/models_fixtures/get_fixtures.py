@@ -14,7 +14,7 @@ FIXTURES_PATH = Path("tests/models/models_fixtures")
 def get_and_write_url(url: str, title: str) -> None:
     data = requests.get(url, headers=HEADERS).json()
     mtch = re.match(LC_PATTERN, url)
-    assert not mtch is None
+    assert mtch is not None
     url_type = mtch.group(1)
     folder_path = FIXTURES_PATH / url_type
     Path.mkdir(folder_path, parents=True, exist_ok=True)

@@ -22,9 +22,8 @@ def filter_downloaded(
     filtered_lessons = [
         lesson for lesson in lessons if f"{sanitize_title(lesson.title)}.txt" not in text_files
     ]
-    logger.info(
-        f"'{collection_title}' Skipped {len(lessons) - len(filtered_lessons)} out of {len(lessons)} lessons."
-    )
+    n_skipped = len(lessons) - len(filtered_lessons)
+    logger.info(f"'{collection_title}' Skipped {n_skipped} out of {len(lessons)} lessons.")
     return filtered_lessons
 
 
@@ -63,7 +62,7 @@ async def get_lessons_async(
             for lesson_json in lessons
         ]
         lessons = await asyncio.gather(*tasks)
-        lessons = [l for l in lessons if l is not None]
+        lessons = [les for les in lessons if les is not None]
         logger.success(f"'{collection_title}'")
 
         if write:
