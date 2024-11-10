@@ -75,6 +75,8 @@ class LingqHandler:
                 logger.error("Rate limited! Slow down and retry in a couple minutes.")
             case 409:
                 logger.error("Conflict. Generating timestamps twice?")
+            case 405:
+                logger.warning("Timestamps are already being generated...")
             case 404:
                 # Not found error.
                 pass
@@ -263,17 +265,10 @@ class LingqHandler:
         *,
         data: aiohttp.FormData | dict[str, Any] = {},
         raw: bool = False,
-        raise_for: dict[int, str] = {},
-        warn_for: dict[int, str] = {},
     ) -> ReqReturnType:
         url = f"{LingqHandler.API_URL_V3}/{self.lang}/{endpoint}"
         logger.trace(f"PATCH {url}")
         async with self.session.patch(url, headers=self.config.headers, data=data) as response:
-            if msg := raise_for.get(response.status, ""):
-                print(msg)
-                raise
-            if msg := warn_for.get(response.status, ""):
-                logger.warning(msg)
             if not 200 <= response.status < 300:
                 await self.response_debug(response)
                 return response
@@ -287,17 +282,10 @@ class LingqHandler:
         *,
         data: aiohttp.FormData | dict[str, Any] = {},
         raw: bool = False,
-        raise_for: dict[int, str] = {},
-        warn_for: dict[int, str] = {},
     ) -> ReqReturnType:
         url = f"{LingqHandler.API_URL_V3}/{self.lang}/{endpoint}"
         logger.trace(f"POST {url}")
         async with self.session.post(url, headers=self.config.headers, data=data) as response:
-            if msg := raise_for.get(response.status, ""):
-                print(msg)
-                raise
-            if msg := warn_for.get(response.status, ""):
-                logger.warning(msg)
             if not 200 <= response.status < 300:
                 await self.response_debug(response)
                 return response
@@ -321,10 +309,7 @@ class LingqHandler:
 
     async def generate_timestamps(self, lesson_id: int) -> ReqReturnType:
         """POST. Add timestamps to a lesson."""
-        return await self._post(
-            f"lessons/{lesson_id}/genaudio/",
-            warn_for={405: f"Timestamps are already being generated... (at {lesson_id=})"},
-        )
+        return await self._post(f"lessons/{lesson_id}/genaudio/")
 
     async def _create_course(self, data: dict[str, Any]) -> ReqReturnType:
         """POST. Create a course."""
@@ -395,7 +380,6 @@ class LingqHandler:
             f"lessons/{lesson_id}/resplit/",
             data={"method": method},
             raw=True,
-            warn_for={409: f"Already splitting {lesson_id}"},
         )
 
     async def delete_course(self, course_id: int) -> None:
