@@ -324,7 +324,7 @@ def patch_texts_cli() -> None:
 @cli.command("resplit")
 @click.argument("course_id")
 def resplit_ja_cli(course_id: int) -> None:
-    """Resplit a course (only for japanese)."""
+    """Resplit words in a course (only for japanese)."""
     resplit(course_id)
 
 

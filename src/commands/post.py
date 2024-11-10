@@ -164,7 +164,7 @@ async def post_async(
     pairing_strategy: str,
 ) -> None:
     if pairing_strategy not in PAIRING_STRATEGIES:
-        raise NotImplementedError
+        raise NotImplementedError(f"Pairing strategy: '{pairing_strategy}' does not exist.")
     if not texts_folder and not audios_folder:
         raise ValueError("Post needs either texts or audios")
 
@@ -234,10 +234,10 @@ if __name__ == "__main__":
     post(
         lang="ja",
         course_id=537808,
-        texts_folder=Path("downloads/ja/Quick Imports/srts"),
+        texts_folder=Path("downloads/ja/Quick Imports/texts"),
         # texts_folder=Path("downloads/ja/Quick Imports/texts"),
         audios_folder=Path("downloads/ja/Quick Imports/audios"),
         # audios_folder=None,
         # pairing_strategy="zip",
-        pairing_strategy="match_exact_titles",
+        pairing_strategy="fuzzy",
     )

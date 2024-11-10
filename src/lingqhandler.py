@@ -369,6 +369,22 @@ class LingqHandler:
             if key not in data:
                 raise ValueError(f"Error at post_from_data_dict: data has no {key=}")
 
+    async def replace(self, lesson_id: int, replacements: dict[str, str]) -> ClientResponse:
+        """A replacement is a pair {regex: substition}. F.e. {"a": "b", "c": "d"}
+        I'm aware that the first argument is a regex because of the error messages
+        with the '[]' characters, but I haven't actually used it with a regex.
+
+        This does not use _post because it requires the data to be sent as json.
+        """
+        data = {"action": "replace", "text": replacements}
+        endpoint = f"lessons/{lesson_id}/sentences/"
+        url = f"{LingqHandler.API_URL_V3}/{self.lang}/{endpoint}"
+        logger.trace(f"POST {url}")
+        async with self.session.post(url, headers=self.config.headers, json=data) as response:
+            if not 200 <= response.status < 300:
+                await self.response_debug(response)
+            return response
+
     async def resplit_lesson(self, lesson_id: int, method: str) -> ClientResponse:
         """
         Resplit a Japanese lesson using the new splitting logic.
