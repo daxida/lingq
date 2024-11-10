@@ -1,5 +1,4 @@
 import asyncio
-import sys
 from io import BufferedReader
 from typing import Any
 
@@ -67,7 +66,7 @@ class LingqHandler:
         async with self.session.options(url, headers=self.config.headers) as response:
             return await response.json()
 
-    async def response_debug(self, response: ClientResponse) -> None:
+    async def response_debug(self, response: ClientResponse) -> None:  # noqa: C901
         match response.status:
             case 524:
                 logger.error("LingQ's servers are overloaded: cloudflare timeout (> 100 secs).")
@@ -88,8 +87,16 @@ class LingqHandler:
                 pass
             case _:
                 logger.error(f"Unhandled response code error: {response.status}")
+
         if response.headers.get("Content-Type") == "application/json":
             response_json = await response.json()
+            match response_json.get("detail", "_SENTINEL"):
+                case "_SENTINEL":
+                    pass
+                case "Invalid token.":
+                    raise ValueError("Invalid APIKEY. Exiting.")
+                case _:
+                    logger.error("Uncaught detail")
             logger.error(f"[{response.status}] Response JSON:\n{response_json}")
         else:
             logger.error(f"Response text: {response.text}")
@@ -109,9 +116,9 @@ class LingqHandler:
         *,
         version: int = 3,
         add_language: bool = True,
-        check_detail: bool = True,
         params: dict[str, str] = {},
     ) -> Any:  # noqa: ANN401
+        # TODO: merge _requests && support JSON
         api_url = {2: LingqHandler.API_URL_V2, 3: LingqHandler.API_URL_V3}[version]
         if add_language:
             url = f"{api_url}/{self.lang}/{endpoint}"
@@ -119,18 +126,6 @@ class LingqHandler:
             url = f"{api_url}/{endpoint}"
 
         data = await self._get_url(url, params=params)
-
-        if check_detail:
-            match data.get("detail", "_SENTINEL"):
-                case "_SENTINEL":
-                    pass
-                case "Invalid token.":
-                    logger.error("Invalid APIKEY. Exiting.")
-                    sys.exit(1)
-                case "Not found.":
-                    raise ValueError(f"Not found error at {url=}")
-                case _:
-                    raise NotImplementedError
 
         return data
 
@@ -146,7 +141,7 @@ class LingqHandler:
         """Get a list of language codes with known words.
         https://www.lingq.com/apidocs/api-2.0.html#get
         """
-        data = await self._get("languages", version=2, add_language=False, check_detail=False)
+        data = await self._get("languages", version=2, add_language=False)
         return [lc["code"] for lc in data if lc["knownWords"] > 0]
 
     @classmethod
@@ -232,8 +227,7 @@ class LingqHandler:
 
     async def get_collection_from_id_v2(self, course_id: int) -> Any:  # noqa: ANN401
         """Returns a JSON. TODO: make a model for it."""
-        # check_detail is set to False for the moment because of issues on LingQ's side
-        return await self._get(f"collections/{course_id}", version=2, check_detail=False)
+        return await self._get(f"collections/{course_id}", version=2)
 
     async def get_collection_object_from_id(self, course_id: int) -> Collection | None:
         """Get a custom collection Object from a course_id."""
@@ -283,6 +277,7 @@ class LingqHandler:
         data: aiohttp.FormData | dict[str, Any] = {},
         raw: bool = False,
     ) -> ReqReturnType:
+        # TODO: support JSON
         url = f"{LingqHandler.API_URL_V3}/{self.lang}/{endpoint}"
         logger.trace(f"POST {url}")
         async with self.session.post(url, headers=self.config.headers, data=data) as response:
