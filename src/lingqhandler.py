@@ -2,10 +2,8 @@ import asyncio
 from io import BufferedReader
 from typing import Any
 
-import aiohttp
 from aiohttp import ClientResponse, ClientSession, FormData
 from aiohttp_retry import ExponentialRetry, RetryClient
-from pydantic import ValidationError
 
 from config import Config
 from log import logger
@@ -73,7 +71,7 @@ class LingqHandler:
             case 429:
                 logger.error("Rate limited! Slow down and retry in a couple minutes.")
             case 409:
-                logger.error("Conflict. Generating timestamps twice?")
+                logger.error("Conflict. Generating timestamps / splitting twice?")
             case 405:
                 logger.warning("Timestamps are already being generated...")
             case 404:
@@ -90,58 +88,66 @@ class LingqHandler:
 
         if response.headers.get("Content-Type") == "application/json":
             response_json = await response.json()
-            match response_json.get("detail", "_SENTINEL"):
-                case "_SENTINEL":
-                    pass
-                case "Invalid token.":
-                    raise ValueError("Invalid APIKEY. Exiting.")
-                case _:
-                    logger.error("Uncaught detail")
+            if isinstance(response_json, dict):
+                match response_json.get("detail", "_SENTINEL"):
+                    case "_SENTINEL":
+                        pass
+                    case "Invalid token.":
+                        raise ValueError("Invalid APIKEY. Exiting.")
+                    case _:
+                        logger.error("Uncaught detail")
             logger.error(f"[{response.status}] Response JSON:\n{response_json}")
         else:
             logger.error(f"Response text: {response.text}")
 
-    """Get requests"""
+    """Generic request"""
 
-    async def _get_url(self, url: str, *, params: dict[str, str] = {}) -> Any:  # noqa: ANN401
-        logger.trace(f"GET {url}")
-        async with self.session.get(url, headers=self.config.headers, params=params) as response:
-            if not 200 <= response.status < 300:
-                await self.response_debug(response)
-            return await response.json()
-
-    async def _get(
+    async def _request(
         self,
+        method: str,
         endpoint: str,
         *,
         version: int = 3,
         add_language: bool = True,
-        params: dict[str, str] = {},
-    ) -> Any:  # noqa: ANN401
-        # TODO: merge _requests && support JSON
-        api_url = {2: LingqHandler.API_URL_V2, 3: LingqHandler.API_URL_V3}[version]
+        raw: bool = False,
+        **kwargs,  # noqa: ANN003
+    ) -> Any:
+        api_url = {
+            1: LingqHandler.API_URL_V1,
+            2: LingqHandler.API_URL_V2,
+            3: LingqHandler.API_URL_V3,
+        }[version]
+
         if add_language:
             url = f"{api_url}/{self.lang}/{endpoint}"
         else:
             url = f"{api_url}/{endpoint}"
 
-        data = await self._get_url(url, params=params)
+        logger.trace(f"{method.upper()} {url}")
+        meth = getattr(self.session, method.lower())
 
-        return data
+        async with meth(url, headers=self.config.headers, **kwargs) as response:
+            if not 200 <= response.status < 300:
+                await self.response_debug(response)
+                return response
+            if raw:
+                return response
+            return await response.json()
+
+    """Get requests"""
 
     async def get_user_id(self) -> None:
         """Get and cache the user id."""
         if self._user_id is None:
-            data = await self._get_url(f"{LingqHandler.API_URL_V1}/profile/")
-            user_id = data["id"]
-            logger.trace(f"Cached user id {user_id}")
-            self._user_id = user_id
+            data = await self._request("GET", "profile/", version=1, add_language=False)
+            self._user_id = data["id"]
+            logger.trace(f"Cached user id {self._user_id}")
 
     async def _get_user_langs(self) -> list[str]:
         """Get a list of language codes with known words.
         https://www.lingq.com/apidocs/api-2.0.html#get
         """
-        data = await self._get("languages", version=2, add_language=False)
+        data = await self._request("GET", "languages", version=2, add_language=False)
         return [lc["code"] for lc in data if lc["knownWords"] > 0]
 
     @classmethod
@@ -160,12 +166,8 @@ class LingqHandler:
         """Get a lesson, from its id. Example id: 34754329
         Corresponding url: https://www.lingq.com/api/v3/LANG/lessons/ID/
         """
-        data = await self._get(f"lessons/{lesson_id}/")
-        if reason := data.get("isLocked", ""):
-            logger.warning(f"The lesson {lesson_id} is locked: {reason}")
-            return None
-        lesson = LessonV3.model_validate(data)
-        return lesson
+        data = await self._request("GET", f"lessons/{lesson_id}/")
+        return LessonV3.model_validate(data)
 
     async def get_lesson_from_ids(self, ids: list[int]) -> list[LessonV3 | None]:
         """Get a list of lessons, from their ids."""
@@ -175,17 +177,15 @@ class LingqHandler:
         """Get a list of lessons, from its id. Example id: 537808
         Corresponding url: https://www.lingq.com/api/v3/ja/collections/537808/lessons
         """
+        base_url_size = len(f"{LingqHandler.API_URL_V3}/{self.lang}/")
         url = f"{LingqHandler.API_URL_V3}/{self.lang}/collections/{course_id}/lessons/"
         collection_lessons = []
         cur_url = url
 
         while cur_url:
-            res_json = await self._get_url(cur_url)
-            try:
-                collection_lessons_at_page = CollectionLessons.model_validate(res_json)
-            except ValidationError as e:
-                print(f"Error at: {cur_url=}")
-                raise e
+            endpoint = cur_url[base_url_size:]
+            res_json = await self._request("GET", endpoint)
+            collection_lessons_at_page = CollectionLessons.model_validate(res_json)
             collection_lessons.extend(collection_lessons_at_page.results)
             cur_url = collection_lessons_at_page.next
 
@@ -198,11 +198,11 @@ class LingqHandler:
         return collection_lessons
 
     async def get_my_collections(self) -> MyCollections:
-        data = await self._get("collections/my")
+        data = await self._request("GET", "collections/my")
         return MyCollections.model_validate(data)
 
     async def search(self, params: dict[str, Any]) -> SearchCollections:
-        data = await self._get("search", params=params)
+        data = await self._request("GET", "search", params=params)
         return SearchCollections.model_validate(data)
 
     async def get_my_collections_shared(self) -> list[SearchCollectionResult]:
@@ -222,12 +222,12 @@ class LingqHandler:
         return data.results
 
     async def get_collection_from_id(self, course_id: int) -> CollectionV3:
-        data = await self._get(f"collections/{course_id}")
+        data = await self._request("GET", f"collections/{course_id}")
         return CollectionV3.model_validate(data)
 
     async def get_collection_from_id_v2(self, course_id: int) -> Any:  # noqa: ANN401
         """Returns a JSON. TODO: make a model for it."""
-        return await self._get(f"collections/{course_id}", version=2)
+        return await self._request("GET", f"collections/{course_id}", version=2)
 
     async def get_collection_object_from_id(self, course_id: int) -> Collection | None:
         """Get a custom collection Object from a course_id."""
@@ -251,78 +251,43 @@ class LingqHandler:
 
     """Patch requests"""
 
-    ReqReturnType = ClientResponse | Any
-
-    async def _patch(
-        self,
-        endpoint: str,
-        *,
-        data: aiohttp.FormData | dict[str, Any] = {},
-        raw: bool = False,
-    ) -> ReqReturnType:
-        url = f"{LingqHandler.API_URL_V3}/{self.lang}/{endpoint}"
-        logger.trace(f"PATCH {url}")
-        async with self.session.patch(url, headers=self.config.headers, data=data) as response:
-            if not 200 <= response.status < 300:
-                await self.response_debug(response)
-                return response
-            if raw:
-                return response
-            return await response.json()
-
-    async def _post(
-        self,
-        endpoint: str,
-        *,
-        data: aiohttp.FormData | dict[str, Any] = {},
-        raw: bool = False,
-    ) -> ReqReturnType:
-        # TODO: support JSON
-        url = f"{LingqHandler.API_URL_V3}/{self.lang}/{endpoint}"
-        logger.trace(f"POST {url}")
-        async with self.session.post(url, headers=self.config.headers, data=data) as response:
-            if not 200 <= response.status < 300:
-                await self.response_debug(response)
-                return response
-            if raw:
-                return response
-            return await response.json()
-
     async def patch_audio(self, lesson_id: int, audio: BufferedReader) -> ClientResponse:
         """PATCH. Replace the audio of a lesson."""
-        return await self._patch(f"lessons/{lesson_id}/", data={"audio": audio}, raw=True)
+        return await self._request(
+            "PATCH", f"lessons/{lesson_id}/", data={"audio": audio}, raw=True
+        )
 
-    async def patch_text(self, lesson_id: int, text_data: str) -> ReqReturnType:
+    async def patch_text(self, lesson_id: int, text_data: str) -> Any:
         """POST. Replace the text of a lesson.
         Note that this is actually a POST request that works like a patch one.
         """
-        return await self._post(f"lessons/{lesson_id}/resplit/", data={"text": text_data})
+        return await self._request(
+            "POST", f"lessons/{lesson_id}/resplit/", data={"text": text_data}
+        )
 
-    async def patch_position(self, lesson_id: int, new_position: int) -> ReqReturnType:
+    async def patch_position(self, lesson_id: int, new_position: int) -> Any:
         """PATCH. Replace the position of a lesson in its course."""
-        return await self._patch(f"lessons/{lesson_id}", data={"pos": new_position})
+        return await self._request("PATCH", f"lessons/{lesson_id}", data={"pos": new_position})
 
-    async def generate_timestamps(self, lesson_id: int) -> ReqReturnType:
+    async def generate_timestamps(self, lesson_id: int) -> Any:
         """POST. Add timestamps to a lesson."""
-        return await self._post(f"lessons/{lesson_id}/genaudio/")
+        return await self._request("POST", f"lessons/{lesson_id}/genaudio/")
 
-    async def _create_course(self, data: dict[str, Any]) -> ReqReturnType:
+    async def _create_course(self, data: dict[str, Any]) -> Any:
         """POST. Create a course."""
-        return await self._post("collections/", data=data)
+        return await self._request("POST", "collections/", data=data)
 
-    async def create_course(self, title: str, description: str = "") -> ReqReturnType:
+    async def create_course(self, title: str, description: str = "") -> Any:
         """Create an empty course given its title and (optional) description.
         Returns the response JSON, which contains an entry "id" for the course id.
         This id can be used for further uploading through post methods.
         """
         return await self._create_course({"title": title, "description": description})
 
-    async def post_from_multipart(self, data: FormData, *, raw: bool = False) -> ReqReturnType:
-        return await self._post("lessons/import/", data=data, raw=raw)
+    async def post_from_multipart(self, data: FormData, *, raw: bool = False) -> Any:
+        return await self._request("POST", "lessons/import/", data=data, raw=raw)
 
-    async def post_from_data_dict(
-        self, data: dict[str, Any], *, raw: bool = False
-    ) -> ReqReturnType:
+    async def post_from_data_dict(self, data: dict[str, Any], *, raw: bool = False) -> Any:
         """Intended to be used with dictionaries:
         data = {
             "title": "tmp_title",
@@ -356,14 +321,12 @@ class LingqHandler:
 
         This does not use _post because it requires the data to be sent as json.
         """
-        data = {"action": "replace", "text": replacements}
-        endpoint = f"lessons/{lesson_id}/sentences/"
-        url = f"{LingqHandler.API_URL_V3}/{self.lang}/{endpoint}"
-        logger.trace(f"POST {url}")
-        async with self.session.post(url, headers=self.config.headers, json=data) as response:
-            if not 200 <= response.status < 300:
-                await self.response_debug(response)
-            return response
+        return await self._request(
+            "POST",
+            f"lessons/{lesson_id}/sentences/",
+            json={"action": "replace", "text": replacements},
+            raw=True,
+        )
 
     async def resplit_lesson(self, lesson_id: int, method: str) -> ClientResponse:
         """
@@ -371,7 +334,8 @@ class LingqHandler:
         Cf: https://forum.lingq.com/t/refining-parsing-in-spaceless-languages-like-japanese-with-ai/179754/5
         """
         assert method == "ichimoe", "Only ichimoe is supported atm"
-        return await self._post(
+        return await self._request(
+            "POST",
             f"lessons/{lesson_id}/resplit/",
             data={"method": method},
             raw=True,
