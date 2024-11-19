@@ -65,6 +65,7 @@ async def run_handler(lang: str) -> None:
             "save": "true",
         }
         posted_lesson = await handler.post_from_data_dict(data)
+        await asyncio.sleep(2)
 
         # 2.2. Check that we have one lesson now
         clessons = await handler.get_collection_lessons_from_id(course_id)
@@ -88,6 +89,7 @@ async def run_handler(lang: str) -> None:
         mock_audio = MOCK_APATH.open("rb")
         fdata.add_field("audio", mock_audio, filename="audio.mp3", content_type="audio/mpeg")
         await handler.post_from_multipart(fdata)
+        await asyncio.sleep(2)
 
         # 2.5. Check that we have two lessons now
         logger.info(f"Checking lessons in course {course_id}")
