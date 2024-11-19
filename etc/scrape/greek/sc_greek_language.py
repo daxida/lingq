@@ -9,8 +9,18 @@ from bs4 import BeautifulSoup
 DOWNLOAD_FOLDER = Path("downloads")
 
 
-def download_book_from_text_id(text_id: str, text_name: str, author_name: str) -> None:
-    """The book id is found as `text_id=number` in the url."""
+def download_book_from_text_id(
+    text_id: str,
+    text_name: str,
+    author_name: str,
+    *,
+    fr_page: int = 1,
+    to_page: int = 999,
+) -> None:
+    """Scrape a book given its id.
+
+    The book id is found as `text_id=number` in the url.
+    """
     if author_name:
         _path = Path(author_name) / text_name
     else:
@@ -18,8 +28,9 @@ def download_book_from_text_id(text_id: str, text_name: str, author_name: str) -
 
     path = DOWNLOAD_FOLDER / _path
     path.mkdir(parents=True, exist_ok=True)
+    print(f"Writing at {path}")
 
-    for page in range(1, 999):  # safety upper bound
+    for page in range(fr_page, to_page):
         url = f"https://www.greek-language.gr/digitalResources/ancient_greek/library/browse.html?text_id={text_id}&page={page}"
         res = requests.get(url)
         soup = BeautifulSoup(res.content, "html.parser")
@@ -30,14 +41,17 @@ def download_book_from_text_id(text_id: str, text_name: str, author_name: str) -
         page_text = page_text_res.text
         page_title = soup.find("div", {"class": "part-header"}).find("h3").text  # type: ignore
 
-        out_page_title = f"({page}) {page_title}"
+        out_page_title = f"{page:03d}. {page_title}.txt"
         opath = path / out_page_title
         with opath.open("w") as f:
             f.write(page_text)
 
 
 def download_books_from_author_id(author_id: str) -> None:
-    """The author id is found as `author_id=number` in the url."""
+    """Scrape all books from an author id.
+
+    The author id is found as `author_id=number` in the url.
+    """
     url = f"https://www.greek-language.gr/digitalResources/ancient_greek/library/index.html?start=0&author_id={author_id}"
     res = requests.get(url)
     soup = BeautifulSoup(res.content, "html.parser")
@@ -69,5 +83,5 @@ def download_books_from_author_id(author_id: str) -> None:
 
 
 if __name__ == "__main__":
-    # download_book_from_text_id(text_id="147", text_name="Βάτραχοι", author_name="")
-    download_books_from_author_id(author_id="123")
+    download_book_from_text_id(text_id="73", text_name="Ἱστορίαι", author_name="", fr_page=100)
+    # download_books_from_author_id(author_id="123")
