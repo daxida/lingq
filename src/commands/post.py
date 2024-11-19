@@ -4,7 +4,7 @@ Note: Posting only audio triggers whisper transcript generation on their servers
 
 import asyncio
 from pathlib import Path
-from typing import Sequence
+from typing import Literal, Sequence
 
 import aiohttp
 import Levenshtein
@@ -18,6 +18,7 @@ SUPPORTED_BY_US_TEXT_EXTENSIONS = [".txt", ".srt", ".vtt"]
 SUPPORTED_BY_US_AUDIO_EXTENSIONS = SUPPORTED_BY_LINGQ_AUDIO_EXTENSIONS
 PAIRING_STRATEGIES = ["zip", "zipsort", "exact", "fuzzy"]
 
+Strategy = Literal["zip", "zipsort", "exact", "fuzzy"]
 Pairing = tuple[Path | None, Path | None]
 Pairings = Sequence[Pairing]
 
@@ -79,7 +80,7 @@ async def post_lesson(
 
 
 def apply_pairing_strategy(
-    strategy: str, texts_paths: list[Path], audios_paths: list[Path]
+    pairing_strategy: Strategy, texts_paths: list[Path], audios_paths: list[Path]
 ) -> Pairings:
     if not texts_paths:
         return [(None, apath) for apath in audios_paths]
@@ -88,7 +89,7 @@ def apply_pairing_strategy(
 
     pairs: Pairings = []
 
-    match strategy:
+    match pairing_strategy:
         case "zip":
             pairs = list(zip(texts_paths, audios_paths))
         case "zipsort":
@@ -97,14 +98,12 @@ def apply_pairing_strategy(
             pairs = exact_match_pairing(texts_paths, audios_paths)
         case "fuzzy":
             pairs = fuzzy_match_pairing(texts_paths, audios_paths)
-        case _:
-            raise NotImplementedError
 
     n_pairs = sum(all(pair) for pair in pairs)
 
     logger.info(
         f"Found {n_pairs} pairs of texts ({len(texts_paths)}) / audio ({len(audios_paths)}) "
-        f"({strategy} strategy)."
+        f"({pairing_strategy} strategy)."
     )
     if n_pairs == 0:
         logger.warning("No pairings: maybe try a different pairing strategy?")
@@ -161,7 +160,7 @@ async def post_async(
     course_id: int,
     texts_folder: Path | None,
     audios_folder: Path | None,
-    pairing_strategy: str,
+    pairing_strategy: Strategy,
 ) -> None:
     if pairing_strategy not in PAIRING_STRATEGIES:
         raise NotImplementedError(f"Pairing strategy: '{pairing_strategy}' does not exist.")
@@ -195,7 +194,7 @@ def post(
     course_id: int,
     texts_folder: Path,
     audios_folder: Path | None = None,
-    pairing_strategy: str = "match_exact_titles",
+    pairing_strategy: Strategy = "exact",
 ) -> None:
     """
     Posts preprocessed split text and audio files to a specified course.
@@ -211,12 +210,7 @@ def post(
             Set this to None to post only text.
             Defaults to None.
         pairing_strategy (str, optional): How to pair text and audio files.
-            Options are:
-            - "zip": Simple zip of files.
-            - "match_exact_titles": Group texts and audios with the same title.
-                This will post texts if no corresponding audio is found,
-                and ignore audios with no corresponding texts.
-            Defaults to "match_exact_titles".
+            Options are: ["zip", "zipsort", "exact", "fuzzy"]
     """
     asyncio.run(
         post_async(
