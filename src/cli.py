@@ -13,6 +13,7 @@ from commands.markdown import markdown
 from commands.patch import patch_audios
 from commands.post import PAIRING_STRATEGIES, post
 from commands.post_yt_playlist import post_yt_playlist
+from commands.replace import replace
 from commands.resplit import resplit
 from commands.show import show_my
 from commands.sort_lessons import sort_lessons
@@ -319,6 +320,22 @@ def patch_audios_cli(lang: str, course_id: int, audios_folder: str) -> None:
 def patch_texts_cli() -> None:
     """Not implemented."""
     raise NotImplementedError()
+
+
+@cli.command("replace")
+@click.argument("course_id")
+@click.argument("choice", type=click.Choice(["fst", "snd"]))
+def replace_ja_cli(course_id: int, choice: str) -> None:
+    """Replace words in a course (only for japanese).
+
+    This is a hack to fix a bug on LingQ's side. Do not use.
+    """
+
+    _to_ignore = "『』「」"
+    repl_ja = {k: f"DUMMY{idx}" for idx, k in enumerate(_to_ignore)}
+    repl_ja_inv = {v: k for k, v in repl_ja.items()}
+    replacements = repl_ja if choice == "fst" else repl_ja_inv
+    replace("ja", course_id, replacements)
 
 
 @cli.command("resplit")
