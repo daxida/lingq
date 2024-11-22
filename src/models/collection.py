@@ -33,7 +33,7 @@ class Collection:
     views_count:    int = 0
     # fmt: on
 
-    def add_data(self, lang: str, collection_v2: Any) -> None:  # noqa: ANN401
+    def add_data(self, lang: str, collection_v2: Any) -> None:
         """Transfer the data from the JSON to the Collection object.
         Can't use V3 because of the lack of pubDate...
         """

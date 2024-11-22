@@ -116,7 +116,7 @@ def write_recursive(
             write_recursive(
                 content,
                 ranked_headings,
-                filetitles=filetitles + [(idx, title)],
+                filetitles=[*filetitles, (idx, title)],
             )
 
 

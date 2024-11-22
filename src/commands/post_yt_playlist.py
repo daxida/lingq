@@ -20,7 +20,7 @@ from utils import timing
 OldPlaylist = list[Any]
 
 
-def has_closed_captions(lang: str, entry: Any) -> bool:  # noqa: ANN401
+def has_closed_captions(lang: str, entry: Any) -> bool:
     return "subtitles" in entry and lang in entry["subtitles"]
 
 
@@ -69,7 +69,7 @@ async def filter_playlist(
 async def post_playlist_entry(
     handler: LingqHandler,
     course_id: int,
-    entry: Any,  # noqa: ANN401
+    entry: Any,
     idx: int,
     playlist_size: int,
     skip_no_cc: bool,
@@ -128,7 +128,7 @@ async def post_playlist_fully_async(
 
 
 @timing
-def get_playlist(url: str, ydl_opts: dict[str, Any]) -> Any:  # noqa: ANN401
+def get_playlist(url: str, ydl_opts: dict[str, Any]) -> Any:
     logger.info("Downloading playlist info")
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info: Any = ydl.extract_info(url, download=False)  # type: ignore

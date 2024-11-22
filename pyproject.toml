@@ -58,9 +58,16 @@ select = [
     "C",    # flake8-complexity
     "PTH",  # Paths
     "ANN",  # Annotations
+    "Q",    # Quotes
+    "RUF",  # RUFF
+    # "FIX",  # TODO
 ]
 ignore = [
+    "ANN401",
     "E221",
+    "RUF001",
+    "RUF002",
+    "RUF003",
 ]
 
 [tool.ruff.lint.per-file-ignores]

@@ -97,7 +97,7 @@ R = TypeVar("R")
 
 def timing(f: Callable[..., R]) -> Callable[..., R]:
     @wraps(f)
-    def wrap(*args: Any, **kw: Any) -> R:  # noqa: ANN401
+    def wrap(*args: Any, **kw: Any) -> R:
         ts = time.time()
         result = f(*args, **kw)
         te = time.time()

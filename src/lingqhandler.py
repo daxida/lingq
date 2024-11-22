@@ -60,7 +60,7 @@ class LingqHandler:
 
     """Debug utils"""
 
-    async def _options(self, url: str) -> Any:  # noqa: ANN401
+    async def _options(self, url: str) -> Any:
         async with self.session.options(url, headers=self.config.headers) as response:
             return await response.json()
 
@@ -225,7 +225,7 @@ class LingqHandler:
         data = await self._request("GET", f"collections/{course_id}")
         return CollectionV3.model_validate(data)
 
-    async def get_collection_from_id_v2(self, course_id: int) -> Any:  # noqa: ANN401
+    async def get_collection_from_id_v2(self, course_id: int) -> Any:
         """Returns a JSON. TODO: make a model for it."""
         return await self._request("GET", f"collections/{course_id}", version=2)
 
