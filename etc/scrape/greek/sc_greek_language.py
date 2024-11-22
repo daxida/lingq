@@ -16,6 +16,8 @@ def download_book_from_text_id(
     *,
     fr_page: int = 1,
     to_page: int = 999,
+    # Set this to True when downloading theatrical texts.
+    fmt_theater: bool = True,
 ) -> None:
     """Scrape a book given its id.
 
@@ -38,16 +40,31 @@ def download_book_from_text_id(
         page_text_res = soup.find("div", {"id": "translation_text"})
         if page_text_res is None:
             break  # The book is over
+
+        if fmt_theater:
+            process_html(page_text_res)
+
         page_text = page_text_res.text
         page_title = soup.find("div", {"class": "part-header"}).find("h3").text  # type: ignore
-
         out_page_title = f"{page:03d}. {page_title}.txt"
         opath = path / out_page_title
         with opath.open("w") as f:
             f.write(page_text)
 
 
-def download_books_from_author_id(author_id: str) -> None:
+def process_html(soup) -> None:  # noqa: ANN001
+    """Clean up the html for theatrical texts."""
+    for names in soup.find_all("span", class_="name"):
+        names.replace_with(f"[{names.string.strip()}] ")
+
+    for numbers in soup.find_all("span", class_="numbering"):
+        numbers.replace_with("")
+
+    for italics in soup.find_all("i"):
+        italics.replace_with(f"({italics.string})")
+
+
+def download_books_from_author_id(author_id: str, *, fmt_theater: bool = False) -> None:
     """Scrape all books from an author id.
 
     The author id is found as `author_id=number` in the url.
@@ -72,7 +89,7 @@ def download_books_from_author_id(author_id: str) -> None:
                 text_name = link.text
                 text_id = link["href"].split("=")[-1]
                 print(f"Downloading {text_name} ({author_name})")
-                download_book_from_text_id(text_id, text_name, author_name)
+                download_book_from_text_id(text_id, text_name, author_name, fmt_theater=fmt_theater)
 
         # Go to next range
         if to == n_books:  # reached the last book
@@ -83,5 +100,5 @@ def download_books_from_author_id(author_id: str) -> None:
 
 
 if __name__ == "__main__":
-    download_book_from_text_id(text_id="73", text_name="Ἱστορίαι", author_name="", fr_page=100)
-    # download_books_from_author_id(author_id="123")
+    # download_book_from_text_id(text_id="143", text_name="test", author_name="", fmt_theater=True)
+    download_books_from_author_id(author_id="123", fmt_theater=True)
