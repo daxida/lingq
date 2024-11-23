@@ -66,9 +66,12 @@ async def get_lesson_async(
     return lesson
 
 
-def write_lesson(lang: str, lesson: LessonV3, opath: Path) -> None:
+def write_lesson(lang: str, lesson: LessonV3, opath: Path, idx: int | None) -> None:
     collection_title = sanitize_title(lesson.collection_title)
     title = sanitize_title(lesson.title)
+
+    if idx:
+        title = f"{idx:02d}. {title}"
 
     texts_folder = opath / lang / collection_title / "texts"
     audios_folder = opath / lang / collection_title / "audios"
@@ -120,4 +123,5 @@ if __name__ == "__main__":
             lang="el",
             lesson=lesson,
             opath=Path("downloads"),
+            idx=None,
         )

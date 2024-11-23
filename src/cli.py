@@ -165,6 +165,7 @@ def yomitan_cli(langs: list[str], ipath: Path) -> None:
 @get.command("lessons")
 @click.argument("lang")
 @click.argument("course_id")
+@opath_option()
 @click.option(
     "--skip-downloaded",
     "-s",
@@ -177,14 +178,15 @@ def yomitan_cli(langs: list[str], ipath: Path) -> None:
 @click.option(
     "--download-timestamps", is_flag=True, default=False, help="If set, also download timestamps."
 )
-@opath_option()
+@click.option("--with-index", is_flag=True, default=False, help="If set, add index to the title.")
 def get_lessons_cli(
     lang: str,
     course_id: int,
+    opath: Path,
     skip_downloaded: bool,
     download_audio: bool,
     download_timestamps: bool,
-    opath: Path,
+    with_index: bool,
 ) -> None:
     """Get every lesson from a course id.
 
@@ -198,6 +200,7 @@ def get_lessons_cli(
         download_audio=download_audio,
         download_timestamps=download_timestamps,
         write=True,
+        with_index=with_index,
     )
 
 

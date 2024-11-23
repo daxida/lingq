@@ -36,6 +36,7 @@ async def get_lessons_async(
     download_timestamps: bool,
     skip_downloaded: bool,
     write: bool,
+    with_index: bool,
 ) -> list[LessonV3]:
     async with LingqHandler(lang) as handler:
         lessons = await handler.get_collection_lessons_from_id(course_id)
@@ -66,8 +67,9 @@ async def get_lessons_async(
         logger.success(f"'{collection_title}'")
 
         if write:
-            for lesson in lessons:
-                write_lesson(lang, lesson, opath)
+            for _idx, lesson in enumerate(lessons, 1):
+                idx = _idx if with_index else None
+                write_lesson(lang, lesson, opath, idx)
 
         return lessons
 
@@ -82,6 +84,7 @@ def get_lessons(
     download_timestamps: bool,
     skip_downloaded: bool,
     write: bool,
+    with_index: bool,
 ) -> None:
     """
     Downloads text and/or audio from a course given the language code and the course ID.
@@ -92,6 +95,8 @@ def get_lessons(
         skip_downloaded (bool): If True, skip downloading already downloaded lessons.
         download_audio (bool): If True, downloads the audio files for the lessons.
         opath (Path): Path to the folder where the downloaded text and audio files will be saved.
+
+        TODO: Update me
 
     Creates a 'download' folder and saves the text/audio in 'text'/'audio' subfolders.
     """
@@ -104,6 +109,7 @@ def get_lessons(
             download_timestamps=download_timestamps,
             skip_downloaded=skip_downloaded,
             write=write,
+            with_index=with_index,
         )
     )
 
@@ -118,4 +124,5 @@ if __name__ == "__main__":
         download_timestamps=True,
         skip_downloaded=False,
         write=True,
+        with_index=False,
     )
