@@ -43,7 +43,7 @@ class LessonTranslation(BaseModel):
 
 class Word(BaseModel):
     status: str
-    tags: list[str]
+    tags: list[str] = []
     importance: int
     text: str
     readings: Readings = Readings()
