@@ -15,7 +15,7 @@ from commands.post import PAIRING_STRATEGIES, post
 from commands.post_yt_playlist import post_yt_playlist
 from commands.replace import replace
 from commands.resplit import resplit
-from commands.show import show_my
+from commands.show import show_course, show_my
 from commands.sort_lessons import sort_lessons
 from commands.yomitan import yomitan
 
@@ -97,11 +97,28 @@ def show() -> None:
 
 @show.command("my")
 @click.argument("lang")
-@click.option("--shared-only", is_flag=True, default=False, show_default=True)
-@click.option("--codes", is_flag=True, default=False, show_default=True)
-def show_my_cli(lang: str, shared_only: bool, codes: bool) -> None:
-    """Show a list with my collections in the given language."""
-    show_my(lang, shared_only, codes)
+@click.option("-s", "--shared", is_flag=True, default=False, show_default=True)
+@click.option("-c", "--codes", is_flag=True, default=False, show_default=True)
+def show_my_cli(lang: str, shared: bool, codes: bool) -> None:
+    """Show my collections in a given language."""
+    show_my(lang, shared=shared, codes=codes)
+
+
+@show.command("course")
+@click.argument("lang")
+@click.argument("course_id")
+@click.option("-s", "--shared", is_flag=True, default=False, show_default=True)
+@click.option("-c", "--codes", is_flag=True, default=False, show_default=True)
+@click.option("-v", "--verbose", is_flag=True, default=False, show_default=True)
+def show_course_cli(
+    lang: str,
+    course_id: int,
+    shared: bool,
+    codes: bool,
+    verbose: bool,
+) -> None:
+    """Show lessons in a course."""
+    show_course(lang, course_id, shared=shared, codes=codes, verbose=verbose)
 
 
 @cli.group()
