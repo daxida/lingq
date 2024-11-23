@@ -21,17 +21,17 @@ from utils import get_editor_url
 
 
 class LingqHandler:
-    """
-    NOTE: A collection is a course in the API lingo. It is a group of lessons.
-          For consistency, 'course_id' is prefered over 'collection_id'.
+    """Abstraction for the requests sent to the LingQ API.
 
-    This abstracts some of the requests sent to the LingQ API.
+    NOTE: A collection is a course in the API lingo, i.e. a group of lessons.
+          For consistency, 'course_id' is prefered over 'collection_id'.
 
     Attributes:
         lang (str): The language code for the course (e.g., 'ja' for Japanese).
         config (Config): Configuration settings for the LingQ API.
         session (RetryClient): A retry-enabled HTTP client session.
         _user_id (int | None): The user id. Used for some requests.
+
     """
 
     API_URL_V1 = "https://www.lingq.com/api"
@@ -145,6 +145,7 @@ class LingqHandler:
 
     async def _get_user_langs(self) -> list[str]:
         """Get a list of language codes with known words.
+
         https://www.lingq.com/apidocs/api-2.0.html#get
         """
         data = await self._request("GET", "languages", version=2, add_language=False)
@@ -153,6 +154,7 @@ class LingqHandler:
     @classmethod
     def get_user_langs(cls) -> list[str]:
         """Get a list of language codes with known words.
+
         This is a class method since it does not require initializing a language code.
         """
 
@@ -163,8 +165,12 @@ class LingqHandler:
         return asyncio.run(get_user_langs_tmp())
 
     async def get_lesson_from_id(self, lesson_id: int) -> LessonV3 | None:
-        """Get a lesson, from its id. Example id: 34754329
-        Corresponding url: https://www.lingq.com/api/v3/LANG/lessons/ID/
+        """Get a lesson, from its id.
+
+        Example:
+            id: 34754329
+            url: https://www.lingq.com/api/v3/LANG/lessons/ID/
+
         """
         data = await self._request("GET", f"lessons/{lesson_id}/")
         return LessonV3.model_validate(data)
@@ -174,8 +180,12 @@ class LingqHandler:
         return await asyncio.gather(*(self.get_lesson_from_id(id) for id in ids))
 
     async def get_collection_lessons_from_id(self, course_id: int) -> list[CollectionLessonResult]:
-        """Get a list of lessons, from its id. Example id: 537808
-        Corresponding url: https://www.lingq.com/api/v3/ja/collections/537808/lessons
+        """Get a list of lessons, from their collection id.
+
+        Example:
+            id: 537808
+            url: https://www.lingq.com/api/v3/ja/collections/537808/lessons
+
         """
         base_url_size = len(f"{LingqHandler.API_URL_V3}/{self.lang}/")
         url = f"{LingqHandler.API_URL_V3}/{self.lang}/collections/{course_id}/lessons/"
@@ -213,7 +223,8 @@ class LingqHandler:
         return data.results
 
     async def get_currently_studying_collections(self) -> list[SearchCollectionResult]:
-        """Get a collection from the 'Continue Studying shelf'.
+        """Get collections from the 'Continue Studying shelf'.
+
         This includes collections imported by other users.
         """
         data = await self.search(
@@ -222,15 +233,25 @@ class LingqHandler:
         return data.results
 
     async def get_collection_from_id(self, course_id: int) -> CollectionV3:
+        """Get a CollectionV3 object.
+
+        This only contains an overview of the collection.
+        """
         data = await self._request("GET", f"collections/{course_id}")
         return CollectionV3.model_validate(data)
 
     async def get_collection_from_id_v2(self, course_id: int) -> Any:
-        """Returns a JSON. TODO: make a model for it."""
+        """Get a raw JSON for a collection (v2 API).
+
+        TODO: make a model for it.
+        """
         return await self._request("GET", f"collections/{course_id}", version=2)
 
     async def get_collection_object_from_id(self, course_id: int) -> Collection | None:
-        """Get a custom collection Object from a course_id."""
+        """Get a custom Collection object from a course_id.
+
+        Used for markdown generation.
+        """
         collection = await self.get_collection_from_id_v2(course_id)
         if not collection:
             return None
@@ -243,6 +264,7 @@ class LingqHandler:
 
     async def get_audio_from_lesson(self, lesson: LessonV3) -> bytes | None:
         """Get the audio from a lesson. Return None if there is no audio.
+
         Note: The key with the audio url is 'audio' in V2 and 'audioUrl' in V3.
         """
         if audio_url := lesson.audio_url:
@@ -259,6 +281,7 @@ class LingqHandler:
 
     async def patch_text(self, lesson_id: int, text_data: str) -> Any:
         """POST. Replace the text of a lesson.
+
         Note that this is actually a POST request that works like a patch one.
         """
         return await self._request(
@@ -279,6 +302,7 @@ class LingqHandler:
 
     async def create_course(self, title: str, description: str = "") -> Any:
         """Create an empty course given its title and (optional) description.
+
         Returns the response JSON, which contains an entry "id" for the course id.
         This id can be used for further uploading through post methods.
         """
@@ -288,17 +312,18 @@ class LingqHandler:
         return await self._request("POST", "lessons/import/", data=data, raw=raw)
 
     async def post_from_data_dict(self, data: dict[str, Any], *, raw: bool = False) -> Any:
-        """Intended to be used with dictionaries:
-        data = {
-            "title": "tmp_title",
-            "text": "Hello, world!",
-            "status": "private",  # default
-            "level": 0,           # default
-            "collection": course_id,
-            "save": True,         # NOTE: This is needed!
-        }
-        """
+        """POST. Post a lesson from a dictionary.
 
+        F.e.
+            data = {
+                "title": "tmp_title",
+                "text": "Hello, world!",
+                "status": "private",  # default
+                "level": 0,           # default
+                "collection": course_id,
+                "save": True,         # Needed
+            }
+        """
         self._check_data_conv(data)
         fdata = FormData(data)
         return await self.post_from_multipart(fdata, raw=raw)
@@ -315,7 +340,9 @@ class LingqHandler:
                 raise ValueError(f"Error at post_from_data_dict: data has no {key=}")
 
     async def replace(self, lesson_id: int, replacements: dict[str, str]) -> ClientResponse:
-        """A replacement is a pair {regex: substition}. F.e. {"a": "b", "c": "d"}
+        """POST. Regex-like replace text in a lesson.
+
+        A replacement is a pair {regex: substition}. F.e. {"a": "b", "c": "d"}
         I'm aware that the first argument is a regex because of the error messages
         with the '[]' characters, but I haven't actually used it with a regex.
 
@@ -329,9 +356,9 @@ class LingqHandler:
         )
 
     async def resplit_lesson(self, lesson_id: int, method: str) -> ClientResponse:
-        """
-        Resplit a Japanese lesson using the new splitting logic.
-        Cf: https://forum.lingq.com/t/refining-parsing-in-spaceless-languages-like-japanese-with-ai/179754/5
+        """Resplit a Japanese lesson using the new splitting logic.
+
+        https://forum.lingq.com/t/refining-parsing-in-spaceless-languages-like-japanese-with-ai/179754/5
         """
         assert method == "ichimoe", "Only ichimoe is supported atm"
         return await self._request(
@@ -342,7 +369,10 @@ class LingqHandler:
         )
 
     async def delete_course(self, course_id: int) -> None:
-        """Crashes if the course is not succesfully deleted."""
+        """Delete a course.
+
+        Crashes if the course is not succesfully deleted.
+        """
         url = f"{LingqHandler.API_URL_V3}/{self.lang}/collections/{course_id}"
         async with self.session.delete(url, headers=self.config.headers) as response:
             assert response.status == 202
