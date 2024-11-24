@@ -17,6 +17,7 @@ from commands.replace import replace
 from commands.resplit import resplit
 from commands.show import show_course, show_my
 from commands.sort_lessons import sort_lessons
+from commands.stats import stats
 from commands.yomitan import yomitan
 
 DEFAULT_OUT_PATH = Path("downloads")
@@ -363,6 +364,13 @@ def replace_ja_cli(course_id: int, choice: str) -> None:
 def resplit_ja_cli(course_id: int) -> None:
     """Resplit words in a course (only for japanese)."""
     resplit(course_id)
+
+
+@cli.command("stats")
+@click.argument("lang")
+def stats_cli(lang: str) -> None:
+    """Show some simple stats."""
+    stats(lang)
 
 
 @cli.command("markdown")

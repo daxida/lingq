@@ -271,6 +271,17 @@ class LingqHandler:
             async with self.session.get(str(audio_url)) as response:
                 return await response.read()
 
+    async def get_stats(self) -> Any:
+        """Get reading stats for the last 7 days.
+
+        Period options can be found at (replace lang if needed):
+        https://www.lingq.com/api/v3/ja/progress/
+        """
+        return await self._request(
+            method="GET",
+            endpoint="progress/chart_data/?metric=reading&period=last_7d",
+        )
+
     """Patch requests"""
 
     async def patch_audio(self, lesson_id: int, audio: BufferedReader) -> ClientResponse:
