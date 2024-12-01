@@ -100,9 +100,10 @@ def show() -> None:
 @click.argument("lang")
 @click.option("-s", "--shared", is_flag=True, default=False, show_default=True)
 @click.option("-c", "--codes", is_flag=True, default=False, show_default=True)
-def show_my_cli(lang: str, shared: bool, codes: bool) -> None:
+@click.option("-v", "--verbose", is_flag=True, default=False, show_default=True)
+def show_my_cli(lang: str, shared: bool, codes: bool, verbose: bool) -> None:
     """Show my collections in a given language."""
-    show_my(lang, shared=shared, codes=codes)
+    show_my(lang, shared=shared, codes=codes, verbose=verbose)
 
 
 @show.command("course")

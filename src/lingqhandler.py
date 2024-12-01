@@ -7,6 +7,7 @@ from aiohttp_retry import ExponentialRetry, RetryClient
 
 from config import Config
 from log import logger
+from models.counter import Counter
 from models.collection import Collection
 from models.collection_v3 import (
     CollectionLessonResult,
@@ -124,6 +125,9 @@ class LingqHandler:
             url = f"{api_url}/{endpoint}"
 
         logger.trace(f"{method.upper()} {url}")
+        if params := kwargs.get("params", ""):
+            logger.trace(f"{params=}")
+
         meth = getattr(self.session, method.lower())
 
         async with meth(url, headers=self.config.headers, **kwargs) as response:
@@ -210,6 +214,15 @@ class LingqHandler:
     async def get_my_collections(self) -> MyCollections:
         data = await self._request("GET", "collections/my")
         return MyCollections.model_validate(data)
+
+    async def counters(self, collection_ids: list[int]) -> dict[str, Counter]:
+        """Return summary information about collections."""
+        params = {"collection": collection_ids}
+        data = await self._request("GET", "collections/counters/", params=params)
+        return {
+            collection_id: Counter.model_validate(counter)
+            for collection_id, counter in data.items()
+        }
 
     async def search(self, params: dict[str, Any]) -> SearchCollections:
         data = await self._request("GET", "search", params=params)
