@@ -6,6 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "lingq"
 version = "1.0.0"
 readme = "README.md"
+requires-python = ">=3.12"
 dependencies = [
     "aiohttp>=3.9.5",
     "aiohttp_retry>=2.8.3",
@@ -18,6 +19,9 @@ dependencies = [
     "Levenshtein",
     "loguru",
 ]
+
+[project.urls]
+Repository = "https://github.com/daxida/lingq"
 
 [project.optional-dependencies]
 etc = [
