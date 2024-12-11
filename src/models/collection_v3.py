@@ -81,7 +81,7 @@ class CollectionLessonResult(BaseModel):
     provider_name: Optional[str]
     shared_by_id: int
     shared_by_name: str
-    status: Literal["private", "shared", "rejected", "inaccessible"] | None
+    status: Literal["private", "shared", "rejected", "inaccessible", "pending"] | None
     percent_completed: float
     is_over_limit: Optional[bool]
     is_protected: Optional[bool]

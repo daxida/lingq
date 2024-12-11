@@ -4,7 +4,7 @@ Note: Posting only audio triggers whisper transcript generation on their servers
 
 import asyncio
 from pathlib import Path
-from typing import Literal, Sequence
+from typing import Literal
 
 import aiohttp
 import Levenshtein
@@ -20,7 +20,7 @@ PAIRING_STRATEGIES = ["zip", "zipsort", "exact", "fuzzy"]
 
 Strategy = Literal["zip", "zipsort", "exact", "fuzzy"]
 Pairing = tuple[Path | None, Path | None]
-Pairings = Sequence[Pairing]
+Pairings = list[Pairing]
 
 
 async def post_lesson(

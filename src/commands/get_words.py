@@ -14,14 +14,11 @@ WordDump = list[dict[str, Any]]
 
 
 async def get_words_for_language_async(lang: str, page_size: int = 500) -> WordDump:
-    """
-    Get all LingQs for the given language.
+    """Get all LingQs for the given language.
 
-    The LingQ API throttles downloads:
-        - The API default page_size is 100 (with a max of 1000 words per page).
+    The LingQ API clamps page size:
+        - The API default page_size is 100 (with a clamped max of 1000 words per page).
     """
-    assert page_size <= 1000  # The API itself clamps it to 1000 anyway
-
     async with LingqHandler(lang) as handler:
         url = f"https://www.lingq.com/api/v3/{lang}/cards/"
         cur_url = f"{url}?page=1&page_size={page_size}"
