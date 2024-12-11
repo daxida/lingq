@@ -107,8 +107,13 @@ from mutagen.mp3 import MP3
 
 @dataclass
 class TimedText:
-    """Text with timestamp."""
+    """Text with timestamp.
 
+    The text is the output unit of split audio.
+    In default mode, it represents a chapter and may contain newlines.
+    """
+
+    title: str
     begin: str
     end: str
     text: str
@@ -203,8 +208,17 @@ def ffmpeg_split(audio_file: Path, begin: str, end: str, output_audio_path: Path
     # fmt: on
 
 
+TextLines = tuple[str, list[str]]
+"""Text lines. The first item is the name of (usually) the chapter.
+Then it contains a list (paragraph) of strings.
+"""
+
+TextsLines = list[TextLines]
+"""List of TextLines: one per text file read."""
+
+
 def split_audio(
-    fragments: Any, texts_lines: list[list[str]], cut_at_seconds: float = 0.0
+    fragments: Any, texts_lines: TextsLines, cut_at_seconds: float = 0.0
 ) -> list[TimedText]:
     """Split audio.
 
@@ -216,7 +230,7 @@ def split_audio(
     fragments = [fr for fr in fragments if fr["lines"][0]]
     logger.info(f"Discarded {n_fragments - len(fragments)} empty fragments")
 
-    n_paragraphs = sum(len(paragraph) for paragraph in texts_lines)
+    n_paragraphs = sum(len(paragraph) for _, paragraph in texts_lines)
 
     if len(fragments) != n_paragraphs:
         logging.warning(
@@ -240,9 +254,7 @@ def split_audio(
     return timed_texts
 
 
-def split_audio_preserving_chapters(
-    fragments: Any, texts_lines: list[list[str]]
-) -> list[TimedText]:
+def split_audio_preserving_chapters(fragments: Any, texts_lines: TextsLines) -> list[TimedText]:
     """Split audio and text preserving the original text split.
 
     That is, go back to the unmerged texts and remap the syncmap.
@@ -264,7 +276,7 @@ def split_audio_preserving_chapters(
 
     timed_texts = []
 
-    for text_lines in texts_lines:
+    for title, text_lines in texts_lines:
         cur_begin = None
         cur_end = None
         fragment_idxs = []
@@ -301,7 +313,7 @@ def split_audio_preserving_chapters(
         assert cur_begin, "TimedText begin should not be None"
         assert cur_end, "TimedText end should not be None"
 
-        timed_text = TimedText(cur_begin, cur_end, "\n".join(text_lines))
+        timed_text = TimedText(title, cur_begin, cur_end, "\n".join(text_lines))
 
         cur_interval = round(float(cur_end) - float(cur_begin), 3)
         logging.debug(
@@ -351,13 +363,12 @@ def split_audio_by_time(fragments: Any, cut_at_seconds: float) -> list[TimedText
     fragment_idx = 0
     text_buffer = []
     timed_texts = []
+    timed_text_idx = 0
 
     for fragment in fragments:
         begin = fragment["begin"]
         end = fragment["end"]
         lines = fragment["lines"]
-        # I'm not sure whats the point of aeneas using a list of string for only one string
-        assert len(lines) == 1
 
         if not cur_begin:
             cur_begin = begin
@@ -374,7 +385,13 @@ def split_audio_by_time(fragments: Any, cut_at_seconds: float) -> list[TimedText
                 f"{seconds_to_hms(cur_begin)} - {seconds_to_hms(cur_end)} ({cur_interval=}s)"
             )
 
-            timed_text = TimedText(cur_begin, cur_end, "\n".join(text_buffer))
+            timed_text = TimedText(
+                f"text{timed_text_idx:02d}",
+                cur_begin,
+                cur_end,
+                "\n".join(text_buffer),
+            )
+            timed_text_idx += 1
             timed_texts.append(timed_text)
 
             cur_begin = None
@@ -384,18 +401,21 @@ def split_audio_by_time(fragments: Any, cut_at_seconds: float) -> list[TimedText
     return timed_texts
 
 
-def write_timed_texts(timed_texts: list[TimedText], audio_file: Path, output_dir: Path) -> None:
-    """Write the final result to disk."""
+def write_timed_texts(timed_texts: list[TimedText], audio_path: Path, output_dir: Path) -> None:
+    """Write the timed_texts to disk.
+
+    Uses the timed text title for both the new text and audio.
+    """
     logging.info("Writting timed texts")
-    for idx, tt in enumerate(timed_texts, 1):
-        opath_audio = output_dir / "audios" / f"audio{idx:02}.mp3"
-        ffmpeg_split(audio_file, tt.begin, tt.end, opath_audio)
-        opath_text = output_dir / "texts" / f"text{idx:02}.txt"
+    for tt in timed_texts:
+        opath_audio = output_dir / "audios" / f"{tt.title}.mp3"
+        ffmpeg_split(audio_path, tt.begin, tt.end, opath_audio)
+        opath_text = output_dir / "texts" / f"{tt.title}.txt"
         with opath_text.open("w") as f:
             f.write(tt.text)
 
 
-def debug_paths(paths: list[Path] | list[str]) -> str:  # noqa: D103
+def debug_paths(paths: list[Path] | list[str]) -> str:
     dbg_message = ", ".join(f"'{path}'" for path in paths[:3])
     if len(paths) > 3:
         dbg_message += ", ..."
@@ -547,9 +567,8 @@ def main(
     # If given a number of sections, overwrite cut_at_seconds.
     # Crashes if cut_at_seconds is not its default value of 0.
     if n_sections > 0:
-        assert cut_at_seconds == 0
         audio_length = get_mp3_length(merged_audio_path)
-        cut_at_seconds = audio_length / n_sections
+        cut_at_seconds = round(audio_length / n_sections, 2)
         logging.debug(f"Given {n_sections=}, the new cut_at_seconds is {cut_at_seconds}")
     cut_at_seconds = float(cut_at_seconds)
 
@@ -568,8 +587,9 @@ def main(
     # Split the audio based on the sync map
     fragments = json.load(output_json.open("r"))["fragments"]
     text_files_paths = get_sorted_file_paths(text_dir, ".txt")
-    texts_lines = [
-        fp.open("r", encoding="utf-8").read().strip().splitlines() for fp in text_files_paths
+    texts_lines: TextsLines = [
+        (fp.stem, fp.open("r", encoding="utf-8").read().strip().splitlines())
+        for fp in text_files_paths
     ]
 
     # For making tests
@@ -605,12 +625,27 @@ def parse_args() -> argparse.Namespace:
         help="Path to the book (e.g., directory containing text/audio files). Default: 'book'",
     )
     parser.add_argument(
-        "-c", "--cut-at-seconds", type=int, help="Maximum duration (in seconds) to cut sections"
+        "-c",
+        "--cut-at-seconds",
+        type=int,
+        default=0,
+        help="Maximum duration (in seconds) to cut sections",
     )
     parser.add_argument(
-        "-n", "--n-sections", type=int, help="Number of sections to split the input into"
+        "-n",
+        "--n-sections",
+        type=int,
+        default=0,
+        help="Number of sections to split the input into",
     )
-    return parser.parse_args()
+
+    args = parser.parse_args()
+
+    if args.cut_at_seconds > 0 and args.n_sections > 0:
+        reason = "cut_at_seconds conflicts with n_sections. Only input one of them."
+        raise ValueError(reason)
+
+    return args
 
 
 if __name__ == "__main__":
@@ -628,6 +663,6 @@ if __name__ == "__main__":
     main(
         lang=args.lang,
         files_dir=args.ipath,
-        # cut_at_seconds=10,
-        # n_sections=20,
+        cut_at_seconds=args.cut_at_seconds,
+        n_sections=args.n_sections,
     )
