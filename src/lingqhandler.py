@@ -7,7 +7,6 @@ from aiohttp_retry import ExponentialRetry, RetryClient
 
 from config import Config
 from log import logger
-from models.counter import Counter
 from models.collection import Collection
 from models.collection_v3 import (
     CollectionLessonResult,
@@ -16,6 +15,7 @@ from models.collection_v3 import (
     SearchCollectionResult,
     SearchCollections,
 )
+from models.counter import Counter
 from models.lesson_v3 import LessonV3
 from models.my_collections import MyCollections
 from utils import get_editor_url
@@ -50,14 +50,11 @@ class LingqHandler:
         self.session = retry_client
         self._user_id = None
 
-    async def close(self) -> None:
-        await self.session.close()
-
     async def __aenter__(self):  # noqa: ANN204
         return self
 
     async def __aexit__(self, *_):  # noqa: ANN002, ANN204
-        await self.close()
+        await self.session.close()
 
     """Debug utils"""
 
