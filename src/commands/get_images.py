@@ -58,7 +58,7 @@ async def get_images_async(lang: str, course_id: int, opath: Path) -> None:
 
 @timing
 def get_images(lang: str, course_id: int, opath: Path) -> None:
-    """Get all images from a course"""
+    """Get all images from a course."""
     asyncio.run(get_images_async(lang, course_id, opath))
 
 

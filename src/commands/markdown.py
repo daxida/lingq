@@ -15,8 +15,7 @@ def sanitize_title(title: str) -> str:
 
 
 def write_readme(langs: list[str], out_folder: Path) -> None:
-    """
-    Writes an index-like README.md:
+    """Writes an index-like README.md:
         * [Greek (el)](./courses/courses_el.md)
         * [English (en)](./courses/courses_en.md)
         * [French (fr)](./courses/courses_fr.md)
@@ -83,8 +82,7 @@ def write_markdown(
 
 
 async def get_collections(handler: LingqHandler, select_courses: str) -> list[Collection]:
-    """
-    A collection is just a course in the web lingo.
+    """A collection is just a course in the web lingo.
     Given a language code, returns a list of Collection objects.
     Those store the important information of the JSON to then make the markdown.
     """
@@ -159,8 +157,7 @@ def markdown(
     include_views: bool,
     out_folder: Path,
 ) -> None:
-    """
-    Generate markdown files for the given language codes.
+    """Generate markdown files for the given language codes.
 
     Args:
         langs (list[str]): List of language codes to process.

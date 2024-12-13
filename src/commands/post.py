@@ -196,8 +196,7 @@ def post(
     audios_folder: Path | None = None,
     pairing_strategy: Strategy = "exact",
 ) -> None:
-    """
-    Posts preprocessed split text and audio files to a specified course.
+    """Posts preprocessed split text and audio files to a specified course.
 
     The preprocessed split text (.txt or .srt) files should be in texts_folder,
     and the audio (.mp3 or .m4a) files should be in audios_folder.

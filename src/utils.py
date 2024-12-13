@@ -25,8 +25,7 @@ def get_editor_url(lang: str, content_id: int, content_type: Literal["lesson", "
 
 
 def normalize_greek_word(word: str) -> str:
-    """
-    Return a greek word without accents in lowercase.
+    """Return a greek word without accents in lowercase.
     ["Άλφα", "Αλφα", "άλφα", "αλφα"] are all converted into "αλφα".
 
     >>> words = ["Άλφα", "Αλφα", "άλφα", "αλφα"]
@@ -38,8 +37,7 @@ def normalize_greek_word(word: str) -> str:
 
 
 def sort_greek_words(word: str) -> tuple[float, ...]:
-    """
-    Sort greek words while ignoring case and accents:
+    """Sort greek words while ignoring case and accents:
 
     >>> words = ["Βελάκι", "άλφα", "αλφάδι", "Άρτεμις", "Άλφα", "αλεπού"]
     >>> words.sort(key=sort_greek_words)
@@ -76,7 +74,7 @@ def roman_sorting_fn(x: str) -> int:
 
 
 def sorted_subpaths(folder: Path, mode: str) -> list[Path]:
-    """Supports human (natsort), roman (I < V) and greek (Β < Γ) sorting"""
+    """Supports human (natsort), roman (I < V) and greek (Β < Γ) sorting."""
     sorting_fn: Callable[[str], Any]
     if mode == "human":
         sorting_fn = os_sorted

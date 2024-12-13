@@ -1,5 +1,4 @@
-"""
-Script to prompt tailored questions based on the subtitles of a youtube video.
+"""Script to prompt tailored questions based on the subtitles of a youtube video.
 It takes as parameters the number of questions to generate.
 
 Uses yt_dlp to download the subtitles.
@@ -17,7 +16,7 @@ from gpt4all import GPT4All
 
 # Function to download YouTube subtitles using yt-dlp
 def download_subtitles(video_url: str, lang: str = "ja") -> Path | None:
-    """Download YouTube's video's subtitles using yt-dlp"""
+    """Download YouTube's video's subtitles using yt-dlp."""
     print(f"[yt-dlp] Downloading subtitles for: {video_url}")
     # fmt: off
     command = [
@@ -44,7 +43,7 @@ def download_subtitles(video_url: str, lang: str = "ja") -> Path | None:
 
 
 def clean_subtitles(subtitles_path: Path) -> str:
-    """Clean .vtt subtitle files (remove timestamps, metadata)"""
+    """Clean .vtt subtitle files (remove timestamps, metadata)."""
     with subtitles_path.open("r", encoding="utf-8") as file:
         lines = file.readlines()
 

@@ -141,7 +141,7 @@ def specific_fixes(text: str) -> str:
 
 
 def fix_textstring(text: str) -> str:
-    """Apply the fixes to the whole string of text"""
+    """Apply the fixes to the whole string of text."""
 
     # Page numbers
     text = re.sub(r"\d+\n", "", text)
@@ -182,7 +182,7 @@ def fix_textstring(text: str) -> str:
 
 
 def fix_textlines(line: str) -> str:
-    """Apply the fixes line by line"""
+    """Apply the fixes line by line."""
 
     # Removes starting spaces if any.
     line = re.sub(r"^ *", "", line)

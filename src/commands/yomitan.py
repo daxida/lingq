@@ -1,5 +1,4 @@
-"""
-What to do once you managed to create a yomitan dictionary:
+"""What to do once you managed to create a yomitan dictionary:
 
 (1) Install yomitan if you haven't: https://github.com/yomidevs/yomitan
 (2) Click the settings cog.
@@ -164,8 +163,7 @@ def write_yomitan_dict(lang: str, out_path: Path, yomitan_dict: YomitanDict) -> 
 
 
 def yomitan(langs: list[str], opath: Path) -> None:
-    """
-    Make a Yomitan dictionary from a LingQ JSON dump generated through get_words.
+    """Make a Yomitan dictionary from a LingQ JSON dump generated through get_words.
 
     If no language codes are given, use all languages.
     """

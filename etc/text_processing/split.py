@@ -1,5 +1,4 @@
-"""
-How to Import and Structure a Book
+"""How to Import and Structure a Book.
 
 1. Obtain the text of the book:
    - Get a PDF file of the book.
@@ -121,8 +120,7 @@ def write_recursive(
 
 
 def test_titles(split_data: SplitData, ranked_headings: list[Headings], level: int = 0) -> bool:
-    """
-    Tests that every chapter in the heading list is correctly found, recursively.
+    """Tests that every chapter in the heading list is correctly found, recursively.
     Returns True if all the chapters are found.
     """
     if isinstance(split_data, list):

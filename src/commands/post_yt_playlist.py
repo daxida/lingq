@@ -1,5 +1,4 @@
-"""
-Uses yt-dlp to scan a youtube playlist:
+"""Uses yt-dlp to scan a youtube playlist:
 - Identifies if a lesson has Captions / Auto-generated subtitles / None
 - Downloads the Auto-generated subtitles there is no captions
 
@@ -74,8 +73,7 @@ async def post_playlist_entry(
     playlist_size: int,
     skip_no_cc: bool,
 ) -> None:
-    """
-    Request that only sends the url of the youtube video to LingQ.
+    """Request that only sends the url of the youtube video to LingQ.
     They do the subtitle generation when needed (that is, when there are no CC).
     """
     title = entry["title"]
@@ -183,8 +181,7 @@ def post_yt_playlist(
     skip_uploaded: bool,
     skip_no_cc: bool = True,
 ) -> None:
-    """
-    Main function to download and upload videos from a YouTube playlist to LingQ.
+    """Main function to download and upload videos from a YouTube playlist to LingQ.
 
     Args:
         lang (str): The language code for the course.
