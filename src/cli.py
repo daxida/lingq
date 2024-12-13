@@ -15,7 +15,7 @@ from commands.post import PAIRING_STRATEGIES, post
 from commands.post_yt_playlist import post_yt_playlist
 from commands.replace import replace
 from commands.resplit import resplit
-from commands.show import show_course, show_my
+from commands.show import show_course, show_my, show_status
 from commands.sort_lessons import sort_lessons
 from commands.stats import stats
 from commands.yomitan import yomitan
@@ -121,6 +121,13 @@ def show_course_cli(
 ) -> None:
     """Show lessons in a course."""
     show_course(lang, course_id, shared=shared, codes=codes, verbose=verbose)
+
+
+@show.command("status")
+@click.argument("lang")
+def show_status_cli(lang: str) -> None:
+    """Show pending and refused lessons in a language."""
+    show_status(lang)
 
 
 @cli.group()

@@ -277,9 +277,10 @@ class LingqHandler:
 
         Note: The key with the audio url is 'audio' in V2 and 'audioUrl' in V3.
         """
-        if audio_url := lesson.audio_url:
-            async with self.session.get(str(audio_url)) as response:
-                return await response.read()
+        if not lesson.audio_url:
+            return None
+        async with self.session.get(str(lesson.audio_url)) as response:
+            return await response.read()
 
     async def get_stats(self) -> Any:
         """Get reading stats for the last 7 days.
