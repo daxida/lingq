@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, HttpUrl
 from pydantic.alias_generators import to_camel
@@ -22,32 +22,32 @@ class CollectionV3(BaseModel):
     type: str
     title: str
     status: str
-    source: Optional[CollectionSource]
-    is_taken: Optional[bool]
+    source: CollectionSource | None
+    is_taken: bool | None
     image_url: HttpUrl
     audio_pending: bool
-    original_image_url: Optional[HttpUrl]
-    provider_image_url: Optional[HttpUrl]
+    original_image_url: HttpUrl | None
+    provider_image_url: HttpUrl | None
     shared_by_image_url: HttpUrl
-    provider_id: Optional[int]
-    provider_name: Optional[str]
+    provider_id: int | None
+    provider_name: str | None
     shared_by_id: int
     shared_by_name: str
-    shared_by_role: Optional[str]
+    shared_by_role: str | None
     description: str
-    is_featured: Optional[bool]
-    is_locked: Optional[bool]
+    is_featured: bool | None
+    is_locked: bool | None
     lessons_count: int
     new_words_count: int
     difficulty: float
     roses_count: int
     views_count: int
     duration: int
-    progress: Optional[str]
-    metadata: Optional[dict]
+    progress: str | None
+    metadata: dict | None
     folders: list[int]
-    accent: Optional[str]
-    level: Optional[str]
+    accent: str | None
+    level: str | None
     price: int
     date: str
     tags: list[str]
@@ -67,40 +67,40 @@ class CollectionLessonResult(BaseModel):
     url: str
     type: str
     date: str
-    level: Optional[str]
+    level: str | None
     title: str
-    description: Optional[str]
-    accent: Optional[str]
+    description: str | None
+    accent: str | None
     collection_id: int
     collection_title: str
-    audio: Optional[str]
-    image_url: Optional[str]
-    original_image_url: Optional[str]
-    provider_id: Optional[int]
-    provider_image_url: Optional[str]
-    provider_name: Optional[str]
+    audio: str | None
+    image_url: str | None
+    original_image_url: str | None
+    provider_id: int | None
+    provider_image_url: str | None
+    provider_name: str | None
     shared_by_id: int
     shared_by_name: str
     status: Literal["private", "shared", "rejected", "inaccessible", "pending"] | None
     percent_completed: float
-    is_over_limit: Optional[bool]
-    is_protected: Optional[bool]
-    is_featured: Optional[bool]
+    is_over_limit: bool | None
+    is_protected: bool | None
+    is_featured: bool | None
     views_count: int
     word_count: int
     unique_word_count: int
     new_words_count: int
     listen_times: float
     difficulty: float
-    source_type: Optional[str]
-    source_url: Optional[str]
-    source: Optional[CollectionSource]
+    source_type: str | None
+    source_url: str | None
+    source: CollectionSource | None
     duration: int
     price: int
     tags: list[str]
     folders: list[int]
     shelves: list[str]
-    video_url: Optional[str]
+    video_url: str | None
     can_edit: bool
 
 
@@ -124,32 +124,32 @@ class SearchCollectionResult(BaseModel):
     type: str
     title: str
     status: str
-    source: Optional[CollectionSource]
-    is_taken: Optional[bool]
-    image_url: Optional[str]
+    source: CollectionSource | None
+    is_taken: bool | None
+    image_url: str | None
     audio_pending: bool
-    original_image_url: Optional[str]
-    provider_image_url: Optional[str]
-    shared_by_image_url: Optional[str]
-    provider_id: Optional[int]
-    provider_name: Optional[str]
+    original_image_url: str | None
+    provider_image_url: str | None
+    shared_by_image_url: str | None
+    provider_id: int | None
+    provider_name: str | None
     shared_by_id: int
     shared_by_name: str
-    shared_by_role: Optional[str]
-    description: Optional[str]
-    is_featured: Optional[bool]
-    is_locked: Optional[bool]
+    shared_by_role: str | None
+    description: str | None
+    is_featured: bool | None
+    is_locked: bool | None
     lessons_count: int
     new_words_count: int
     difficulty: float
     roses_count: int
     views_count: int
     duration: int
-    progress: Optional[float]
+    progress: float | None
     # metadata
     folders: list[int]
-    accent: Optional[str]
-    level: Optional[str]
+    accent: str | None
+    level: str | None
     price: int
     date: str
     tags: list[str]

@@ -1,6 +1,6 @@
 """https://www.lingq.com/api/v3/el/lessons/31145860/"""
 
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, HttpUrl
 from pydantic.alias_generators import to_camel
@@ -12,13 +12,13 @@ from models.transliteration import Transliteration
 
 
 class Token(BaseModel):
-    opentag: Optional[str] = None
-    text: Optional[str] = None
-    word_id: Optional[int] = None
-    index_in_sentence: Optional[int] = None
+    opentag: str | None = None
+    text: str | None = None
+    word_id: int | None = None
+    index_in_sentence: int | None = None
     transliteration: Transliteration = Transliteration()
-    index: Optional[int] = None
-    closetag: Optional[str] = None
+    index: int | None = None
+    closetag: str | None = None
 
 
 class TokenGroup(BaseModel):
@@ -47,7 +47,7 @@ class Word(BaseModel):
     importance: int
     text: str
     readings: Readings = Readings()
-    hints: Optional[list[Hint]] = []
+    hints: list[Hint] | None = []
 
 
 class Metadata(BaseModel):
@@ -82,24 +82,24 @@ class LessonV3(BaseModel):
     collection_id: int
     collection_title: str
     url: HttpUrl
-    original_url: Optional[HttpUrl] | Literal[""]
+    original_url: HttpUrl | None | Literal[""]
     image_url: HttpUrl
     original_image_url: HttpUrl
-    provider_image_url: Optional[HttpUrl]
+    provider_image_url: HttpUrl | None
     title: str
     description: str
     duration: int
-    audio_url: Optional[HttpUrl]
+    audio_url: HttpUrl | None
     audio_pending: bool
     give_rose_url: str
     word_count: int
     unique_word_count: int
     pub_date: str
-    shared_date: Optional[str]
+    shared_date: str | None
     shared_by_id: int
     shared_by_name: str
-    shared_by_role: Optional[str]
-    external_type: Optional[str]
+    shared_by_role: str | None
+    external_type: str | None
     type: str
     # P := shared, D := private, R := rejected, X := None
     status: Literal["P", "D", "R", "X"]
@@ -110,34 +110,34 @@ class LessonV3(BaseModel):
     percent_completed: float
     new_words_count: int
     difficulty: float
-    provider_name: Optional[str]
-    provider_description: Optional[str]
-    last_rose_received: Optional[str]
+    provider_name: str | None
+    provider_description: str | None
+    last_rose_received: str | None
     lesson_rating: int
     lesson_votes: int
     audio_rating: int
     audio_votes: int
     roses_count: int
     is_favorite: bool
-    is_over_limit: Optional[bool]
-    level: Optional[str]
+    is_over_limit: bool | None
+    level: str | None
     tags: list[str]
     # Sometimes it is just an empty string...
-    provider_url: Optional[str]
+    provider_url: str | None
     read_times: float
     listen_times: float
     rose_given: bool
-    open_date: Optional[str]
+    open_date: str | None
     views_count: int
-    is_protected: Optional[int]
+    is_protected: int | None
     scheduled_for_deletion: bool
-    metadata: Optional[Metadata]
-    classic_url: Optional[str]
+    metadata: Metadata | None
+    classic_url: str | None
     collection: CollectionV3
     folders: list[int]
     is_legacy: bool
-    simplified_to: Optional[str]
-    simplified_by: Optional[str]
+    simplified_to: str | None
+    simplified_by: str | None
     tokenized_text: list[list[TokenGroup]]
     is_locked: (
         bool
@@ -146,16 +146,16 @@ class LessonV3(BaseModel):
     )
     shared_by_image_url: HttpUrl
     shared_by_is_friend: bool
-    print_url: Optional[str]
+    print_url: str | None
     can_edit: bool
     can_edit_sentence: bool
     bookmark: dict[str, Any]
-    next_lesson_id: Optional[int] = None
-    previous_lesson_id: Optional[int] = None
-    previous_lesson: Optional[PreviousLesson] = None
-    next_lesson: Optional[PreviousLesson] = None
-    translation: Optional[LessonTranslation]
-    video_url: Optional[str]
+    next_lesson_id: int | None = None
+    previous_lesson_id: int | None = None
+    previous_lesson: PreviousLesson | None = None
+    next_lesson: PreviousLesson | None = None
+    translation: LessonTranslation | None
+    video_url: str | None
     cards: dict[str, Any]
     cards_count: int
     words: dict[str, Word]

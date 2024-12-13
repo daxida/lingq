@@ -1,8 +1,9 @@
 import time
 import unicodedata
+from collections.abc import Callable
 from functools import wraps
 from pathlib import Path
-from typing import Any, Callable, Literal, TypeVar
+from typing import Any, Literal, TypeVar
 
 import roman  # type: ignore
 from natsort import os_sorted

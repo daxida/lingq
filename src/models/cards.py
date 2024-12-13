@@ -1,4 +1,3 @@
-from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
@@ -27,7 +26,7 @@ class Card(BaseModel):
     # last_reviewed_correct: Optional[str] = None
     # srs_due_date: str
     notes: str
-    audio: Optional[str] = None
+    audio: str | None = None
     words: list[str]
     tags: list[str]
     hints: list[Hint]
@@ -40,6 +39,6 @@ class Card(BaseModel):
 
 class Cards(BaseModel):
     count: int
-    next: Optional[str] = None
-    previous: Optional[str] = None
+    next: str | None = None
+    previous: str | None = None
     results: list[Card]

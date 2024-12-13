@@ -395,7 +395,9 @@ class LingqHandler:
 
         https://forum.lingq.com/t/refining-parsing-in-spaceless-languages-like-japanese-with-ai/179754/5
         """
-        assert method == "ichimoe", "Only ichimoe is supported atm"
+        if method != "ichimoe":
+            msg = "Only method=ichimoe is supported."
+            raise NotImplementedError(msg)
         return await self._request(
             "POST",
             f"lessons/{lesson_id}/resplit/",
@@ -410,4 +412,6 @@ class LingqHandler:
         """
         url = f"{LingqHandler.API_URL_V3}/{self.lang}/collections/{course_id}"
         async with self.session.delete(url, headers=self.config.headers) as response:
-            assert response.status == 202
+            if response.status != 202:
+                msg = "The course could not be successfully deleted"
+                raise RuntimeError(msg)

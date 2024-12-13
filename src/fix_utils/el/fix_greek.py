@@ -5,7 +5,7 @@ TODO: Make a test every time I use this script to fix a book.
 
 import re
 from pathlib import Path
-from typing import Match
+from re import Match
 
 
 def upper(pat: Match[str]) -> str:
