@@ -13,6 +13,7 @@ from commands.markdown import markdown
 from commands.patch import patch_audios
 from commands.post import PAIRING_STRATEGIES, post
 from commands.post_yt_playlist import post_yt_playlist
+from commands.reindex import reindex
 from commands.replace import replace
 from commands.resplit import resplit
 from commands.show import show_course, show_my, show_status
@@ -323,6 +324,14 @@ def post_yt_playlist_cli(
         skip_uploaded=skip_uploaded,
         skip_no_cc=True,
     )
+
+
+@cli.command("reindex")
+@click.argument("lang")
+@click.argument("course_id")
+def reindex_cli(lang: str, course_id: int) -> None:
+    """Reindex titles in a course."""
+    reindex(lang, course_id)
 
 
 @cli.group()

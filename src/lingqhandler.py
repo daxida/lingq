@@ -377,6 +377,19 @@ class LingqHandler:
             raw=True,
         )
 
+    async def replace_sentence(self, lesson_id: int, text: str, index: int) -> ClientResponse:
+        """POST. Replace a sentence in a lesson."""
+        return await self._request(
+            "POST",
+            f"lessons/{lesson_id}/sentences/",
+            json={"action": "update", "index": index, "text": text},
+            raw=True,
+        )
+
+    async def replace_title(self, lesson_id: int, text: str) -> ClientResponse:
+        """POST. Replace the title of a lesson."""
+        return await self.replace_sentence(lesson_id, text, index=1)
+
     async def resplit_lesson(self, lesson_id: int, method: str) -> ClientResponse:
         """Resplit a Japanese lesson using the new splitting logic.
 
