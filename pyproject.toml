@@ -45,9 +45,6 @@ lingq = "cli:cli"
 [tool.ruff]
 line-length = 100
 output-format = "concise"
-exclude = [
-    "etc/audio_processing/split_audio.py",
-]
 
 [tool.ruff.lint.pycodestyle]
 max-doc-length = 100
