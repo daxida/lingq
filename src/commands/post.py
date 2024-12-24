@@ -1,6 +1,7 @@
 """Bulk post utilities.
 
-Note: Posting only audio triggers whisper transcript generation on their servers."""
+Note: Posting only audio triggers whisper transcript generation on their servers.
+"""
 
 import asyncio
 from pathlib import Path
@@ -148,9 +149,13 @@ def fuzzy_match_pairing(
 
 
 def check_extensions(paths: list[Path], supported: list[str]) -> list[str]:
+    """Check if the extensions are supported.
+
+    Ignores folders (i.e. folders inside the audio/text folder).
+    """
     extensions = list({path.suffix for path in paths})
     for ext in extensions:
-        if ext not in supported:
+        if ext != "" and ext not in supported:
             raise ValueError(f"Unsupported extension: '{ext}'")
     return extensions
 
