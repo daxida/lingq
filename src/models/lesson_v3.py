@@ -1,4 +1,7 @@
-"""https://www.lingq.com/api/v3/el/lessons/31145860/"""
+"""Lesson model for API v3.
+
+https://www.lingq.com/api/v3/el/lessons/31145860/
+"""
 
 from typing import Any, Literal
 

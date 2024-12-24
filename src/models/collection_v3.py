@@ -11,7 +11,10 @@ class CollectionSource(BaseModel):
 
 
 class CollectionV3(BaseModel):
-    """https://www.lingq.com/api/v3/el/collections/1765504/"""
+    """Collection model for API v3.
+
+    https://www.lingq.com/api/v3/el/collections/1765504/
+    """
 
     model_config = ConfigDict(
         alias_generator=to_camel,

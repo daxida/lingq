@@ -11,7 +11,7 @@ def sanitize_title(title: str) -> str:
 
 
 def format_timestamp(seconds: float) -> str:
-    """Format seconds to VTT format: HH:MM:SS.mmm"""
+    """Format seconds to VTT format (HH:MM:SS.mmm)."""
     hours = int(seconds // 3600)
     minutes = int((seconds % 3600) // 60)
     secs = int(seconds % 60)

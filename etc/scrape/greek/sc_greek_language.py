@@ -1,4 +1,8 @@
-"""Scrape a book from https://www.greek-language.gr/"""
+"""Scrape a book from greek-language.
+
+https://www.greek-language.gr/
+https://www.greek-language.gr/digitalResources/ancient_greek/library/index.html
+"""
 
 import re
 from pathlib import Path

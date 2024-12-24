@@ -1,4 +1,7 @@
-"""Scrape a book from https://itazuranekoyomi.neocities.org/library/shousetu/shouall"""
+"""Scrape a book from itazura.
+
+https://itazuranekoyomi.neocities.org/library/shousetu/shouall
+"""
 
 from pathlib import Path
 from typing import Any

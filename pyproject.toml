@@ -63,13 +63,20 @@ select = [
     "Q",    # Quotes
     "RUF",  # RUFF
     # "FIX",  # TODO
+    # "S",    # flake8-bandit
+    "D212",
+    "D400",
+    # "D",    # documentation
 ]
 ignore = [
     "ANN401",
+    "D105",
+    "D107",
     "E221",
     "RUF001",
     "RUF002",
     "RUF003",
+    "S101",
 ]
 
 [tool.ruff.lint.per-file-ignores]

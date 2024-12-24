@@ -1,4 +1,8 @@
-"""Scrape a book from https://www.sosekiproject.org/"""
+"""Scrape a book from sosekiproject.
+
+https://www.sosekiproject.org/
+https://www.sosekiproject.org/botchan/index.html
+"""
 
 from pathlib import Path
 

@@ -1,4 +1,7 @@
-"""Scrape a book from https://ncode.syosetu.com/"""
+"""Scrape a book from syosetu.
+
+https://ncode.syosetu.com/
+"""
 
 from pathlib import Path
 

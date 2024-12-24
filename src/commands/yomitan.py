@@ -1,4 +1,6 @@
-"""What to do once you managed to create a yomitan dictionary:
+"""Instructions.
+
+What to do once you managed to create a yomitan dictionary:
 
 (1) Install yomitan if you haven't: https://github.com/yomidevs/yomitan
 (2) Click the settings cog.

@@ -37,7 +37,7 @@ def normalize_greek_word(word: str) -> str:
 
 
 def sort_greek_words(word: str) -> tuple[float, ...]:
-    """Sort greek words while ignoring case and accents:
+    """Sort greek words while ignoring case and accents.
 
     >>> words = ["Βελάκι", "άλφα", "αλφάδι", "Άρτεμις", "Άλφα", "αλεπού"]
     >>> words.sort(key=sort_greek_words)

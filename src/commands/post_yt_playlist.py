@@ -1,6 +1,7 @@
-"""Uses yt-dlp to scan a youtube playlist:
+"""Use yt-dlp to scan a youtube playlist.
+
 - Identifies if a lesson has Captions / Auto-generated subtitles / None
-- Downloads the Auto-generated subtitles there is no captions
+- Downloads the Auto-generated subtitles there are no captions
 
 With the recent LingQ changes, it only works with videos that have closed
 captions. Auto-generated subtitles or none of them will result in failure.

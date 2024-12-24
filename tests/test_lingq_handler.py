@@ -14,7 +14,11 @@ MOCK_APATH = Path("tests/fixtures/audios/10-seconds-of-silence.mp3")
 
 
 def test_handler() -> None:
-    """NOTE: This is user dependent!"""
+    """Test the LingQ handler.
+
+    NOTE: This is user dependent!
+          Uses the german library since I do not have much there.
+    """
     logger.info("Starting test_pipeline")
 
     # Test get_user_langs
