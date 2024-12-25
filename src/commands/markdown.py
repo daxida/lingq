@@ -15,11 +15,13 @@ def sanitize_title(title: str) -> str:
 
 
 def write_readme(langs: list[str], out_folder: Path) -> None:
-    """Writes an index-like README.md:
-        * [Greek (el)](./courses/courses_el.md)
-        * [English (en)](./courses/courses_en.md)
-        * [French (fr)](./courses/courses_fr.md)
-        etc.
+    """Writes an index-like README.md.
+
+    Adds links to the file structure for easy browsing:
+    * [Greek (el)](./courses/courses_el.md)
+    * [English (en)](./courses/courses_en.md)
+    * [French (fr)](./courses/courses_fr.md)
+    etc.
     """
 
     readme_path = out_folder / "README.md"

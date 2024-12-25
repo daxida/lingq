@@ -53,7 +53,7 @@ async def get_lesson_async(
 ) -> LessonV3 | None:
     lesson = await handler.get_lesson_from_id(lesson_id)
     if lesson is None:
-        return
+        return None
 
     if download_audio:
         audio = await handler.get_audio_from_lesson(lesson)
