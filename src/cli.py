@@ -10,6 +10,7 @@ from commands.get_lessons import get_lessons
 from commands.get_words import get_words
 from commands.library_overview import overview
 from commands.markdown import markdown
+from commands.merge import merge
 from commands.patch import patch_audios
 from commands.post import PAIRING_STRATEGIES, post
 from commands.post_yt_playlist import post_yt_playlist
@@ -323,6 +324,18 @@ def post_yt_playlist_cli(
         skip_uploaded=skip_uploaded,
         skip_no_cc=True,
     )
+
+
+@cli.command("merge")
+@click.argument("lang")
+@click.argument("fr_course_id")
+@click.argument("to_course_id")
+def merge_cli(lang: str, fr_course_id: int, to_course_id: int) -> None:
+    """Merge courses.
+
+    Merge all the lessons in course FR into course TO.
+    """
+    merge(lang, fr_course_id, to_course_id)
 
 
 @cli.command("reindex")

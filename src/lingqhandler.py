@@ -314,6 +314,12 @@ class LingqHandler:
         """PATCH. Replace the position of a lesson in its course."""
         return await self._request("PATCH", f"lessons/{lesson_id}", data={"pos": new_position})
 
+    async def patch_course(self, lesson_id: int, new_course_id: int) -> Any:
+        """PATCH. Move a lesson to another course."""
+        return await self._request(
+            "PATCH", f"lessons/{lesson_id}", data={"collection": new_course_id}
+        )
+
     async def generate_timestamps(self, lesson_id: int) -> Any:
         """POST. Add timestamps to a lesson."""
         return await self._request("POST", f"lessons/{lesson_id}/genaudio/")
