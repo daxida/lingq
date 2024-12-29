@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any, Literal, TypeVar
 
 import roman  # type: ignore
-from natsort import os_sorted
+from natsort import natsort_keygen, os_sorted
 
 
 def double_check(msg: str = "") -> None:
@@ -73,21 +73,32 @@ def roman_sorting_fn(x: str) -> int:
     return roman.fromRoman((x.split()[1]).split(".")[0])  # type: ignore
 
 
-def sorted_subpaths(folder: Path, mode: str) -> list[Path]:
-    """Supports human (natsort), roman (I < V) and greek (Β < Γ) sorting."""
+def get_sorting_fn(mode: str) -> Callable[[str], Any]:
+    """Get the sorting function from a mode.
+
+    Supports human (natsort), roman (I < V) and greek (Β < Γ) sorting.
+    """
     sorting_fn: Callable[[str], Any]
-    if mode == "human":
+    if mode == "os":
+        # Sort elements in the same order as your operating system's file browser
+        # Note that this is platform-dependent
         sorting_fn = os_sorted
+    elif mode == "human":
+        sorting_fn = natsort_keygen()
     elif mode == "greek":
         sorting_fn = greek_sorting_fn
     elif mode == "roman":
         sorting_fn = roman_sorting_fn
     else:
         raise NotImplementedError("Unsupported mode in read_folder")
+    return sorting_fn
 
+
+def sorted_subpaths(folder: Path, mode: str) -> list[Path]:
+    """Returns subfolders sorted by sorting_fn."""
+    sorting_fn = get_sorting_fn(mode)
     subfolders = [sf for sf in folder.iterdir() if not sf.name.startswith(".")]
     subfolders.sort(key=lambda x: sorting_fn(x.name))
-
     return subfolders
 
 
