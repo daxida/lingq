@@ -19,8 +19,8 @@ class Counter(BaseModel):
     is_taken: bool
     new_words_count: int
     pk: int
-    progress: float
-    listen_times: float
+    progress: float | None = None
+    listen_times: float | None = None
     is_completely_taken: bool
     unique_words_count: int
-    read_times: float
+    read_times: float | None = None
