@@ -1,12 +1,16 @@
+import sys
 import time
 import unicodedata
 from collections.abc import Callable
 from functools import wraps
 from pathlib import Path
-from typing import Any, Literal, TypeVar
+from typing import Any, Literal, Type, TypeVar
 
 import roman  # type: ignore
 from natsort import natsort_keygen, os_sorted
+from pydantic import BaseModel, ValidationError
+
+from log import logger
 
 
 def double_check(msg: str = "") -> None:
@@ -22,6 +26,30 @@ def get_editor_url(lang: str, content_id: int, content_type: Literal["lesson", "
     if content_type == "course":
         base = f"{base}/courses"
     return f"{base}/{content_id}"
+
+
+def model_validate_or_exit[T: BaseModel](
+    pydantic_model: Type[T],
+    obj: Any,
+    lang: str,
+    content_id: int,
+    content_type: Literal["lesson", "course"],
+) -> T:
+    """Try to validate the pydantic model.
+
+    In case of failure, log the error and exit the program. This makes
+    debugging less cumbersome than to decypher the long async stacktrace.
+    """
+    try:
+        return pydantic_model.model_validate(obj)
+    except ValidationError as e:
+        message = (
+            f"Error validating model for {content_type} with id {content_id}\n"
+            f"Editor URL: {get_editor_url(lang, content_id, content_type)}\n"
+            f"Details: {e}"
+        )
+        logger.error(message)
+        sys.exit(1)
 
 
 def normalize_greek_word(word: str) -> str:

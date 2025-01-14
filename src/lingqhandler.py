@@ -18,7 +18,7 @@ from models.collection_v3 import (
 from models.counter import Counter
 from models.lesson_v3 import LessonV3
 from models.my_collections import MyCollections
-from utils import get_editor_url
+from utils import get_editor_url, model_validate_or_exit
 
 
 class LingqHandler:
@@ -217,7 +217,9 @@ class LingqHandler:
         params = {"collection": collection_ids}
         data = await self._request("GET", "collections/counters/", params=params)
         return {
-            collection_id: Counter.model_validate(counter)
+            collection_id: model_validate_or_exit(
+                Counter, counter, self.lang, collection_id, "course"
+            )
             for collection_id, counter in data.items()
         }
 
@@ -266,7 +268,7 @@ class LingqHandler:
         if not collection:
             return None
         if collection.get("detail", "") == "Not found.":
-            logger.warning(f"Ghost course at: {get_editor_url(self.lang, course_id, "course")}")
+            logger.warning(f"Ghost course at: {get_editor_url(self.lang, course_id, 'course')}")
             return None
         col = Collection()
         col.add_data(self.lang, collection)
