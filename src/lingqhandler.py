@@ -69,7 +69,9 @@ class LingqHandler:
             case 429:
                 logger.error("Rate limited! Slow down and retry in a couple minutes.")
             case 409:
-                logger.error("Conflict. Generating timestamps / splitting twice?")
+                logger.warning("Conflict. Generating timestamps / splitting twice?")
+                # Do not print the response text for this error
+                return
             case 405:
                 logger.warning("Timestamps are already being generated...")
             case 404:
