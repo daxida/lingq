@@ -24,6 +24,15 @@ Pairing = tuple[Path | None, Path | None]
 Pairings = list[Pairing]
 
 
+class UnsupportedExtensionError(Exception):
+    def __init__(self, extension: str) -> None:
+        super().__init__(
+            f"Unsupported extension '{extension}'\n"
+            f"Supported text: {', '.join(SUPPORTED_BY_US_TEXT_EXTENSIONS)} | "
+            f"Audio: {', '.join(SUPPORTED_BY_US_AUDIO_EXTENSIONS)}"
+        )
+
+
 async def post_lesson(
     handler: LingqHandler,
     course_id: int,
@@ -57,7 +66,7 @@ async def post_lesson(
                     "file", text, filename=f"text.{tpath.suffix}", content_type="text/vtt"
                 )
             case _:
-                raise NotImplementedError(f"Unsupported text extension: {tpath.suffix}")
+                raise UnsupportedExtensionError(tpath.suffix)
 
     if apath:
         audio_file = apath.open("rb")
@@ -156,7 +165,7 @@ def check_extensions(paths: list[Path], supported: list[str]) -> list[str]:
     extensions = list({path.suffix for path in paths})
     for ext in extensions:
         if ext != "" and ext not in supported:
-            raise ValueError(f"Unsupported extension: '{ext}'")
+            raise UnsupportedExtensionError(ext)
     return extensions
 
 
@@ -178,11 +187,11 @@ async def post_async(
     if texts_folder:
         texts_paths = sorted_subpaths(texts_folder, mode="human")
         text_extensions = check_extensions(texts_paths, SUPPORTED_BY_US_TEXT_EXTENSIONS)
-        logger.debug(f"Detected text extensions: {", ".join(text_extensions)}")
+        logger.debug(f"Detected text extensions: {', '.join(text_extensions)}")
     if audios_folder:
         audios_paths = sorted_subpaths(audios_folder, mode="human")
         audio_extensions = check_extensions(audios_paths, SUPPORTED_BY_US_AUDIO_EXTENSIONS)
-        logger.debug(f"Detected audio extensions: {", ".join(audio_extensions)}")
+        logger.debug(f"Detected audio extensions: {', '.join(audio_extensions)}")
 
     pairings = apply_pairing_strategy(pairing_strategy, texts_paths, audios_paths)
 
