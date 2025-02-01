@@ -12,7 +12,7 @@ def get_soup(url: str) -> BeautifulSoup:
     return soup
 
 
-def get_short_stories_urls() -> None | list[str]:
+def get_short_stories_urls() -> list[str]:
     """Get all urls for diigimata."""
     url = "https://www.papadiamantis.net/aleksandros-papadiamantis/syggrafiko-ergo/diigimata"
     soup = get_soup(url)
@@ -41,7 +41,7 @@ def get_short_story(url: str) -> tuple[str, str]:
         ptext = paragraph.text.replace("\u2009", "")
         paragraphs.append(ptext)
 
-    text = f"{title}\n\n{"\n".join(paragraphs)}"
+    text = f"{title}\n\n{'\n'.join(paragraphs)}"
     return title, text
 
 
@@ -86,7 +86,7 @@ def write_long_story(url: str) -> None:
                 ptext = paragraph.text.replace("\u2009", "")
                 paragraphs.append(ptext)
 
-            text = f"{ctitle}\n\n{"\n".join(paragraphs)}"
+            text = f"{ctitle}\n\n{'\n'.join(paragraphs)}"
             book[stitle][ctitle] = text
 
     opath = Path(book_title)
