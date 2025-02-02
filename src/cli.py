@@ -34,7 +34,7 @@ def opath_option():  # noqa: ANN201
         "-o",
         default=DEFAULT_OUT_PATH,
         show_default=True,
-        type=click.Path(exists=True, path_type=Path),
+        type=click.Path(path_type=Path),
         help="Output path.",
     )
 
