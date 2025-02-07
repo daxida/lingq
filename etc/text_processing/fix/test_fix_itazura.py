@@ -1,4 +1,4 @@
-from fix_utils.ja.fix_itazura import (
+from ja.fix_itazura import (
     fix_paragraph_jumps,
     fix_vertical_characters,
 )

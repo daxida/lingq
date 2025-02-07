@@ -2,7 +2,6 @@ from pathlib import Path
 
 import click
 
-from commands.fix import fix
 from commands.generate_timestamps import generate_timestamps
 from commands.get_courses import get_courses
 from commands.get_images import get_images
@@ -80,17 +79,6 @@ def setup_cli(apikey: str) -> None:
             file.write(f"APIKEY={apikey}\n")
 
         print(".env file has been created.")
-
-
-@cli.command("fix")
-@click.argument("lang")
-@click.argument("course_id")
-def fix_cli(lang: str, course_id: int) -> None:
-    """Fix text for a course.
-
-    Only supports ja and el at the moment, even though it should work for every language.
-    """
-    fix(lang, course_id)
 
 
 @cli.group()
@@ -381,6 +369,7 @@ def replace_ja_cli(course_id: int, choice: str) -> None:
     This is a hack to fix a bug on LingQ's side. Do not use.
     """
 
+    # TODO: delete this... I'm tired to fix their own issues...
     _to_ignore = "『』「」"
     repl_ja = {k: f"DUMMY{idx}" for idx, k in enumerate(_to_ignore)}
     repl_ja_inv = {v: k for k, v in repl_ja.items()}

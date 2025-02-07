@@ -45,7 +45,6 @@ Per command information uses again the help flag: `lingq timestamp --help`.
 A command tree made with [this](https://github.com/whwright/click-command-tree):
 ```
 cli - Lingq command line scripts.
-├── fix - Fix text for a course.
 ├── get - Get commands.
 │   ├── courses - Get every course from a list of languages.
 │   ├── lessons - Get every lesson from a course id.

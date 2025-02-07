@@ -1,4 +1,4 @@
-from fix_utils.el.fix_greek import fix_latin_letters, fix_textstring, standarize_punctuation
+from el.fix_greek import fix_latin_letters, fix_textstring, standarize_punctuation
 
 
 def make_test_latin_letters(received: str, expected: str) -> None:
