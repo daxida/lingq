@@ -3,7 +3,7 @@ import logging
 from pathlib import Path
 
 import aiohttp
-from deepdiff import DeepDiff
+from deepdiff.diff import DeepDiff
 
 from lingqhandler import LingqHandler
 
@@ -33,7 +33,7 @@ def test_handler() -> None:
 async def run_handler(lang: str) -> None:
     tmpname = "__tmp"
     # I don't know... LingQ is so slow these days...
-    wait_seconds = 5
+    wait_seconds = 0
 
     async with LingqHandler(lang) as handler:
         # 1.1.1 Course creation / deletion
@@ -147,7 +147,7 @@ async def run_handler(lang: str) -> None:
         assert l1.audio_url is not None
 
         # 6.1. Clean up
-        logger.info("Waiting 5 seconds before deleting course")
+        logger.info(f"Waiting {wait_seconds} seconds before deleting course")
         await asyncio.sleep(wait_seconds)
         await handler.delete_course(course_id)
         logger.info("Course deleted")

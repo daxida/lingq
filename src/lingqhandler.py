@@ -110,6 +110,7 @@ class LingqHandler:
         version: int = 3,
         add_language: bool = True,
         raw: bool = False,
+        retry_on_locked: bool = False,
         **kwargs,  # noqa: ANN003
     ) -> Any:
         api_url = {
@@ -127,8 +128,21 @@ class LingqHandler:
         if params := kwargs.get("params", ""):
             logger.trace(f"{params=}")
 
-        meth = getattr(self.session, method.lower())
+        if not retry_on_locked:
+            return await self._send_request(method, url, raw=raw, **kwargs)
+        else:
+            assert raw is False, "Raw must be false when retrying on locked"
+            return await self._send_request_retry(method, url, raw=False, **kwargs)
 
+    async def _send_request(
+        self,
+        method: str,
+        url: str,
+        *,
+        raw: bool,
+        **kwargs,  # noqa: ANN003
+    ) -> Any:
+        meth = getattr(self.session, method.lower())
         async with meth(url, headers=self.config.headers, **kwargs) as response:
             if not 200 <= response.status < 300:
                 await self.response_debug(response)
@@ -136,6 +150,45 @@ class LingqHandler:
             if raw:
                 return response
             return await response.json()
+
+    async def _send_request_retry(
+        self,
+        method: str,
+        url: str,
+        *,
+        raw: bool,
+        **kwargs,  # noqa: ANN003
+    ) -> Any:
+        """On locked error, retry 'max_retries' times.
+
+        That is, loop until we get a JSON result that does not look like this:
+        * {'isLocked': 'TOKENIZE_TEXT', 'errorType': 'locked'}
+        * {'isLocked': 'GENERATE_TIMESTAMPS', 'errorType': 'locked'}
+        """
+        response = None
+        max_retries = 3
+
+        for retry in range(1, max_retries + 1):
+            response = await self._send_request(method, url, raw=raw, **kwargs)
+            # If _send_request:
+            # * failed:    response is a ClientResponse.
+            # * succeeded: response was already converted to a json.
+            if isinstance(response, ClientResponse):
+                response = await response.json()
+            if response.get("errorType", "") != "locked":
+                break
+            locked_reason = response["isLocked"]
+            assert locked_reason in (
+                "TOKENIZE_TEXT",
+                "GENERATE_TIMESTAMPS",
+                "NORMALIZE_AUDIO",
+            )
+            logger.debug(
+                f"Content is locked at {locked_reason}. Retrying... ({retry}/{max_retries})"
+            )
+            await asyncio.sleep(2**retry)
+
+        return response
 
     """Get requests"""
 
@@ -167,7 +220,7 @@ class LingqHandler:
 
         return asyncio.run(get_user_langs_tmp())
 
-    async def get_lesson_from_id(self, lesson_id: int) -> LessonV3 | None:
+    async def get_lesson_from_id(self, lesson_id: int) -> LessonV3:
         """Get a lesson, from its id.
 
         Example:
@@ -175,10 +228,14 @@ class LingqHandler:
             url: https://www.lingq.com/api/v3/LANG/lessons/ID/
 
         """
-        data = await self._request("GET", f"lessons/{lesson_id}/")
+        data = await self._request(
+            "GET",
+            f"lessons/{lesson_id}/",
+            retry_on_locked=True,
+        )
         return LessonV3.model_validate(data)
 
-    async def get_lesson_from_ids(self, ids: list[int]) -> list[LessonV3 | None]:
+    async def get_lesson_from_ids(self, ids: list[int]) -> list[LessonV3]:
         """Get a list of lessons, from their ids."""
         return await asyncio.gather(*(self.get_lesson_from_id(id) for id in ids))
 
