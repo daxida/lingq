@@ -16,7 +16,7 @@ from models.collection_v3 import (
     SearchCollections,
 )
 from models.counter import Counter
-from models.lesson_v3 import LessonV3
+from models.lesson_v3 import LOCKED_REASON_CHOICES, LessonV3
 from models.my_collections import MyCollections
 from utils import get_editor_url, model_validate_or_exit
 
@@ -140,12 +140,14 @@ class LingqHandler:
         url: str,
         *,
         raw: bool,
+        quiet: bool = False,
         **kwargs,  # noqa: ANN003
     ) -> Any:
         meth = getattr(self.session, method.lower())
         async with meth(url, headers=self.config.headers, **kwargs) as response:
             if not 200 <= response.status < 300:
-                await self.response_debug(response)
+                if not quiet:
+                    await self.response_debug(response)
                 return response
             if raw:
                 return response
@@ -157,6 +159,7 @@ class LingqHandler:
         url: str,
         *,
         raw: bool,
+        max_retries: int = 4,
         **kwargs,  # noqa: ANN003
     ) -> Any:
         """On locked error, retry 'max_retries' times.
@@ -165,30 +168,25 @@ class LingqHandler:
         * {'isLocked': 'TOKENIZE_TEXT', 'errorType': 'locked'}
         * {'isLocked': 'GENERATE_TIMESTAMPS', 'errorType': 'locked'}
         """
-        response = None
-        max_retries = 3
-
         for retry in range(1, max_retries + 1):
-            response = await self._send_request(method, url, raw=raw, **kwargs)
+            response = await self._send_request(method, url, raw=raw, quiet=True, **kwargs)
             # If _send_request:
             # * failed:    response is a ClientResponse.
             # * succeeded: response was already converted to a json.
             if isinstance(response, ClientResponse):
                 response = await response.json()
             if response.get("errorType", "") != "locked":
-                break
+                return response
+
             locked_reason = response["isLocked"]
-            assert locked_reason in (
-                "TOKENIZE_TEXT",
-                "GENERATE_TIMESTAMPS",
-                "NORMALIZE_AUDIO",
-            )
+            if locked_reason not in LOCKED_REASON_CHOICES:
+                logger.warning(f"Unexpected lock reason: {locked_reason}")
             logger.debug(
                 f"Content is locked at {locked_reason}. Retrying... ({retry}/{max_retries})"
             )
             await asyncio.sleep(2**retry)
 
-        return response
+        raise RuntimeError("Content is locked.")
 
     """Get requests"""
 

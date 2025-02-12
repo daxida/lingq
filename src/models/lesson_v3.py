@@ -8,10 +8,20 @@ from typing import Any, Literal
 from pydantic import BaseModel, ConfigDict, HttpUrl
 from pydantic.alias_generators import to_camel
 
+from log import logger
 from models.collection_v3 import CollectionV3
 from models.hint import Hint
 from models.readings import Readings
 from models.transliteration import Transliteration
+
+LockedReason = Literal[
+    "NORMALIZE_AUDIO",
+    "GENERATE_TIMESTAMPS",
+    "TRANSCRIBE_AUDIO",
+    "TOKENIZE_TEXT",
+]
+
+LOCKED_REASON_CHOICES = list(LockedReason.__args__)
 
 
 class Token(BaseModel):
@@ -85,7 +95,7 @@ class LessonV3(BaseModel):
     collection_id: int
     collection_title: str
     url: HttpUrl
-    original_url: HttpUrl | None | Literal[""]
+    original_url: HttpUrl | Literal[""] | None
     image_url: HttpUrl
     original_image_url: HttpUrl
     provider_image_url: HttpUrl | None
@@ -142,11 +152,7 @@ class LessonV3(BaseModel):
     simplified_to: str | None
     simplified_by: str | None
     tokenized_text: list[list[TokenGroup]]
-    is_locked: (
-        bool
-        | None
-        | Literal["NORMALIZE_AUDIO", "GENERATE_TIMESTAMPS", "TRANSCRIBE_AUDIO", "TOKENIZE_TEXT"]
-    )
+    is_locked: bool | LockedReason | None
     shared_by_image_url: HttpUrl
     shared_by_is_friend: bool
     print_url: str | None
@@ -172,3 +178,37 @@ class LessonV3(BaseModel):
         # Note that some defective lessons may not have a title,
         # and makes us skip the first paragraph.
         return "\n".join(" ".join(t.text for t in tokens) for tokens in self.tokenized_text[1:])
+
+    def to_vtt(self) -> str | None:
+        vtt_lines = ["WEBVTT\n"]
+
+        idx_token = 0
+        # The first element is the lesson title, that we don't use.
+        # Note that some defective lessons may not have a title,
+        # and makes us skip the first paragraph.
+        for paragraph_data in self.tokenized_text[1:]:
+            for token_group in paragraph_data:
+                start_time, end_time = token_group.timestamp
+                if start_time is None or end_time is None:
+                    # Early exit: the text has no timestamps
+                    logger.warning(f"Lesson {self.title} has no subtitles")
+                    return None
+                start = format_timestamp(start_time)
+                end = format_timestamp(end_time)
+
+                idx_token += 1
+                vtt_lines.append(f"{idx_token}")
+                vtt_lines.append(f"{start} --> {end}")
+                vtt_lines.append(token_group.text)
+                vtt_lines.append("")
+
+        return "\n".join(vtt_lines)
+
+
+def format_timestamp(seconds: float) -> str:
+    """Format seconds to VTT format (HH:MM:SS.mmm)."""
+    hours = int(seconds // 3600)
+    minutes = int((seconds % 3600) // 60)
+    secs = int(seconds % 60)
+    millis = int((seconds * 1000) % 1000)
+    return f"{hours:02}:{minutes:02}:{secs:02}.{millis:03}"
