@@ -17,7 +17,3 @@ lint:
 # Download youtube audio from URL
 dl URL:
   yt-dlp -x --audio-format mp3 '{{URL}}'
-
-# Forced alignment
-fa *FLAGS:
-  python3 etc/forced_alignment/forced_alignment.py {{FLAGS}}

@@ -31,7 +31,6 @@ etc = [
     "ruff==0.7.0",
     "tqdm==4.66.4",
     "gpt4All",
-    "aeneas @ git+https://github.com/daxida/aeneas",
 ]
 test = [
     "pytest==8.2.1",

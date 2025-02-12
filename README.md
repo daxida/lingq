@@ -82,6 +82,7 @@ python3 etc/scrape/japanese/sc_itazura.py
 
 ## Links
 
+- [Forced alignment](https://github.com/daxida/lingq-fa) for LingQ.
 - Legacy (v1.0 and v2.0) LingQ's API [documentation](https://www.lingq.com/apidocs/index.html).
 - A miniminalist [script](https://github.com/paulywill/lingq_upload) to upload content to LingQ. May not be up to date.
 - A [script](https://github.com/justbrendo/lingq-yt) to upload youtube playlists to LingQ with Whisper generated subtitles.
