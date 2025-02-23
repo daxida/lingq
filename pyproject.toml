@@ -18,6 +18,7 @@ dependencies = [
     "roman==4.2",
     "Levenshtein",
     "loguru",
+    "platformdirs",
 ]
 
 [project.urls]

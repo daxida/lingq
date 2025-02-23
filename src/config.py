@@ -1,25 +1,31 @@
 import sys
+from pathlib import Path
 
-from dotenv import dotenv_values, find_dotenv
+from dotenv import dotenv_values
+from platformdirs import user_config_dir
+
+CONFIG_DIR = Path(user_config_dir(appname="lingq"))
+CONFIG_PATH = CONFIG_DIR / ".env"
 
 
 class Config:
     def __init__(self) -> None:
-        env_path = find_dotenv()
-        if not env_path:
+        if not CONFIG_PATH.exists():
             print(
-                "Error: could not find an .env file.\n"
-                "Create an .env file and add the entry: APIKEY=YourLingQAPIKey\n"
-                "Or use lingq setup YourLingQAPIKey\n"
+                "Error: could not find the config file.\n"
+                "To create one, use the command: lingq setup YourLingQAPIKey\n"
+                "You can find your API key at: https://www.lingq.com/accounts/apikey/"
                 "Exiting."
             )
             sys.exit(1)
 
-        config = dotenv_values(env_path)
+        config = dotenv_values(CONFIG_PATH)
         if "APIKEY" not in config:
+            # This should never happen unless one manually edits the config file.
             print(
-                "Error: the .env file does not contain the LingQ APIKEY.\n"
-                "Inside the .env file add the entry: APIKEY=YourLingQAPIKey\n"
+                f"Error: the config file at {CONFIG_PATH} does not have a LingQ API key.\n"
+                "To add one, use the command: lingq setup YourLingQAPIKey\n"
+                "You can find your API key at: https://www.lingq.com/accounts/apikey/"
                 "Exiting."
             )
             sys.exit(1)

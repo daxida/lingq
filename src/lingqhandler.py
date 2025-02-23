@@ -1,4 +1,5 @@
 import asyncio
+import sys
 from io import BufferedReader
 from typing import Any
 
@@ -93,7 +94,8 @@ class LingqHandler:
                     case "_SENTINEL":
                         pass
                     case "Invalid token.":
-                        raise ValueError("Invalid APIKEY. Exiting.")
+                        logger.error("Invalid API key. Exiting.")
+                        sys.exit(1)
                     case _:
                         logger.error("Uncaught detail")
             logger.error(f"[{response.status}] Response JSON:\n{response_json}")

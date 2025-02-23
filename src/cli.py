@@ -20,6 +20,7 @@ from commands.show import show_course, show_my, show_status
 from commands.sort_lessons import sort_lessons
 from commands.stats import stats
 from commands.yomitan import yomitan
+from config import CONFIG_DIR, CONFIG_PATH
 
 DEFAULT_OUT_PATH = Path("downloads")
 DEFAULT_OUT_WORDS_PATH = DEFAULT_OUT_PATH / "lingqs"
@@ -39,7 +40,7 @@ def opath_option():  # noqa: ANN201
 
 
 @click.group()
-@click.version_option()
+@click.version_option(package_name="lingq")
 def cli() -> None:
     """Lingq command line scripts.
 
@@ -50,18 +51,17 @@ def cli() -> None:
 @cli.command("setup")
 @click.argument("apikey")
 def setup_cli(apikey: str) -> None:
-    """Creates or updates an .env file with your LingQ API key.
+    """Creates or updates an config file with your LingQ API key.
 
-    You can find you key here: https://www.lingq.com/accounts/apikey/
+    You can find your API key at: https://www.lingq.com/accounts/apikey/
     """
-    env_file = Path(".env")
 
-    if env_file.exists():
-        with env_file.open("r") as file:
+    if CONFIG_PATH.exists():
+        with CONFIG_PATH.open("r") as file:
             lines = file.readlines()
 
         # Update the API_KEY if it exists, otherwise add a new line
-        with env_file.open("w") as file:
+        with CONFIG_PATH.open("w") as file:
             api_key_found = False
             for line in lines:
                 if line.startswith("APIKEY="):
@@ -73,12 +73,13 @@ def setup_cli(apikey: str) -> None:
             if not api_key_found:
                 file.write(f"APIKEY={apikey}\n")
 
-        print(".env file has been updated.")
+        print(f"Config file has been updated at {CONFIG_PATH}")
     else:
-        with env_file.open("w") as file:
+        CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+        with CONFIG_PATH.open("w") as file:
             file.write(f"APIKEY={apikey}\n")
 
-        print(".env file has been created.")
+        print(f"Config file has been created at {CONFIG_PATH}")
 
 
 @cli.group()
