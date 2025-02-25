@@ -4,43 +4,62 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "lingq"
-version = "1.0.0"
-readme = "README.md"
+version = "1.0.1"
 requires-python = ">=3.12"
-dependencies = [
-    "aiohttp>=3.9.5",
-    "aiohttp_retry>=2.8.3",
-    "click==8.1.7",
-    "natsort==8.4.0",
-    "python-dotenv==1.0.1",
-    "yt_dlp==2024.10.22",
-    "pydantic",
-    "roman==4.2",
-    "Levenshtein",
-    "loguru",
-    "platformdirs",
+keywords = [
+  "cli",
+  "lingq",
 ]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Operating System :: OS Independent",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: Education",
+  "Topic :: Software Development :: Libraries",
+]
+dependencies = [
+  "aiohttp>=3.9.5",
+  "aiohttp_retry>=2.8.3",
+  "click==8.1.7",
+  "natsort==8.4.0",
+  "python-dotenv==1.0.1",
+  "yt_dlp==2024.10.22",
+  "pydantic",
+  "roman==4.2",
+  "Levenshtein",
+  "loguru",
+  "platformdirs",
+]
+readme = "README.md"
 
 [project.urls]
 Repository = "https://github.com/daxida/lingq"
 
 [project.optional-dependencies]
 etc = [
-    "beautifulsoup4==4.12.3",
-    "faster_whisper==1.0.2",
-    "requests==2.32.3",
-    "ruff==0.7.0",
-    "tqdm==4.66.4",
-    "gpt4All",
+  "beautifulsoup4==4.12.3",
+  "faster_whisper==1.0.2",
+  "requests==2.32.3",
+  "ruff==0.7.0",
+  "tqdm==4.66.4",
+  "gpt4All",
 ]
 test = [
-    "pytest==8.2.1",
-    "deepdiff",
+  "pytest==8.2.1",
+  "deepdiff",
 ]
 all = ["lingq[etc, test]"]
 
 [project.scripts]
 lingq = "cli:cli"
+
+# https://github.com/astral-sh/uv/issues/9513
+[tool.setuptools]
+license-files = []
 
 [tool.ruff]
 line-length = 100
@@ -52,37 +71,37 @@ max-doc-length = 100
 [tool.ruff.lint]
 preview = true
 select = [
-    "E",    # pycodestyle error
-    "W",    # pycodestyle warning
-    "I",    # isort
-    "N",    # pep8-naming
-    "F",    # Pyflakes rules
-    "C",    # flake8-complexity
-    "PTH",  # Paths
-    "ANN",  # Annotations
-    "Q",    # Quotes
-    "RUF",  # RUFF
-    # "FIX",  # TODO
-    # "S",    # flake8-bandit
-    "D212",
-    "D400",
-    # "D",    # documentation
+  "E",   # pycodestyle error
+  "W",   # pycodestyle warning
+  "I",   # isort
+  "N",   # pep8-naming
+  "F",   # Pyflakes rules
+  "C",   # flake8-complexity
+  "PTH", # Paths
+  "ANN", # Annotations
+  "Q",   # Quotes
+  "RUF", # RUFF
+  # "FIX", # TODO
+  # "S",   # flake8-bandit
+  "D212",
+  "D400",
+  # "D",   # documentation
 ]
 ignore = [
-    "ANN401",
-    "D105",
-    "D107",
-    "E221",
-    "RUF001",
-    "RUF002",
-    "RUF003",
-    "S101",
+  "ANN401",
+  "D105",
+  "D107",
+  "E221",
+  "RUF001",
+  "RUF002",
+  "RUF003",
+  "S101",
 ]
 
 [tool.ruff.lint.per-file-ignores]
 "etc/*" = [
-    # Allow Any in scripts
-    "ANN401",
+  # Allow Any in scripts
+  "ANN401",
 ]
 
 [tool.mypy]
