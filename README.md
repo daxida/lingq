@@ -6,24 +6,15 @@ You will need a LingQ API key. You can get it from [here](https://www.lingq.com/
 
 ## Installation
 
-(Optional) Create a virtual environment: `python3 -m venv venv` and activate it.
-
-Then either directly:
 ```
-pip install git+https://github.com/daxida/lingq
-```
-Or clone the repository:
-```
-git clone https://github.com/daxida/lingq
-cd lingq
-pip install .
+pip install lingq
 ```
 
-Finally, run:
+Then, simply run:
+
 ```
 lingq setup yourLingqApiKey
 ```
-This will create an `.env` file in the root directory with your API key.
 
 ## How to use
 
@@ -47,6 +38,7 @@ A command tree made with [this](https://github.com/whwright/click-command-tree):
 cli - Lingq command line scripts.
 ├── get - Get commands.
 │   ├── courses - Get every course from a list of languages.
+│   ├── lesson - Get a lesson from its id.
 │   ├── lessons - Get every lesson from a course id.
 │   ├── images - Get images.
 │   └── words - Get words (LingQs).
