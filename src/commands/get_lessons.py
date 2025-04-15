@@ -1,5 +1,4 @@
 import asyncio
-import os
 from pathlib import Path
 
 from commands.get_lesson import get_lesson_async, sanitize_title, write_lesson
@@ -17,7 +16,7 @@ def filter_downloaded(
         return lessons
 
     collection_title = lessons[0].collection_title
-    text_files = os.listdir(texts_path)
+    text_files = [path.name for path in texts_path.iterdir()]
     logger.trace(text_files)
     filtered_lessons = [
         lesson for lesson in lessons if f"{sanitize_title(lesson.title)}.txt" not in text_files
@@ -91,9 +90,11 @@ def get_lessons(
     Args:
         lang (str): The language code of the course.
         course_id (str): The ID of the course. This is the last number in the course URL.
-        skip_downloaded (bool): If True, skip downloading already downloaded lessons.
-        download_audio (bool): If True, downloads the audio files for the lessons.
         opath (Path): Path to the folder where the downloaded text and audio files will be saved.
+
+        download_audio (bool): If True, downloads the audio files for the lessons.
+        download_timestamps (bool): If True, downloads the timestamps files for the lessons.
+        skip_downloaded (bool): If True, skip downloading already downloaded lessons.
 
         TODO: Update me
 

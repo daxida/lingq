@@ -5,6 +5,7 @@ import click
 from commands.generate_timestamps import generate_timestamps
 from commands.get_courses import get_courses
 from commands.get_images import get_images
+from commands.get_lesson import get_lesson
 from commands.get_lessons import get_lessons
 from commands.get_words import get_words
 from commands.library_overview import overview
@@ -159,6 +160,34 @@ def yomitan_cli(langs: list[str], ipath: Path) -> None:
     If no language codes are given, use all languages.
     """
     yomitan(langs, ipath)
+
+
+@get.command("lesson")
+@click.argument("lang")
+@click.argument("lesson_id")
+@opath_option()
+@click.option("--download-audio", is_flag=True, default=False, help="If set, also download audio.")
+@click.option(
+    "--download-timestamps", is_flag=True, default=False, help="If set, also download timestamps."
+)
+def get_lesson_cli(
+    lang: str,
+    lesson_id: int,
+    opath: Path,
+    download_audio: bool,
+    download_timestamps: bool,
+) -> None:
+    """Get a lesson from its id.
+
+    CAREFUL: This reorders your 'Continue studying' shelf.
+    """
+    get_lesson(
+        lang,
+        lesson_id,
+        opath,
+        download_audio=download_audio,
+        download_timestamps=download_timestamps,
+    )
 
 
 @get.command("lessons")

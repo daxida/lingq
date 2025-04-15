@@ -2,7 +2,9 @@ import asyncio
 from pathlib import Path
 
 from lingqhandler import LingqHandler
+from log import logger
 from models.lesson_v3 import LessonV3
+from utils import timing
 
 
 def sanitize_title(title: str) -> str:
@@ -63,29 +65,57 @@ def write_lesson(lang: str, lesson: LessonV3, opath: Path, idx: int | None) -> N
             vtt_file.write(timestamps)
 
 
-if __name__ == "__main__":
-    # Test getting a single lesson
-    async def get_lesson_async_tmp(
-        lang: str,
-        lesson_id: int,
-        download_audio: bool,
-        download_timestamps: bool,
-    ) -> LessonV3 | None:
-        async with LingqHandler(lang) as handler:
-            return await get_lesson_async(handler, lesson_id, download_audio, download_timestamps)
+async def _get_lesson_async(
+    lang: str,
+    lesson_id: int,
+    download_audio: bool,
+    download_timestamps: bool,
+) -> LessonV3 | None:
+    """Same as get_lesson_async but does not expect a handler."""
+    async with LingqHandler(lang) as handler:
+        return await get_lesson_async(
+            handler,
+            lesson_id,
+            download_audio,
+            download_timestamps,
+        )
+
+
+@timing
+def get_lesson(
+    lang: str,
+    lesson_id: int,
+    opath: Path,
+    *,
+    download_audio: bool,
+    download_timestamps: bool,
+) -> None:
+    """Downloads text and/or audio from a lesson given the language code and the lesson ID."""
 
     lesson = asyncio.run(
-        get_lesson_async_tmp(
-            lang="el",
-            lesson_id=5897069,
-            download_audio=True,
-            download_timestamps=True,
+        _get_lesson_async(
+            lang=lang,
+            lesson_id=lesson_id,
+            download_audio=download_audio,
+            download_timestamps=download_timestamps,
         )
     )
     if lesson:
         write_lesson(
-            lang="el",
+            lang=lang,
             lesson=lesson,
-            opath=Path("downloads"),
+            opath=opath,
             idx=None,
         )
+        logger.success(f"'{lesson.title}'")
+
+
+if __name__ == "__main__":
+    # Test getting a single lesson
+    get_lesson(
+        lang="el",
+        lesson_id=5897069,
+        download_audio=True,
+        download_timestamps=True,
+        opath=Path("downloads"),
+    )
