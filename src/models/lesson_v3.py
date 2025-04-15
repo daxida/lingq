@@ -3,7 +3,7 @@
 https://www.lingq.com/api/v3/el/lessons/31145860/
 """
 
-from typing import Any, Literal
+from typing import Any, Literal, get_args
 
 from pydantic import BaseModel, ConfigDict, HttpUrl
 from pydantic.alias_generators import to_camel
@@ -21,7 +21,7 @@ LockedReason = Literal[
     "TOKENIZE_TEXT",
 ]
 
-LOCKED_REASON_CHOICES = list(LockedReason.__args__)
+LOCKED_REASON_CHOICES: list[LockedReason] = list(get_args(LockedReason))
 
 
 class Token(BaseModel):

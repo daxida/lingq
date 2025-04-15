@@ -28,11 +28,11 @@ def download_book_from_text_id(
     The book id is found as `text_id=number` in the url.
     """
     if author_name:
-        _path = Path(author_name) / text_name
+        subpath = Path(author_name) / text_name
     else:
-        _path = Path(text_name)
+        subpath = Path(text_name)
 
-    path = DOWNLOAD_FOLDER / _path
+    path = DOWNLOAD_FOLDER / subpath
     path.mkdir(parents=True, exist_ok=True)
     print(f"Writing at {path}")
 

@@ -45,6 +45,7 @@ etc = [
   "faster_whisper==1.0.2",
   "requests==2.32.3",
   "ruff==0.7.0",
+  "mypy",
   "tqdm==4.66.4",
   "gpt4All",
 ]
