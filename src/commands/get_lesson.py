@@ -47,7 +47,8 @@ def write_lesson(lang: str, lesson: LessonV3, opath: Path, idx: int | None) -> N
     Path.mkdir(texts_folder, parents=True, exist_ok=True)
     text_path = texts_folder / f"{title}.txt"
     with text_path.open("w", encoding="utf-8") as text_file:
-        text_file.write(f"{lesson.title}\n")
+        # Cf. https://forum.lingq.com/t/bug-lesson-titles/1323451
+        # text_file.write(f"{lesson.title}\n")
         text_file.write(lesson.get_raw_text())
 
     # Write audio if any

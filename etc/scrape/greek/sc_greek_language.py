@@ -59,7 +59,7 @@ def download_book_from_text_id(
 def process_html(soup) -> None:  # noqa: ANN001
     """Clean up the html for theatrical texts."""
     for names in soup.find_all("span", class_="name"):
-        names.replace_with(f"[{names.string.strip()}] ")
+        names.replace_with(f"\n[{names.string.strip()}]")
 
     for numbers in soup.find_all("span", class_="numbering"):
         numbers.replace_with("")
@@ -104,5 +104,7 @@ def download_books_from_author_id(author_id: str, *, fmt_theater: bool = False) 
 
 
 if __name__ == "__main__":
-    # download_book_from_text_id(text_id="143", text_name="test", author_name="", fmt_theater=True)
-    download_books_from_author_id(author_id="123", fmt_theater=True)
+    # download_book_from_text_id(
+    #     text_id="108", text_name="test", author_name="plato", fmt_theater=True
+    # )
+    download_books_from_author_id(author_id="199", fmt_theater=True)

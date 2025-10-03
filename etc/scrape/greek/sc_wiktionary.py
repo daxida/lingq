@@ -45,7 +45,9 @@ def main() -> None:
             header, chapter_text = res
             chapter_file = DOWNLOAD_FOLDER / f"{idx:02d}. {header}.txt"
             with chapter_file.open("w", encoding="utf-8") as f:
-                f.write(f"{header}\n{chapter_text}")
+                # This adds the title on top of the text
+                # f.write(f"{header}\n{chapter_text}")
+                f.write(chapter_text)
             print(f"{idx:02d}: '{header}' saved to ==> {chapter_file}")
         else:
             print(f"Skipping chapter {chapter_number}")
