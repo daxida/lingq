@@ -6,14 +6,17 @@ from log import logger
 from models.collection_v3 import CollectionLessonResult
 from utils import sort_by_greek_words_impl, timing
 
+ST = tuple[float, ...]
+"""Return type of a sorting function."""
 
-def sorting_function(lesson: CollectionLessonResult) -> tuple[float, ...]:
+
+def sorting_function(lesson: CollectionLessonResult) -> ST:
     # Implement and replace your sorting logic here
     # return sort_by_reverse_split_numbers(lesson)
     return sort_by_versioned_numbers(lesson)
 
 
-def sort_by_reverse_split_numbers(lesson: CollectionLessonResult) -> tuple[float, ...]:
+def sort_by_reverse_split_numbers(lesson: CollectionLessonResult) -> ST:
     # NOTE: I think this is the standard now in LingQ.
     # This assumes that the chapters are labelled with numbers.
     # That is: Chapter1 => 1.txt, Chapter2 => 2.txt etc.
@@ -26,12 +29,12 @@ def sort_by_reverse_split_numbers(lesson: CollectionLessonResult) -> tuple[float
         return (float(title), float(section_num))
 
 
-def sort_by_versioned_numbers(lesson: CollectionLessonResult) -> tuple[float, ...]:
+def sort_by_versioned_numbers(lesson: CollectionLessonResult) -> ST:
     # 1. Title < 1.1 OtherTitle < 1.2. Another < 2. LastTitle < TitleWithoutNumber
     return sort_by_versioned_numbers_impl(lesson.title)
 
 
-def sort_by_versioned_numbers_impl(word: str) -> tuple[float, ...]:
+def sort_by_versioned_numbers_impl(word: str) -> ST:
     m = re.findall(r"^[\d.]+", word)
     if m and (trimmed := m[0].strip(".")):
         nums = tuple(float(num) for num in trimmed.split("."))
@@ -46,7 +49,7 @@ def sort_by_versioned_numbers_impl(word: str) -> tuple[float, ...]:
     return key
 
 
-def sort_by_greek_words(lesson: CollectionLessonResult) -> tuple[float, ...]:
+def sort_by_greek_words(lesson: CollectionLessonResult) -> ST:
     return sort_by_greek_words_impl(lesson.title)
 
 

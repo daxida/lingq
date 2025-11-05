@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Any, Callable, TypeVar
 
 import click
 
@@ -29,7 +30,11 @@ DEFAULT_AUDIOS_FOLDER = None
 DEFAULT_TEXTS_FOLDER = None
 
 
-def opath_option():  # noqa: ANN201
+T = TypeVar("T", bound=Callable[..., Any])
+"""Simple version of click.decorators.FC."""
+
+
+def opath_option() -> Callable[[T], T]:
     return click.option(
         "--opath",
         "-o",
@@ -40,7 +45,7 @@ def opath_option():  # noqa: ANN201
     )
 
 
-def dry_run_option():  # noqa: ANN201
+def dry_run_option() -> Callable[[T], T]:
     return click.option(
         "--dry-run",
         "-n",

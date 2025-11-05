@@ -1,5 +1,5 @@
 from commands.sort_lessons import sort_by_versioned_numbers_impl
-from utils import get_sorting_fn, greek_sorting_fn, roman_sorting_fn
+from utils import get_sorting_fn, greek_sorting_fn, roman_sorting_fn, sort_by_greek_words_impl
 
 
 def test_greek_sorting_fn() -> None:
@@ -83,6 +83,13 @@ def test_human_sorting_fn() -> None:
 
     sorting_fn = get_sorting_fn("human")
     sorted_entries = sorted(entries, key=sorting_fn)
+    assert sorted_entries == expected
+
+
+def test_sort_by_greek_words_impl() -> None:
+    entries = ["Βελάκι", "άλφα", "αλφάδι", "Άρτεμις", "Άλφα", "αλεπού"]
+    expected = ["αλεπού", "άλφα", "Άλφα", "αλφάδι", "Άρτεμις", "Βελάκι"]
+    sorted_entries = sorted(entries, key=sort_by_greek_words_impl)
     assert sorted_entries == expected
 
 

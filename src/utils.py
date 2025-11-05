@@ -4,9 +4,9 @@ import unicodedata
 from collections.abc import Callable
 from functools import wraps
 from pathlib import Path
-from typing import Any, Literal, Type, TypeVar
+from typing import Any, Literal, Type
 
-import roman  # type: ignore
+import roman
 from natsort import natsort_keygen, os_sorted
 from pydantic import BaseModel, ValidationError
 
@@ -21,7 +21,10 @@ def double_check(msg: str = "") -> None:
         exit(1)
 
 
-def get_editor_url(lang: str, content_id: int, content_type: Literal["lesson", "course"]) -> str:
+ContentType = Literal["lesson", "course"]
+
+
+def get_editor_url(lang: str, content_id: int, content_type: ContentType) -> str:
     base = f"https://www.lingq.com/learn/{lang}/web/editor"
     if content_type == "course":
         base = f"{base}/courses"
@@ -33,7 +36,7 @@ def model_validate_or_exit[T: BaseModel](
     obj: Any,
     lang: str,
     content_id: int,
-    content_type: Literal["lesson", "course"],
+    content_type: ContentType,
 ) -> T:
     """Try to validate the pydantic model.
 
@@ -73,16 +76,7 @@ def sort_by_greek_words_impl(word: str) -> tuple[float, ...]:
     """
     if not word:
         return (float("inf"),)
-
-    # fmt: off
-    alphabet: dict[str, int] = {
-        "α": 1, "β": 2, "γ": 3, "δ": 4, "ε": 5, "ζ": 6, "η": 7, "θ": 8, "ι": 9, "κ": 10,
-        "λ": 11, "μ": 12, "ν": 13, "ξ": 14, "ο": 15, "π": 16, "ρ": 17, "σ": 18, "τ": 19, "υ": 20,
-        "φ": 21, "χ": 22, "ψ": 23, "ω": 24
-    }
-    # fmt: on
-
-    return tuple(alphabet.get(normalize_greek_word(char), float("inf")) for char in word)
+    return tuple(ord(normalize_greek_word(char)) for char in word)
 
 
 def greek_sorting_fn(x: str) -> int:
@@ -101,28 +95,31 @@ def roman_sorting_fn(x: str) -> int:
     return roman.fromRoman((x.split()[1]).split(".")[0])  # type: ignore
 
 
-def get_sorting_fn(mode: str) -> Callable[[str], Any]:
+SortingMode = Literal["os", "human", "greek", "roman"]
+"""List of sorted modes. Used for reading folder contents."""
+
+
+def get_sorting_fn(mode: SortingMode) -> Callable[[str], Any]:
     """Get the sorting function from a mode.
 
     Supports human (natsort), roman (I < V) and greek (Β < Γ) sorting.
     """
     sorting_fn: Callable[[str], Any]
-    if mode == "os":
-        # Sort elements in the same order as your operating system's file browser
-        # Note that this is platform-dependent
-        sorting_fn = os_sorted
-    elif mode == "human":
-        sorting_fn = natsort_keygen()
-    elif mode == "greek":
-        sorting_fn = greek_sorting_fn
-    elif mode == "roman":
-        sorting_fn = roman_sorting_fn
-    else:
-        raise NotImplementedError("Unsupported mode in read_folder")
+    match mode:
+        case "os":
+            # Sort elements in the same order as your operating system's file browser
+            # Note that this is platform-dependent
+            sorting_fn = os_sorted
+        case "human":
+            sorting_fn = natsort_keygen()
+        case "greek":
+            sorting_fn = greek_sorting_fn
+        case "roman":
+            sorting_fn = roman_sorting_fn
     return sorting_fn
 
 
-def sorted_subpaths(folder: Path, mode: str) -> list[Path]:
+def sorted_subpaths(folder: Path, mode: SortingMode) -> list[Path]:
     """Returns subfolders sorted by sorting_fn."""
     sorting_fn = get_sorting_fn(mode)
     subfolders = [sf for sf in folder.iterdir() if not sf.name.startswith(".")]
@@ -130,18 +127,15 @@ def sorted_subpaths(folder: Path, mode: str) -> list[Path]:
     return subfolders
 
 
-R = TypeVar("R")
-
-
-def timing(f: Callable[..., R]) -> Callable[..., R]:
+# https://mypy.readthedocs.io/en/stable/generics.html#declaring-decorators
+def timing[**P, T](f: Callable[P, T]) -> Callable[P, T]:
     @wraps(f)
-    def wrap(*args: Any, **kw: Any) -> R:
+    def wrap(*args: P.args, **kw: P.kwargs) -> T:
         ts = time.time()
         result = f(*args, **kw)
         te = time.time()
         print(f"\033[36m({f.__name__} {te - ts:2.2f}sec)\033[0m")
         return result
-
     return wrap
 
 

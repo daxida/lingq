@@ -47,7 +47,7 @@ class CollectionV3(BaseModel):
     views_count: int
     duration: int
     progress: str | None
-    metadata: dict | None
+    # metadata: dict | None
     folders: list[int]
     accent: str | None
     level: str | None
