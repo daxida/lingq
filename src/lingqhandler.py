@@ -453,9 +453,27 @@ class LingqHandler:
             raw=True,
         )
 
+    async def _has_title_paragraph(self, lesson_id: int) -> bool:
+        """This is awful and I am convinced it is exactly what LingQ does internally."""
+        paragraphs = await self._request("GET", f"lessons/{lesson_id}/paragraphs/")
+        has_title = paragraphs and (paragraphs[0].get("style", "") == "h1")
+        if not has_title:
+            # Issue a warning since you probably always want a title paragraph
+            editor_url = get_editor_url(self.lang, lesson_id, "lesson")
+            logger.warning(f"Missing title paragraph at lesson @ {editor_url}")
+        return has_title
+
     async def replace_title(self, lesson_id: int, text: str) -> ClientResponse:
-        """POST. Replace the title of a lesson."""
-        return await self.replace_sentence(lesson_id, text, index=1)
+        """POST/PATCH. Replace the title of a lesson."""
+        has_title = await self._has_title_paragraph(lesson_id)
+        if has_title:
+            # Works if the first line is TITLE
+            return await self.replace_sentence(lesson_id, text, index=1)
+        else:
+            # Works if the first line is PARAGRAPH 1 (~~no title, f.e. youtube import)
+            # Does not modify the first sentence, but then again, there is no guarantee that
+            # we _want_ to modify the first sentence, since it may not be the title...
+            return await self._request("PATCH", f"lessons/{lesson_id}", data={"title": text})
 
     async def resplit_lesson(self, lesson_id: int, method: str) -> ClientResponse:
         """Resplit a Japanese lesson using the new splitting logic.

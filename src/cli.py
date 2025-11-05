@@ -40,6 +40,15 @@ def opath_option():  # noqa: ANN201
     )
 
 
+def dry_run_option():  # noqa: ANN201
+    return click.option(
+        "--dry-run",
+        "-n",
+        is_flag=True,
+        help="Show what would change without modifying anything.",
+    )
+
+
 @click.group()
 @click.version_option(package_name="lingq")
 def cli() -> None:
@@ -359,9 +368,10 @@ def merge_cli(lang: str, fr_course_id: int, to_course_id: int) -> None:
 @cli.command("reindex")
 @click.argument("lang")
 @click.argument("course_id")
-def reindex_cli(lang: str, course_id: int) -> None:
+@dry_run_option()
+def reindex_cli(lang: str, course_id: int, dry_run: bool) -> None:
     """Reindex titles in a course."""
-    reindex(lang, course_id)
+    reindex(lang, course_id, dry_run=dry_run)
 
 
 @cli.group()
