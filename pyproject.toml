@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "lingq"
-version = "1.0.2"
+version = "1.0.3"
 requires-python = ">=3.12"
 keywords = [
   "cli",
@@ -27,7 +27,7 @@ dependencies = [
   "click==8.1.7",
   "natsort==8.4.0",
   "python-dotenv==1.0.1",
-  "yt_dlp==2024.10.22",
+  "yt_dlp==2025.10.22",
   "pydantic",
   "roman==4.2",
   "Levenshtein",
