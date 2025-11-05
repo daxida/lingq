@@ -13,7 +13,7 @@ DOWNLOAD_FOLDER = Path("downloads")
 BOOK_ID = "n9636x"  # get this from the url
 BOOK_NAME = "syosetu"  # name for the out_folder
 
-FAKE_BROWSER_HEADERS = {
+FAKE_HEADERS = {
     "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*",
     "user-agent": "Mozilla/5.0 (X11; Linux x86_64)",
     "accept-language": "en-US,en;q=0.9,ja;q=0.8",
@@ -30,7 +30,7 @@ Path.mkdir(book_path, parents=True, exist_ok=True)
 
 url = f"https://ncode.syosetu.com/{BOOK_ID}/"
 print(f"GET {url}")
-res = requests.get(url, headers=FAKE_BROWSER_HEADERS)
+res = requests.get(url, headers=FAKE_HEADERS)
 soup = BeautifulSoup(res.content, "html.parser")
 
 n_chapters = len(soup.find_all("div", class_="p-eplist__sublist"))
@@ -38,7 +38,7 @@ print(f"Found {n_chapters} chapters.")
 
 for chapter_id in range(1, n_chapters + 1):
     url_chapter = f"{url}{chapter_id}/"
-    cres = requests.get(url_chapter, headers=FAKE_BROWSER_HEADERS)
+    cres = requests.get(url_chapter, headers=FAKE_HEADERS)
     csoup = BeautifulSoup(cres.content, "html.parser")
 
     chapter_text = csoup.find("div", class_="p-novel__body").text  # type: ignore

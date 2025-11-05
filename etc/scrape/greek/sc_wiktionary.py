@@ -6,13 +6,22 @@ from bs4 import BeautifulSoup
 DOWNLOAD_FOLDER = Path("book/texts")
 DOWNLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
 
-base_url = "https://el.wikisource.org/wiki/Τον_καιρό_του_Βουλγαροκτόνου/Κεφάλαιο_"
-numerals = "Α Β Γ Δ Ε ΣΤ Ζ Η Θ Ι ΙΑ ΙΒ ΙΓ ΙΔ ΙΕ ΙΣΤ ΙΖ ΙΗ ΙΘ Κ ΚΑ ΚΒ ΚΓ ΚΔ ΚΕ ΚΣΤ ΚΖ ΚΗ ΚΘ".split()
+# base_url = "https://el.wikisource.org/wiki/Τον_καιρό_του_Βουλγαροκτόνου/Κεφάλαιο_"
+base_url = "https://el.wikisource.org/wiki/Στα_μυστικά_του_βάλτου/Κεφάλαιο_"
+numerals = "Α Β Γ Δ Ε ΣΤ Ζ Η Θ Ι ΙΑ ΙΒ ΙΓ ΙΔ ΙΕ ΙΣΤ ΙΖ ΙΗ ΙΘ Κ ΚΑ ΚΒ ΚΓ ΚΔ ΚΕ ΚΣΤ ΚΖ ΚΗ ΚΘ Λ ΛΑ ΛΒ ΛΓ".split()  # noqa: E501
+
+FAKE_HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/120.0.0.0 Safari/537.36"
+    )
+}
 
 
 def get_chapter(chapter_number: str) -> tuple[str, str] | None:
     url = f"{base_url}{chapter_number}"
-    response = requests.get(url)
+    response = requests.get(url, headers=FAKE_HEADERS)
     if response.status_code != 200:
         print(f"Failed to retrieve chapter {chapter_number}")
         return None
