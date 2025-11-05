@@ -4,7 +4,7 @@ import re
 from lingqhandler import LingqHandler
 from log import logger
 from models.collection_v3 import CollectionLessonResult
-from utils import sort_greek_words, timing
+from utils import sort_by_greek_words_impl, timing
 
 
 def sorting_function(lesson: CollectionLessonResult) -> tuple[float, ...]:
@@ -28,21 +28,26 @@ def sort_by_reverse_split_numbers(lesson: CollectionLessonResult) -> tuple[float
 
 def sort_by_versioned_numbers(lesson: CollectionLessonResult) -> tuple[float, ...]:
     # 1. Title < 1.1 OtherTitle < 1.2. Another < 2. LastTitle < TitleWithoutNumber
-    title = lesson.title
-    m = re.findall(r"^[\d.]+", title)
-    if m:
-        trimmed = m[0].strip(".")
-        nums = trimmed.split(".")
-        starting_numbers = tuple(float(num) for num in nums)
+    return sort_by_versioned_numbers_impl(lesson.title)
+
+
+def sort_by_versioned_numbers_impl(word: str) -> tuple[float, ...]:
+    m = re.findall(r"^[\d.]+", word)
+    if m and (trimmed := m[0].strip(".")):
+        nums = tuple(float(num) for num in trimmed.split("."))
     else:
-        starting_numbers = (float("inf"),)
-    # For resolving ties
-    title_as_numbers = tuple(float(ord(char)) for char in title)
-    return starting_numbers + title_as_numbers
+        nums = (float("inf"),)
+
+    # Guarantee version comparison finishes first
+    key = (*nums, float("-inf"))
+
+    # Tie breaker only if versions are exactly equal
+    key += tuple(float(ord(c)) for c in word)
+    return key
 
 
 def sort_by_greek_words(lesson: CollectionLessonResult) -> tuple[float, ...]:
-    return sort_greek_words(lesson.title)
+    return sort_by_greek_words_impl(lesson.title)
 
 
 def longest_increasing_subsequence(lst: list[int]) -> list[int]:
@@ -120,7 +125,9 @@ def get_patch_requests_order(
 
     requests_with_ids = get_patch_requests_order_for_ids(lessons_ids, to_reorder)
     requests = [(lessons_ids_mapping[lesson_id], pos) for lesson_id, pos in requests_with_ids]
-    # print([(l["title"], p) for l, p in requests]) # DEBUG
+    # logger.debug(
+    #     "Sorting requests:\n" + "\n".join([str((les.title, pos)) for les, pos in requests])
+    # )
 
     return requests
 

@@ -1,3 +1,4 @@
+from commands.sort_lessons import sort_by_versioned_numbers_impl
 from utils import get_sorting_fn, greek_sorting_fn, roman_sorting_fn
 
 
@@ -82,4 +83,17 @@ def test_human_sorting_fn() -> None:
 
     sorting_fn = get_sorting_fn("human")
     sorted_entries = sorted(entries, key=sorting_fn)
+    assert sorted_entries == expected
+
+
+def test_version_sorting() -> None:
+    entries = [
+        "1.1.宿命 死なない 蛸 -萩原 朔 太郎",
+        "1.がちょ う の たんじょうび -新美南吉",
+    ]
+    expected = [
+        "1.がちょ う の たんじょうび -新美南吉",
+        "1.1.宿命 死なない 蛸 -萩原 朔 太郎",
+    ]
+    sorted_entries = sorted(entries, key=sort_by_versioned_numbers_impl)
     assert sorted_entries == expected
