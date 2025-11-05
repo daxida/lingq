@@ -7,12 +7,16 @@ Roudoku:
 https://aozoraroudoku.jp/kensaku/kensaku-05.html
 """
 
+import sys
 from pathlib import Path
+from typing import TypedDict
 from unicodedata import normalize
 
 import Levenshtein
 
 # Copy paste it from Roudoku's 4-5mins section
+# https://aozoraroudoku.jp/kensaku/kensaku-05.html
+# ~ We could scrape it but it is overkill
 COPY_PASTE = """
 がちょうのたんじょうび
 著者：新美 南吉　読み手：石崎 一気　時間：4分
@@ -41,6 +45,9 @@ COPY_PASTE = """
 茶話　男のお産
 著者：薄田 泣菫　読み手：入江 安希子　時間：4分3秒
 
+春と修羅　昴
+著者：宮沢 賢治　読み手：上田 あゆみ　時間：4分3秒
+
 女性へ　２
 著者：岸田 國士　読み手：竹田 ゆかり　時間：4分4秒
 
@@ -64,6 +71,9 @@ COPY_PASTE = """
 
 喫茶店にて
 著者：萩原朔太郎　読み手：野村 洋二　時間：4分6秒
+
+果物の天国
+著者：中谷 宇吉郎　読み手：手塚 未紗　時間：4分7秒
 
 風
 著者：竹久 夢二　読み手：なるせ ともみ　時間：4分9秒
@@ -98,11 +108,17 @@ COPY_PASTE = """
 砂書きの老人
 著者：上村 松園　読み手：中村 昭代　時間：4分14秒
 
+ベビー・シッティング
+著者：中谷 宇吉郎　読み手：西村 文江　時間：4分14秒
+
 星の銀貨
 著者：グリム兄弟／楠山 正雄 訳　読み手：福井 一恵　時間：4分14秒
 
 かざぐるま
 著者：小川 未明　読み手：中田 真由美　時間：4分16秒
+
+氷は金屬である
+著者：中谷 宇吉郎　読み手：成 文佳　時間：4分16秒
 
 塩昆布の茶漬け
 著者：北大路 魯山人　読み手：左 璃寛　時間：4分17秒
@@ -154,6 +170,9 @@ COPY_PASTE = """
 
 飴だま
 著者：新美 南吉　読み手：室 由美子　時間：4分27秒
+
+好奇心
+著者：織田 作之助　読み手：宮松 大輔　時間：4分27秒
 
 国語の自在性
 著者：西田 幾多郎　読み手：福井 一恵　時間：4分27秒
@@ -221,6 +240,9 @@ COPY_PASTE = """
 「の」の字の世界
 著者：佐藤 春夫　読み手：池戸 美香　時間：4分44秒
 
+四条通附近
+著者：上村 松園　読み手：ミカド ココ　時間：4分45秒
+
 春と修羅　序
 著者：宮沢 賢治　読み手：福井 一恵　時間：4分45秒
 
@@ -248,11 +270,20 @@ COPY_PASTE = """
 魂を刳る美
 著者：北大路 魯山人　読み手：會田 典子　時間：4分51秒
 
+春と修羅　白い鳥
+著者：宮沢 賢治　読み手：齊藤 雅美　時間：4分51秒
+
 新人へ
 著者：坂口 安吾　読み手：水野 久美子　時間：4分53秒
 
+垣隣り
+著者：宮城 道雄　読み手：中島 由美　時間：4分54秒
+
 寺田さんに最後に逢った時
 著者：和辻 哲郎　読み手：宮崎 文子　時間：4分54秒
+
+おしどり
+著者：小泉 八雲／田部 隆次 訳　読み手：田中 淑恵　時間：4分57秒
 
 小ぐまさんのかんがへちがひ
 著者：村山 籌子　読み手：小川 幸香　時間：4分57秒
@@ -320,6 +351,9 @@ COPY_PASTE = """
 チューリップ
 著者：新美 南吉　読み手：宮澤 幸子　時間：5分7秒
 
+ビルディング
+著者：夢野 久作　読み手：野口 良子　時間：5分9秒
+
 おにぎりの味
 著者：中谷 宇吉郎　読み手：菅野 秀之　時間：5分10秒
 
@@ -341,8 +375,8 @@ COPY_PASTE = """
 一家
 著者：中野 鈴子　読み手：水野 礼子　時間：5分13秒
 
-声と人柄
-著者：宮城 道雄　読み手：石井 星太郎 　時間：5分14秒
+北へ行く
+著者：宮本 百合子　読み手：堀江 令子　時間：5分15秒
 
 ラムネ・他四編
 著者：萩原 朔太郎　読み手：成 文佳　時間：5分15秒
@@ -362,6 +396,9 @@ COPY_PASTE = """
 花かごとたいこ
 著者：小川 未明　読み手：こがわ めいすい　時間：5分20秒
 
+寒山拾得
+著者：芥川 龍之介　読み手：水野 久美子　時間：5分21秒
+
 白い花
 著者：種田 山頭火　読み手：齋藤 こまり　時間：5分21秒
 
@@ -370,6 +407,9 @@ COPY_PASTE = """
 
 お鍋とおやかんとフライパンのけんくわ
 著者：村山 籌子　読み手：福井 一恵　時間：5分23秒
+
+花
+著者：窪田 空穂　読み手：横山 宜夫　時間：5分25秒
 
 純粋の声
 著者：宮城 道雄　読み手：富田 美苗　時間：5分26秒
@@ -389,6 +429,9 @@ COPY_PASTE = """
 水仙の幻想
 著者：薄田 泣菫　読み手：能島 昭子　時間：5分30秒
 
+競馬
+著者：吉川 英治　読み手：真喜屋 智美　時間：5分31秒
+
 銀河鉄道の夜　三、家
 著者：宮沢 賢治　読み手：北野 由美　時間：5分32秒
 
@@ -407,8 +450,14 @@ COPY_PASTE = """
 おもちゃの蝙蝠
 著者：佐藤 春夫　読み手：西村 文江　時間：5分36秒
 
+日本画と線
+著者：上村 松園　読み手：坂井 あきこ　時間：5分36秒
+
 ねことおしるこ
 著者：小川 未明　読み手：池戸 美香　時間：5分36秒
+
+私のすきな人
+著者：宮城 道雄　読み手：中島 由美　時間：5分38秒
 
 ごわごわごむ靴
 著者：櫻間 中庸　読み手：池戸 美香　時間：5分42秒
@@ -449,6 +498,12 @@ COPY_PASTE = """
 小人のくつ屋さん
 著者：グリム兄弟／大久保 ゆう 訳　読み手：水谷 ケイコ　時間：5分48秒
 
+晩秋の頃
+著者：田山 録弥　読み手：堀口 直子　時間：5分48秒
+
+犬
+著者：正岡 子規　読み手：入江 安希子　時間：5分49秒
+
 永日小品　印象
 著者：夏目 漱石　読み手：青木 みな子　時間：5分49秒
 
@@ -463,6 +518,9 @@ COPY_PASTE = """
 
 かちかち山
 著者：芥川 龍之介　読み手：齋藤 こまり　時間：5分53秒
+
+春と修羅　風林
+著者：宮沢 賢治　読み手：齊藤 雅美　時間：5分53秒
 
 柿
 著者：土田 耕平　読み手：川村 ゆかり　時間：5分54秒
@@ -495,7 +553,12 @@ COPY_PASTE = """
 著者：織田 作之助　読み手：堀口 直子　時間：5分59秒
 """
 
-Entry = dict[str, str]
+
+class Entry(TypedDict):
+    title: str
+    author: str
+    raw: str
+    idx: int  # starts at 1
 
 
 def cmp_normalized(s1: str, s2: str) -> bool:
@@ -512,88 +575,122 @@ def remove_whitespace(s: str) -> str:
     return s.strip().replace(" ", "").replace("　", "")
 
 
-def get_entry(title: str, author: str, raw: str) -> Entry:
+def get_entry(title: str, author: str, raw: str, idx: int) -> Entry:
     return {
+        "idx": idx,  # starts at 1
         "title": remove_whitespace(title),
         "author": remove_whitespace(author),
         "raw": raw,
     }
 
 
-entries = COPY_PASTE.strip().split("\n\n")
-roudoku_entries: list[Entry] = []
-for entry in entries:
-    lines = entry.split("\n")
-    title = lines[0].strip()
-    info = lines[1]
-    assert "著者" in info, f"The line {entry}\nwith info\n{info}\nhas no author?"
-    author = info.split("著者：")[1].split("　")[0]
-    roudoku_entries.append(get_entry(title, author, f"{title} - {author}"))
+def get_roudoku_entries() -> list[Entry]:
+    entries = COPY_PASTE.strip().split("\n\n")
+    roudoku_entries: list[Entry] = []
+    for idx, entry in enumerate(entries, 1):
+        lines = entry.split("\n")
+        title = lines[0].strip()
+        info = lines[1]
+        assert "著者" in info, f"The line {entry}\nwith info\n{info}\nhas no author?"
+        author = info.split("著者：")[1].split("　")[0]
+        entry = get_entry(title, author, f"{title} - {author}", idx)
+        roudoku_entries.append(entry)
+    return roudoku_entries
 
-# print(len(entries))
-# print(roudoku_entries[:10])
 
+def get_lingq_entries() -> list[Entry]:
+    """Get lingq entries from the output of the "show" command.
 
-# Created with:
-# lingq show course ja 793510 > course.txt
-#
-# Looks like:
-# 01: 1. がちょう の たんじょうび - 新美南吉
-# 02: 1.1. 宿命 死なない 蛸 - 萩原 朔 太郎
-# 03: 2. 皇帝の使者 - Kafka
-# 04: 2.1. もぐら と コスモス - 原 民 喜
-# 05: 3. 梅 の におい - 夢野 久作
-# 06: 4. 最初の 悲哀 - 竹久 夢二
-course_path = Path("course.txt")
-with course_path.open("r", encoding="utf-8") as f:
+    Created with: lingq show course ja 793510 > course.txt
+
+    Looks like:
+    01: 1. がちょう の たんじょうび - 新美南吉
+    02: 1.1. 宿命 死なない 蛸 - 萩原 朔 太郎
+    03: 2. 皇帝の使者 - Kafka
+    04: 2.1. もぐら と コスモス - 原 民 喜
+    05: 3. 梅 の におい - 夢野 久作
+    06: 4. 最初の 悲哀 - 竹久 夢二
+    """
+    course_path = Path("course.txt")
+    if not course_path.exists():
+        cmd = "lingq show course ja 793510 > course.txt"
+        print(f"{course_path} not found. Run '{cmd}'")
+        sys.exit(1)
     lingq_entries: list[Entry] = []
-    for line in f.readlines():
-        *_, title = line.split(".")  # remove idx
-        # There may be multiple " - " in the line but we assume that
-        # it is the last one that separates title and author.
-        #
-        # I fixed everything in LingQ but I leave this in case I make
-        # the same mistake in the future.
-        *title, author = title.split(" - ")
-        if len(title) > 1:
-            print(f"Warning, multiple ' - ' in line {line}")
-        title = " - ".join(title)
-        lingq_entries.append(get_entry(title, author, line))
+    sep = "-"
+    with course_path.open("r", encoding="utf-8") as f:
+        for idx, line in enumerate(f, 1):
+            *_, title = line.split(".")  # remove idx
+            # There may be multiple " - " in the line but we assume that
+            # it is the last one that separates title and author.
+            #
+            # I fixed everything in LingQ but I leave this in case I make
+            # the same mistake in the future.
+            *title, author = title.split(sep)
+            if len(title) > 1:
+                print(f"[WARNING] Multiple '{sep}' in line {line}")
+            title = sep.join(title)
+            # Remove non-japanese part: 星の銀貨,DIESTERNTALER > 星の銀貨
+            title = title.split(",")[0]
+            entry = get_entry(title, author, line, idx)
+            lingq_entries.append(entry)
+    return lingq_entries
 
 
-def check_gaps(roudoku_entries: list[Entry], lingq_entries: list[Entry]) -> list[str]:
+def check_gaps(roudoku_entries: list[Entry], lingq_entries: list[Entry]) -> None:
     """Print the first difference and exit.
 
     Only titles are compared. Author's names could vary.
     We may want to change them, latinize them, or truncate them
     due to LingQ's title size limit.
     """
-    gaps = []
-    roudoku_it = iter(roudoku_entries)
-    for idx, lingq_entry in enumerate(lingq_entries):
+    idx_roudoku = 0
+    padding = len(str(len(lingq_entries)))
+
+    if len(lingq_entries) != len(roudoku_entries):
+        print(
+            f"⚠️ There are {len(lingq_entries)} lingq entries "
+            f"and {len(roudoku_entries)} roudoku entries"
+        )
+
+    for idx, lingq_entry in enumerate(lingq_entries, 1):
         lingq_title = lingq_entry["title"]
 
-        while 1:
-            try:
-                roudoku_entry = next(roudoku_it)
-                roudoku_title = roudoku_entry["title"]
-            except StopIteration:
-                break
+        while idx_roudoku < len(roudoku_entries):
+            roudoku_entry = roudoku_entries[idx_roudoku]
+            roudoku_title = roudoku_entry["title"]
+            idx_roudoku += 1
 
             if cmp_normalized(lingq_title, roudoku_title):
-                print(f"{idx} OK")
+                print(f"✅ {idx:0{padding}d}", flush=True, end="\r")
                 break
 
             print(
-                f"{idx} NOK > "
-                f"{lingq_title.strip()}\n"
-                f"[{lingq_title}] != [{roudoku_title}]\n",
-                f"Entries:\n{lingq_entry}\n{roudoku_entry}",
+                f"❌ {idx:0{padding}d} @lingq: '{lingq_title.strip()}'\n"
+                f"@lingq:   {lingq_entry}\n@roudoku: {roudoku_entry}",
             )
-            return gaps
+            if idx > 0:
+                print(f"📌 Add roudoku '{roudoku_title}' before '{lingq_entry['raw'].strip()}'")
+                # May give wrong suggestions if there are consecutive holes
+                hole_idx = int(lingq_entry["raw"].split()[1][:-1])
+                suggested_idx = f"{(hole_idx - 1):0{padding}d}.1"
+                print(f"📌 Suggested title: {suggested_idx}{roudoku_entry['raw']}")
+                if any(suggested_idx in entry["raw"] for entry in lingq_entries):
+                    print(f"⚠️ The suggested idx '{suggested_idx}' is already in use")
 
-    return gaps
+            # Stop at first
+            return
+
+        if idx_roudoku == len(roudoku_entries):
+            print("No more roudoku entries")
+            return
+
+
+def main() -> None:
+    roudoku_entries = get_roudoku_entries()
+    lingq_entries = get_lingq_entries()
+    check_gaps(roudoku_entries, lingq_entries)
 
 
 if __name__ == "__main__":
-    gaps = check_gaps(roudoku_entries, lingq_entries)
+    main()
