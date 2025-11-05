@@ -125,22 +125,24 @@ def get_patch_requests_order(
 
     requests_with_ids = get_patch_requests_order_for_ids(lessons_ids, to_reorder)
     requests = [(lessons_ids_mapping[lesson_id], pos) for lesson_id, pos in requests_with_ids]
-    # logger.debug(
-    #     "Sorting requests:\n" + "\n".join([str((les.title, pos)) for les, pos in requests])
-    # )
 
     return requests
 
 
-async def sort_lessons_async(lang: str, course_id: int) -> None:
+async def sort_lessons_async(lang: str, course_id: int, *, dry_run: bool) -> None:
     async with LingqHandler(lang) as handler:
         lessons = await handler.get_collection_lessons_from_id(course_id)
         if not lessons:
             return
         collection_title = lessons[0].collection_title
         patch_requests = get_patch_requests_order(lessons)
+        if not patch_requests:
+            return
+        if dry_run:
+            msg = "\n".join([str((les.title, pos)) for les, pos in patch_requests])
+            logger.debug(f"Sorting requests:\n{msg}")
+            return
         for lesson, pos in patch_requests:
-            # print(f"Sent: {lesson.title} {pos}")
             await handler.patch_position(lesson.id, pos)
 
         # Simple solution. Note that sends a patch request per lesson (too slow).
@@ -153,8 +155,8 @@ async def sort_lessons_async(lang: str, course_id: int) -> None:
 
 
 @timing
-def sort_lessons(lang: str, course_id: int) -> None:
-    asyncio.run(sort_lessons_async(lang, course_id))
+def sort_lessons(lang: str, course_id: int, *, dry_run: bool = False) -> None:
+    asyncio.run(sort_lessons_async(lang, course_id, dry_run=dry_run))
 
 
 if __name__ == "__main__":

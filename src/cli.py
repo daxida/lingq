@@ -480,9 +480,10 @@ def overview_cli(lang: str) -> None:
 @cli.command("sort")
 @click.argument("lang")
 @click.argument("course_id")
-def sort_lessons_cli(lang: str, course_id: int) -> None:
+@dry_run_option()
+def sort_lessons_cli(lang: str, course_id: int, dry_run: bool) -> None:
     """Sort all lessons from a course."""
-    sort_lessons(lang, course_id)
+    sort_lessons(lang, course_id, dry_run=dry_run)
 
 
 if __name__ == "__main__":
