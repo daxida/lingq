@@ -16,6 +16,7 @@ from models.transliteration import Transliteration
 
 LockedReason = Literal[
     "NORMALIZE_AUDIO",
+    "GENERATE_LIPP",
     "GENERATE_TIMESTAMPS",
     "TRANSCRIBE_AUDIO",
     "TOKENIZE_TEXT",
