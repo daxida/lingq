@@ -13,7 +13,7 @@ from commands.library_overview import overview
 from commands.markdown import markdown
 from commands.merge import merge
 from commands.patch import patch_audios
-from commands.post import PAIRING_STRATEGIES, post
+from commands.post import PAIRING_STRATEGIES, Strategy, post
 from commands.post_yt_playlist import post_yt_playlist
 from commands.reindex import reindex
 from commands.replace import replace
@@ -23,6 +23,7 @@ from commands.sort_lessons import sort_lessons
 from commands.stats import stats
 from commands.yomitan import yomitan
 from config import CONFIG_DIR, CONFIG_PATH
+from lingqhandler import LingqHandler
 
 DEFAULT_OUT_PATH = Path("downloads")
 DEFAULT_OUT_WORDS_PATH = DEFAULT_OUT_PATH / "lingqs"
@@ -54,7 +55,33 @@ def dry_run_option() -> Callable[[T], T]:
     )
 
 
-@click.group()
+def assume_yes_option() -> Callable[[T], T]:
+    # Reference: https://linux.die.net/man/8/apt-get
+    return click.option(
+        "--yes",
+        "-y",
+        is_flag=True,
+        help="Automatic yes to prompts.",
+    )
+
+
+class LangType(click.ParamType):
+    """A helper class to do language code validation at CLI time."""
+
+    name = "language"
+
+    def convert(self, value: str, param, ctx) -> str:  # noqa: ANN001
+        lang_codes = LingqHandler.get_user_langs()
+        if value not in lang_codes:
+            self.fail(
+                f"{value}.\nLanguages found for this account: {', '.join(sorted(lang_codes))}.",
+                param,
+                ctx,
+            )
+        return value
+
+
+@click.group(context_settings={"help_option_names": ["-h", "--help"]})
 @click.version_option(package_name="lingq")
 def cli() -> None:
     """Lingq command line scripts.
@@ -103,7 +130,7 @@ def show() -> None:
 
 
 @show.command("my")
-@click.argument("lang")
+@click.argument("lang", type=LangType())
 @click.option("-s", "--shared", is_flag=True, default=False, show_default=True)
 @click.option("-c", "--codes", is_flag=True, default=False, show_default=True)
 @click.option("-v", "--verbose", is_flag=True, default=False, show_default=True)
@@ -113,7 +140,7 @@ def show_my_cli(lang: str, shared: bool, codes: bool, verbose: bool) -> None:
 
 
 @show.command("course")
-@click.argument("lang")
+@click.argument("lang", type=LangType())
 @click.argument("course_id")
 @click.option("-s", "--shared", is_flag=True, default=False, show_default=True)
 @click.option("-c", "--codes", is_flag=True, default=False, show_default=True)
@@ -130,7 +157,7 @@ def show_course_cli(
 
 
 @show.command("status")
-@click.argument("lang")
+@click.argument("lang", type=LangType())
 def show_status_cli(lang: str) -> None:
     """Show pending and refused lessons in a language."""
     show_status(lang)
@@ -142,7 +169,7 @@ def get() -> None:
 
 
 @get.command("images")
-@click.argument("lang")
+@click.argument("lang", type=LangType())
 @click.argument("course_id")
 @opath_option()
 def get_images_cli(lang: str, course_id: int, opath: Path) -> None:
@@ -151,7 +178,7 @@ def get_images_cli(lang: str, course_id: int, opath: Path) -> None:
 
 
 @get.command("words")
-@click.argument("langs", nargs=-1)
+@click.argument("langs", nargs=-1, type=LangType())
 @opath_option()
 def get_words_cli(langs: list[str], opath: Path) -> None:
     """Get words (LingQs)."""
@@ -159,7 +186,7 @@ def get_words_cli(langs: list[str], opath: Path) -> None:
 
 
 @cli.command("yomitan")
-@click.argument("langs", nargs=-1)
+@click.argument("langs", nargs=-1, type=LangType())
 @click.option(
     "--ipath",
     "-i",
@@ -177,7 +204,7 @@ def yomitan_cli(langs: list[str], ipath: Path) -> None:
 
 
 @get.command("lesson")
-@click.argument("lang")
+@click.argument("lang", type=LangType())
 @click.argument("lesson_id")
 @opath_option()
 @click.option("--download-audio", is_flag=True, default=False, help="If set, also download audio.")
@@ -205,7 +232,7 @@ def get_lesson_cli(
 
 
 @get.command("lessons")
-@click.argument("lang")
+@click.argument("lang", type=LangType())
 @click.argument("course_id")
 @opath_option()
 @click.option(
@@ -247,7 +274,7 @@ def get_lessons_cli(
 
 
 @get.command("courses")
-@click.argument("langs", nargs=-1)
+@click.argument("langs", nargs=-1, type=LangType())
 @click.option("--download-audio", is_flag=True, default=False, help="If set, also download audio.")
 @click.option(
     "--download-timestamps", is_flag=True, default=False, help="If set, also download timestamps."
@@ -270,13 +297,15 @@ def get_lessons_cli(
     "Increasing this too much may incur in throttling. Suggested: 1 or 2.",
 )
 @opath_option()
+@assume_yes_option()
 def get_courses_cli(
     langs: list[str],
     opath: Path,
     download_audio: bool,
     download_timestamps: bool,
-    skip_downloaded: int,
+    skip_downloaded: bool,
     batch_size: int,
+    yes: bool,
 ) -> None:
     """Get every course from a list of languages.
 
@@ -291,11 +320,12 @@ def get_courses_cli(
         download_timestamps=download_timestamps,
         skip_downloaded=skip_downloaded,
         batch_size=batch_size,
+        assume_yes=yes,
     )
 
 
 @cli.command("post")
-@click.argument("lang")
+@click.argument("lang", type=LangType())
 @click.argument("course_id")
 @click.option(
     "--texts-folder",
@@ -320,9 +350,9 @@ def get_courses_cli(
 def post_cli(
     lang: str,
     course_id: int,
-    texts_folder: Path | None,
+    texts_folder: Path,
     audios_folder: Path | None,
-    pairing_strategy: str,
+    pairing_strategy: Strategy,
 ) -> None:
     """Upload lessons.
 
@@ -338,7 +368,7 @@ def post_cli(
 
 
 @cli.command("postyt")
-@click.argument("lang")
+@click.argument("lang", type=LangType())
 @click.argument("course_id")
 @click.argument("playlist_url")
 @click.option("--skip-uploaded", default=True, show_default=True)
@@ -359,7 +389,7 @@ def post_yt_playlist_cli(
 
 
 @cli.command("merge")
-@click.argument("lang")
+@click.argument("lang", type=LangType())
 @click.argument("fr_course_id")
 @click.argument("to_course_id")
 def merge_cli(lang: str, fr_course_id: int, to_course_id: int) -> None:
@@ -371,7 +401,7 @@ def merge_cli(lang: str, fr_course_id: int, to_course_id: int) -> None:
 
 
 @cli.command("reindex")
-@click.argument("lang")
+@click.argument("lang", type=LangType())
 @click.argument("course_id")
 @dry_run_option()
 def reindex_cli(lang: str, course_id: int, dry_run: bool) -> None:
@@ -385,7 +415,7 @@ def patch() -> None:
 
 
 @patch.command("audios")
-@click.argument("lang")
+@click.argument("langs", nargs=-1, type=LangType())
 @click.argument("course_id")
 @click.option(
     "--audios-folder",
@@ -394,15 +424,9 @@ def patch() -> None:
     type=click.Path(exists=True, path_type=Path),
     help="Audios folder path.",
 )
-def patch_audios_cli(lang: str, course_id: int, audios_folder: str) -> None:
+def patch_audios_cli(lang: str, course_id: int, audios_folder: Path) -> None:
     """Patch a course audio."""
     patch_audios(lang, course_id, audios_folder)
-
-
-@patch.command("texts")
-def patch_texts_cli() -> None:
-    """Not implemented."""
-    raise NotImplementedError()
 
 
 @cli.command("replace")
@@ -415,8 +439,8 @@ def replace_ja_cli(course_id: int, choice: str) -> None:
     """
 
     # TODO: delete this... I'm tired to fix their own issues...
-    _to_ignore = "『』「」"
-    repl_ja = {k: f"DUMMY{idx}" for idx, k in enumerate(_to_ignore)}
+    to_ignore = "『』「」"
+    repl_ja = {k: f"DUMMY{idx}" for idx, k in enumerate(to_ignore)}
     repl_ja_inv = {v: k for k, v in repl_ja.items()}
     replacements = repl_ja if choice == "fst" else repl_ja_inv
     replace("ja", course_id, replacements)
@@ -430,14 +454,14 @@ def resplit_ja_cli(course_id: int) -> None:
 
 
 @cli.command("stats")
-@click.argument("lang")
+@click.argument("lang", type=LangType())
 def stats_cli(lang: str) -> None:
     """Show some simple stats."""
     stats(lang)
 
 
 @cli.command("markdown")
-@click.argument("langs", nargs=-1)
+@click.argument("langs", nargs=-1, type=LangType())
 @click.option(
     "--select-courses",
     default="all",
@@ -467,7 +491,7 @@ def markdown_cli(
 
 
 @cli.command("timestamp")
-@click.argument("lang")
+@click.argument("lang", type=LangType())
 @click.argument("course_id")
 @click.option("--skip-timestamped", default=True)
 def generate_timestamps_cli(lang: str, course_id: int, skip_timestamped: bool) -> None:
@@ -476,14 +500,14 @@ def generate_timestamps_cli(lang: str, course_id: int, skip_timestamped: bool) -
 
 
 @cli.command("overview")
-@click.argument("lang")
+@click.argument("lang", type=LangType())
 def overview_cli(lang: str) -> None:
     """Library overview."""
     overview(lang)
 
 
 @cli.command("sort")
-@click.argument("lang")
+@click.argument("lang", type=LangType())
 @click.argument("course_id")
 @dry_run_option()
 def sort_lessons_cli(lang: str, course_id: int, dry_run: bool) -> None:

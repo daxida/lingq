@@ -17,6 +17,7 @@ from models.collection_v3 import (
     SearchCollections,
 )
 from models.counter import Counter
+from models.language import Language
 from models.lesson_v3 import LOCKED_REASON_CHOICES, LessonV3
 from models.my_collections import MyCollections
 from utils import get_editor_url, model_validate_or_exit
@@ -199,13 +200,18 @@ class LingqHandler:
             self._user_id = data["id"]
             logger.trace(f"Cached user id {self._user_id}")
 
-    async def _get_user_langs(self) -> list[str]:
-        """Get a list of language codes with known words.
+    async def _get_langs(self) -> list[Language]:
+        """Get a list of all languages recognized by LingQ.
 
-        https://www.lingq.com/apidocs/api-2.0.html#get
+        https://www.lingq.com/apidocs/api-2.0.html#get (outdated)
         """
         data = await self._request("GET", "languages", version=2, add_language=False)
-        return [lc["code"] for lc in data if lc["knownWords"] > 0]
+        return [Language.model_validate(lang) for lang in data]
+
+    async def _get_user_langs(self) -> list[str]:
+        """Get a list of language codes with known words."""
+        langs = await self._get_langs()
+        return [lang.code for lang in langs if lang.known_words > 0]
 
     @classmethod
     def get_user_langs(cls) -> list[str]:
@@ -214,11 +220,11 @@ class LingqHandler:
         This is a class method since it does not require initializing a language code.
         """
 
-        async def get_user_langs_tmp() -> list[str]:
+        async def tmp() -> list[str]:
             async with cls("Filler") as handler:
                 return await handler._get_user_langs()
 
-        return asyncio.run(get_user_langs_tmp())
+        return asyncio.run(tmp())
 
     async def get_lesson_from_id(self, lesson_id: int) -> LessonV3:
         """Get a lesson, from its id.

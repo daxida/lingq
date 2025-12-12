@@ -73,9 +73,11 @@ async def get_courses_async(
     download_timestamps: bool,
     skip_downloaded: bool,
     batch_size: int,
+    assume_yes: bool,
 ) -> None:
     logger.info(f"Getting courses for languages: {', '.join(langs)}")
-    double_check("CAREFUL: This reorders your 'Continue studying' shelf.")
+    if not assume_yes:
+        double_check("CAREFUL: This reorders your 'Continue studying' shelf.")
     for lang in langs:
         await get_courses_for_language_async(
             lang,
@@ -97,12 +99,14 @@ def get_courses(
     download_timestamps: bool,
     skip_downloaded: bool,
     batch_size: int = 1,
+    assume_yes: bool = False,
 ) -> None:
     """Get every course from a list of languages.
 
     CAREFUL: This reorders your 'Continue studying' shelf.
+
+    If no language codes are given, use all languages.
     """
-    # If no language codes are given, use all languages.
     if not langs:
         langs = LingqHandler.get_user_langs()
     asyncio.run(
@@ -113,6 +117,7 @@ def get_courses(
             download_timestamps=download_timestamps,
             skip_downloaded=skip_downloaded,
             batch_size=batch_size,
+            assume_yes=assume_yes,
         )
     )
 
