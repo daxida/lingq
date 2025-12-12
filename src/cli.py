@@ -66,12 +66,32 @@ def assume_yes_option() -> Callable[[T], T]:
 
 
 class LangType(click.ParamType):
-    """A helper class to do language code validation at CLI time."""
+    """A helper class to do language code validation at CLI time.
+
+    Uses a cache to prevent sending multiple requests when parsing a list of LangType.
+
+    # When the command expects a list of LangType (nargs = -1)
+    get courses        | None      | 'None' does not call convert (cf. docs)
+    get courses el xxx | [el, xxx] | validates (request for 'el', then cache for xxx)
+
+    # When the command expects a LangType
+    show my            | None      | fails before validation
+    show my ""         | ""        | validates
+    show my el         | el        | validates
+    """
 
     name = "language"
 
+    def __init__(self) -> None:
+        self._cache: list[str] | None = None
+
+    def _get_lang_codes(self) -> list[str]:
+        if self._cache is None:
+            self._cache = LingqHandler.get_user_langs()
+        return self._cache
+
     def convert(self, value: str, param, ctx) -> str:  # noqa: ANN001
-        lang_codes = LingqHandler.get_user_langs()
+        lang_codes = self._get_lang_codes()
         if value not in lang_codes:
             self.fail(
                 f"{value}.\nLanguages found for this account: {', '.join(sorted(lang_codes))}.",
