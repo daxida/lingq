@@ -1,0 +1,91 @@
+site_name: LingQ CLI Documentation
+site_description: Command-line utilities for interacting with the LingQ language learning platform
+site_author: daxida
+site_url: https://daxida.github.io/lingq/
+
+repo_name: daxida/lingq
+repo_url: https://github.com/daxida/lingq
+edit_uri: edit/master/docs/
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+  palette:
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+            show_root_full_path: false
+            members_order: source
+            heading_level: 2
+            show_signature_annotations: true
+            separate_signature: true
+  - gen-files:
+      scripts:
+        - docs/gen_ref_pages.py
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - User Guide:
+      - Commands Overview: user-guide/commands.md
+      - Common Workflows: user-guide/workflows.md
+  - API Reference:
+      - LingqHandler: api-reference/lingqhandler.md
+      - Models: api-reference/models.md
+      - Utilities: api-reference/utils.md
+  - Tutorials:
+      - Uploading Content: tutorials/uploading.md
+      - Managing Courses: tutorials/managing.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/daxida/lingq

@@ -9,3 +9,7 @@ build
 book
 downloads
 hidden_tests
+
+# MkDocs
+site/
+.cache/

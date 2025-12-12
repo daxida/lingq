@@ -53,6 +53,12 @@ test = [
   "pytest==8.2.1",
   "deepdiff",
 ]
+docs = [
+  "mkdocs-material",
+  "mkdocstrings[python]",
+  "mkdocs-click",
+  "mkdocs-gen-files",
+]
 all = ["lingq[etc, test]"]
 
 [project.scripts]
