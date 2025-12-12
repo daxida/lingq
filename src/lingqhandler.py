@@ -269,6 +269,10 @@ class LingqHandler:
 
     async def get_my_collections(self) -> MyCollections:
         data = await self._request("GET", "collections/my")
+        if isinstance(data, ClientResponse):
+            # Error occurred (e.g., 404 for invalid language)
+            logger.error(f"Failed to get collections for language '{self.lang}'")
+            sys.exit(1)
         return MyCollections.model_validate(data)
 
     async def counters(self, collection_ids: list[int]) -> dict[str, Counter]:
