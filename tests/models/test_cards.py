@@ -1,4 +1,4 @@
-from models.cards import Card, Cards, Readings, Transliteration
+from lingq.models.cards import Card, Cards, Readings, Transliteration
 
 
 def test_model_cards() -> None:

@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from models.lesson_v3 import LessonV3
+from lingq.models.lesson_v3 import LessonV3
 
 
 def make_test_lesson_v3(lang: str) -> None:

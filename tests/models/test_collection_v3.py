@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from models.collection_v3 import CollectionV3
+from lingq.models.collection_v3 import CollectionV3
 
 
 def make_test_collection_v3(lang: str) -> None:

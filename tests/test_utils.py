@@ -1,5 +1,5 @@
-from commands.sort import sort_by_versioned_numbers_impl
-from utils import get_sorting_fn, greek_sorting_fn, roman_sorting_fn, sort_by_greek_words_impl
+from lingq.commands.sort import sort_by_versioned_numbers_impl
+from lingq.utils import get_sorting_fn, greek_sorting_fn, roman_sorting_fn, sort_by_greek_words_impl
 
 
 def test_greek_sorting_fn() -> None:

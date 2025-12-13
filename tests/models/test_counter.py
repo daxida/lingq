@@ -1,4 +1,4 @@
-from models.counter import Counter
+from lingq.models.counter import Counter
 
 
 def test_model_counter_for_empty_collection() -> None:

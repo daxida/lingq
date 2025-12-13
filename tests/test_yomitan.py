@@ -2,7 +2,7 @@ import json
 import zipfile
 from pathlib import Path
 
-from commands.mk_yomitan import YomitanDictTy, get_dictionary_title, yomitan
+from lingq.commands.mk_yomitan import YomitanDictTy, get_dictionary_title, yomitan
 
 
 def rewrite_json_with_first_n_entries(json_file_path: Path, n: int = 5) -> None:

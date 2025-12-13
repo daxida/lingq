@@ -1,5 +1,5 @@
-from commands.mk_markdown import format_markdown
-from models.collection import Collection
+from lingq.commands.mk_markdown import format_markdown
+from lingq.models.collection import Collection
 
 COLLECTION_LIST = [
     Collection(
