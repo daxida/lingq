@@ -13,7 +13,9 @@ from pydantic import BaseModel, ValidationError
 from log import logger
 
 
-def double_check(msg: str = "") -> None:
+def double_check(msg: str = "", assume_yes: bool = False) -> None:
+    if assume_yes:
+        return
     if msg:
         print(msg)
     if input("Proceed? [y/n] ") != "y":

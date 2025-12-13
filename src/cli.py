@@ -106,7 +106,7 @@ class LangType(click.ParamType):
 def cli() -> None:
     """Lingq command line scripts.
 
-    You can always get more details about a command with the --help flag.
+    See more details about a command with the --help flag.
     """
 
 
@@ -444,20 +444,18 @@ def patch_audios_cli(lang: str, course_id: int, audios_folder: Path) -> None:
 
 
 @cli.command("replace")
+@click.argument("lang", type=LangType())
 @click.argument("course_id")
-@click.argument("choice", type=click.Choice(["fst", "snd"]))
-def replace_ja_cli(course_id: int, choice: str) -> None:
-    """Replace words in a course (only for japanese).
+@click.argument("fr")
+@click.argument("to")
+@assume_yes_option()
+def replace_ja_cli(lang: str, course_id: int, fr: str, to: str, yes: bool) -> None:
+    """Replace words in a course.
 
-    This is a hack to fix a bug on LingQ's side. Do not use.
+    Example (replace a with b): lingq replace ja 123123 a b
     """
-
-    # TODO: delete this... I'm tired to fix their own issues...
-    to_ignore = "『』「」"
-    repl_ja = {k: f"DUMMY{idx}" for idx, k in enumerate(to_ignore)}
-    repl_ja_inv = {v: k for k, v in repl_ja.items()}
-    replacements = repl_ja if choice == "fst" else repl_ja_inv
-    replace("ja", course_id, replacements)
+    replacements = {fr: to}
+    replace(lang, course_id, replacements, yes)
 
 
 @cli.command("resplit")

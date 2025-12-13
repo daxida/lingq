@@ -76,8 +76,7 @@ async def get_courses_async(
     assume_yes: bool,
 ) -> None:
     logger.info(f"Getting courses for languages: {', '.join(langs)}")
-    if not assume_yes:
-        double_check("CAREFUL: This reorders your 'Continue studying' shelf.")
+    double_check("CAREFUL: This reorders your 'Continue studying' shelf.", assume_yes)
     for lang in langs:
         await get_courses_for_language_async(
             lang,
