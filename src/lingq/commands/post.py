@@ -10,9 +10,9 @@ from typing import Literal
 import aiohttp
 import Levenshtein
 
-from lingqhandler import LingqHandler
-from log import logger
-from utils import double_check, get_editor_url, sorted_subpaths, timing
+from lingq.lingqhandler import LingqHandler
+from lingq.log import logger
+from lingq.utils import double_check, get_editor_url, sorted_subpaths, timing
 
 SUPPORTED_BY_LINGQ_AUDIO_EXTENSIONS = [".mp3", ".m4a"]
 SUPPORTED_BY_US_TEXT_EXTENSIONS = [".txt", ".srt", ".vtt"]

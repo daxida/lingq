@@ -8,11 +8,11 @@ from typing import Any, Literal, get_args
 from pydantic import BaseModel, ConfigDict, HttpUrl
 from pydantic.alias_generators import to_camel
 
-from log import logger
-from models.collection_v3 import CollectionV3
-from models.hint import Hint
-from models.readings import Readings
-from models.transliteration import Transliteration
+from lingq.log import logger
+from lingq.models.collection_v3 import CollectionV3
+from lingq.models.hint import Hint
+from lingq.models.readings import Readings
+from lingq.models.transliteration import Transliteration
 
 LockedReason = Literal[
     "NORMALIZE_AUDIO",

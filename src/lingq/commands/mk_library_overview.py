@@ -6,9 +6,9 @@ import csv
 from pathlib import Path
 from typing import Any
 
-from lingqhandler import LingqHandler
-from log import logger
-from models.collection_v3 import SearchCollectionResult, SearchCollections
+from lingq.lingqhandler import LingqHandler
+from lingq.log import logger
+from lingq.models.collection_v3 import SearchCollectionResult, SearchCollections
 
 BASE_URL = "https://www.lingq.com"
 

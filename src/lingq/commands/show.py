@@ -1,8 +1,8 @@
 import asyncio
 
-from lingqhandler import LingqHandler
-from models.collection_v3 import CollectionLessonResult
-from models.counter import Counter
+from lingq.lingqhandler import LingqHandler
+from lingq.models.collection_v3 import CollectionLessonResult
+from lingq.models.counter import Counter
 
 
 def status_to_emoji(status: str | None, default: str = "⬛") -> str:

@@ -3,10 +3,10 @@ import re
 from pathlib import Path
 from typing import Any
 
-from lingqhandler import LingqHandler
-from log import logger
-from models.collection_v3 import CollectionLessonResult
-from utils import timing
+from lingq.lingqhandler import LingqHandler
+from lingq.log import logger
+from lingq.models.collection_v3 import CollectionLessonResult
+from lingq.utils import timing
 
 TitledPicture = tuple[str, Any]
 

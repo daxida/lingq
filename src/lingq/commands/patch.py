@@ -1,9 +1,9 @@
 import asyncio
 from pathlib import Path
 
-from lingqhandler import LingqHandler
-from log import logger
-from utils import double_check, sorted_subpaths, timing
+from lingq.lingqhandler import LingqHandler
+from lingq.log import logger
+from lingq.utils import double_check, sorted_subpaths, timing
 
 
 async def patch_audios_async(lang: str, course_id: int, audios_folder: Path) -> None:

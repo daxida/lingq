@@ -24,9 +24,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Literal, TypedDict, get_args
 
-from lingqhandler import LingqHandler
-from log import logger
-from models.cards import Card
+from lingq.lingqhandler import LingqHandler
+from lingq.log import logger
+from lingq.models.cards import Card
 
 YomitanIndex = dict[str, int | str | bool]
 YomitanDictTy = Literal["simple", "normal"]

@@ -1,10 +1,10 @@
 import asyncio
 from pathlib import Path
 
-from lingqhandler import LingqHandler
-from log import logger
-from models.lesson_v3 import LessonV3
-from utils import timing
+from lingq.lingqhandler import LingqHandler
+from lingq.log import logger
+from lingq.models.lesson_v3 import LessonV3
+from lingq.utils import timing
 
 
 def sanitize_title(title: str) -> str:

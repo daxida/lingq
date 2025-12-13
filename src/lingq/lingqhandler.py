@@ -6,21 +6,21 @@ from typing import Any
 from aiohttp import ClientResponse, ClientSession, FormData
 from aiohttp_retry import ExponentialRetry, RetryClient
 
-from config import Config
-from log import logger
-from models.collection import Collection
-from models.collection_v3 import (
+from lingq.config import Config
+from lingq.log import logger
+from lingq.models.collection import Collection
+from lingq.models.collection_v3 import (
     CollectionLessonResult,
     CollectionLessons,
     CollectionV3,
     SearchCollectionResult,
     SearchCollections,
 )
-from models.counter import Counter
-from models.language import Language
-from models.lesson_v3 import LOCKED_REASON_CHOICES, LessonV3
-from models.my_collections import MyCollections
-from utils import get_editor_url, model_validate_or_exit
+from lingq.models.counter import Counter
+from lingq.models.language import Language
+from lingq.models.lesson_v3 import LOCKED_REASON_CHOICES, LessonV3
+from lingq.models.my_collections import MyCollections
+from lingq.utils import get_editor_url, model_validate_or_exit
 
 
 class LingqHandler:

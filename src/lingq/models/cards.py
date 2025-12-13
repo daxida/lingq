@@ -1,9 +1,9 @@
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
-from models.hint import Hint
-from models.readings import Readings
-from models.transliteration import Transliteration
+from lingq.models.hint import Hint
+from lingq.models.readings import Readings
+from lingq.models.transliteration import Transliteration
 
 
 class Card(BaseModel):

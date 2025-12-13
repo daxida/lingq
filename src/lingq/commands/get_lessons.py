@@ -1,12 +1,12 @@
 import asyncio
 from pathlib import Path
 
-from commands.get_lesson import get_lesson_async, sanitize_title, write_lesson
-from lingqhandler import LingqHandler
-from log import logger
-from models.collection_v3 import CollectionLessonResult
-from models.lesson_v3 import LessonV3
-from utils import get_editor_url, timing
+from lingq.commands.get_lesson import get_lesson_async, sanitize_title, write_lesson
+from lingq.lingqhandler import LingqHandler
+from lingq.log import logger
+from lingq.models.collection_v3 import CollectionLessonResult
+from lingq.models.lesson_v3 import LessonV3
+from lingq.utils import get_editor_url, timing
 
 
 def filter_downloaded(

@@ -10,7 +10,7 @@ import roman
 from natsort import natsort_keygen, os_sorted
 from pydantic import BaseModel, ValidationError
 
-from log import logger
+from lingq.log import logger
 
 
 def double_check(msg: str = "", assume_yes: bool = False) -> None:

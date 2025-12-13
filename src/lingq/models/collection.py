@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from datetime import datetime as dt
 from typing import Any
 
-from log import logger
-from utils import get_editor_url
+from lingq.log import logger
+from lingq.utils import get_editor_url
 
 TO_EUROPEAN = {
     "Advanced 2": "C2",

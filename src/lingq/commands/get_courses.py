@@ -1,10 +1,10 @@
 import asyncio
 from pathlib import Path
 
-from commands.get_lessons import get_lessons_async
-from lingqhandler import LingqHandler
-from log import logger
-from utils import double_check, timing
+from lingq.commands.get_lessons import get_lessons_async
+from lingq.lingqhandler import LingqHandler
+from lingq.log import logger
+from lingq.utils import double_check, timing
 
 
 async def get_lessons_async_rate_limited(

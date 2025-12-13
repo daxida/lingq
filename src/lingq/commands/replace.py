@@ -2,8 +2,8 @@ import asyncio
 
 from loguru import logger
 
-from lingqhandler import LingqHandler
-from utils import double_check, timing
+from lingq.lingqhandler import LingqHandler
+from lingq.utils import double_check, timing
 
 
 async def replace_async(

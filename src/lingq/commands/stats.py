@@ -1,7 +1,7 @@
 import asyncio
 import datetime
 
-from lingqhandler import LingqHandler
+from lingq.lingqhandler import LingqHandler
 
 
 async def stats_async(lang: str) -> None:

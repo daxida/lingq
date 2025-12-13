@@ -1,8 +1,8 @@
 import asyncio
 import re
 
-from lingqhandler import LingqHandler
-from log import logger
+from lingq.lingqhandler import LingqHandler
+from lingq.log import logger
 
 
 def remove_leading_numbers(text: str) -> str:

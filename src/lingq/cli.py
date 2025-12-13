@@ -3,27 +3,27 @@ from typing import Any, Callable, TypeVar
 
 import click
 
-from commands.add_timestamps import add_timestamps
-from commands.get_courses import get_courses
-from commands.get_images import get_images
-from commands.get_lesson import get_lesson
-from commands.get_lessons import get_lessons
-from commands.get_words import get_words
-from commands.merge import merge
-from commands.mk_library_overview import overview
-from commands.mk_markdown import markdown
-from commands.mk_yomitan import YOMITAN_DICT_CHOICES, YomitanDictTy, yomitan
-from commands.patch import patch_audios
-from commands.post import PAIRING_STRATEGIES, Strategy, post
-from commands.post_yt_playlist import post_yt_playlist
-from commands.reindex import reindex
-from commands.replace import replace
-from commands.resplit import resplit
-from commands.show import show_course, show_my, show_status
-from commands.sort import sort_lessons
-from commands.stats import stats
-from config import CONFIG_DIR, CONFIG_PATH
-from lingqhandler import LingqHandler
+from lingq.commands.add_timestamps import add_timestamps
+from lingq.commands.get_courses import get_courses
+from lingq.commands.get_images import get_images
+from lingq.commands.get_lesson import get_lesson
+from lingq.commands.get_lessons import get_lessons
+from lingq.commands.get_words import get_words
+from lingq.commands.merge import merge
+from lingq.commands.mk_library_overview import overview
+from lingq.commands.mk_markdown import markdown
+from lingq.commands.mk_yomitan import YOMITAN_DICT_CHOICES, YomitanDictTy, yomitan
+from lingq.commands.patch import patch_audios
+from lingq.commands.post import PAIRING_STRATEGIES, Strategy, post
+from lingq.commands.post_yt_playlist import post_yt_playlist
+from lingq.commands.reindex import reindex
+from lingq.commands.replace import replace
+from lingq.commands.resplit import resplit
+from lingq.commands.show import show_course, show_my, show_status
+from lingq.commands.sort import sort_lessons
+from lingq.commands.stats import stats
+from lingq.config import CONFIG_DIR, CONFIG_PATH
+from lingq.lingqhandler import LingqHandler
 
 DEFAULT_OUT_PATH = Path("downloads")
 DEFAULT_OUT_WORDS_PATH = DEFAULT_OUT_PATH / "lingqs"

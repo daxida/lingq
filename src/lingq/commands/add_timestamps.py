@@ -1,8 +1,8 @@
 import asyncio
 
-from lingqhandler import LingqHandler
-from log import logger
-from models.collection_v3 import CollectionLessonResult
+from lingq.lingqhandler import LingqHandler
+from lingq.log import logger
+from lingq.models.collection_v3 import CollectionLessonResult
 
 
 async def check_if_timestamped(handler: LingqHandler, lesson_res: CollectionLessonResult) -> bool:

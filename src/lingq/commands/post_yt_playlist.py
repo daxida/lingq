@@ -12,9 +12,9 @@ from typing import Any
 
 import yt_dlp  # type: ignore
 
-from lingqhandler import LingqHandler
-from log import logger
-from utils import timing
+from lingq.lingqhandler import LingqHandler
+from lingq.log import logger
+from lingq.utils import timing
 
 # Until we find something better
 OldPlaylist = list[Any]

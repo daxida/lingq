@@ -1,6 +1,6 @@
 import asyncio
 
-from lingqhandler import LingqHandler
+from lingq.lingqhandler import LingqHandler
 
 
 async def merge_async(

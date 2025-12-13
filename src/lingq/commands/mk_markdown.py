@@ -2,12 +2,12 @@ import asyncio
 from datetime import datetime
 from pathlib import Path
 
-from lingqhandler import LingqHandler
-from log import logger
-from models.collection import Collection
-from models.collection_v3 import SearchCollectionResult
-from models.my_collections import CollectionItem
-from utils import timing
+from lingq.lingqhandler import LingqHandler
+from lingq.log import logger
+from lingq.models.collection import Collection
+from lingq.models.collection_v3 import SearchCollectionResult
+from lingq.models.my_collections import CollectionItem
+from lingq.utils import timing
 
 
 def sanitize_title(title: str) -> str:

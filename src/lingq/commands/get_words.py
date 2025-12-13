@@ -4,10 +4,10 @@ from math import ceil
 from pathlib import Path
 from typing import Any
 
-from lingqhandler import LingqHandler
-from log import logger
-from models.cards import Card, Cards
-from utils import timing
+from lingq.lingqhandler import LingqHandler
+from lingq.log import logger
+from lingq.models.cards import Card, Cards
+from lingq.utils import timing
 
 # List of JSON-like dumps of the Word model
 WordDump = list[dict[str, Any]]

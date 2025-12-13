@@ -1,10 +1,10 @@
 import asyncio
 import re
 
-from lingqhandler import LingqHandler
-from log import logger
-from models.collection_v3 import CollectionLessonResult
-from utils import sort_by_greek_words_impl, timing
+from lingq.lingqhandler import LingqHandler
+from lingq.log import logger
+from lingq.models.collection_v3 import CollectionLessonResult
+from lingq.utils import sort_by_greek_words_impl, timing
 
 ST = tuple[float, ...]
 """Return type of a sorting function."""
