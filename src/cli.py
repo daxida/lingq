@@ -449,7 +449,7 @@ def patch_audios_cli(lang: str, course_id: int, audios_folder: Path) -> None:
 @click.argument("fr")
 @click.argument("to")
 @assume_yes_option()
-def replace_ja_cli(lang: str, course_id: int, fr: str, to: str, yes: bool) -> None:
+def replace_cli(lang: str, course_id: int, fr: str, to: str, yes: bool) -> None:
     """Replace words in a course.
 
     Example (replace a with b): lingq replace ja 123123 a b
@@ -459,10 +459,11 @@ def replace_ja_cli(lang: str, course_id: int, fr: str, to: str, yes: bool) -> No
 
 
 @cli.command("resplit")
+@click.argument("lang", type=LangType())
 @click.argument("course_id")
-def resplit_ja_cli(course_id: int) -> None:
-    """Resplit words in a course (only for japanese)."""
-    resplit(course_id)
+def resplit_cli(lang: str, course_id: int) -> None:
+    """Resplit a course."""
+    resplit(lang, course_id)
 
 
 @cli.group()

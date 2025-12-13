@@ -481,22 +481,27 @@ class LingqHandler:
             # we _want_ to modify the first sentence, since it may not be the title...
             return await self._request("PATCH", f"lessons/{lesson_id}", data={"title": text})
 
-    async def resplit_lesson(self, lesson_id: int, method: str) -> ClientResponse:
-        """Resplit a Japanese lesson using the new splitting logic.
-
-        https://forum.lingq.com/t/refining-parsing-in-spaceless-languages-like-japanese-with-ai/179754/5
-
-        As of 2025/12/13 this is still the so-called AI-generated split logic.
-        """
-        if method != "ichimoe":
-            msg = "Only method=ichimoe is supported."
-            raise NotImplementedError(msg)
-        return await self._request(
-            "POST",
-            f"lessons/{lesson_id}/resplit/",
-            data={"method": method},
-            raw=True,
-        )
+    async def resplit_lesson(self, lesson_id: int, data: dict[str, str] = {}) -> ClientResponse:
+        """POST. Resplit a lesson."""
+        if self.lang == "ja":
+            # https://forum.lingq.com/t/refining-parsing-in-spaceless-languages-like-japanese-with-ai/179754/5
+            # As of 2025/12/13 this is still the so-called AI-generated split logic.
+            assert len(data) == 0
+            return await self._request(
+                "POST",
+                f"lessons/{lesson_id}/resplit/",
+                data={"method": "ichimoe"},
+                raw=True,
+            )
+        else:
+            # We need to send the Lesson text: {"text": "Raw text.\nNo formatting.\n\nJust chars."}
+            assert len(data) > 0
+            return await self._request(
+                "POST",
+                f"lessons/{lesson_id}/resplit/",
+                data=data,
+                raw=True,
+            )
 
     async def delete_course(self, course_id: int) -> None:
         """Delete a course.
