@@ -219,9 +219,9 @@ def get_words_cli(langs: list[str], opath: Path) -> None:
 @click.argument("lang", type=LangType())
 @click.argument("lesson_id")
 @opath_option()
-@click.option("--download-audio", is_flag=True, default=False, help="If set, also download audio.")
+@click.option("--download-audio", is_flag=True, default=False, help="Also download audio.")
 @click.option(
-    "--download-timestamps", is_flag=True, default=False, help="If set, also download timestamps."
+    "--download-timestamps", is_flag=True, default=False, help="Also download timestamps."
 )
 def get_lesson_cli(
     lang: str,
@@ -247,6 +247,10 @@ def get_lesson_cli(
 @click.argument("lang", type=LangType())
 @click.argument("course_id")
 @opath_option()
+@click.option("--download-audio", is_flag=True, default=False, help="Also download audio.")
+@click.option(
+    "--download-timestamps", is_flag=True, default=False, help="Also download timestamps."
+)
 @click.option(
     "--skip-downloaded",
     "-s",
@@ -255,18 +259,14 @@ def get_lesson_cli(
     show_default=True,
     help="Skip already downloaded lessons.",
 )
-@click.option("--download-audio", is_flag=True, default=False, help="If set, also download audio.")
-@click.option(
-    "--download-timestamps", is_flag=True, default=False, help="If set, also download timestamps."
-)
-@click.option("--with-index", is_flag=True, default=False, help="If set, add index to the title.")
+@click.option("--with-index", is_flag=True, default=False, help="Add index to the title.")
 def get_lessons_cli(
     lang: str,
     course_id: int,
     opath: Path,
-    skip_downloaded: bool,
     download_audio: bool,
     download_timestamps: bool,
+    skip_downloaded: bool,
     with_index: bool,
 ) -> None:
     """Get all lessons from a course id.
@@ -277,9 +277,9 @@ def get_lessons_cli(
         lang,
         course_id,
         opath,
-        skip_downloaded=skip_downloaded,
         download_audio=download_audio,
         download_timestamps=download_timestamps,
+        skip_downloaded=skip_downloaded,
         write=True,
         with_index=with_index,
     )
@@ -287,9 +287,10 @@ def get_lessons_cli(
 
 @get.command("courses")
 @click.argument("langs", nargs=-1, type=LangType())
-@click.option("--download-audio", is_flag=True, default=False, help="If set, also download audio.")
+@opath_option()
+@click.option("--download-audio", is_flag=True, default=False, help="Also download audio.")
 @click.option(
-    "--download-timestamps", is_flag=True, default=False, help="If set, also download timestamps."
+    "--download-timestamps", is_flag=True, default=False, help="Also download timestamps."
 )
 @click.option(
     "--skip-downloaded",
@@ -308,7 +309,6 @@ def get_lessons_cli(
     help="Number of courses to download simultanously. "
     "Increasing this too much may incur in throttling. Suggested: 1 or 2.",
 )
-@opath_option()
 @assume_yes_option()
 def get_courses_cli(
     langs: list[str],
@@ -480,6 +480,7 @@ def overview_cli(lang: str) -> None:
 
 @make.command("markdown")
 @click.argument("langs", nargs=-1, type=LangType())
+@opath_option()
 @click.option(
     "--select-courses",
     default="all",
@@ -494,12 +495,11 @@ def overview_cli(lang: str) -> None:
     show_default=True,
     help="Include the number of views in the markdown.",
 )
-@opath_option()
 def markdown_cli(
     langs: list[str],
+    opath: Path,
     select_courses: str,
     include_views: bool,
-    opath: Path,
 ) -> None:
     """Make markdown files for the given languages.
 
