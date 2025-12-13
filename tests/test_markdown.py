@@ -1,4 +1,4 @@
-from commands.markdown import format_markdown
+from commands.mk_markdown import format_markdown
 from models.collection import Collection
 
 COLLECTION_LIST = [

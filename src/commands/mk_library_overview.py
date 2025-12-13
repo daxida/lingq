@@ -86,6 +86,7 @@ def write_to_csv(lang: str, data_list: list[Any]) -> None:
 
 
 def overview(lang: str) -> None:
+    """Make a library overview."""
     asyncio.run(fetch_and_save_to_csv(lang))
 
 

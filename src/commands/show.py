@@ -103,7 +103,7 @@ def show_my(
     codes: bool,
     verbose: bool,
 ) -> None:
-    """Show my collections in a given language."""
+    """Show my collections in a language."""
     titles = asyncio.run(get_my_collections_titles_async(lang, shared, codes, verbose))
     for idx, title in enumerate(titles, 1):
         print(f"{idx:02}: {title}")
@@ -117,7 +117,7 @@ def show_course(
     codes: bool,
     verbose: bool,
 ) -> None:
-    """Show lessons in a course."""
+    """Show lessons in a language."""
     titles = asyncio.run(get_course_titles_async(lang, course_id, shared, codes, verbose))
     for idx, title in enumerate(titles, 1):
         print(f"{idx:02}: {title}")

@@ -159,7 +159,7 @@ def markdown(
     include_views: bool,
     out_folder: Path,
 ) -> None:
-    """Generate markdown files for the given language codes.
+    """Make markdown files for the given languages.
 
     Args:
         langs (list[str]): List of language codes to process.

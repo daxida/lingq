@@ -18,7 +18,7 @@ async def stats_async(lang: str) -> None:
 
 
 def stats(lang: str) -> None:
-    """Show some simple stats."""
+    """Show stats."""
     asyncio.run(stats_async(lang))
 
 

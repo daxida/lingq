@@ -85,7 +85,9 @@ def get_lessons(
     write: bool,
     with_index: bool,
 ) -> None:
-    """Downloads text and/or audio from a course given the language code and the course ID.
+    """Get all lessons from a course id.
+
+    Download text and/or audio from a course given the language code and the course ID.
 
     Args:
         lang (str): The language code of the course.

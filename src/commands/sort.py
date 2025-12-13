@@ -159,6 +159,7 @@ async def sort_lessons_async(lang: str, course_id: int, *, dry_run: bool) -> Non
 
 @timing
 def sort_lessons(lang: str, course_id: int, *, dry_run: bool = False) -> None:
+    """Sort course lessons."""
     asyncio.run(sort_lessons_async(lang, course_id, dry_run=dry_run))
 
 

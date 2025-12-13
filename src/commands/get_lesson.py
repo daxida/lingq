@@ -91,8 +91,10 @@ def get_lesson(
     download_audio: bool,
     download_timestamps: bool,
 ) -> None:
-    """Downloads text and/or audio from a lesson given the language code and the lesson ID."""
+    """Get a lesson from a lesson id.
 
+    Download text and/or audio from a lesson given the language code and the lesson ID.
+    """
     lesson = asyncio.run(
         _get_lesson_async(
             lang=lang,

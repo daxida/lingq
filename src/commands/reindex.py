@@ -45,7 +45,7 @@ async def reindex_async(lang: str, course_id: int, *, dry_run: bool) -> None:
 
 
 def reindex(lang: str, course_id: int, *, dry_run: bool = False) -> None:
-    """Reindex titles in a course."""
+    """Reindex course titles."""
     asyncio.run(reindex_async(lang, course_id, dry_run=dry_run))
 
 

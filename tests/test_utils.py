@@ -1,4 +1,4 @@
-from commands.sort_lessons import sort_by_versioned_numbers_impl
+from commands.sort import sort_by_versioned_numbers_impl
 from utils import get_sorting_fn, greek_sorting_fn, roman_sorting_fn, sort_by_greek_words_impl
 
 

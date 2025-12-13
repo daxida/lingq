@@ -101,7 +101,7 @@ def get_courses(
     batch_size: int = 1,
     assume_yes: bool = False,
 ) -> None:
-    """Get every course from a list of languages.
+    """Get all courses for the given languages.
 
     CAREFUL: This reorders your 'Continue studying' shelf.
 

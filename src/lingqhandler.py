@@ -485,6 +485,8 @@ class LingqHandler:
         """Resplit a Japanese lesson using the new splitting logic.
 
         https://forum.lingq.com/t/refining-parsing-in-spaceless-languages-like-japanese-with-ai/179754/5
+
+        As of 2025/12/13 this is still the so-called AI-generated split logic.
         """
         if method != "ichimoe":
             msg = "Only method=ichimoe is supported."

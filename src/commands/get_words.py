@@ -65,8 +65,10 @@ async def get_words_async(langs: list[str], opath: Path) -> None:
 
 @timing
 def get_words(langs: list[str], opath: Path) -> None:
-    """Get my words (LingQs) from a language."""
-    # If no language codes are given, use all languages.
+    """Get all words (LingQs) for the given languages.
+
+    If no language codes are given, use all languages.
+    """
     if not langs:
         langs = LingqHandler.get_user_langs()
     logger.info(f"Getting words for languages: {', '.join(langs)}")

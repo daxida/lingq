@@ -1,8 +1,3 @@
-"""Merge one course into another.
-
-The old course, even if it remains without any lesson, will not be deleted.
-"""
-
 import asyncio
 
 from lingqhandler import LingqHandler
@@ -24,6 +19,12 @@ def merge(
     fr_course_id: int,
     to_course_id: int,
 ) -> None:
+    """Merge two courses.
+
+    Moves all the lessons from course FR to course TO.
+
+    The old course, even if it remains without any lessons, will not be deleted.
+    """
     asyncio.run(merge_async(lang, fr_course_id, to_course_id))
 
 
