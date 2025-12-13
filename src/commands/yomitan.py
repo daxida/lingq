@@ -22,23 +22,48 @@ import sys
 import zipfile
 from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal, TypedDict, get_args
 
 from lingqhandler import LingqHandler
 from log import logger
 from models.cards import Card
 
-YomitanIndex = dict[str, Any]
-# TODO: fix this type. Use pydantic if possible.
-YomitanEntry = list[Any]
+YomitanIndex = dict[str, int | str | bool]
+YomitanDictTy = Literal["simple", "normal"]
+"""The type of the Yomitan dictionary."""
+
+YOMITAN_DICT_CHOICES: list[YomitanDictTy] = list(get_args(YomitanDictTy))
+
+Definition = Any
+
+
+class YomitanEntryModel(TypedDict):
+    term: str
+    readings: str
+    definition_tags: str
+    rule_identifiers: str
+    score: int
+    definitions_list: list[Definition]
+    sequence_number: int
+    term_tags: str
+
+
+YomitanEntry = list[str | int | list[Definition]]
 YomitanDict = list[YomitanEntry]
 
 
-def get_dictionary_index(lang: str) -> YomitanIndex:
+def get_dictionary_title(lang: str, dict_ty: YomitanDictTy) -> str:
+    match dict_ty:
+        case "normal":
+            return f"lingq-{lang}"
+        case "simple":
+            return f"lingq-{lang}-simple"
+
+
+def get_dictionary_index(lang: str, dict_ty: YomitanDictTy) -> YomitanIndex:
     """Make a yomitan dictionary index.
 
-    Roughly based on the index from the Kaikki-to-yomitan downloads page:
-    https://github.com/yomidevs/kaikki-to-yomitan/blob/master/downloads.md
+    Roughly based on: https://github.com/yomidevs/kaikki-to-yomitan/blob/master/downloads.md
     """
     return {
         "format": 3,
@@ -51,52 +76,204 @@ def get_dictionary_index(lang: str) -> YomitanIndex:
         # Change these two if necessary
         "sourceLanguage": lang,
         "targetLanguage": "en",
-        "title": f"lingq-{lang}",
+        "title": get_dictionary_title(lang, dict_ty),
     }
+
+
+def get_styles_css() -> str:
+    """Add a minimal palette for word status and aligns the backlink.
+
+    * https://github.com/daxida/kty/blob/master/assets/styles.css
+    * src/models/cards.py
+
+    1 - #fbe493 (LingQ colour)
+    2 - #fff2c5 (LingQ colour)
+    3 - #fff7db (LingQ colour)
+    4 - #a8e6a3 (clear green)
+    5 - #28a745 (strong green)
+    """
+    return """
+
+.tag[data-details='1'] .tag-label {
+  color: black;
+  background-color: #fbe493;
+}
+
+.tag[data-details='2'] .tag-label {
+  color: black;
+  background-color: #fff2c5;
+}
+
+.tag[data-details='3'] .tag-label {
+  color: black;
+  background-color: #fff7db;
+}
+
+.tag[data-details='4'] .tag-label {
+  color: black;
+  background-color: #a8e6a3;
+}
+
+.tag[data-details='5'] .tag-label {
+  color: black;
+  background-color: #28a745;
+}
+
+/* https://github.com/daxida/kty/blob/master/assets/styles.css */
+
+div[data-sc-content="extra-info"] {
+    margin-left: 0.5em;
+}
+
+div[data-sc-content="backlink"] {
+    font-size: 0.7em;
+    text-align: right;
+}
+
+/* experiment */
+
+details[data-sc-content^="details-entry"] {
+  border: 1px solid var(--border-color, #ccc);
+  border-radius: 0.5em;
+  padding: 0.8em;
+  margin: 0.6em 0;
+}
+
+/* remove native triangle and summary indicator */
+summary[data-sc-content="summary-entry"] {
+  list-style: none;
+  cursor: pointer;
+  padding: 0.2em 0.4em;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+/* hide default marker */
+summary[data-sc-content="summary-entry"]::-webkit-details-marker,
+summary[data-sc-content="summary-entry"]::marker {
+  display: none;
+}
+
+/* spacing between header and content */
+summary + * {
+  margin-top: 0.6em;
+}
+
+""".strip()
 
 
 def card_to_yomitan_entry(card: Card) -> YomitanEntry:
     """Convert the Card model to a dictionary entry.
 
+    Cf. https://github.com/daxida/kty
+
     Discussion about the structure:
     https://github.com/themoeway/kaikki-to-yomitan/issues/55
 
     Examples used as references:
-    https://github.com/themoeway/kaikki-to-yomitan/blob/433636cf74cb530a241f9c4c3842a2c11dd3b084/data/test/dict/fr/en/term_bank_1.json#L1
     https://github.com/themoeway/jmdict-yomitan?tab=readme-ov-file#jmdict-for-yomitan-1
+
+    More examples can be found in the fixtures folder.
     """
 
-    glossary_content = []
+    glosses_content = []
     for hint in card.hints:
-        fmt_hint = {"content": hint.text, "tag": "li"}
-        glossary_content.append(fmt_hint)
-    glossary = {"content": glossary_content, "data": {"content": "glossary"}, "tag": "ul"}
+        hint_fmt = {
+            "tag": "li",
+            "content": [
+                {
+                    "tag": "div",
+                    "content": [hint.text],
+                },
+            ],
+        }
+        glosses_content.append(hint_fmt)
+    glossary = {
+        "tag": "ol",
+        "data": {"content": "glosses"},
+        "content": glosses_content,
+    }
 
-    if card.notes:
-        notes_content = [{"content": card.notes, "tag": "li"}]
-        notes = {"content": notes_content, "data": {"content": "notes"}, "tag": "ul"}
-    else:
-        notes = None
+    # INVARIANT: we expect one and only one example (read, fragment)
+    example_content = [
+        {
+            "tag": "li",
+            "content": card.fragment,
+        }
+    ]
 
-    example_content = [{"content": card.fragment, "tag": "li"}]
     example = {
-        "content": example_content,
-        "style": {"fontStyle": "italic"},
-        "data": {"content": "example"},
-        "tag": "ul",
+        "tag": "div",
+        "data": {"content": "extra-info"},
+        "content": {
+            "tag": "div",
+            "data": {"content": "example-sentence"},
+            "content": example_content,
+            "style": {"fontStyle": "italic"},
+        },
+    }
+
+    notes = []
+    if card.notes:
+        # To open/close notes (which can be quite large)
+        summary = {
+            "tag": "summary",
+            "data": {"content": "summary-entry"},
+            "content": "Notes",
+        }
+        notes_inner = {
+            "tag": "div",
+            "content": [
+                {
+                    "tag": "li",
+                    "data": {"content": "extra-info"},  # Remove this?
+                    "content": card.notes,
+                }
+            ],
+        }
+        notes = [
+            {
+                "tag": "details",
+                "data": {"content": "details-entry-examples"},
+                "content": [summary, notes_inner],
+            }
+        ]
+
+    # We add the status at the very beginning.
+    # Tags have to be space-separated.
+    tags_items = [str(card.displayed_status()), *card.tags]
+    tags = " ".join(tags_items)
+
+    # Backlink to the API to visualize the JSON.
+    # I don't think it is possible to send to the edit interface.
+    url = f"https://www.lingq.com/api/v3/el/cards/{card.pk}/"
+    backlink = {
+        "tag": "div",
+        "data": {"content": "backlink"},
+        "content": [
+            {
+                "tag": "a",
+                "href": url,
+                "content": "API",
+            }
+        ],
     }
 
     # Actually only notes can be None
-    definitions_contents = [x for x in (glossary, example, notes) if x is not None]
-    definitions = [{"type": "structured-content", "content": definitions_contents}]
+    definitions_contents = [glossary, example, *notes, backlink]
+    definitions_contents = [glossary, *notes, backlink]
+    definitions: list[Definition] = [
+        {"type": "structured-content", "content": definitions_contents}
+    ]
 
-    # The keys are only for documentation. It is immediately converted to a list.
-    _entry = {
+    # The keys are only for validation and documentation.
+    # It is immediately converted to a list.
+    model_entry: YomitanEntryModel = {
         "term": card.term,
         "readings": "",  # card.transliteration.get("latin", ""),
         # Abbreviations expanded in tag_bank_1.json
         # (LINGQ) A grammar tag is a tag that appear both in tags and g_tags
-        "definition_tags": " ".join(card.tags),  # space separated
+        "definition_tags": tags,
         "rule_identifiers": "",
         "score": 0,
         # Can do this for a minimal version: [hint.text for hint in card.hints]
@@ -104,18 +281,22 @@ def card_to_yomitan_entry(card: Card) -> YomitanEntry:
         "sequence_number": 0,  # ignore
         "term_tags": "",
     }
-    entry: YomitanEntry = list(_entry.values())
+    entry: YomitanEntry = list(model_entry.values())  # type: ignore
     return entry
 
 
 def card_to_yomitan_entry_simple(card: Card) -> YomitanEntry:
     """Minimal yomitan entry.
-    Contains only the terms, tags and hints with no format.
+
+    Contains only the terms, tags (coloured) and hints with no format.
     """
+    tags_items = [str(card.status), *card.tags]
+    tags = " ".join(tags_items)
+
     entry: YomitanEntry = [
         card.term,
         "",
-        " ".join(card.tags),
+        tags,
         "",
         0,
         [hint.text for hint in card.hints],
@@ -125,64 +306,70 @@ def card_to_yomitan_entry_simple(card: Card) -> YomitanEntry:
     return entry
 
 
-def yomitan_for_language(dump_path: Path) -> YomitanDict:
-    """Read and convert the JSON obtained from LingQ."""
-    # NOTE: split the dict into manageable jsons?
-    # TODO: make a different entry per hint?
-    #       That is: single card -> list[YomitanEntry]
+def yomitan_for_language(dump_path: Path, lang: str, dict_ty: YomitanDictTy) -> YomitanDict:
+    """Read and convert the JSON obtained from LingQ.
 
-    # Look for the dump
+    There is no need to split the dictionary into smaller jsons. It should be small enough.
+    """
     lingq_json_path = dump_path / "lingqs.json"
     if not lingq_json_path.exists():
-        logger.error(f"Could not find the dump at {lingq_json_path}. Exiting.")
+        logger.error(f"Dump not found at {lingq_json_path}.")
+        logger.error(f"First run the following command: lingq get words {lang}")
         sys.exit(1)
 
-    # Load the dump
     with lingq_json_path.open("r", encoding="utf-8") as f:
         words = json.load(f)
         words = [Card.model_validate(word) for word in words]
 
-    # Convert to Yomitan
-    yomitan_dict: YomitanDict = []
-    for card in words:
-        entry = card_to_yomitan_entry_simple(card)
-        yomitan_dict.append(entry)
+    match dict_ty:
+        case "normal":
+            fn = card_to_yomitan_entry
+        case "simple":
+            fn = card_to_yomitan_entry_simple
+
+    yomitan_dict = [fn(card) for card in words]
 
     return yomitan_dict
 
 
-def write_yomitan_dict(lang: str, out_path: Path, yomitan_dict: YomitanDict) -> None:
+def write_yomitan_dict(
+    lang: str, out_path: Path, yomitan_dict: YomitanDict, dict_ty: YomitanDictTy
+) -> None:
     """Write the zipped yomitan dict."""
     zip_buffer = io.BytesIO()
     with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED, allowZip64=True) as zipf:
-        index = get_dictionary_index(lang)
+        index = get_dictionary_index(lang, dict_ty)
         zipf.writestr("index.json", json.dumps(index, indent=2, ensure_ascii=False))
-        # I'm not sure what is the correct size to split
+        styles = get_styles_css()
+        zipf.writestr("styles.css", styles)
+        # No need to split the banks, the files are small
         zipf.writestr("term_bank_1.json", json.dumps(yomitan_dict, indent=2, ensure_ascii=False))
 
     with out_path.open("wb") as f:
         f.write(zip_buffer.getvalue())
 
 
-def yomitan(langs: list[str], opath: Path) -> None:
-    """Make a Yomitan dictionary from a LingQ JSON dump generated through get_words.
+def yomitan(
+    langs: list[str],
+    opath: Path,
+    *,
+    dict_ty: YomitanDictTy = "normal",
+) -> None:
+    """Make a Yomitan dictionary from a file generated by 'src/commands/get_words.py'.
 
     If no language codes are given, use all languages.
     """
     if not langs:
         langs = LingqHandler.get_user_langs()
 
+    logger.debug(f"Chosen dictionary type: {dict_ty}")
+
     for lang in langs:
         dump_path = opath / lang
-        yomitan_dict = yomitan_for_language(dump_path)
-        out_path = dump_path / f"lingqs-{lang}.zip"
-        write_yomitan_dict(lang, out_path, yomitan_dict)
+        logger.info(f"Converting to yomitan format for {lang}...")
+        yomitan_dict = yomitan_for_language(dump_path, lang, dict_ty)
+        yomitan_dict_title = get_dictionary_title(lang, dict_ty)
+        out_path = dump_path / f"{yomitan_dict_title}.zip"
+        logger.info("Writing dictionary...")
+        write_yomitan_dict(lang, out_path, yomitan_dict, dict_ty)
         logger.success(f"Finished dictionary for {lang} at: {out_path}")
-
-
-if __name__ == "__main__":
-    # Defaults for manually running this script.
-    yomitan(
-        langs=["el"],
-        opath=Path("downloads/lingqs"),
-    )

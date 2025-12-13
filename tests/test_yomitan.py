@@ -1,7 +1,8 @@
 import json
+import zipfile
 from pathlib import Path
 
-from commands.yomitan import yomitan
+from commands.yomitan import YomitanDictTy, get_dictionary_title, yomitan
 
 
 def rewrite_json_with_first_n_entries(json_file_path: Path, n: int = 5) -> None:
@@ -12,22 +13,56 @@ def rewrite_json_with_first_n_entries(json_file_path: Path, n: int = 5) -> None:
         json.dump(first_ten_entries, f, ensure_ascii=False, indent=4)
 
 
-def test_yomitan() -> None:
-    """Simply test that the yomitan function does not crash."""
-    fixture_path = Path("tests/fixtures/lingqs")
-    assert (fixture_path / "pt").exists()
+LANG = "el"
+FIXTURE_DIR = Path("tests/fixtures/lingqs")
+DICT_TITLE = get_dictionary_title("el", dict_ty="normal")
 
-    zip_file_path = fixture_path / "pt" / "lingqs-pt.zip"
-    assert not zip_file_path.exists()
 
-    yomitan(["pt"], fixture_path)
-    assert zip_file_path.exists()
+def path_zip(dict_ty: YomitanDictTy) -> Path:
+    dict_title = get_dictionary_title("el", dict_ty)
+    return FIXTURE_DIR / LANG / f"{dict_title}.zip"
 
-    zip_file_path.unlink()
-    assert not zip_file_path.exists()
+
+def test_yomitan_structure() -> None:
+    """Test that the yomitan function does not crash."""
+    assert (FIXTURE_DIR / LANG).exists()
+
+    dict_ty = "normal"
+    pz = path_zip(dict_ty)
+    assert not pz.exists()
+
+    yomitan([LANG], FIXTURE_DIR, dict_ty=dict_ty)
+    assert pz.exists()
+
+    pz.unlink()
+    assert not pz.exists()
+
+
+def test_make_yomitan_card() -> None:
+    """Check for expected files, then generate a dictionary to compare via git --diff.
+
+    Any changes to the yomitan dictionary will show as changes to the committed files.
+    """
+    for dict_ty in ("normal", "simple"):
+        pz = path_zip(dict_ty)
+        yomitan([LANG], FIXTURE_DIR, dict_ty=dict_ty)
+
+        with zipfile.ZipFile(pz, "r") as zf:
+            names = zf.namelist()
+            assert all(f in names for f in ("index.json", "term_bank_1.json", "styles.css"))
+            with zf.open("term_bank_1.json") as f:
+                content = f.read().decode("utf-8")
+                data = json.loads(content)
+                first_entry = data[0]
+                # print(json.dumps(first_entry, indent=2))
+                with pz.with_name(f"{dict_ty}.json").open("w") as of:
+                    json.dump(first_entry, of, indent=2, ensure_ascii=False)
+
+        pz.unlink()
 
 
 if __name__ == "__main__":
     # Generate fixture
-    json_file = Path("downloads/lingqs/pt/lingqs.json")
-    rewrite_json_with_first_n_entries(json_file)
+    # json_file = Path(f"downloads/lingqs/{LANG}/lingqs.json")
+    # rewrite_json_with_first_n_entries(json_file)
+    pass

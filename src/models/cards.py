@@ -17,12 +17,17 @@ class Card(BaseModel):
     # url: str
     term: str
     fragment: str
+    # LingQ importance (their own undocumented custom ranking)
     importance: int
-    # LingQ status (0-4?)
+    # LingQ status (0-3)
+    # 0 : new (displays as 1 in the website)
+    # 1 : recognized
+    # 2 : familiar
+    # 3 : learned
+    # 3 : known (+ requires extended_status to be 3)
     status: int
-    # Unused
-    # extended_status: Optional[int] = None
-    # last_reviewed_correct: Optional[str] = None
+    extended_status: int | None = None
+    # last_reviewed_correct: str | None = None
     # srs_due_date: str
     notes: str
     audio: str | None = None
@@ -34,6 +39,12 @@ class Card(BaseModel):
     word_tags: list[str]
     readings: Readings = Readings()
     writings: list[str]
+
+    def displayed_status(self) -> int:
+        assert 0 <= self.status <= 3
+        if self.status < 3:
+            return self.status + 1
+        return 5 if self.extended_status == 3 else 4
 
 
 class Cards(BaseModel):

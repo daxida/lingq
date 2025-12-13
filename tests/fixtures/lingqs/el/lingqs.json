@@ -1,0 +1,75 @@
+[
+    {
+        "pk": 742409293,
+        "url": "https://www.lingq.com/api/v3/el/cards/742409293/",
+        "term": "λέξη",
+        "fragment": "example from which the word was added",
+        "importance": 3,
+        "status": 0,
+        "extended_status": null,
+        "notes": "Notes              after spaces\nafter newline\n\n\nafter many newlines",
+        "audio": null,
+        "words": [
+            "λέξη"
+        ],
+        "tags": [],
+        "hints": [
+            {
+                "id": 211858764,
+                "locale": "en",
+                "text": "gloss 1",
+                "term": "λέξη",
+                "popularity": 1,
+                "is_google_translate": false,
+                "flagged": false
+            },
+            {
+                "id": 211858773,
+                "locale": "en",
+                "text": "gloss 2",
+                "term": "λέξη",
+                "popularity": 1,
+                "is_google_translate": false,
+                "flagged": false
+            }
+        ],
+        "gTags": [],
+        "wordTags": [],
+        "writings": [
+            "λέξη",
+            "λεξη"
+        ]
+    },
+    {
+        "pk": 742409294,
+        "url": "https://www.lingq.com/api/v3/el/cards/742409294/",
+        "term": "θηλυκό",
+        "fragment": "example from which the word was added",
+        "importance": 3,
+        "status": 0,
+        "extended_status": null,
+        "notes": "Example notes for θηλυκό",
+        "audio": null,
+        "words": [
+            "θηλυκό"
+        ],
+        "tags": [],
+        "hints": [
+            {
+                "id": 211858774,
+                "locale": "en",
+                "text": "feminine",
+                "term": "θηλυκό",
+                "popularity": 1,
+                "is_google_translate": false,
+                "flagged": false
+            }
+        ],
+        "gTags": [],
+        "wordTags": [],
+        "writings": [
+            "θηλυκό",
+            "θυληκό"
+        ]
+    }
+]

@@ -1,0 +1,86 @@
+[
+  "λέξη",
+  "",
+  "1",
+  "",
+  0,
+  [
+    {
+      "type": "structured-content",
+      "content": [
+        {
+          "tag": "ol",
+          "data": {
+            "content": "glosses"
+          },
+          "content": [
+            {
+              "tag": "li",
+              "content": [
+                {
+                  "tag": "div",
+                  "content": [
+                    "gloss 1"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "li",
+              "content": [
+                {
+                  "tag": "div",
+                  "content": [
+                    "gloss 2"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "tag": "details",
+          "data": {
+            "content": "details-entry-examples"
+          },
+          "content": [
+            {
+              "tag": "summary",
+              "data": {
+                "content": "summary-entry"
+              },
+              "content": "Notes"
+            },
+            {
+              "tag": "div",
+              "content": [
+                {
+                  "tag": "li",
+                  "data": {
+                    "content": "extra-info"
+                  },
+                  "content": "Notes              after spaces\nafter newline\n\n\nafter many newlines"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "tag": "div",
+          "data": {
+            "content": "backlink"
+          },
+          "content": [
+            {
+              "tag": "a",
+              "href": "https://www.lingq.com/api/v3/el/cards/742409293/",
+              "content": "API"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  0,
+  ""
+]
