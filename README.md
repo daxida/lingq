@@ -1,6 +1,10 @@
 # LingQ
 
-Command line utilities and scripts for interacting with [LingQ's](https://www.lingq.com/) API.
+[![GitHub](https://img.shields.io/badge/-black?logo=github)](https://github.com/daxida/lingq)
+[![image](https://img.shields.io/pypi/v/lingq.svg)](https://pypi.python.org/pypi/lingq)
+[![image](https://img.shields.io/pypi/l/lingq.svg)](https://github.com/daxida/lingq/blob/main/LICENSE)
+
+Command line utilities and scripts for interacting with [LingQ](https://www.lingq.com/)'s API.
 
 You will need a LingQ API key. You can get it from [here](https://www.lingq.com/en/accounts/apikey/).
 
@@ -16,7 +20,7 @@ Then, simply run:
 lingq setup yourLingqApiKey
 ```
 
-## How to use
+## Usage
 
 Some examples:
 ```
