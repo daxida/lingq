@@ -134,8 +134,9 @@ def timing[**P, T](f: Callable[P, T]) -> Callable[P, T]:
         ts = time.time()
         result = f(*args, **kw)
         te = time.time()
-        print(f"\033[36m({f.__name__} {te - ts:2.2f}sec)\033[0m")
+        print(f"\033[36m({f.__name__} {te - ts:2.2f}sec)\033[0m")  # type: ignore[attr-defined]
         return result
+
     return wrap
 
 

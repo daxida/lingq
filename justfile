@@ -1,9 +1,17 @@
 # For debugging:
 # set -x LOGURU_LEVEL TRACE
 
-# Ignore handler test
-test *FLAGS:
-  pytest --ignore=tests/test_lingq_handler.py {{FLAGS}}
+clean:
+  rm -rf downloads
+
+# Ignores handler test. Run `pytest` to include it.
+test *args:
+  pytest --ignore=tests/test_lingq_handler.py {{args}}
+
+test-handler:
+  python3 tests/test_lingq_handler.py
+
+alias t := test
 
 # Format
 fmt:
@@ -11,9 +19,6 @@ fmt:
   ruff check --fix
 
 # Lint
-lint:
-  mypy src
+lint *args:
+  mypy src {{args}}
 
-# Download youtube audio from URL
-dl URL:
-  yt-dlp -x --audio-format mp3 '{{URL}}'
