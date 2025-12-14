@@ -1,7 +1,7 @@
 import asyncio
 import sys
 from io import BufferedReader
-from typing import Any
+from typing import Any, TypedDict, Unpack
 
 from aiohttp import ClientResponse, ClientSession, FormData
 from aiohttp_retry import ExponentialRetry, RetryClient
@@ -23,6 +23,12 @@ from lingq.models.my_collections import MyCollections
 from lingq.utils import get_editor_url, model_validate_or_exit
 
 
+class RequestKwargs(TypedDict, total=False):
+    params: dict[str, Any]
+    json: dict[str, Any]
+    data: Any
+
+
 class LingqHandler:
     """Abstraction for the requests sent to the LingQ API.
 
@@ -36,10 +42,6 @@ class LingqHandler:
         _user_id (int | None): The user id. Used for some requests.
 
     """
-
-    API_URL_V1 = "https://www.lingq.com/api"
-    API_URL_V2 = "https://www.lingq.com/api/v2"
-    API_URL_V3 = "https://www.lingq.com/api/v3"
 
     def __init__(self, lang: str) -> None:
         self.lang = lang
@@ -103,7 +105,16 @@ class LingqHandler:
         else:
             logger.error(f"Response text: {response.text}")
 
-    """Generic request"""
+    def url(self, endpoint: str, *, version: int, add_language: bool) -> str:
+        base_api_url = {
+            1: "https://www.lingq.com/api",
+            2: "https://www.lingq.com/api/v2",
+            3: "https://www.lingq.com/api/v3",
+        }[version]
+
+        if add_language:
+            return f"{base_api_url}/{self.lang}/{endpoint}"
+        return f"{base_api_url}/{endpoint}"
 
     async def _request(
         self,
@@ -112,84 +123,53 @@ class LingqHandler:
         *,
         version: int = 3,
         add_language: bool = True,
-        raw: bool = False,
-        retry_on_locked: bool = False,
-        **kwargs,  # noqa: ANN003
+        max_retries: int = 4,
+        **kwargs: Unpack[RequestKwargs],
     ) -> Any:
-        api_url = {
-            1: LingqHandler.API_URL_V1,
-            2: LingqHandler.API_URL_V2,
-            3: LingqHandler.API_URL_V3,
-        }[version]
+        """Generic request.
 
-        if add_language:
-            url = f"{api_url}/{self.lang}/{endpoint}"
-        else:
-            url = f"{api_url}/{endpoint}"
+        On error, retry 'max_retries' times.
 
+        That is, loop until we get a json different from:
+        * {'isLocked': 'TOKENIZE_TEXT', 'errorType': 'locked'}
+        * {'isLocked': 'GENERATE_TIMESTAMPS', 'errorType': 'locked'}
+        * ["Can't execute: Cannot save changes at the moment. Please try again later."]
+
+        Exits in case of failure after 'max_retries' times.
+        """
+
+        url = self.url(endpoint, version=version, add_language=add_language)
         logger.trace(f"{method.upper()} {url}")
         if params := kwargs.get("params", ""):
             logger.trace(f"{params=}")
 
-        if not retry_on_locked:
-            return await self._send_request(method, url, raw=raw, **kwargs)
-        else:
-            assert raw is False, "Raw must be false when retrying on locked"
-            return await self._send_request_retry(method, url, raw=False, **kwargs)
-
-    async def _send_request(
-        self,
-        method: str,
-        url: str,
-        *,
-        raw: bool,
-        quiet: bool = False,
-        **kwargs,  # noqa: ANN003
-    ) -> Any:
-        meth = getattr(self.session, method.lower())
-        async with meth(url, headers=self.config.headers, **kwargs) as response:
-            if not 200 <= response.status < 300:
-                if not quiet:
-                    await self.response_debug(response)
-                return response
-            if raw:
-                return response
-            return await response.json()
-
-    async def _send_request_retry(
-        self,
-        method: str,
-        url: str,
-        *,
-        raw: bool,
-        max_retries: int = 4,
-        **kwargs,  # noqa: ANN003
-    ) -> Any:
-        """On locked error, retry 'max_retries' times.
-
-        That is, loop until we get a JSON result that does not look like this:
-        * {'isLocked': 'TOKENIZE_TEXT', 'errorType': 'locked'}
-        * {'isLocked': 'GENERATE_TIMESTAMPS', 'errorType': 'locked'}
-        """
         for retry in range(1, max_retries + 1):
-            response = await self._send_request(method, url, raw=raw, quiet=True, **kwargs)
-            # If _send_request:
-            # * failed:    response is a ClientResponse.
-            # * succeeded: response was already converted to a json.
-            if isinstance(response, ClientResponse):
-                response = await response.json()
-            if response.get("errorType", "") != "locked":
-                return response
+            async with self.session.request(
+                method.lower(), url, headers=self.config.headers, **kwargs
+            ) as response:
+                json = await response.json()
 
-            locked_reason = response["isLocked"]
-            if locked_reason not in LOCKED_REASON_CHOICES:
-                logger.warning(f"Unexpected lock reason: {locked_reason}")
-            logger.debug(
-                f"Content is locked at {locked_reason}. Retrying... ({retry}/{max_retries})"
-            )
-            await asyncio.sleep(2**retry)
+                if 200 <= response.status < 300:
+                    return json
 
-        raise RuntimeError("Content is locked.")
+                if isinstance(json, dict):
+                    if json.get("errorType", "") == "locked":
+                        reason = json.get("isLocked", "")
+                        if reason not in LOCKED_REASON_CHOICES:
+                            logger.warning(f"Unexpected lock reason: {reason}")
+                        msg = f"Content is locked at {reason}. Retrying... ({retry}/{max_retries})"
+                        logger.debug(msg)
+                elif isinstance(json, list):
+                    if json[0].startswith("Can't execute: Cannot save changes at the moment"):
+                        msg = f"Can't execute at the moment. Retrying... ({retry}/{max_retries})"
+                        logger.debug(msg)
+                else:
+                    await self.response_debug(response)
+
+                await asyncio.sleep(2**retry)
+
+        logger.error(f"Could not get content after {max_retries} retries")
+        sys.exit(1)
 
     """Get requests"""
 
@@ -234,11 +214,7 @@ class LingqHandler:
             url: https://www.lingq.com/api/v3/LANG/lessons/ID/
 
         """
-        data = await self._request(
-            "GET",
-            f"lessons/{lesson_id}/",
-            retry_on_locked=True,
-        )
+        data = await self._request("GET", f"lessons/{lesson_id}/")
         return LessonV3.model_validate(data)
 
     async def get_lesson_from_ids(self, ids: list[int]) -> list[LessonV3]:
@@ -253,8 +229,9 @@ class LingqHandler:
             url: https://www.lingq.com/api/v3/ja/collections/537808/lessons
 
         """
-        base_url_size = len(f"{LingqHandler.API_URL_V3}/{self.lang}/")
-        url = f"{LingqHandler.API_URL_V3}/{self.lang}/collections/{course_id}/lessons/"
+        base_url = self.url("", version=3, add_language=True)
+        base_url_size = len(base_url)
+        url = f"{base_url}collections/{course_id}/lessons/"
         collection_lessons = []
         cur_url = url
 
@@ -362,11 +339,9 @@ class LingqHandler:
 
     """Patch requests"""
 
-    async def patch_audio(self, lesson_id: int, audio: BufferedReader) -> ClientResponse:
+    async def patch_audio(self, lesson_id: int, audio: BufferedReader) -> Any:
         """PATCH. Replace the audio of a lesson."""
-        return await self._request(
-            "PATCH", f"lessons/{lesson_id}/", data={"audio": audio}, raw=True
-        )
+        return await self._request("PATCH", f"lessons/{lesson_id}/", data={"audio": audio})
 
     async def patch_text(self, lesson_id: int, text_data: str) -> Any:
         """POST. Replace the text of a lesson.
@@ -403,10 +378,10 @@ class LingqHandler:
         """
         return await self._create_course({"title": title, "description": description})
 
-    async def post_from_multipart(self, data: FormData, *, raw: bool = False) -> Any:
-        return await self._request("POST", "lessons/import/", data=data, raw=raw)
+    async def post_from_multipart(self, data: FormData) -> Any:
+        return await self._request("POST", "lessons/import/", data=data)
 
-    async def post_from_data_dict(self, data: dict[str, Any], *, raw: bool = False) -> Any:
+    async def post_from_data_dict(self, data: dict[str, Any]) -> Any:
         """POST. Post a lesson from a dictionary.
 
         F.e.
@@ -421,7 +396,7 @@ class LingqHandler:
         """
         self._check_data_conv(data)
         fdata = FormData(data)
-        return await self.post_from_multipart(fdata, raw=raw)
+        return await self.post_from_multipart(fdata)
 
     def _check_data_conv(self, data: dict[str, Any]) -> None:
         """Verify that we have the keys needed by LingQ."""
@@ -434,7 +409,7 @@ class LingqHandler:
             if key not in data:
                 raise ValueError(f"Error at post_from_data_dict: data has no {key=}")
 
-    async def replace(self, lesson_id: int, replacements: dict[str, str]) -> ClientResponse:
+    async def replace(self, lesson_id: int, replacements: dict[str, str]) -> Any:
         """POST. Regex-like replace text in a lesson.
 
         A replacement is a pair {regex: substition}. F.e. {"a": "b", "c": "d"}
@@ -447,16 +422,6 @@ class LingqHandler:
             "POST",
             f"lessons/{lesson_id}/sentences/",
             json={"action": "replace", "text": replacements},
-            raw=True,
-        )
-
-    async def replace_sentence(self, lesson_id: int, text: str, index: int) -> ClientResponse:
-        """POST. Replace a sentence in a lesson."""
-        return await self._request(
-            "POST",
-            f"lessons/{lesson_id}/sentences/",
-            json={"action": "update", "index": index, "text": text},
-            raw=True,
         )
 
     async def _has_title_paragraph(self, lesson_id: int) -> bool:
@@ -469,19 +434,27 @@ class LingqHandler:
             logger.warning(f"Missing title paragraph at lesson @ {editor_url}")
         return has_title
 
-    async def replace_title(self, lesson_id: int, text: str) -> ClientResponse:
+    async def replace_title(self, lesson_id: int, text: str) -> Any:
         """POST/PATCH. Replace the title of a lesson."""
         has_title = await self._has_title_paragraph(lesson_id)
         if has_title:
             # Works if the first line is TITLE
-            return await self.replace_sentence(lesson_id, text, index=1)
+            return await self._request(
+                "POST",
+                f"lessons/{lesson_id}/sentences/",
+                json={"action": "update", "index": 1, "text": text},
+            )
         else:
             # Works if the first line is PARAGRAPH 1 (~~no title, f.e. youtube import)
             # Does not modify the first sentence, but then again, there is no guarantee that
             # we _want_ to modify the first sentence, since it may not be the title...
-            return await self._request("PATCH", f"lessons/{lesson_id}", data={"title": text})
+            return await self._request(
+                "PATCH",
+                f"lessons/{lesson_id}",
+                data={"title": text},
+            )
 
-    async def resplit_lesson(self, lesson_id: int, data: dict[str, str] = {}) -> ClientResponse:
+    async def resplit_lesson(self, lesson_id: int, data: dict[str, str] = {}) -> Any:
         """POST. Resplit a lesson."""
         if self.lang == "ja":
             # https://forum.lingq.com/t/refining-parsing-in-spaceless-languages-like-japanese-with-ai/179754/5
@@ -491,7 +464,6 @@ class LingqHandler:
                 "POST",
                 f"lessons/{lesson_id}/resplit/",
                 data={"method": "ichimoe"},
-                raw=True,
             )
         else:
             # We need to send the Lesson text: {"text": "Raw text.\nNo formatting.\n\nJust chars."}
@@ -500,7 +472,6 @@ class LingqHandler:
                 "POST",
                 f"lessons/{lesson_id}/resplit/",
                 data=data,
-                raw=True,
             )
 
     async def delete_course(self, course_id: int) -> None:
@@ -508,7 +479,9 @@ class LingqHandler:
 
         Crashes if the course is not succesfully deleted.
         """
-        url = f"{LingqHandler.API_URL_V3}/{self.lang}/collections/{course_id}"
+        base_url = self.url("", version=3, add_language=True)
+        url = f"{base_url}collections/{course_id}"
+        logger.trace(f"DELETE {url}")
         async with self.session.delete(url, headers=self.config.headers) as response:
             if response.status != 202:
                 msg = "The course could not be successfully deleted"

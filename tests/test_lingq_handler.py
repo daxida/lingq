@@ -5,7 +5,7 @@ from pathlib import Path
 import aiohttp
 from deepdiff.diff import DeepDiff
 
-from lingqhandler import LingqHandler
+from lingq.lingqhandler import LingqHandler
 
 logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
