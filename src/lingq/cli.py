@@ -452,7 +452,7 @@ def patch_audios_cli(lang: str, course_id: int, audios_folder: Path) -> None:
 def replace_cli(lang: str, course_id: int, fr: str, to: str, yes: bool) -> None:
     """Replace words in a course.
 
-    Example (replace a with b): lingq replace ja 123123 a b
+    Example (replace a with b): `lingq replace ja 123123 a b`
     """
     replacements = {fr: to}
     replace(lang, course_id, replacements, yes)

@@ -1,5 +1,6 @@
 # For debugging:
-# set -x LOGURU_LEVEL TRACE
+# set -x LOGURU_LEVEL TRACE # trace logs
+# set -e LOGURU_LEVEL       # default
 
 clean:
   rm -rf downloads

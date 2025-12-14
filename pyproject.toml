@@ -57,7 +57,7 @@ test = [
 all = ["lingq[etc, test]"]
 
 [project.scripts]
-lingq = "cli:cli"
+lingq = "lingq.cli:cli"
 
 # https://github.com/astral-sh/uv/issues/9513
 [tool.setuptools]
