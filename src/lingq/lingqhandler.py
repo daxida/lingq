@@ -1,7 +1,7 @@
 import asyncio
 import sys
 from io import BufferedReader
-from typing import Any, TypedDict, Unpack
+from typing import Any, Self, TypedDict, Unpack
 
 from aiohttp import ClientResponse, ClientSession, FormData
 from aiohttp_retry import ExponentialRetry, RetryClient
@@ -54,10 +54,10 @@ class LingqHandler:
         self.session = retry_client
         self._user_id = None
 
-    async def __aenter__(self):  # noqa: ANN204
+    async def __aenter__(self) -> Self:
         return self
 
-    async def __aexit__(self, *_):  # noqa: ANN002, ANN204
+    async def __aexit__(self, *_: Any) -> None:
         await self.session.close()
 
     """Debug utils"""
@@ -232,7 +232,7 @@ class LingqHandler:
         base_url = self.url("", version=3, add_language=True)
         base_url_size = len(base_url)
         url = f"{base_url}collections/{course_id}/lessons/"
-        collection_lessons = []
+        collection_lessons: list[CollectionLessonResult] = []
         cur_url = url
 
         while cur_url:
@@ -242,7 +242,7 @@ class LingqHandler:
             collection_lessons.extend(collection_lessons_at_page.results)
             cur_url = collection_lessons_at_page.next
 
-        if collection_lessons.count == 0:
+        if not collection_lessons:
             editor_url = get_editor_url(self.lang, course_id, "course")
             logger.warning(
                 f" The collection {course_id} at {editor_url} has no lessons, (delete it?)"
@@ -265,26 +265,26 @@ class LingqHandler:
             for collection_id, counter in data.items()
         }
 
-    async def search(self, params: dict[str, Any]) -> SearchCollections:
+    async def search(self, params: dict[str, Any]) -> list[SearchCollectionResult]:
         data = await self._request("GET", "search", params=params)
-        return SearchCollections.model_validate(data)
+        search_collections = SearchCollections.model_validate(data)
+        results: list[SearchCollectionResult] = search_collections.results  # convince mypy
+        return results
 
     async def get_my_collections_shared(self) -> list[SearchCollectionResult]:
         await self.get_user_id()
-        data = await self.search(
+        return await self.search(
             {"type": "collection", "sharedBy": str(self._user_id), "sortBy": "recentlyOpened"}
         )
-        return data.results
 
     async def get_currently_studying_collections(self) -> list[SearchCollectionResult]:
         """Get collections from the 'Continue Studying shelf'.
 
         This includes collections imported by other users.
         """
-        data = await self.search(
+        return await self.search(
             {"shelf": "my_lessons", "type": "collection", "sortBy": "recentlyOpened"}
         )
-        return data.results
 
     async def get_collection_from_id(self, course_id: int) -> CollectionV3:
         """Get a CollectionV3 object.
@@ -427,7 +427,11 @@ class LingqHandler:
     async def _has_title_paragraph(self, lesson_id: int) -> bool:
         """This is awful and I am convinced it is exactly what LingQ does internally."""
         paragraphs = await self._request("GET", f"lessons/{lesson_id}/paragraphs/")
-        has_title = paragraphs and (paragraphs[0].get("style", "") == "h1")
+        has_title = (
+            isinstance(paragraphs, list)
+            and len(paragraphs) > 0
+            and (paragraphs[0].get("style", "") == "h1")
+        )
         if not has_title:
             # Issue a warning since you probably always want a title paragraph
             editor_url = get_editor_url(self.lang, lesson_id, "lesson")
