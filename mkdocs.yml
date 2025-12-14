@@ -1,0 +1,44 @@
+site_name: Lingq
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.tracking
+    - toc.integrate
+    - content.code.copy
+  palette:
+    # https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#automatic-light-dark-mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+repo_url: https://github.com/daxida/lingq
+repo_name: daxida/lingq
+plugins:
+  - search
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - attr_list
+  - mkdocs-click
+  # Highlight the console blocks
+  - pymdownx.superfences
+extra_css:
+  - stylesheets/extra.css
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+  anchors: warn

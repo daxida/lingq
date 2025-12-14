@@ -1,0 +1,9 @@
+/* Make commands (h4 headings) yellow */
+.md-typeset h4 {
+    color: #f59e0b !important;
+}
+
+/* Make command groups (h3 headings) cyan */
+.md-typeset h3 {
+    color: #06b6d4 !important;
+}

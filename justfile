@@ -12,6 +12,10 @@ fmt:
 lint *args:
   mypy src {{args}}
 
+# To deploy, mkdocs gh-deploy
+docs:
+  mkdocs serve
+
 bump:
   uv version --bump patch
 
