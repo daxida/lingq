@@ -152,24 +152,29 @@ class LingqHandler:
                 if 200 <= response.status < 300:
                     return json
 
-                if isinstance(json, dict):
-                    if json.get("errorType", "") == "locked":
-                        reason = json.get("isLocked", "")
-                        if reason not in LOCKED_REASON_CHOICES:
-                            logger.warning(f"Unexpected lock reason: {reason}")
-                        msg = f"Content is locked at {reason}. Retrying... ({retry}/{max_retries})"
-                        logger.debug(msg)
-                elif isinstance(json, list):
-                    if json[0].startswith("Can't execute: Cannot save changes at the moment"):
-                        msg = f"Can't execute at the moment. Retrying... ({retry}/{max_retries})"
-                        logger.debug(msg)
+                if isinstance(json, dict) and json.get("errorType", "") == "locked":
+                    reason = json.get("isLocked", "")
+                    if reason not in LOCKED_REASON_CHOICES:
+                        logger.warning(f"Unexpected lock reason: {reason}")
+                    msg = f"Content is locked at {reason}. Retrying... ({retry}/{max_retries})"
+                    logger.debug(msg)
+                elif isinstance(json, dict) and json.get("detail", "") == "Not found.":
+                    msg = f"{f'{method.upper()} {url}'} was not found."
+                    logger.warning(msg)
+                    return json
+                elif isinstance(json, list) and json[0].startswith(
+                    "Can't execute: Cannot save changes at the moment"
+                ):
+                    msg = f"Can't execute at the moment. Retrying... ({retry}/{max_retries})"
+                    logger.debug(msg)
                 else:
                     await self.response_debug(response)
 
                 await asyncio.sleep(2**retry)
 
-        logger.error(f"Could not get content after {max_retries} retries")
-        sys.exit(1)
+        msg = f"Could not get content after {max_retries} retries"
+        logger.error(msg)
+        raise RuntimeError(msg)
 
     """Get requests"""
 
