@@ -60,3 +60,4 @@ python3 etc/scrape/japanese/sc_itazura.py
 - A [repo](https://github.com/justbrendo/lingq-yt) to upload YouTube playlists to LingQ with Whisper subtitles.
 - A [repo](https://gist.github.com/Ashwinning/a9677b5b3afa426667d979b36c019b04) to split downloaded audio from YouTube.
 - A [repo](https://github.com/evizitei/lingq) for an API wrapper in ruby.
+- A [repo](https://github.com/2p990i9hpral/LingQ_Add-On) for a LingQ addon that enhances the UI.
