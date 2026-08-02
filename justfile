@@ -19,6 +19,11 @@ docs:
 bump:
   uv version --bump patch
 
+# Version should start with v (v1.1.0)
+release version:
+  git tag -a {{version}} -m {{version}}
+  git push --tags
+
 # Publish to PyPI. Requires setting UV_PUBLISH_TOKEN=
 publish:
   uv build
